@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+	
+	<body>
+	    <ui:composition>
+ 
+ 			<div class="navbar navbar-inverse navbar-fixed-top">
+			  <div class="container">
+				<div class="navbar-header">
+				  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+				  <a class="navbar-brand" href="#">TSI2</a>
+				</div>
+				<div class="navbar-collapse collapse">
+				  <ul class="nav navbar-nav">
+					<li class="active"><h:link value="Home" outcome="/index" /></li>
+					<li><h:link value="Profile" outcome="/pages/users/profile" rendered="#{userSessionManagementBean.userLoggedIn}"/></li>
+<!-- 					<li><a href="#contact">Contact</a></li> -->
+<!-- 					<li class="dropdown"> -->
+<!-- 					  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a> -->
+<!-- 					  <ul class="dropdown-menu"> -->
+<!-- 						<li><a href="#">Action</a></li> -->
+<!-- 						<li><a href="#">Another action</a></li> -->
+<!-- 						<li><a href="#">Something else here</a></li> -->
+<!-- 						<li class="divider"></li> -->
+<!-- 						<li class="dropdown-header">Nav header</li> -->
+<!-- 						<li><a href="#">Separated link</a></li> -->
+<!-- 						<li><a href="#">One more separated link</a></li> -->
+<!-- 					  </ul> -->
+<!-- 					</li> -->
+				  </ul>
+				  
+				  <h:form class="navbar-form navbar-right" rendered="#{!userSessionManagementBean.userLoggedIn}">
+				  	<div class="form-group">
+				  		<h:inputText placeholder="Username" class="form-control" value="#{userLoginBean.user.username}" />
+				  	</div>
+				  	<div class="form-group">
+				  		<h:inputSecret placeholder="Password" class="form-control" value="#{userLoginBean.user.password}" />
+				  	</div>
+				  	
+				  	<h:commandButton class="btn btn-success" type="submit" action="#{userLoginBean.login()}" value="Sign in" />
+				  	
+				  	<h:link value="Register" outcome="/pages/users/register" />
+				  </h:form>
+				  
+				  <h:form class="navbar-form navbar-right" rendered="#{userSessionManagementBean.userLoggedIn}">
+				  	<div class="form-group">
+				  		<h:outputText value="Hello #{userSessionManagementBean.user.username}" />
+				  	</div>
+				  	<h:commandButton class="btn btn-success" type="submit" action="#{userLoginBean.logout()}" value="Sign out" />
+				  </h:form>
+				  
+				  
+				  
+				</div><!--/.navbar-collapse -->
+			  </div>
+			</div>
+ 
+    	</ui:composition>
+	</body>
+</html>

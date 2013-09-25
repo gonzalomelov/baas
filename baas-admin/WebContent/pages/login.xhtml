@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    template="/templates/default.xhtml">
+    
+    <ui:define name="header">
+    </ui:define>
+      
+    <ui:define name="content">
+    	<h:outputStylesheet library="css" name="signin.css" />
+    
+    	<div class="container">
+
+	      <h:form class="form-signin" _lpchecked="1" method="post" rendered="#{!userSessionManagementBean.userLoggedIn}">
+	        <h2 class="form-signin-heading">Please sign in</h2>
+	        <h:inputText class="form-control" placeholder="Email address" autofocus="" value="#{userLoginBean.user.username}" />
+	        <h:inputSecret class="form-control" placeholder="Password" value="#{userLoginBean.user.password}" />
+	        <label class="checkbox">
+	          <input type="checkbox" value="remember-me" /> Remember me
+	        </label>
+	        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+	        <h:commandButton type="submit" class="btn btn-lg btn-primary btn-block" action="#{userLoginBean.login()}" />
+	      </h:form>
+	
+	    </div>
+    </ui:define>
+    
+    <ui:define name="aside">
+    </ui:define>
+    
+    <ui:define name="footer">
+    </ui:define>
+    
+</ui:composition>
