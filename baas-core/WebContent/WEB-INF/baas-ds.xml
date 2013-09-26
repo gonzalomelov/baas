@@ -30,7 +30,7 @@
         <driver>postgresql</driver>
         <security>
             <user-name>postgres</user-name>
-            <password>1234</password>
+            <password>postgres</password>
         </security>
     </datasource>
 </datasources>
