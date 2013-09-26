@@ -1,4 +1,4 @@
-package uy.com.group05.baascore.sl.services;
+package uy.com.group05.baascore.sl.services.impl;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.sl.services.rest.UserRestFacade;
 import uy.com.group05.baascore.sl.services.soap.UserSoapFacade;
 
-public class UserServices implements UserRestFacade, UserSoapFacade {
+public class UserServicesImpl implements UserRestFacade, UserSoapFacade {
 
 	private UserManagementLocal userManagementLocal = lookupUserManagementLocalBean();
 

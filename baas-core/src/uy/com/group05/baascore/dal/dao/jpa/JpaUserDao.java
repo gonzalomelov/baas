@@ -9,9 +9,9 @@ import javax.persistence.criteria.Root;
 
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.common.entities.User_;
-import uy.com.group05.baascore.dal.dao.GenericDao;
+import uy.com.group05.baascore.dal.dao.UserDao;
 
-public class JpaUserDao extends JpaGenericDao<User> implements GenericDao<User> {
+public class JpaUserDao extends JpaGenericDao<User> implements UserDao {
 	
 	public User readByUsername(String username) {
 		CriteriaBuilder cb = this.em.getCriteriaBuilder();

@@ -7,13 +7,14 @@ import javax.inject.Inject;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.UserManagementLocal;
 import uy.com.group05.baascore.common.entities.User;
-import uy.com.group05.baascore.dal.dao.jpa.JpaUserDao;
+import uy.com.group05.baascore.dal.dao.UserDao;
 
 @Stateless
 public class UserManagement implements UserManagementLocal {
 	
+	//TODO Bind interface!
 	@Inject
-	private JpaUserDao userDao;
+	private UserDao userDao;
 	
 	@Override
 	public List<User> getUsers() {

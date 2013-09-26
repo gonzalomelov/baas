@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -30,6 +31,9 @@ public class User {
 	private String lastname;
 
 	private boolean loggedIn;
+	
+	@ManyToOne
+	private Application application;
 	
 	public long getId() {
 		return id;

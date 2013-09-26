@@ -3,8 +3,6 @@ package uy.com.group05.baascore.sl.services;
 import java.util.List;
 
 import uy.com.group05.baascore.common.entities.User;
-import uy.com.group05.baascore.sl.services.rest.UserRestFacade;
-import uy.com.group05.baascore.sl.services.soap.UserSoapFacade;
 
 public interface UserServicesFacade {
 	List<User> getUsers();

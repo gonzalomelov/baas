@@ -57,4 +57,5 @@ public interface UserRestFacade extends UserServicesFacade {
 	@Override
 	public boolean logoutUser(
 			@FormParam("username") String username);
+	
 }
