@@ -7,6 +7,8 @@ import javax.inject.Inject;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.UserManagementLocal;
 import uy.com.group05.baascore.common.entities.User;
+import uy.com.group05.baascore.common.exceptions.EmailAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.UsernameAlreadyRegisteredException;
 import uy.com.group05.baascore.dal.dao.UserDao;
 
 @Stateless
@@ -22,7 +24,19 @@ public class UserManagement implements UserManagementLocal {
 	}
 	
 	@Override
-	public User registerUser(User user) {
+	public User registerUser(User user)
+		throws
+			UsernameAlreadyRegisteredException,
+			EmailAlreadyRegisteredException {
+		
+		if (userDao.readByUsername(user.getUsername()) != null) {
+			throw new UsernameAlreadyRegisteredException("Username already registered");
+		}
+		
+		if (userDao.readByEmail(user.getEmail()) != null) {
+			throw new EmailAlreadyRegisteredException("Email already registered");
+		}
+		
 		return userDao.create(user);
 	}
 	

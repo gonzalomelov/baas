@@ -11,6 +11,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import uy.com.group05.baascore.common.entities.User;
+import uy.com.group05.baascore.common.exceptions.EmailAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.UsernameAlreadyRegisteredException;
 import uy.com.group05.baascore.sl.services.UserServicesFacade;
 
 @Path("/users")
@@ -26,7 +28,10 @@ public interface UserRestFacade extends UserServicesFacade {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Override
-	public User registerUser(User user);
+	public User registerUser(User user)
+		throws
+			UsernameAlreadyRegisteredException,
+			EmailAlreadyRegisteredException;
 	
 	@Path("/userLoggedIn")
 	@POST

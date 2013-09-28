@@ -7,6 +7,8 @@ import javax.naming.NamingException;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.UserManagementLocal;
 import uy.com.group05.baascore.common.entities.User;
+import uy.com.group05.baascore.common.exceptions.EmailAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.UsernameAlreadyRegisteredException;
 import uy.com.group05.baascore.sl.services.rest.UserRestFacade;
 import uy.com.group05.baascore.sl.services.soap.UserSoapFacade;
 
@@ -29,8 +31,13 @@ public class UserServicesImpl implements UserRestFacade, UserSoapFacade {
 	};
 	
 	@Override
-	public User registerUser(User user) {
+	public User registerUser(User user)
+		throws
+			UsernameAlreadyRegisteredException,
+			EmailAlreadyRegisteredException {
+		
 		return userManagementLocal.registerUser(user);
+	
 	}
 
 	@Override

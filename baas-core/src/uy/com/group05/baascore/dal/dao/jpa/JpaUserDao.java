@@ -27,4 +27,17 @@ public class JpaUserDao extends JpaGenericDao<User> implements UserDao {
 		return users.isEmpty() ? null : users.get(0);
 	}
 	
+	public User readByEmail(String email) {
+		CriteriaBuilder cb = this.em.getCriteriaBuilder();
+		CriteriaQuery<User> cq = cb.createQuery(this.type);
+		Root<User> r = cq.from(this.type);
+		cq.select(r);
+		cq.where(cb.equal(r.get(User_.email), email));
+		
+		TypedQuery<User> typedQuery = em.createQuery(cq);
+		
+		List<User> users = typedQuery.getResultList();
+		
+		return users.isEmpty() ? null : users.get(0);
+	}
 }
