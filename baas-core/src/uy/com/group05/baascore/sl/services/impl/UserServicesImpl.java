@@ -2,6 +2,8 @@ package uy.com.group05.baascore.sl.services.impl;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.jws.WebService;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -12,18 +14,24 @@ import uy.com.group05.baascore.common.exceptions.UsernameAlreadyRegisteredExcept
 import uy.com.group05.baascore.sl.services.rest.UserRestFacade;
 import uy.com.group05.baascore.sl.services.soap.UserSoapFacade;
 
+@WebService(
+	endpointInterface="uy.com.group05.baascore.sl.services.soap.UserSoapFacade",
+	portName="UserServicesPort",
+	serviceName="UserServices"
+)
 public class UserServicesImpl implements UserRestFacade, UserSoapFacade {
 
-	private UserManagementLocal userManagementLocal = lookupUserManagementLocalBean();
-
-	private UserManagementLocal lookupUserManagementLocalBean() {
-        try {
+	private UserManagementLocal userManagementLocal;
+	
+	@PostConstruct
+	public void init() {
+		try {
             javax.naming.Context c = new InitialContext();
-            return (UserManagementLocal) c.lookup("java:global/baas-core-ear/baas-core/UserManagement!uy.com.group05.baascore.bll.ejbs.interfaces.UserManagementLocal");
+            userManagementLocal = (UserManagementLocal) c.lookup("java:global/baas-core-ear/baas-core/UserManagement!uy.com.group05.baascore.bll.ejbs.interfaces.UserManagementLocal");
         } catch (NamingException ne) {
             throw new RuntimeException(ne);
         }
-    }
+	}
 
 	@Override
 	public List<User> getUsers() {
