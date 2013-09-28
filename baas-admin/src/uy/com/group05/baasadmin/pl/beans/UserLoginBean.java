@@ -1,8 +1,11 @@
 package uy.com.group05.baasadmin.pl.beans;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 import uy.com.group05.baasadmin.pl.controllers.UserController;
 import uy.com.group05.baasadmin.pl.models.UserModel;
@@ -12,6 +15,8 @@ import uy.com.group05.baasadmin.pl.models.UserModel;
 public class UserLoginBean {
 	private UserModel user = new UserModel();
 
+	private UIComponent username;
+	
 	@ManagedProperty(value="#{userSessionManagementBean}")
 	private UserSessionManagementBean userSessionManagementBean;
 	
@@ -34,12 +39,22 @@ public class UserLoginBean {
 		this.userSessionManagementBean = userSessionManagementBean;
 	}
 
-	//Functions
+	public UIComponent getUsername() {
+		return username;
+	}
+
+	public void setUsername(UIComponent username) {
+		this.username = username;
+	}
 	
+	//Functions
+
 	public String login() {
 		UserModel userModel = userController.loginUser(user.getUsername(), user.getPassword());
 		
 		if (userModel == null) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(username.getClientId(context), new FacesMessage("Login inválido"));
 			return "/index";
 		}
 		
