@@ -15,9 +15,12 @@
 			
 				<!-- Form Name -->
 				<legend>User Registration</legend>
+			
+				<h:messages style="color:red;" />
 				
 				<!-- Text input-->
 				<div class="control-group">
+				  <h:message id="usernameError" for="username" style="color: red;" />
 				  <label class="control-label" for="username">Username</label>
 				  <div class="controls">
 				    <h:inputText id="username" name="username" type="text" placeholder="Username" class="input-xlarge" value="#{userRegistrationBean.user.username}" />
@@ -27,6 +30,7 @@
 				
 				<!-- Password input-->
 				<div class="control-group">
+				  <h:message id="passwordError" for="password" style="color: red;" />
 				  <label class="control-label" for="password">Password</label>
 				  <div class="controls">
 				    <h:inputSecret id="password" name="password" type="password" placeholder="Password" class="input-xlarge" value="#{userRegistrationBean.user.password}" />
@@ -36,6 +40,7 @@
 				
 				<!-- Text input-->
 				<div class="control-group">
+				  <h:message for="password" style="color: red;" />
 				  <label class="control-label" for="email">Email</label>
 				  <div class="controls">
 				    <h:inputText id="email" name="email" type="text" placeholder="Email" class="input-xlarge" value="#{userRegistrationBean.user.email}" />
