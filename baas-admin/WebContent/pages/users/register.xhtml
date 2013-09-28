@@ -16,35 +16,32 @@
 				<!-- Form Name -->
 				<legend>User Registration</legend>
 			
-				<h:messages style="color:red;" />
+				<h:messages style="color:red;" rendered="#{not facesContext.validationFailed and not empty facesContext.messageList}" />
 				
 				<!-- Text input-->
 				<div class="control-group">
-				  <h:message id="usernameError" for="username" style="color: red;" />
 				  <label class="control-label" for="username">Username</label>
 				  <div class="controls">
-				    <h:inputText id="username" name="username" type="text" placeholder="Username" class="input-xlarge" value="#{userRegistrationBean.user.username}" />
-				    <p class="help-block">Username</p>
+				    <h:inputText id="username" name="username" binding="#{userRegistrationBean.username}" type="text" placeholder="Username" class="input-xlarge" value="#{userRegistrationBean.user.username}" />
+				    <h:message for="username" style="color: red;" />
 				  </div>
 				</div>
 				
 				<!-- Password input-->
 				<div class="control-group">
-				  <h:message id="passwordError" for="password" style="color: red;" />
 				  <label class="control-label" for="password">Password</label>
 				  <div class="controls">
 				    <h:inputSecret id="password" name="password" type="password" placeholder="Password" class="input-xlarge" value="#{userRegistrationBean.user.password}" />
-				    <p class="help-block">Password</p>
+				    <h:message for="password" style="color: red;" />
 				  </div>
 				</div>
 				
 				<!-- Text input-->
 				<div class="control-group">
-				  <h:message for="password" style="color: red;" />
 				  <label class="control-label" for="email">Email</label>
 				  <div class="controls">
-				    <h:inputText id="email" name="email" type="text" placeholder="Email" class="input-xlarge" value="#{userRegistrationBean.user.email}" />
-				    <p class="help-block">Email</p>
+				    <h:inputText id="email" name="email" binding="#{userRegistrationBean.email}" type="text" placeholder="Email" class="input-xlarge" value="#{userRegistrationBean.user.email}" />
+				    <h:message for="email" style="color: red;" />
 				  </div>
 				</div>
 				
@@ -53,7 +50,7 @@
 				  <label class="control-label" for="name">Name</label>
 				  <div class="controls">
 				    <h:inputText id="name" name="name" type="text" placeholder="Name" class="input-xlarge" value="#{userRegistrationBean.user.name}" />
-				    <p class="help-block">Name</p>
+				    <h:message for="name" style="color: red;" />
 				  </div>
 				</div>
 				
@@ -62,7 +59,7 @@
 				  <label class="control-label" for="lastname">Lastname</label>
 				  <div class="controls">
 				  	<h:inputText id="lastname" name="lastname" type="text" placeholder="Lastname" class="input-xlarge" value="#{userRegistrationBean.user.lastname}" />
-				    <p class="help-block">Lastname</p>
+				    <h:message for="lastname" style="color: red;" />
 				  </div>
 				</div>
 				
@@ -77,7 +74,7 @@
 			
 			</fieldset>
 		  </h:form>
-	
+	 
 	      <hr />
 	
 	      <footer>
