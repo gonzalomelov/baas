@@ -1,6 +1,7 @@
 package uy.com.group05.baascore.common.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -10,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 @javax.persistence.Entity
 @Table(name = "USERS")
@@ -39,7 +42,8 @@ public class User implements Serializable {
 	private boolean loggedIn;
 	
 	@ManyToMany(mappedBy = "users")
-	private List<Application> applications;
+	@JsonIgnore
+	private List<Application> applications = new ArrayList<Application>();
 
 	public long getId() {
 		return id;

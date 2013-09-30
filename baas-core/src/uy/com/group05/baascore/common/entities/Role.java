@@ -1,6 +1,7 @@
 package uy.com.group05.baascore.common.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.GeneratedValue;
@@ -30,7 +31,7 @@ public class Role implements Serializable {
 	private Application application;
 	
 	@OneToMany(mappedBy = "role")
-	private List<Permission> permissions;
+	private List<Permission> permissions = new ArrayList<Permission>();
 
 	public long getId() {
 		return id;

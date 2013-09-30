@@ -1,6 +1,7 @@
 package uy.com.group05.baascore.common.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -42,7 +43,7 @@ public class Client implements Serializable {
 	private Application application;
 	
 	@OneToMany
-	private List<Role> roles;
+	private List<Role> roles = new ArrayList<Role>();
 
 	public long getId() {
 		return id;
