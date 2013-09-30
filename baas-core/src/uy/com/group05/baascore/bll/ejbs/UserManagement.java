@@ -14,7 +14,6 @@ import uy.com.group05.baascore.dal.dao.UserDao;
 @Stateless
 public class UserManagement implements UserManagementLocal {
 	
-	//TODO Bind interface!
 	@Inject
 	private UserDao userDao;
 	

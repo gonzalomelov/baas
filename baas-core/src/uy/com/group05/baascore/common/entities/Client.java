@@ -3,18 +3,17 @@ package uy.com.group05.baascore.common.entities;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 
-@javax.persistence.Entity
-@Table(name = "USERS")
-@XmlRootElement
-public class User {
-	
+@Entity
+@Table(name = "CLIENTS")
+public class Client {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -33,8 +32,11 @@ public class User {
 
 	private boolean loggedIn;
 	
-	@ManyToMany(mappedBy = "users")
-	private List<Application> applications;
+	@ManyToOne
+	private Application application;
+	
+	@OneToMany
+	private List<Role> roles;
 
 	public long getId() {
 		return id;
@@ -92,12 +94,20 @@ public class User {
 		this.loggedIn = loggedIn;
 	}
 
-	public List<Application> getApplications() {
-		return applications;
+	public Application getApplication() {
+		return application;
 	}
 
-	public void setApplications(List<Application> applications) {
-		this.applications = applications;
+	public void setApplication(Application application) {
+		this.application = application;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 	
 	

@@ -1,10 +1,11 @@
 package uy.com.group05.baascore.common.entities;
 
 import javax.annotation.Generated;
+import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2013-09-27T20:26:55.112-0500")
+@Generated(value="Dali", date="2013-09-29T14:26:47.188-0500")
 @StaticMetamodel(User.class)
 public class User_ {
 	public static volatile SingularAttribute<User, Long> id;
@@ -14,5 +15,5 @@ public class User_ {
 	public static volatile SingularAttribute<User, String> name;
 	public static volatile SingularAttribute<User, String> lastname;
 	public static volatile SingularAttribute<User, Boolean> loggedIn;
-	public static volatile SingularAttribute<User, Application> application;
+	public static volatile ListAttribute<User, Application> applications;
 }
