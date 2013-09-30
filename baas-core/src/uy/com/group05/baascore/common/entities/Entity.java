@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @javax.persistence.Entity
 @Table(name = "ENTITIES")
 public class Entity implements Serializable {
@@ -29,6 +31,7 @@ public class Entity implements Serializable {
 	private Application application;
 	
 	@OneToMany(mappedBy = "entity")
+	@JsonIgnore
 	private List<Permission> permission = new ArrayList<Permission>();
 
 	public long getId() {

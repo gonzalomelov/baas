@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity
 @Table(name = "CLIENTS")
 public class Client implements Serializable {
@@ -43,6 +45,7 @@ public class Client implements Serializable {
 	private Application application;
 	
 	@OneToMany
+	@JsonIgnore
 	private List<Role> roles = new ArrayList<Role>();
 
 	public long getId() {

@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @javax.persistence.Entity
 @Table(name = "ROLES")
 @XmlRootElement
@@ -31,6 +33,7 @@ public class Role implements Serializable {
 	private Application application;
 	
 	@OneToMany(mappedBy = "role")
+	@JsonIgnore
 	private List<Permission> permissions = new ArrayList<Permission>();
 
 	public long getId() {

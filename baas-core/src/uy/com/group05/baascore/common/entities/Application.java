@@ -41,12 +41,15 @@ public class Application implements Serializable {
 	private List<User> users = new ArrayList<User>();
 	
 	@OneToMany(mappedBy = "application")
+	@JsonIgnore
 	private List<Client> clients = new ArrayList<Client>();
 	
 	@OneToMany(mappedBy = "application")
+	@JsonIgnore
 	private List<Role> roles = new ArrayList<Role>();
 	
 	@OneToMany(mappedBy = "application")
+	@JsonIgnore
 	private List<uy.com.group05.baascore.common.entities.Entity> entities
 		= new ArrayList<uy.com.group05.baascore.common.entities.Entity>();
 
