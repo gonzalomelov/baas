@@ -4,6 +4,7 @@ import java.util.List;
 
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.common.exceptions.EmailAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UsernameAlreadyRegisteredException;
 
 public interface UserServicesFacade {
@@ -14,12 +15,20 @@ public interface UserServicesFacade {
 			UsernameAlreadyRegisteredException,
 			EmailAlreadyRegisteredException;
 	
-	boolean isUserLoggedIn(String username);
+	boolean isUserLoggedIn(String username)
+		throws
+			UserNotRegisteredException;
 	
-	boolean validateUser(String username, String password);
+	boolean validateUser(String username, String password)
+		throws
+			UserNotRegisteredException;
 	
-	User loginUser(String username, String password);
+	User loginUser(String username, String password)
+		throws
+			UserNotRegisteredException;
 	
-	boolean logoutUser(String username);
+	boolean logoutUser(String username)
+		throws
+			UserNotRegisteredException;
 	
 }

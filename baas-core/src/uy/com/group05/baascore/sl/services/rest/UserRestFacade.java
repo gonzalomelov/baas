@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.common.exceptions.EmailAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UsernameAlreadyRegisteredException;
 import uy.com.group05.baascore.sl.services.UserServicesFacade;
 
@@ -38,7 +39,9 @@ public interface UserRestFacade extends UserServicesFacade {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Override
 	public boolean isUserLoggedIn(
-			@FormParam("username") String username);
+			@FormParam("username") String username)
+				throws
+					UserNotRegisteredException;
 	
 	@Path("/validate")
 	@POST
@@ -46,7 +49,9 @@ public interface UserRestFacade extends UserServicesFacade {
 	@Override
 	public boolean validateUser(
 			@FormParam("username") String username,
-			@FormParam("password") String password);
+			@FormParam("password") String password)
+				throws
+					UserNotRegisteredException;
 	
 	@Path("/login")
 	@POST
@@ -54,13 +59,17 @@ public interface UserRestFacade extends UserServicesFacade {
 	@Override
 	public User loginUser(
 			@FormParam("username") String username,
-			@FormParam("password") String password);
+			@FormParam("password") String password)
+				throws
+					UserNotRegisteredException;
 	
 	@Path("/logout")
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Override
 	public boolean logoutUser(
-			@FormParam("username") String username);
+			@FormParam("username") String username)
+				throws
+					UserNotRegisteredException;
 	
 }

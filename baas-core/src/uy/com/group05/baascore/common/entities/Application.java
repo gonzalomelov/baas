@@ -1,5 +1,6 @@
 package uy.com.group05.baascore.common.entities;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +17,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @javax.persistence.Entity
 @Table(name = "APPLICATIONS")
 @XmlRootElement
-public class Application {
+public class Application implements Serializable {
+	/**
+	 * UUID
+	 */
+	private static final long serialVersionUID = 2980255055092527630L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

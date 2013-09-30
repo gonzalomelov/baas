@@ -6,6 +6,7 @@ import javax.ejb.Local;
 
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.common.exceptions.EmailAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UsernameAlreadyRegisteredException;
 
 @Local
@@ -17,8 +18,19 @@ public interface UserManagementLocal {
 			UsernameAlreadyRegisteredException,
 			EmailAlreadyRegisteredException;
 	
-	boolean isUserLoggedIn(String username);
-	boolean validateUser(String username, String password);
-	User loginUser(String username, String password);
-	boolean logoutUser(String username);
+	boolean isUserLoggedIn(String username)
+		throws
+			UserNotRegisteredException;
+	
+	boolean validateUser(String username, String password)
+		throws
+			UserNotRegisteredException;
+	
+	User loginUser(String username, String password)
+		throws
+			UserNotRegisteredException;;
+	
+	boolean logoutUser(String username)
+		throws
+			UserNotRegisteredException;
 }

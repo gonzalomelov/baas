@@ -1,5 +1,6 @@
 package uy.com.group05.baascore.common.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -13,7 +14,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CLIENTS")
-public class Client {
+public class Client implements Serializable {
+	/**
+	 * UUID
+	 */
+	private static final long serialVersionUID = -5045442451968446378L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
