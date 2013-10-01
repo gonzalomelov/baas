@@ -1,7 +1,5 @@
 package uy.com.group05.baascore.common.entities;
 
-import java.io.Serializable;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,11 +8,7 @@ import javax.persistence.Table;
 
 @javax.persistence.Entity
 @Table(name = "PERMISSIONS")
-public class Permission implements Serializable {
-	/**
-	 * UUID
-	 */
-	private static final long serialVersionUID = 540514940225101290L;
+public class Permission {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

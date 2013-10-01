@@ -7,7 +7,8 @@ import javax.inject.Inject;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import uy.com.group05.baascore.bll.ejbs.interfaces.IPermissionManagement;
 import uy.com.group05.baascore.common.entities.Role;
-import uy.com.group05.baascore.dal.dao.*;
+import uy.com.group05.baascore.dal.dao.PermissionDao;
+import uy.com.group05.baascore.dal.dao.RoleDao;
 
 
 public class PermissionManagement implements IPermissionManagement {

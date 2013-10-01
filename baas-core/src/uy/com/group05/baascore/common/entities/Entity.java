@@ -1,6 +1,5 @@
 package uy.com.group05.baascore.common.entities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +14,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 @javax.persistence.Entity
 @Table(name = "ENTITIES")
-public class Entity implements Serializable {
-	/**
-	 * UUID
-	 */
-	private static final long serialVersionUID = -9116100722219292553L;
+public class Entity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

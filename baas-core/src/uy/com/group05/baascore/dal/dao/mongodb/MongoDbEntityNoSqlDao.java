@@ -3,6 +3,10 @@ package uy.com.group05.baascore.dal.dao.mongodb;
 import java.util.ArrayList;
 import java.util.List;
 
+import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
+import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
+import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
+
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -10,10 +14,6 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.util.JSON;
 import com.mongodb.util.JSONParseException;
-
-import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
-import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
-import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
 
 public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 

@@ -1,6 +1,5 @@
 package uy.com.group05.baascore.common.entities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +16,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
 @Table(name = "CLIENTS")
-public class Client implements Serializable {
-	/**
-	 * UUID
-	 */
-	private static final long serialVersionUID = -5045442451968446378L;
+public class Client {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

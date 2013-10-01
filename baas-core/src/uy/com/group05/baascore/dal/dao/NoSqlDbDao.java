@@ -2,10 +2,10 @@ package uy.com.group05.baascore.dal.dao;
 
 import java.util.List;
 
-import com.mongodb.util.JSONParseException;
-
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
+
+import com.mongodb.util.JSONParseException;
 
 public interface NoSqlDbDao {
 	

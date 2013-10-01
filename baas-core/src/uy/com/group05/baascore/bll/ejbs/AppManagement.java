@@ -1,6 +1,5 @@
 package uy.com.group05.baascore.bll.ejbs;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,11 +11,9 @@ import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.entities.User;
-import uy.com.group05.baascore.common.exceptions.EmailAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
-import uy.com.group05.baascore.common.exceptions.UsernameAlreadyRegisteredException;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
 import uy.com.group05.baascore.dal.dao.EntityDao;
 import uy.com.group05.baascore.dal.dao.NoSqlDbDao;

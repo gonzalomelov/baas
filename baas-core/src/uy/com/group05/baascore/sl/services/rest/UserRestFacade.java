@@ -14,6 +14,7 @@ import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.common.exceptions.EmailAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UsernameAlreadyRegisteredException;
+import uy.com.group05.baascore.sl.entitiesws.UserDTO;
 import uy.com.group05.baascore.sl.services.UserServicesFacade;
 
 @Path("/users")
@@ -22,7 +23,7 @@ public interface UserRestFacade extends UserServicesFacade {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Override
-	public List<User> getUsers(); 
+	public List<UserDTO> getUsers(); 
 	
 	@Path("/register")
 	@POST

@@ -3,7 +3,6 @@ package uy.com.group05.baascore.sl.services.rest;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -11,10 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import uy.com.group05.baascore.common.entities.Application;
-import uy.com.group05.baascore.dal.dao.GenericDao;
 import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
-import uy.com.group05.baascore.dal.dao.jpa.JpaGenericDao;
 
 
 @Path("/APIRest")

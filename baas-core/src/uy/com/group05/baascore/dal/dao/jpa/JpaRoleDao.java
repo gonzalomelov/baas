@@ -26,4 +26,19 @@ public class JpaRoleDao extends JpaGenericDao<Role> implements RoleDao {
 		
 		return applications.isEmpty() ? null : applications.get(0);
 	}
+	
+	public Role readByName(long appId, String name) {
+		TypedQuery<Role> query = em.createQuery("SELECT c FROM ROLES c WHERE c.application.id = :appId AND c.name = :name", Role.class);
+		query.setParameter("appId", appId);
+		query.setParameter("name", name);
+		
+		List<Role> roles = query.getResultList();
+		
+		return roles.isEmpty() ? null : roles.get(0);
+	}
+	
+	public List<Role> readAll(long appId) {
+		TypedQuery<Role> query = em.createQuery("SELECT c FROM ROLES c WHERE c.application.id = :appId", Role.class);
+		return query.getResultList();
+	}
 }

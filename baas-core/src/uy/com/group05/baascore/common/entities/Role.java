@@ -1,6 +1,5 @@
 package uy.com.group05.baascore.common.entities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +16,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @javax.persistence.Entity
 @Table(name = "ROLES")
 @XmlRootElement
-public class Role implements Serializable {
-	/**
-	 * UUID
-	 */
-	private static final long serialVersionUID = 8404205884715291800L;
+public class Role {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
