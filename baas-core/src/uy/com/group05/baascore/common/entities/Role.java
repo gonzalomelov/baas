@@ -36,6 +36,12 @@ public class Role implements Serializable {
 	@JsonIgnore
 	private List<Permission> permissions = new ArrayList<Permission>();
 
+	public Role(String name, Application app){
+		this.name = name;
+		this.application = app;
+		this.permissions = new ArrayList<Permission>();
+	}
+	
 	public long getId() {
 		return id;
 	}

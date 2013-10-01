@@ -34,6 +34,12 @@ public class Entity implements Serializable {
 	@JsonIgnore
 	private List<Permission> permission = new ArrayList<Permission>();
 
+	public Entity(String nombre, Application app){
+		this.name = nombre;
+		this.application = app;
+		this.permission = new ArrayList<Permission>();
+	}
+	
 	public long getId() {
 		return id;
 	}
