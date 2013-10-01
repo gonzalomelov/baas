@@ -7,6 +7,8 @@ import javax.jws.WebService;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
 import uy.com.group05.baascore.bll.ejbs.interfaces.UserManagementLocal;
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.common.exceptions.EmailAlreadyRegisteredException;
@@ -44,6 +46,9 @@ public class UserServicesImpl implements UserRestFacade, UserSoapFacade {
 		throws
 			UsernameAlreadyRegisteredException,
 			EmailAlreadyRegisteredException {
+		
+		MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+		
 		
 		return userManagementLocal.registerUser(user);
 	

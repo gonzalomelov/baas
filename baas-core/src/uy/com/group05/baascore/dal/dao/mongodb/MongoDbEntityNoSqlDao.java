@@ -9,13 +9,15 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.util.JSON;
+import com.mongodb.util.JSONParseException;
 
-import uy.com.group05.baascore.dal.dao.EntityNoSqlDao;
+import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
+import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
+import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
 
-public class MongoDbEntityNoSqlDao implements EntityNoSqlDao {
+public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 
 	private MongoClient mongo;
-	private DB mongoDb;
 	
 	public MongoDbEntityNoSqlDao() {
 		try {
@@ -27,20 +29,47 @@ public class MongoDbEntityNoSqlDao implements EntityNoSqlDao {
 	}
 
 	@Override
-	public void addEntity(String application, String entity, String jsonEntity) {
-		mongoDb = mongo.getDB(application);
+	public void createNoSqlDb(String dbName)
+			throws MongoDBAlreadyExistsException {
 		
+		List<String> databaseNames = mongo.getDatabaseNames();
+		
+		if (databaseNames.contains(dbName)) {
+			throw new MongoDBAlreadyExistsException("Ya existe una base MongoDB con dicho nombre");
+		}
+			
+		mongo.getDB(dbName);
+	}
+	
+	@Override
+	public void createEntityCollection(String dbName, String entity)
+			throws EntityCollectionAlreadyExistsException {
+		
+		DB mongoDb = mongo.getDB(dbName);
+		
+		if (mongoDb.collectionExists(entity)) {
+			throw new EntityCollectionAlreadyExistsException("Ya existe la colleción para la base especificada");
+		}
+		
+		mongoDb.getCollection(entity);
+	}
+	
+	@Override
+	public void addEntity(String application, String entity, String jsonEntity)
+			throws JSONParseException {
+		
+		DB mongoDb = mongo.getDB(application);
 		DBCollection dbCollection = mongoDb.getCollection(entity);
-		//DBObject dbObject = (DBObject) JSON.parse(jsonEntity.toString());
+		
 		DBObject dbObject = (DBObject) JSON.parse(jsonEntity);
-		dbCollection.insert(dbObject);
+		dbCollection.insert(dbObject);	
 	}
 
 	@Override
 	public List<String> getEntities(String application, String entity) {
-		mongoDb = mongo.getDB(application);
-		
+		DB mongoDb = mongo.getDB(application);
 		DBCollection dbCollection = mongoDb.getCollection(entity);
+		
 		DBCursor dbCursor = dbCollection.find();
 		
 		List<String> jsonEntities = new ArrayList<String>();
@@ -53,23 +82,5 @@ public class MongoDbEntityNoSqlDao implements EntityNoSqlDao {
 		
 		return jsonEntities;
 	}
-
-//	@Override
-//	public List<ObjectNode> getEntities(String entity, String filter) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public void updateEntity(String entity, ObjectNode jsonEntity) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	@Override
-//	public void removeEntity(String entity, ObjectNode jsonEntity) {
-//		// TODO Auto-generated method stub
-//		
-//	}
 
 }

@@ -13,13 +13,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 @javax.persistence.Entity
 @Table(name = "APPLICATIONS")
-@XmlRootElement
 public class Application implements Serializable {
 	/**
 	 * UUID
@@ -33,26 +29,32 @@ public class Application implements Serializable {
 	@Column(unique = true)
 	private String name;
 	
+	@Column(unique = true)
+	private String url;
+	
 	private UUID token;
 	
 	@JoinTable(name = "USERS_APPLICATIONS")
 	@ManyToMany
-	@JsonIgnore
 	private List<User> users = new ArrayList<User>();
 	
 	@OneToMany(mappedBy = "application")
-	@JsonIgnore
 	private List<Client> clients = new ArrayList<Client>();
 	
 	@OneToMany(mappedBy = "application")
-	@JsonIgnore
 	private List<Role> roles = new ArrayList<Role>();
 	
 	@OneToMany(mappedBy = "application")
-	@JsonIgnore
 	private List<uy.com.group05.baascore.common.entities.Entity> entities
 		= new ArrayList<uy.com.group05.baascore.common.entities.Entity>();
 
+	public Application() {}
+	
+	public Application(String name, User owner) {
+		this.name = name;
+		users.add(owner);
+	}
+	
 	public long getId() {
 		return id;
 	}

@@ -12,8 +12,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import uy.com.group05.baascore.common.entities.Application;
-import uy.com.group05.baascore.dal.dao.EntityNoSqlDao;
 import uy.com.group05.baascore.dal.dao.GenericDao;
+import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
 import uy.com.group05.baascore.dal.dao.jpa.JpaGenericDao;
 
 
@@ -21,7 +21,7 @@ import uy.com.group05.baascore.dal.dao.jpa.JpaGenericDao;
 public class APIRest {
 	
 	@Inject	
-	private EntityNoSqlDao _dalInstance;
+	private NoSqlDbDao _dalInstance;
 	
 	@GET	
 	@Produces("application/json")	

@@ -1,5 +1,6 @@
 package uy.com.group05.baascore.bll.ejbs;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,11 +13,13 @@ import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.common.exceptions.EmailAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UsernameAlreadyRegisteredException;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
 import uy.com.group05.baascore.dal.dao.EntityDao;
+import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
 import uy.com.group05.baascore.dal.dao.RoleDao;
 import uy.com.group05.baascore.dal.dao.UserDao;
 import uy.com.group05.baascore.sl.services.soap.ApplicationServices;
@@ -32,18 +35,26 @@ public class AppManagement implements AppManagementLocal, ApplicationServices{
 	RoleDao roleDao;
 	@Inject
 	EntityDao entityDao;
+	@Inject
+	NoSqlDbDao noSqlDbDao;
 	
-	public Application createApplication(String nombreApp, User owner) throws NombreAppAlreadyRegisteredException, UserNotRegisteredException {
+	public Application createApplication(String nombreApp, User owner)
+			throws
+				NombreAppAlreadyRegisteredException,
+				UserNotRegisteredException,
+				MongoDBAlreadyExistsException {
+		
 		if (appDao.readByName(nombreApp) != null){ //No existe la app
 			throw new NombreAppAlreadyRegisteredException("Ya existe una aplicacion con ese nombre");
 		}
 		if (userDao.readByUsername(owner.getUsername()) == null){ //Existe el usuario que la crea
 			throw new UserNotRegisteredException("No existe un usuario con ese nommbre");
 		}
-		//+++
-		//Crear base mongo para la app
-		//+++
+		
 		Application app = new Application(nombreApp, owner);
+		
+		noSqlDbDao.createNoSqlDb(nombreApp);
+		
 		return appDao.create(app);
 	}
 	

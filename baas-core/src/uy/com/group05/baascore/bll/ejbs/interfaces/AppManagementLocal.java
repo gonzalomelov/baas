@@ -6,13 +6,18 @@ import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.entities.User;
+import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 
 @Local
 public interface AppManagementLocal {
 
-	public Application createApplication(String nombreApp, User owner) throws NombreAppAlreadyRegisteredException, UserNotRegisteredException;
+	public Application createApplication(String nombreApp, User owner)
+			throws
+				NombreAppAlreadyRegisteredException,
+				UserNotRegisteredException,
+				MongoDBAlreadyExistsException;
 	
 	public Role createRole(String nombreApp, String nombreRole);
 	

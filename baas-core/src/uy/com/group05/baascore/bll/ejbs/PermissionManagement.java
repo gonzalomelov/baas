@@ -24,7 +24,7 @@ public class PermissionManagement implements IPermissionManagement {
 	@Override
 	public List<Role> getRoles(long appId) {
 		
-		return _roleDao.readAll();
+		return (List<Role>) _roleDao.readAll();
 		
 	}
 
