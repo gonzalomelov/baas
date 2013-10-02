@@ -9,7 +9,6 @@ import uy.com.group05.baascore.bll.ejbs.interfaces.UserManagementLocal;
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.common.exceptions.EmailAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
-import uy.com.group05.baascore.common.exceptions.UsernameAlreadyRegisteredException;
 import uy.com.group05.baascore.dal.dao.UserDao;
 
 @Stateless
@@ -26,12 +25,7 @@ public class UserManagement implements UserManagementLocal {
 	@Override
 	public User registerUser(User user)
 		throws
-			UsernameAlreadyRegisteredException,
 			EmailAlreadyRegisteredException {
-		
-		if (userDao.readByUsername(user.getUsername()) != null) {
-			throw new UsernameAlreadyRegisteredException("Username already registered");
-		}
 		
 		if (userDao.readByEmail(user.getEmail()) != null) {
 			throw new EmailAlreadyRegisteredException("Email already registered");
@@ -41,11 +35,11 @@ public class UserManagement implements UserManagementLocal {
 	}
 	
 	@Override
-	public boolean isUserLoggedIn(String username)
+	public boolean isUserLoggedIn(String email)
 		throws
 			UserNotRegisteredException {
 		
-		User user = userDao.readByUsername(username);
+		User user = userDao.readByEmail(email);
 		
 		if (user == null) {
 			throw new UserNotRegisteredException("Usuario no registrado");
@@ -55,11 +49,11 @@ public class UserManagement implements UserManagementLocal {
 	}
 	
 	@Override
-	public boolean validateUser(String username, String password)
+	public boolean validateUser(String email, String password)
 		throws
 			UserNotRegisteredException {
 		
-		User user = userDao.readByUsername(username);
+		User user = userDao.readByEmail(email);
 		
 		if (user == null) {
 			throw new UserNotRegisteredException("Usuario no registrado");
@@ -69,11 +63,11 @@ public class UserManagement implements UserManagementLocal {
 	}
 	
 	@Override
-	public User loginUser(String username, String password)
+	public User loginUser(String email, String password)
 		throws
 			UserNotRegisteredException {
 		
-		User user = userDao.readByUsername(username);
+		User user = userDao.readByEmail(email);
 		
 		if (user == null) {
 			throw new UserNotRegisteredException("Usuario no registrado");
@@ -90,11 +84,11 @@ public class UserManagement implements UserManagementLocal {
 	}
 	
 	@Override
-	public boolean logoutUser(String username)
+	public boolean logoutUser(String email)
 		throws
 			UserNotRegisteredException {
 		
-		User user = userDao.readByUsername(username);
+		User user = userDao.readByEmail(email);
 		
 		if (user == null) {
 			throw new UserNotRegisteredException("Usuario no registrado");

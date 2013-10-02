@@ -41,7 +41,7 @@ public class UserRegistrationBean {
 
 	public UserModel getUser() {
 		return user;
-	}
+	} 
 
 	public void setUser(UserModel user) {
 		this.user = user;

@@ -44,9 +44,6 @@ public class AppManagement implements AppManagementLocal, ApplicationServices{
 		if (appDao.readByName(nombreApp) != null){ //No existe la app
 			throw new NombreAppAlreadyRegisteredException("Ya existe una aplicacion con ese nombre");
 		}
-		if (userDao.readByUsername(owner.getUsername()) == null){ //Existe el usuario que la crea
-			throw new UserNotRegisteredException("No existe un usuario con ese nommbre");
-		}
 		
 		Application app = new Application(nombreApp, owner);
 		

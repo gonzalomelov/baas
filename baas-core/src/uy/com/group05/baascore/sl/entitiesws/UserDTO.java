@@ -15,7 +15,7 @@ public class UserDTO {
 
 	private boolean loggedIn;
 	
-	//private List<Application> applications = new ArrayList<Application>();
+	//private List<ApplicationDTO> applications = new ArrayList<ApplicationDTO>();
 
 	public long getId() {
 		return id;

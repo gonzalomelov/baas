@@ -1,23 +1,17 @@
 package uy.com.group05.baascore.sl.services.impl;
 
 import java.util.List;
-import java.util.UUID;
 
-import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.jws.WebService;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
 import uy.com.group05.baascore.bll.ejbs.interfaces.UserManagementLocal;
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.common.exceptions.EmailAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
-import uy.com.group05.baascore.common.exceptions.UsernameAlreadyRegisteredException;
+import uy.com.group05.baascore.common.mapper.Mapper;
 import uy.com.group05.baascore.sl.entitiesws.UserDTO;
-import uy.com.group05.baascore.sl.services.rest.UserRestFacade;
+import uy.com.group05.baascore.sl.entitiesws.UserRegisterDTO;
 import uy.com.group05.baascore.sl.services.soap.UserSoapFacade;
 
 @WebService(
@@ -25,59 +19,42 @@ import uy.com.group05.baascore.sl.services.soap.UserSoapFacade;
 	portName="UserServicesPort",
 	serviceName="UserServices"
 )
-public class UserServicesImpl implements UserRestFacade, UserSoapFacade {
+public class UserServicesImpl implements UserSoapFacade {
 
-	private UserManagementLocal userManagementLocal;
+	@EJB
+	Mapper mapper;
 	
-	@PostConstruct
-	public void init() {
-		try {
-            javax.naming.Context c = new InitialContext();
-            userManagementLocal = (UserManagementLocal) c.lookup("java:global/baas-core-ear/baas-core/UserManagement!uy.com.group05.baascore.bll.ejbs.interfaces.UserManagementLocal");
-        } catch (NamingException ne) {
-            throw new RuntimeException(ne);
-        }
-	}
+	@EJB
+	UserManagementLocal userManagementLocal;
 
 	@Override
 	public List<UserDTO> getUsers() {
-		
-		MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-		
-		mapperFactory.classMap(User.class, UserDTO.class)
-			//.exclude("password")
-			//.exclude("applications")
-			.byDefault()
-			.register();
-		
 		List<User> users = userManagementLocal.getUsers();
-		
-		MapperFacade mapper = mapperFactory.getMapperFacade();
-		
-		List<UserDTO> result = mapper.map(users, List.class);
-		
-		System.out.println("fin");
+
+		List<UserDTO> result = mapper.getMapper().mapAsList(users, UserDTO.class);
 		
 		return result;
 	};
 	
 	@Override
-	public User registerUser(User user)
+	public UserDTO registerUser(UserRegisterDTO userRegisterDTO)
 		throws
-			UsernameAlreadyRegisteredException,
 			EmailAlreadyRegisteredException {
 		
+		User user = mapper.getMapper().map(userRegisterDTO, User.class);
 		
-		return userManagementLocal.registerUser(user);
-	
+		user = userManagementLocal.registerUser(user);
+		
+		UserDTO userDTO = mapper.getMapper().map(user, UserDTO.class);
+		
+		return userDTO; 
 	}
 
-	@Override
-	public boolean isUserLoggedIn(String username)
+	public boolean isUserLoggedIn(String email)
 		throws
 			UserNotRegisteredException {
 		
-		return userManagementLocal.isUserLoggedIn(username);
+		return userManagementLocal.isUserLoggedIn(email);
 	}
 	
 	@Override
@@ -89,11 +66,15 @@ public class UserServicesImpl implements UserRestFacade, UserSoapFacade {
 	}
 
 	@Override
-	public User loginUser(String username, String password)
+	public UserDTO loginUser(String username, String password)
 		throws
 			UserNotRegisteredException {
 		
-		return userManagementLocal.loginUser(username, password);
+		User user = userManagementLocal.loginUser(username, password);
+		
+		UserDTO userDTO = mapper.getMapper().map(user, UserDTO.class);
+		
+		return userDTO;
 	}
 
 	@Override
