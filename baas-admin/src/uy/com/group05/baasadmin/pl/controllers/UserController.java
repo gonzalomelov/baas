@@ -12,12 +12,13 @@ public class UserController {
 	public boolean registerUser(UserModel userModel)
 		throws
 			EmailAlreadyRegisteredException,			
-			UnhandledRegistrationException {
+			UnhandledRegistrationException,
+			PasswordRepeatedException {
+		
+		if(!userModel.getPassword().equals(userModel.getRepeatedPassword()))
+			throw new PasswordRepeatedException("Los passwords no coinciden");
 		
 		try {
-			
-			if(!userModel.getPassword().equals(userModel.getRepeatedPassword()))
-				throw new PasswordRepeatedException("Los passwords no coinciden");
 			
 			UserServices service = new UserServices();
 			UserSoapFacade port = service.getUserServicesPort();

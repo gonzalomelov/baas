@@ -2,11 +2,13 @@ package uy.com.group05.baasadmin.pl.beans;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import uy.com.group05.baasadmin.common.exceptions.EmailAlreadyRegisteredException;
+import uy.com.group05.baasadmin.common.exceptions.PasswordRepeatedException;
 import uy.com.group05.baasadmin.common.exceptions.UnhandledRegistrationException;
 import uy.com.group05.baasadmin.common.exceptions.UsernameAlreadyRegisteredException;
 import uy.com.group05.baasadmin.pl.controllers.UserController;
@@ -16,6 +18,8 @@ import uy.com.group05.baasadmin.pl.models.UserModel;
 @RequestScoped
 public class UserRegistrationBean {
 	
+	@ManagedProperty(value="#{userSessionManagementBean}")
+	private UserSessionManagementBean userSessionManagementBean;
 	
 	private UIComponent email;
 	
@@ -49,6 +53,12 @@ public class UserRegistrationBean {
 		}
 		
 		catch (EmailAlreadyRegisteredException e) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(getEmail().getClientId(context), new FacesMessage(e.getMessage()));
+			
+			return "/pages/users/register";
+		}
+		catch (PasswordRepeatedException e) {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(getEmail().getClientId(context), new FacesMessage(e.getMessage()));
 			
