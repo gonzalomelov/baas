@@ -1,11 +1,11 @@
 package uy.com.group05.baasadmin.pl.models;
 
 public class UserModel {
-	private long id;
-	
-	private String username;
+
 	
 	private String password;
+	
+	private String repeatedPassword;
 
 	private String email;
 	
@@ -13,23 +13,7 @@ public class UserModel {
 	
 	private String lastname;
 
-	private boolean loggedIn;
-	
-	public long getId() {
-		return id;
-	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
 
 	public String getPassword() {
 		return password;
@@ -63,12 +47,14 @@ public class UserModel {
 		this.lastname = lastname;
 	}
 
-	public boolean isLoggedIn() {
-		return loggedIn;
+	public String getRepeatedPassword() {
+		return repeatedPassword;
 	}
 
-	public void setLoggedIn(boolean loggedIn) {
-		this.loggedIn = loggedIn;
+	public void setRepeatedPassword(String repeatedPassword) {
+		this.repeatedPassword = repeatedPassword;
 	}
+
+	
 }
 

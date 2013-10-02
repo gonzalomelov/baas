@@ -1,34 +1,33 @@
 package uy.com.group05.baasadmin.pl.controllers;
 
-import uy.com.group05.baasadmin.common.exceptions.EmailAlreadyRegisteredException;
-import uy.com.group05.baasadmin.common.exceptions.UnhandledRegistrationException;
-import uy.com.group05.baasadmin.common.exceptions.UsernameAlreadyRegisteredException;
+import uy.com.group05.baasadmin.common.exceptions.*;
 import uy.com.group05.baasadmin.pl.models.UserModel;
 import uy.com.group05.baascore.sl.services.impl.UserServices;
 import uy.com.group05.baascore.sl.services.soap.EmailAlreadyRegisteredException_Exception;
-import uy.com.group05.baascore.sl.services.soap.User;
+import uy.com.group05.baascore.sl.services.soap.UserRegisterDTO;
 import uy.com.group05.baascore.sl.services.soap.UserSoapFacade;
-import uy.com.group05.baascore.sl.services.soap.UsernameAlreadyRegisteredException_Exception;
 
 public class UserController {
 	
 	public boolean registerUser(UserModel userModel)
 		throws
-			EmailAlreadyRegisteredException,
-			UsernameAlreadyRegisteredException,
+			EmailAlreadyRegisteredException,			
 			UnhandledRegistrationException {
 		
 		try {
 			
+			if(!userModel.getPassword().equals(userModel.getRepeatedPassword()))
+				throw new PasswordRepeatedException("Los passwords no coinciden");
+			
 			UserServices service = new UserServices();
 			UserSoapFacade port = service.getUserServicesPort();
 			
-			User u = new User();
+			UserRegisterDTO u = new UserRegisterDTO();
 			u.setEmail(userModel.getEmail());
 			u.setLastname(userModel.getLastname());
 			u.setName(userModel.getName());
 			u.setPassword(userModel.getPassword());
-			u.setUsername(userModel.getUsername());
+			
 			
 			port.registerUser(u);
 		
@@ -36,10 +35,7 @@ public class UserController {
 		}
 		catch (EmailAlreadyRegisteredException_Exception e) {
 			throw new EmailAlreadyRegisteredException(e.getMessage());
-		}
-		catch (UsernameAlreadyRegisteredException_Exception e) {
-			throw new UsernameAlreadyRegisteredException(e.getMessage());
-		}
+		}		
 		catch (Exception e) {
 			throw new UnhandledRegistrationException("Registro no exitoso");
 		}

@@ -16,20 +16,13 @@ import uy.com.group05.baasadmin.pl.models.UserModel;
 @RequestScoped
 public class UserRegistrationBean {
 	
-	private UIComponent username;
+	
 	private UIComponent email;
 	
 	private UserModel user = new UserModel();
 
 	private UserController userController = new UserController();
 
-	public UIComponent getUsername() {
-		return username;
-	}
-
-	public void setUsername(UIComponent username) {
-		this.username = username;
-	}
 
 	public UIComponent getEmail() {
 		return email;
@@ -47,19 +40,14 @@ public class UserRegistrationBean {
 		this.user = user;
 	}
 
-	public String registerUser() {
+	public String registerUser()  {
 		
 		try {
 			userController.registerUser(user);
 			
 			return "/index";
 		}
-		catch (UsernameAlreadyRegisteredException e) {
-			FacesContext context = FacesContext.getCurrentInstance();
-			context.addMessage(getUsername().getClientId(context), new FacesMessage(e.getMessage()));
-			
-			return "/pages/users/register";
-		}
+		
 		catch (EmailAlreadyRegisteredException e) {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(getEmail().getClientId(context), new FacesMessage(e.getMessage()));

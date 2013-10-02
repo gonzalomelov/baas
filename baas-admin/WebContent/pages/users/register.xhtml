@@ -1,93 +1,98 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html"
-    template="/templates/default.xhtml">
-    
-    
-    <ui:define name="content">
-    
-    	<div class="container">
-	      <h:form class="form-horizontal" method="post">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
 
-			<fieldset>
-			
-				<!-- Form Name -->
-				<legend>User Registration</legend>
-			
-				<h:messages style="color:red;" rendered="#{not facesContext.validationFailed and not empty facesContext.messageList}" />
-				
-				<!-- Text input-->
-				<div class="control-group">
-				  <label class="control-label" for="username">Username</label>
-				  <div class="controls">
-				    <h:inputText id="username" name="username" binding="#{userRegistrationBean.username}" type="text" placeholder="Username" class="input-xlarge" value="#{userRegistrationBean.user.username}" />
-				    <h:message for="username" style="color: red;" />
-				  </div>
-				</div>
-				
-				<!-- Password input-->
-				<div class="control-group">
-				  <label class="control-label" for="password">Password</label>
-				  <div class="controls">
-				    <h:inputSecret id="password" name="password" type="password" placeholder="Password" class="input-xlarge" value="#{userRegistrationBean.user.password}" />
-				    <h:message for="password" style="color: red;" />
-				  </div>
-				</div>
-				
-				<!-- Text input-->
-				<div class="control-group">
-				  <label class="control-label" for="email">Email</label>
-				  <div class="controls">
-				    <h:inputText id="email" name="email" binding="#{userRegistrationBean.email}" type="text" placeholder="Email" class="input-xlarge" value="#{userRegistrationBean.user.email}" />
-				    <h:message for="email" style="color: red;" />
-				  </div>
-				</div>
-				
-				<!-- Text input-->
-				<div class="control-group">
-				  <label class="control-label" for="name">Name</label>
-				  <div class="controls">
-				    <h:inputText id="name" name="name" type="text" placeholder="Name" class="input-xlarge" value="#{userRegistrationBean.user.name}" />
-				    <h:message for="name" style="color: red;" />
-				  </div>
-				</div>
-				
-				<!-- Text input-->
-				<div class="control-group">
-				  <label class="control-label" for="lastname">Lastname</label>
-				  <div class="controls">
-				  	<h:inputText id="lastname" name="lastname" type="text" placeholder="Lastname" class="input-xlarge" value="#{userRegistrationBean.user.lastname}" />
-				    <h:message for="lastname" style="color: red;" />
-				  </div>
-				</div>
-				
-				<!-- Button (Double) -->
-				<div class="control-group">
-				  <label class="control-label" for="register">Register</label>
-				  <div class="controls">
-				  	<h:commandButton type="submit" id="register" name="register" class="btn btn-success" action="#{userRegistrationBean.registerUser()}" value="Register" />
-				    <h:commandButton id="cancel" name="cancel" class="btn btn-danger" action="#{userRegistrationBean.cancel()}" value="Cancel" />
-				  </div>
-				</div>
-			
-			</fieldset>
-		  </h:form>
-	 
-	      <hr />
-	
-	      <footer>
-	        <p>© Company 2013</p>
-	      </footer>
-	    </div> <!-- /container -->
-    
-    </ui:define>
-    
-    <ui:define name="aside">
-    </ui:define>
-    
-    <ui:define name="footer">
-    </ui:define>
-    
-</ui:composition>
+<h:head>
+	<link id="bs-css" href="../../css/bootstrap-slate.css" rel="stylesheet"/>
+	<style type="text/css">
+	  body {
+		padding-bottom: 40px;
+	  }
+	  .sidebar-nav {
+		padding: 9px 0;
+	  }
+	</style>
+	<link href="../../css/bootstrap-responsive.css" rel="stylesheet"/>
+	<link href="../../css/charisma-app.css" rel="stylesheet"/>
+	<link href="../../css/jquery-ui-1.8.21.custom.css" rel="stylesheet"/>
+	<link href='../../css/fullcalendar.css' rel='stylesheet'/>
+	<link href='../../css/fullcalendar.print.css' rel='stylesheet'  media='print'/>
+	<link href='../../css/chosen.css' rel='stylesheet'/>
+	<link href='../../css/uniform.default.css' rel='stylesheet'/>
+	<link href='../../css/colorbox.css' rel='stylesheet'/>
+	<link href='../../css/jquery.cleditor.css' rel='stylesheet'/>
+	<link href='../../css/jquery.noty.css' rel='stylesheet'/>
+	<link href='../../css/noty_theme_default.css' rel='stylesheet'/>
+	<link href='../../css/elfinder.min.css' rel='stylesheet'/>
+	<link href='../../css/elfinder.theme.css' rel='stylesheet'/>
+	<link href='../../css/jquery.iphone.toggle.css' rel='stylesheet'/>
+	<link href='../../css/opa-icons.css' rel='stylesheet'/>
+	<link href='../../css/uploadify.css' rel='stylesheet'/>
+
+</h:head> 
+<body> 
+	<div class="row-fluid">
+		<div class="well span5 center login-box">
+			<div class="alert alert-info">
+				Registrar usuario
+			</div>
+			<h:form class="form-horizontal">					
+				<fieldset>
+				<!-- 
+					<h:panelGroup rendered="#{Register.errorVisible}" >  
+    					<div class="alert alert-error">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<strong>Error</strong> <h:outputLabel value="#{Register.error}" />
+						</div>  
+						</h:panelGroup>  
+				 -->
+					 		 <div class="input-prepend" title="Nombre" data-rel="tooltip">
+								<span class="add-on"><i class="icon-user"></i></span>
+								<h:inputText class="input-large span10" value="#{userRegistrationBean.user.name}" id="name"  />
+							</div>
+							<div class="clearfix"></div>
+							
+							<div class="input-prepend" title="Appellido" data-rel="tooltip">
+								<span class="add-on"><i class="icon-user"></i></span>
+								<h:inputText class="input-large span10" value="#{userRegistrationBean.user.lastname}" id="lastname"  />
+							</div>
+							<div class="clearfix"></div>
+							
+							 <div class="input-prepend" title="Email" data-rel="tooltip">
+								<span class="add-on"><i class="icon-user"></i></span>
+								<h:inputText class="input-large span10" value="#{userRegistrationBean.user.email}" id="email"  />
+							</div>
+							<div class="clearfix"></div>
+
+							<div class="input-prepend" title="Password" data-rel="tooltip">
+								<span class="add-on"><i class="icon-lock"></i></span>
+								<h:inputSecret value="#{userRegistrationBean.user.password}" id="password" class="input-large span10"/>
+								
+							</div>
+							<div class="clearfix"></div>
+							
+							<div class="input-prepend" title="Repeat password" data-rel="tooltip">
+								<span class="add-on"><i class="icon-lock"></i></span>
+								<h:inputSecret value="#{userRegistrationBean.user.repeatedPassword}" id="reppassword" class="input-large span10"/>
+								
+							</div>
+							<div class="clearfix"></div>
+
+							
+							<div class="clearfix"></div>
+
+							<p class="center span5">
+							<h:commandButton action="#{userRegistrationBean.registerUser}" value="Register" class="btn btn-primary"/>
+							
+							</p>
+						</fieldset>
+					</h:form>
+
+
+						
+				</div><!--/span-->
+			</div><!--/row-->
+</body> 
+</html>

@@ -49,34 +49,34 @@ public class UserLoginBean {
 	
 	//Functions
 
-	public String login() {
-		UserModel userModel = userController.loginUser(user.getUsername(), user.getPassword());
-		
-		if (userModel == null) {
-			FacesContext context = FacesContext.getCurrentInstance();
-			context.addMessage(username.getClientId(context), new FacesMessage("Login inválido"));
-			return "/index";
-		}
-		
-		user.setEmail(userModel.getEmail());
-		user.setLastname(userModel.getLastname());
-		user.setName(userModel.getName());
-		user.setUsername(userModel.getUsername());
-		
-		userSessionManagementBean.setUser(user);	
-		
-		return "/index";
-	}
+//	public String login() {
+//		UserModel userModel = userController.loginUser(user.getUsername(), user.getPassword());
+//		
+//		if (userModel == null) {
+//			FacesContext context = FacesContext.getCurrentInstance();
+//			context.addMessage(username.getClientId(context), new FacesMessage("Login inválido"));
+//			return "/index";
+//		}
+//		
+//		user.setEmail(userModel.getEmail());
+//		user.setLastname(userModel.getLastname());
+//		user.setName(userModel.getName());
+//		user.setUsername(userModel.getUsername());
+//		
+//		userSessionManagementBean.setUser(user);	
+//		
+//		return "/index";
+//	}
 	
-	public String logout() {
-		boolean logoutOk = userController.logoutUser(userSessionManagementBean.getUser().getUsername());
-		
-		if (!logoutOk) {
-			return "/profile";
-		}
-		
-		userSessionManagementBean.setUser(null);
-		
-		return "/index";
-	}
+//	public String logout() {
+//		boolean logoutOk = userController.logoutUser(userSessionManagementBean.getUser().getUsername());
+//		
+//		if (!logoutOk) {
+//			return "/profile";
+//		}
+//		
+//		userSessionManagementBean.setUser(null);
+//		
+//		return "/index";
+//	}
 }
