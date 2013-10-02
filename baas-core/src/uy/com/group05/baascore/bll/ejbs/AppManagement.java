@@ -1,5 +1,6 @@
 package uy.com.group05.baascore.bll.ejbs;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,10 +20,9 @@ import uy.com.group05.baascore.dal.dao.EntityDao;
 import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
 import uy.com.group05.baascore.dal.dao.RoleDao;
 import uy.com.group05.baascore.dal.dao.UserDao;
-import uy.com.group05.baascore.sl.services.soap.ApplicationServices;
 
 @Stateless
-public class AppManagement implements AppManagementLocal, ApplicationServices{
+public class AppManagement implements AppManagementLocal{
 
 	@Inject
 	ApplicationDao appDao;
@@ -45,7 +45,7 @@ public class AppManagement implements AppManagementLocal, ApplicationServices{
 			throw new NombreAppAlreadyRegisteredException("Ya existe una aplicacion con ese nombre");
 		}
 		
-		Application app = new Application(nombreApp, owner);
+		Application app = new Application(nombreApp, owner, new ArrayList<Role>(), new ArrayList<Entity>());
 		
 		noSqlDbDao.createNoSqlDb(nombreApp);
 		
@@ -96,4 +96,52 @@ public class AppManagement implements AppManagementLocal, ApplicationServices{
 		return entityDao.create(entity);
 	}
 	
+	public List<Application> listApplications(long idUser) throws UserNotRegisteredException{
+		User user = userDao.read(idUser);
+		if(user == null)//no existe usuario
+			throw new UserNotRegisteredException("No existe el usuario con id:"+idUser);
+		//Obtenego la lista de apps del usuario
+		return user.getApplications(); 
+	}
+	
+	public long createApplication(long idUser, String nombreApp, List<String> rolesStr, List<String> entidadesStr)
+			throws
+				NombreAppAlreadyRegisteredException,
+				UserNotRegisteredException,
+				MongoDBAlreadyExistsException{
+		//Obtengo el usuario
+		User user = userDao.read(idUser);
+		//Hago los controles
+		if(user == null) //no existe usuario
+			throw new UserNotRegisteredException("No existe el usuario con id:"+idUser);
+		if (appDao.readByName(nombreApp) != null)//No existe la app
+			throw new NombreAppAlreadyRegisteredException("Ya existe una aplicacion con ese nombre");
+
+		//Creo la App
+		Application app = new Application(nombreApp, user);
+		
+		List<Role> roles = new ArrayList<Role>();
+		List<Entity> entidades = new ArrayList<Entity>();
+		//Creo los roles
+		Iterator<String> iter = rolesStr.iterator();
+		while (iter.hasNext()){
+			Role r = new Role(iter.next(), app);
+			roles.add(r);
+		}
+		iter = entidadesStr.iterator();
+		while (iter.hasNext()){
+			Entity e = new Entity(iter.next(), app);
+			entidades.add(e);
+		}
+		//Seteo Roles y Entidades a App
+		app.setRoles(roles);
+		app.setEntities(entidades);
+		appDao.create(app);
+		noSqlDbDao.createNoSqlDb(nombreApp);
+		return app.getId();
+	}
+
+	public boolean existsApplication(String nombre){
+		return (appDao.readByName(nombre) != null);
+	}
 }

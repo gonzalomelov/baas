@@ -45,9 +45,18 @@ public class Application {
 
 	public Application() {}
 	
-	public Application(String name, User owner) {
-		this.name = name;
+	public Application(String nombreApp, User owner) {
+		this.name = nombreApp;
 		users.add(owner);
+	}
+	
+	public Application(String name, User owner, List<Role> roles, List<Entity> entidades) {
+		this.name = name;
+		//this.users = new ArrayList<User>();
+		users.add(owner);
+		this.roles = roles;
+		this.entities = entidades;
+		//this.clients = new ArrayList<Client>();
 	}
 	
 	public long getId() {

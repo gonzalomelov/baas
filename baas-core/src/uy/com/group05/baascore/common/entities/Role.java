@@ -36,7 +36,6 @@ public class Role {
 	public Role(String name, Application app){
 		this.name = name;
 		this.application = app;
-		this.permissions = new ArrayList<Permission>();
 	}
 	
 	public long getId() {

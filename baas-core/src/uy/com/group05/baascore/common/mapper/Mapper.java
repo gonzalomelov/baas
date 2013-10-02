@@ -3,7 +3,9 @@ package uy.com.group05.baascore.common.mapper;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 
+import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.User;
+import uy.com.group05.baascore.sl.entitiesws.ApplicationDTO;
 import uy.com.group05.baascore.sl.entitiesws.UserDTO;
 import uy.com.group05.baascore.sl.entitiesws.UserRegisterDTO;
 import ma.glasnost.orika.MapperFacade;
@@ -36,10 +38,10 @@ public class Mapper {
 			.register();
 		
 		//Application <> ApplicationDTO
-		/*mapperFactory.classMap(Application.class, ApplicationDTO.class)
+		mapperFactory.classMap(Application.class, ApplicationDTO.class)
 		.byDefault()
 		.register();
-		*/
+		
 		
 		/* Fin Mappings */
 		

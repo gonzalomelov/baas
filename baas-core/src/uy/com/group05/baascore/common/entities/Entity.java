@@ -34,7 +34,6 @@ public class Entity {
 	public Entity(String nombre, Application app){
 		this.name = nombre;
 		this.application = app;
-		this.permission = new ArrayList<Permission>();
 	}
 	
 	public long getId() {
