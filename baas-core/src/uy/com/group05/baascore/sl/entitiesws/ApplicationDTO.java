@@ -3,7 +3,11 @@ package uy.com.group05.baascore.sl.entitiesws;
 import java.io.Serializable;
 import java.util.UUID;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class ApplicationDTO implements Serializable {
+	
 	/**
 	 * UUID
 	 */

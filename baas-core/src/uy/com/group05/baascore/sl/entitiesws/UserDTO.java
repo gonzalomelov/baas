@@ -1,7 +1,16 @@
 package uy.com.group05.baascore.sl.entitiesws;
 
+import java.io.Serializable;
 
-public class UserDTO {
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class UserDTO implements Serializable {
+
+	/**
+	 * UUID
+	 */
+	private static final long serialVersionUID = -6262586479059120338L;
 
 	private long id;
 	

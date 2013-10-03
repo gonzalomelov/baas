@@ -1,9 +1,9 @@
 package uy.com.group05.baascore.sl.services.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.jws.WebService;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
@@ -14,6 +14,11 @@ import uy.com.group05.baascore.common.mapper.Mapper;
 import uy.com.group05.baascore.sl.entitiesws.ApplicationDTO;
 import uy.com.group05.baascore.sl.services.soap.ApplicationServices;
 
+@WebService(
+	endpointInterface="uy.com.group05.baascore.sl.services.soap.ApplicationServices",
+	portName="ApplicationServicesPort",
+	serviceName="ApplicationServices"
+)
 public class ApplicationServicesImpl implements ApplicationServices{
 
 	@Inject
@@ -25,9 +30,12 @@ public class ApplicationServicesImpl implements ApplicationServices{
 	public List<ApplicationDTO> listApplications(long idUser) 
 			throws 
 				UserNotRegisteredException{
+		
 		List<Application> listApps = appManagementLocal.listApplications(idUser);
-		//mapper.
-		return new ArrayList<ApplicationDTO>();
+		
+		List<ApplicationDTO> response = mapper.getMapper().mapAsList(listApps, ApplicationDTO.class);
+		
+		return response;
 	}
 
 

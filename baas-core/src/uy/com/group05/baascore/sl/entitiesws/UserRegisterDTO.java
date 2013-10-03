@@ -1,6 +1,16 @@
 package uy.com.group05.baascore.sl.entitiesws;
 
-public class UserRegisterDTO {
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class UserRegisterDTO implements Serializable {
+	/**
+	 * UUID
+	 */
+	private static final long serialVersionUID = -4953798539279052112L;
+
 	private String email;
 	
 	private String password;

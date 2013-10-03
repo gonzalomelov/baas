@@ -21,9 +21,22 @@ public class JpaApplicationDao extends JpaGenericDao<Application> implements App
 		cq.where(cb.equal(r.get(Application_.name), name));
 		
 		TypedQuery<Application> typedQuery = em.createQuery(cq);
-		
+		 
 		List<Application> applications = typedQuery.getResultList();
 		
 		return applications.isEmpty() ? null : applications.get(0);
+	}
+	
+	public List<Application> readFromUser(long userId) {
+		TypedQuery<Application> query =
+				em.createQuery("select distinct a"
+						+ "from Application a inner join a.users b"
+						+ "where b.id = :userId", Application.class);
+		
+		query.setParameter("userId", userId);
+		
+		List<Application> applications = query.getResultList();
+		
+		return applications;
 	}
 }
