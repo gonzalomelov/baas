@@ -12,13 +12,17 @@ public class UserController {
 	public boolean registerUser(UserModel userModel)
 		throws
 			EmailAlreadyRegisteredException,			
-			UnhandledRegistrationException,
-			PasswordRepeatedException {
+			UnhandledRegistrationException, PasswordRepeatedException {
 		
-		if(!userModel.getPassword().equals(userModel.getRepeatedPassword()))
-			throw new PasswordRepeatedException("Los passwords no coinciden");
+		
 		
 		try {
+			
+			if(!userModel.getPassword().equals(userModel.getRepeatedPassword()))
+				throw new PasswordRepeatedException("Los passwords no coinciden");
+			
+			if(userModel.getPassword() == null)
+				throw new PasswordRepeatedException("El password no puede ser vacio.");
 			
 			UserServices service = new UserServices();
 			UserSoapFacade port = service.getUserServicesPort();
@@ -36,7 +40,10 @@ public class UserController {
 		}
 		catch (EmailAlreadyRegisteredException_Exception e) {
 			throw new EmailAlreadyRegisteredException(e.getMessage());
-		}		
+		}	
+		catch (PasswordRepeatedException e) {
+			throw new EmailAlreadyRegisteredException(e.getMessage());
+		}
 		catch (Exception e) {
 			throw new UnhandledRegistrationException("Registro no exitoso");
 		}

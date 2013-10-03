@@ -5,7 +5,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"> 
 
 <h:head>
-	<link id="bs-css" href="../../css/bootstrap-slate.css" rel="stylesheet"/>
+	<link id="bs-css" href="../../css/bootstrap-cerulean.css" rel="stylesheet"/>
 	<style type="text/css">
 	  body {
 		padding-bottom: 40px;
@@ -13,6 +13,23 @@
 	  .sidebar-nav {
 		padding: 9px 0;
 	  }
+	  
+	  .container-fluid{
+	  	margin-top: 4% !important;
+	  }
+	  
+	  .navbar .nav > li > a {
+    		border-left: none !important;
+    		border-right: none !important;
+		}
+		
+	
+		.navbar .nav .active > a, .navbar .nav .active > a:hover {
+		    background-color: #3588ba;
+		    color: #FFFFFF;
+		    text-decoration: none;
+		}
+	  
 	</style>
 	<link href="../../css/bootstrap-responsive.css" rel="stylesheet"/>
 	<link href="../../css/charisma-app.css" rel="stylesheet"/>
@@ -30,24 +47,64 @@
 	<link href='../../css/jquery.iphone.toggle.css' rel='stylesheet'/>
 	<link href='../../css/opa-icons.css' rel='stylesheet'/>
 	<link href='../../css/uploadify.css' rel='stylesheet'/>
+	
+	
 
 </h:head> 
 <body> 
-	<div class="row-fluid">
+<!-- TOP MENU NAVIGATION -->
+<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+	
+			<a class="brand pull-left" href="#">
+			Baas
+			</a>
+	
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</a>
+		
+			<div class="nav-collapse collapse">
+				<ul id="nav-list" class="nav pull-right">
+					<li><a href="#home">Home</a></li>
+					<li><a href="#about">About</a></li>					
+					<li><a href="#contact">Contact</a></li>
+					<li class="notNavegate active"><h:link value="Register" outcome="/pages/users/register" /></li>
+						
+				</ul>
+			</div>
+		
+		</div>
+	</div>
+</div>
+
+<div class="container-fluid">
+		
+		
+			<div class="row-fluid">
+				<div class="span12 center login-header">
+					<h2>Register</h2>
+				</div><!--/span-->
+			</div><!--/row-->
+			
+				<div class="row-fluid">
 		<div class="well span5 center login-box">
 			<div class="alert alert-info">
 				Registrar usuario
 			</div>
 			<h:form class="form-horizontal">					
 				<fieldset>
-				<!-- 
-					<h:panelGroup rendered="#{Register.errorVisible}" >  
+				 
+					<h:panelGroup rendered="#{userRegistrationBean.errorVisible}" >  
     					<div class="alert alert-error">
 							<button type="button" class="close" data-dismiss="alert">×</button>
-							<strong>Error</strong> <h:outputLabel value="#{Register.error}" />
+							<strong>Error</strong> <h:outputLabel value="#{userRegistrationBean.error}" />
 						</div>  
 						</h:panelGroup>  
-				 -->
+				 
 					 		 <div class="input-prepend" title="Nombre" data-rel="tooltip">
 								<span class="add-on"><i class="icon-user"></i></span>
 								<h:inputText class="input-large span10" value="#{userRegistrationBean.user.name}" id="name"  />
@@ -94,5 +151,12 @@
 						
 				</div><!--/span-->
 			</div><!--/row-->
+			
+			
+			
+		
+	</div>
+
+
 </body> 
 </html>

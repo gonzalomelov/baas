@@ -8,7 +8,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import uy.com.group05.baasadmin.common.exceptions.EmailAlreadyRegisteredException;
-import uy.com.group05.baasadmin.common.exceptions.PasswordRepeatedException;
 import uy.com.group05.baasadmin.common.exceptions.UnhandledRegistrationException;
 import uy.com.group05.baasadmin.common.exceptions.UsernameAlreadyRegisteredException;
 import uy.com.group05.baasadmin.pl.controllers.UserController;
@@ -18,15 +17,24 @@ import uy.com.group05.baasadmin.pl.models.UserModel;
 @RequestScoped
 public class UserRegistrationBean {
 	
-	@ManagedProperty(value="#{userSessionManagementBean}")
-	private UserSessionManagementBean userSessionManagementBean;
 	
 	private UIComponent email;
 	
 	private UserModel user = new UserModel();
 
 	private UserController userController = new UserController();
+	
+	private String error;
+	
+	private boolean errorVisible;
+	
+	@ManagedProperty(value="#{userSessionManagementBean}")
+	private UserSessionManagementBean userSessionManagementBean;
 
+	public UserRegistrationBean(){
+		error = "";
+		errorVisible = false;
+	}
 
 	public UIComponent getEmail() {
 		return email;
@@ -43,33 +51,53 @@ public class UserRegistrationBean {
 	public void setUser(UserModel user) {
 		this.user = user;
 	}
+	
+	public UserSessionManagementBean getUserSessionManagementBean() {
+		return userSessionManagementBean;
+	}
+
+	public void setUserSessionManagementBean(
+			UserSessionManagementBean userSessionManagementBean) {
+		this.userSessionManagementBean = userSessionManagementBean;
+	}
+	
+	public String getError() {
+		return error;
+	}
+	
+	public boolean getErrorVisible(){
+		
+		return error != "";
+	}
+
+
+	public void setError(String error) {
+		this.error = error;
+	}
 
 	public String registerUser()  {
+		
+		errorVisible = false;
 		
 		try {
 			userController.registerUser(user);
 			
-			return "/index";
+			userSessionManagementBean.setUser(user);
+			
+			return "/pages/dashboard/Index.xhtml?faces-redirect=true";
 		}
 		
-		catch (EmailAlreadyRegisteredException e) {
-			FacesContext context = FacesContext.getCurrentInstance();
-			context.addMessage(getEmail().getClientId(context), new FacesMessage(e.getMessage()));
+		catch (Exception e) {
+//			FacesContext context = FacesContext.getCurrentInstance();
+//			context.addMessage(getEmail().getClientId(context), new FacesMessage(e.getMessage()));
+//			
+
+			error = e.getMessage(); 
+			errorVisible = true;
 			
 			return "/pages/users/register";
 		}
-		catch (PasswordRepeatedException e) {
-			FacesContext context = FacesContext.getCurrentInstance();
-			context.addMessage(getEmail().getClientId(context), new FacesMessage(e.getMessage()));
-			
-			return "/pages/users/register";
-		}
-		catch (UnhandledRegistrationException e) {
-			FacesContext context = FacesContext.getCurrentInstance();
-			context.addMessage("", new FacesMessage(e.getMessage()));
-			
-			return "/pages/users/register";
-		}
+		
 		
 	}
 	
