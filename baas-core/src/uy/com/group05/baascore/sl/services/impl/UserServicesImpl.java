@@ -12,14 +12,14 @@ import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.common.mapper.Mapper;
 import uy.com.group05.baascore.sl.entitiesws.UserDTO;
 import uy.com.group05.baascore.sl.entitiesws.UserRegisterDTO;
-import uy.com.group05.baascore.sl.services.soap.UserSoapFacade;
+import uy.com.group05.baascore.sl.services.soap.UserServices;
 
 @WebService(
-	endpointInterface="uy.com.group05.baascore.sl.services.soap.UserSoapFacade",
+	endpointInterface="uy.com.group05.baascore.sl.services.soap.UserServices",
 	portName="UserServicesPort",
 	serviceName="UserServices"
 )
-public class UserServicesImpl implements UserSoapFacade {
+public class UserServicesImpl implements UserServices {
 
 	@EJB
 	Mapper mapper;
