@@ -9,7 +9,4 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <listener>
-    <listener-class>uy.com.group05.baascore.common.init.StartupListener</listener-class>
-  </listener>
 </web-app>
