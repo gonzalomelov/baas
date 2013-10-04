@@ -1,42 +1,49 @@
-//package uy.com.group05.baascore.sl.services.rest;
-//
-//import java.lang.reflect.Method;
-//
-//import javax.ws.rs.GET;
-//import javax.ws.rs.WebApplicationException;
-//import javax.ws.rs.core.HttpHeaders;
-//import javax.ws.rs.core.MultivaluedMap;
-//import javax.ws.rs.ext.Provider;
-//
-//import org.jboss.resteasy.annotations.interception.ServerInterceptor;
-//import org.jboss.resteasy.core.ResourceMethod;
-//import org.jboss.resteasy.core.ServerResponse;
-//import org.jboss.resteasy.spi.Failure;
-//import org.jboss.resteasy.spi.HttpRequest;
-//import org.jboss.resteasy.spi.interception.AcceptedByMethod;
-//import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
-//
-//@Provider
-//@ServerInterceptor
-//public class SecurityInterceptor implements PreProcessInterceptor, AcceptedByMethod {
-//
-//	@Override
-//	public boolean accept(Class declaring, Method method) {
-//		return declaring.isAnnotationPresent(GET.class);
-//	}
-//	
-//	@Override
-//	public ServerResponse preProcess(HttpRequest request, ResourceMethod method)
-//			throws Failure, WebApplicationException {
-//		
-//		HttpHeaders httpHeaders = request.getHttpHeaders();
-//		
-//		MultivaluedMap<String, String> requestHeaders = httpHeaders.getRequestHeaders();
-//		
-//		
-//		String authorization = requestHeaders.getFirst("Authorization");
-//		
-//		return null;
-//	}
-//
-//}
+package uy.com.group05.baascore.sl.services.rest;
+
+import javax.xml.bind.DatatypeConverter;
+
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MultivaluedMap;
+
+import org.jboss.resteasy.annotations.interception.ServerInterceptor;
+import org.jboss.resteasy.core.Headers;
+import org.jboss.resteasy.core.ResourceMethod;
+import org.jboss.resteasy.core.ServerResponse;
+import org.jboss.resteasy.spi.Failure;
+import org.jboss.resteasy.spi.HttpRequest;
+import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
+
+@ServerInterceptor
+public class SecurityInterceptor implements PreProcessInterceptor {
+
+	@Override
+	public ServerResponse preProcess(HttpRequest request, ResourceMethod method)
+			throws Failure, WebApplicationException {
+		
+		HttpHeaders httpHeaders = request.getHttpHeaders();
+		
+		MultivaluedMap<String, String> requestHeaders = httpHeaders.getRequestHeaders();
+		
+		String authorization = requestHeaders.getFirst("Authorization");
+	
+		if (authorization == null || !authorization.substring(0, 5).equals("Basic")) {
+			return new ServerResponse("Access denied for these resource", 400, new Headers<Object>());	
+		}
+		
+		String credentialsBase64 = authorization.substring(6);
+		
+		byte[] decoded = DatatypeConverter.parseBase64Binary(credentialsBase64);
+		String credentials = new String(decoded); 
+		
+		String[] s = credentials.split(":");
+		
+		String username = s[0];
+		String password = s[1];
+		
+		
+		
+		return null;
+	}
+
+}

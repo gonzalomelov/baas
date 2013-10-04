@@ -10,66 +10,38 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
-
+import uy.com.group05.baascore.bll.ejbs.interfaces.APIManagementLocal;
 
 @Path("/APIRest")
 public class APIRest {
-	
-	@Inject	
-	private NoSqlDbDao _dalInstance;
+	@Inject
+	private APIManagementLocal apiManagementLocal;
+
+	@GET
+	public String helloWorld(){
+		System.out.println("Hello");
+		return "Hello World";
+	}
 	
 	@GET	
-	@Produces("application/json")	
 	@Path("{appName}/{entity}/{query}")
-	public List<String> Get(
+	@Produces(MediaType.APPLICATION_JSON)	
+	public List<String> get(
 			@PathParam("appName") String appName,
 			@PathParam("entity") String entity,
 			@PathParam("query") String query) {
 
-	    if(appName == null){
-	    	return null;
-	    }
- 
-		if(entity == null){		
-			
-			return null;			
-		}
-		
-
-		return _dalInstance.getEntities(appName, entity); 
- 
+	    return apiManagementLocal.get(appName, entity, query);
 	}
-	
-	
 	
 	@POST
 	@Path("{appName}/{entity}")
 	@Produces(MediaType.APPLICATION_JSON)	
-	  public boolean PostApiRest(
-			  @PathParam("appName") String appName,
-				@PathParam("entity") String entity,				
-				String inputJsonObj			  
-			  ) throws Exception {
-		
-		if(entity == null){		
-			
-			return false;			
-		}
-	
-		try{
-	
-			
-			
-			
-			_dalInstance.addEntity(appName, entity, inputJsonObj);
-			
-			
-			return true;
-		}
-		catch(Exception e){
-			return false;
-		}
-	  }
-	
+	public boolean post(
+			@PathParam("appName") String appName,
+			@PathParam("entity") String entity,				
+			String jsonObj) {
+
+		return apiManagementLocal.post(appName, entity, jsonObj);
+	}
 }
