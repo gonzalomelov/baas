@@ -1,7 +1,7 @@
 package uy.com.group05.baascore.sl.services.rest;
 
 import javax.xml.bind.DatatypeConverter;
-
+import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
@@ -14,9 +14,14 @@ import org.jboss.resteasy.spi.Failure;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
+import uy.com.group05.baascore.bll.ejbs.interfaces.ClientManagementLocal;
+
 @ServerInterceptor
 public class SecurityInterceptor implements PreProcessInterceptor {
 
+	@Inject
+	private ClientManagementLocal clientManagementLocal;
+	
 	@Override
 	public ServerResponse preProcess(HttpRequest request, ResourceMethod method)
 			throws Failure, WebApplicationException {
@@ -38,10 +43,13 @@ public class SecurityInterceptor implements PreProcessInterceptor {
 		
 		String[] s = credentials.split(":");
 		
-		String username = s[0];
+		String email = s[0];
 		String password = s[1];
 		
-		
+		if (!clientManagementLocal.validateClientCredentials(email, password))
+		{
+			return new ServerResponse("Access denied for these resource", 400, new Headers<Object>());
+		}
 		
 		return null;
 	}

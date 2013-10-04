@@ -6,6 +6,5 @@ import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
 
 @Local
 public interface ClientManagementLocal {
-	boolean validateClientCredentials(String email, String password)
-		throws ClientNotRegisteredException;
+	boolean validateClientCredentials(String email, String password);
 }

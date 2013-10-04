@@ -16,12 +16,11 @@ public class ClientManagement implements ClientManagementLocal {
 	
 	@Override
 	public boolean validateClientCredentials(String email, String password)
-		throws ClientNotRegisteredException
 	{
 		Client client = clientDao.readByEmail(email);
 		
 		if (client == null) {
-			throw new ClientNotRegisteredException("No existe el cliente registrado");
+			return false;
 		}
 		
 		return client.getPassword().equals(password);

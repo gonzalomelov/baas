@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.APIManagementLocal;
 
-@Path("/APIRest")
+@Path("/api")
 public class APIRest {
 	@Inject
 	private APIManagementLocal apiManagementLocal;

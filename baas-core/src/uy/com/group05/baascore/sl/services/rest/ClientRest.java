@@ -1,5 +1,5 @@
 package uy.com.group05.baascore.sl.services.rest;
 
-public class ClientRest {
-
+public interface ClientRest {	
+	boolean validateClientCredentials(String email, String password);
 }
