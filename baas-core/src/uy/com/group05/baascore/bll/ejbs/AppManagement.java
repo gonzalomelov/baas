@@ -14,6 +14,7 @@ import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.entities.User;
+import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
@@ -172,5 +173,29 @@ public class AppManagement implements AppManagementLocal{
 
 	public boolean existsApplication(String nombre){
 		return (appDao.readByName(nombre) != null);
+	}
+	
+	public boolean existsEntityApplication(String nomApp, String nomEntity) throws AppNotRegisteredException{
+		Application app = appDao.readByName(nomApp);
+		if ( app == null)//No existe la app
+			throw new AppNotRegisteredException("No existe una aplicacion con ese nombre");
+		boolean exist = false;
+		Iterator<Entity> iter = app.getEntities().iterator();
+		while (iter.hasNext() && !exist){
+			exist = iter.next().getName().equals(nomEntity);
+		}
+		return exist;
+	}
+	
+	public boolean existsRoleApplication(String nomApp, String nomRole) throws AppNotRegisteredException{
+		Application app = appDao.readByName(nomApp);
+		if ( app == null)//No existe la app
+			throw new AppNotRegisteredException("No existe una aplicacion con ese nombre");
+		boolean exist = false;
+		Iterator<Role> iter = app.getRoles().iterator();
+		while (iter.hasNext() && !exist){
+			exist = iter.next().getName().equals(nomRole);
+		}
+		return exist;
 	}
 }

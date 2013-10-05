@@ -7,6 +7,7 @@ import javax.jws.WebService;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
+import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
@@ -53,6 +54,14 @@ public class ApplicationServicesImpl implements ApplicationServices{
 	
 	public boolean existsApplication(String nombre){
 		return appManagementLocal.existsApplication(nombre);
+	}
+	
+	public boolean existsRoleApplication(String nomApp, String nomRole) throws AppNotRegisteredException{
+		return appManagementLocal.existsRoleApplication(nomApp, nomRole);	
+	}
+	
+	public boolean existsEntityApplication(String nomApp, String nomEntity) throws AppNotRegisteredException{
+		return appManagementLocal.existsEntityApplication(nomApp, nomEntity);	
 	}
 
 }

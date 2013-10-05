@@ -8,6 +8,7 @@ import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.entities.User;
+import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
@@ -39,4 +40,8 @@ public interface AppManagementLocal {
 				EntityCollectionAlreadyExistsException;
 	
 	public boolean existsApplication(String nombre);
+	
+	public boolean existsEntityApplication(String nomApp, String nomEntity) throws AppNotRegisteredException;
+	
+	public boolean existsRoleApplication(String nomApp, String nomRole) throws AppNotRegisteredException;
 }

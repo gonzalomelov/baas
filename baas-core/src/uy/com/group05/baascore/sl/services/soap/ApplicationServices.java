@@ -6,6 +6,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
@@ -36,4 +37,16 @@ public interface ApplicationServices {
 	@WebMethod
 	public boolean existsApplication(
 			@WebParam(name = "nombreApp") String nombre);
+	
+	@WebMethod
+	public boolean existsEntityApplication(
+			@WebParam(name ="nomApp") String nomApp,
+			@WebParam(name ="nomEntity") String nomEntity) 
+			throws AppNotRegisteredException;
+	
+	@WebMethod
+	public boolean existsRoleApplication(
+			@WebParam(name ="nomApp") String nomApp,
+			@WebParam(name ="nomRole") String nomRole) 
+			throws AppNotRegisteredException;
 }
