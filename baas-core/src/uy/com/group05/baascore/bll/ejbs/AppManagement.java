@@ -2,11 +2,11 @@ package uy.com.group05.baascore.bll.ejbs;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
@@ -130,14 +130,24 @@ public class AppManagement implements AppManagementLocal{
 		//Creo la App
 		Application app = new Application(nombreApp, user);
 		
+		//Elimino duplicados de roles y entidades
+		Set<String> rolesSet= new LinkedHashSet<String>();
+		rolesSet.addAll(rolesStr);
+		rolesStr.clear();
+		rolesStr.addAll(rolesSet);
+		Set<String> entidadesSet= new LinkedHashSet<String>();
+		entidadesSet.addAll(entidadesStr);
+		entidadesStr.clear();
+		entidadesStr.addAll(entidadesSet);
+		
 		List<Role> roles = new ArrayList<Role>();
 		List<Entity> entidades = new ArrayList<Entity>();
 		//Creo los roles
 		Iterator<String> iter = rolesStr.iterator();
 		while (iter.hasNext()){
-			Role r = new Role(iter.next(), app);
-			roles.add(r);
-			roleDao.create(r);
+				Role r = new Role(iter.next(), app);
+				roles.add(r);
+				roleDao.create(r);
 		}
 		iter = entidadesStr.iterator();
 		while (iter.hasNext()){

@@ -2,8 +2,8 @@
     <wb-module deploy-name="baas-core">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/generated-entities"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/.apt_generated"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/generated-entities"/>
         <property name="context-root" value="baas-core"/>
         <property name="java-output-path" value="/baas-core/build/classes"/>
     </wb-module>
