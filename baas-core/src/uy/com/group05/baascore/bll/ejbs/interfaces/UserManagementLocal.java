@@ -16,19 +16,19 @@ public interface UserManagementLocal {
 		throws
 			EmailAlreadyRegisteredException;
 	
-	boolean isUserLoggedIn(String username)
+	boolean isUserLoggedIn(String email)
 		throws
 			UserNotRegisteredException;
 	
-	boolean validateUser(String username, String password)
+	boolean validateUser(String email, String password)
 		throws
 			UserNotRegisteredException;
 	
-	User loginUser(String username, String password)
+	User loginUser(String email, String password)
 		throws
 			UserNotRegisteredException;;
 	
-	boolean logoutUser(String username)
+	boolean logoutUser(String email)
 		throws
 			UserNotRegisteredException;
 }

@@ -58,19 +58,19 @@ public class UserServicesImpl implements UserServices {
 	}
 	
 	@Override
-	public boolean validateUser(String username, String password)
+	public boolean validateUser(String email, String password)
 		throws
 			UserNotRegisteredException {
 		
-		return userManagementLocal.validateUser(username, password);
+		return userManagementLocal.validateUser(email, password);
 	}
 
 	@Override
-	public UserDTO loginUser(String username, String password)
+	public UserDTO loginUser(String email, String password)
 		throws
 			UserNotRegisteredException {
 		
-		User user = userManagementLocal.loginUser(username, password);
+		User user = userManagementLocal.loginUser(email, password);
 		
 		UserDTO userDTO = mapper.getMapper().map(user, UserDTO.class);
 		
@@ -78,11 +78,11 @@ public class UserServicesImpl implements UserServices {
 	}
 
 	@Override
-	public boolean logoutUser(String username)
+	public boolean logoutUser(String email)
 		throws
 			UserNotRegisteredException {
 		
-		return userManagementLocal.logoutUser(username);
+		return userManagementLocal.logoutUser(email);
 	}
 
 }

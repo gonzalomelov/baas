@@ -3,6 +3,7 @@ package uy.com.group05.baascore.sl.services.soap;
 import java.util.List;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import uy.com.group05.baascore.common.exceptions.EmailAlreadyRegisteredException;
@@ -17,27 +18,34 @@ public interface UserServices {
 	List<UserDTO> getUsers();
 	
 	@WebMethod
-	UserDTO registerUser(UserRegisterDTO u)
-		throws
-			EmailAlreadyRegisteredException;
+	UserDTO registerUser(
+			@WebParam(name = "user") UserRegisterDTO u)
+			throws
+				EmailAlreadyRegisteredException;
 	
 	@WebMethod
-	boolean isUserLoggedIn(String username)
-		throws
-			UserNotRegisteredException;
+	boolean isUserLoggedIn(
+			@WebParam(name = "email") String email)
+			throws
+				UserNotRegisteredException;
 	
 	@WebMethod
-	boolean validateUser(String username, String password)
-		throws
-			UserNotRegisteredException;
+	boolean validateUser(
+			@WebParam(name = "email") String email,
+			@WebParam(name = "password") String password)
+			throws
+				UserNotRegisteredException;
 	
 	@WebMethod
-	UserDTO loginUser(String username, String password)
-		throws
-			UserNotRegisteredException;
+	UserDTO loginUser(
+			@WebParam(name = "email") String email,
+			@WebParam(name = "password") String password)
+			throws
+				UserNotRegisteredException;
 	
 	@WebMethod
-	boolean logoutUser(String username)
-		throws
-			UserNotRegisteredException;
+	boolean logoutUser(
+			@WebParam(name = "email") String email)
+			throws
+				UserNotRegisteredException;
 }
