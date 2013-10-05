@@ -128,11 +128,13 @@ public class AppManagement implements AppManagementLocal{
 		while (iter.hasNext()){
 			Role r = new Role(iter.next(), app);
 			roles.add(r);
+			roleDao.create(r);
 		}
 		iter = entidadesStr.iterator();
 		while (iter.hasNext()){
 			Entity e = new Entity(iter.next(), app);
 			entidades.add(e);
+			entityDao.create(e);
 		}
 		//Seteo Roles y Entidades a App
 		app.setRoles(roles);
