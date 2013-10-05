@@ -4,6 +4,8 @@ import uy.com.group05.baasadmin.common.exceptions.*;
 import uy.com.group05.baasadmin.pl.models.UserModel;
 import uy.com.group05.baascore.sl.services.impl.UserServices;
 import uy.com.group05.baascore.sl.services.soap.EmailAlreadyRegisteredException_Exception;
+import uy.com.group05.baascore.sl.services.soap.UserDTO;
+import uy.com.group05.baascore.sl.services.soap.UserNotRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.UserRegisterDTO;
 import uy.com.group05.baascore.sl.services.soap.UserSoapFacade;
 
@@ -49,8 +51,37 @@ public class UserController {
 		}
 	}
 	
-	public UserModel loginUser(String username, String password) {
-		return null;
+	public UserModel loginUser(String username, String password) throws LoginException,UnhandledRegistrationException {
+
+		try {
+			
+			if(username == null || password == null)
+				throw new LoginException("Los datos ingresados no son correctos.");
+			
+			UserServices service = new UserServices();
+			UserSoapFacade port = service.getUserServicesPort();
+			
+			UserDTO datosUsuario = port.loginUser(username, password);
+			
+			UserModel retorno = new UserModel();
+			
+			retorno.setEmail(datosUsuario.getEmail());
+			retorno.setLastname(datosUsuario.getLastname());
+			retorno.setName(datosUsuario.getName());
+			
+			
+		
+			return retorno;
+		}
+		catch (UserNotRegisteredException_Exception e) {
+			throw new LoginException(e.getMessage());
+		}	
+		catch (LoginException e) {
+			throw new LoginException(e.getMessage());
+		}
+		catch (Exception e) {
+			throw new UnhandledRegistrationException("Login no exitoso");
+		}
 	}
 	
 	public boolean logoutUser(String username) {

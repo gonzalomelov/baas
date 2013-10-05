@@ -15,12 +15,19 @@ import uy.com.group05.baasadmin.pl.models.UserModel;
 public class UserLoginBean {
 	private UserModel user = new UserModel();
 
-	private UIComponent username;
-	
 	@ManagedProperty(value="#{userSessionManagementBean}")
 	private UserSessionManagementBean userSessionManagementBean;
 	
 	private UserController userController = new UserController();
+	
+	private String error;
+	
+	private boolean errorVisible;
+	
+	public UserLoginBean(){
+		error = "";
+		errorVisible = false;
+	}
 	
 	public UserModel getUser() {
 		return user;
@@ -38,35 +45,49 @@ public class UserLoginBean {
 			UserSessionManagementBean userSessionManagementBean) {
 		this.userSessionManagementBean = userSessionManagementBean;
 	}
-
-	public UIComponent getUsername() {
-		return username;
-	}
-
-	public void setUsername(UIComponent username) {
-		this.username = username;
+	
+	public String getError() {
+		return error;
 	}
 	
+	public boolean getErrorVisible(){
+		
+		return error != "";
+	}
+
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
+		
 	//Functions
 
-//	public String login() {
-//		UserModel userModel = userController.loginUser(user.getUsername(), user.getPassword());
-//		
-//		if (userModel == null) {
-//			FacesContext context = FacesContext.getCurrentInstance();
-//			context.addMessage(username.getClientId(context), new FacesMessage("Login inválido"));
-//			return "/index";
-//		}
-//		
-//		user.setEmail(userModel.getEmail());
-//		user.setLastname(userModel.getLastname());
-//		user.setName(userModel.getName());
-//		user.setUsername(userModel.getUsername());
-//		
-//		userSessionManagementBean.setUser(user);	
-//		
-//		return "/index";
-//	}
+	public String login() {
+		try{
+		
+			UserModel userModel = userController.loginUser(user.getEmail(), user.getPassword());
+			
+					
+			user.setEmail(userModel.getEmail());
+			user.setLastname(userModel.getLastname());
+			user.setName(userModel.getName());
+			
+			
+			userSessionManagementBean.setUser(user);	
+			
+			return "/pages/dashboard/Index.xhtml?faces-redirect=true";
+			
+		}
+		catch(Exception e) {
+
+			error = e.getMessage(); 
+			errorVisible = true;
+			
+			return "/pages/users/login";
+		}
+		
+	}
 	
 //	public String logout() {
 //		boolean logoutOk = userController.logoutUser(userSessionManagementBean.getUser().getUsername());
