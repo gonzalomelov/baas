@@ -33,7 +33,7 @@ public class SecurityInterceptor implements PreProcessInterceptor {
 		String authorization = requestHeaders.getFirst("Authorization");
 	
 		if (authorization == null || !authorization.substring(0, 5).equals("Basic")) {
-			return new ServerResponse("Access denied for these resource", 400, new Headers<Object>());	
+			return new ServerResponse("Access denied for these resource", 403, new Headers<Object>());	
 		}
 		
 		String credentialsBase64 = authorization.substring(6);
@@ -48,7 +48,7 @@ public class SecurityInterceptor implements PreProcessInterceptor {
 		
 		if (!clientManagementLocal.validateClientCredentials(email, password))
 		{
-			return new ServerResponse("Access denied for these resource", 400, new Headers<Object>());
+			return new ServerResponse("Access denied for these resource", 403, new Headers<Object>());
 		}
 		
 		return null;

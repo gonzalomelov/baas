@@ -13,21 +13,6 @@ import uy.com.group05.baascore.dal.dao.ClientDao;
 
 public class JpaClientDao extends JpaGenericDao<Client> implements ClientDao {
 	
-	public Client readByUsername(String username) {
-		CriteriaBuilder cb = this.em.getCriteriaBuilder();
-		CriteriaQuery<Client> cq = cb.createQuery(this.type);
-		Root<Client> r = cq.from(this.type);
-		cq.select(r);
-		
-		cq.where(cb.equal(r.get(Client_.name), username));
-		
-		TypedQuery<Client> typedQuery = em.createQuery(cq);
-		
-		List<Client> users = typedQuery.getResultList();
-		
-		return users.isEmpty() ? null : users.get(0);
-	}
-	
 	public Client readByEmail(String email) {
 		CriteriaBuilder cb = this.em.getCriteriaBuilder();
 		CriteriaQuery<Client> cq = cb.createQuery(this.type);
@@ -38,16 +23,6 @@ public class JpaClientDao extends JpaGenericDao<Client> implements ClientDao {
 		TypedQuery<Client> typedQuery = em.createQuery(cq);
 		
 		List<Client> users = typedQuery.getResultList();
-		
-		return users.isEmpty() ? null : users.get(0);
-	}
-	
-	public Client readByUsername(long appId, String username) {
-		TypedQuery<Client> query = em.createQuery("SELECT c FROM CLIENTS c WHERE c.application.id = :appId AND c.username = :username", Client.class);
-		query.setParameter("appId", appId);
-		query.setParameter("username", username);
-		
-		List<Client> users = query.getResultList();
 		
 		return users.isEmpty() ? null : users.get(0);
 	}

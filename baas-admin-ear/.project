@@ -4,7 +4,6 @@
 	<comment></comment>
 	<projects>
 		<project>baas-admin</project>
-		<project>prueba-baas</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

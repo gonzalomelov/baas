@@ -26,7 +26,7 @@
     <datasource jndi-name="java:jboss/datasources/baasDS"
         pool-name="baas" enabled="true"
         use-java-context="true">
-        <connection-url>jdbc:postgresql://localhost:5433/baasdb</connection-url>        
+        <connection-url>jdbc:postgresql://localhost:5432/baasdb</connection-url>        
         <driver>postgresql</driver>
         <security>
             <user-name>postgres</user-name>
