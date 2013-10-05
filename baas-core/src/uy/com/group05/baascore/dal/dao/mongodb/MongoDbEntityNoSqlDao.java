@@ -7,6 +7,7 @@ import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsEx
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -51,7 +52,10 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 			throw new EntityCollectionAlreadyExistsException("Ya existe la colleción para la base especificada");
 		}
 		
-		mongoDb.getCollection(entity);
+		BasicDBObject options = new BasicDBObject();
+		options.put("capped", false);
+		
+		mongoDb.createCollection(entity, options);
 	}
 	
 	@Override

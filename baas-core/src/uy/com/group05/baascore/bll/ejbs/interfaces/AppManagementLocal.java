@@ -3,10 +3,12 @@ package uy.com.group05.baascore.bll.ejbs.interfaces;
 import java.util.List;
 
 import javax.ejb.Local;
+
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.entities.User;
+import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
@@ -33,7 +35,8 @@ public interface AppManagementLocal {
 			throws
 				NombreAppAlreadyRegisteredException,
 				UserNotRegisteredException,
-				MongoDBAlreadyExistsException;
+				MongoDBAlreadyExistsException,
+				EntityCollectionAlreadyExistsException;
 	
 	public boolean existsApplication(String nombre);
 }

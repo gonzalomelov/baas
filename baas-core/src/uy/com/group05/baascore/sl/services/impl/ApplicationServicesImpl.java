@@ -7,6 +7,7 @@ import javax.jws.WebService;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
+import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
@@ -43,7 +44,9 @@ public class ApplicationServicesImpl implements ApplicationServices{
 	public long createApplication(long idUser, String nombreApp, List<String> rolesStr, List<String> entidadesStr)
 			throws 
 				NombreAppAlreadyRegisteredException,
-				UserNotRegisteredException, MongoDBAlreadyExistsException {
+				UserNotRegisteredException,
+				MongoDBAlreadyExistsException,
+				EntityCollectionAlreadyExistsException {
 		return appManagementLocal.createApplication(idUser, nombreApp, rolesStr, entidadesStr);
 	}
 	

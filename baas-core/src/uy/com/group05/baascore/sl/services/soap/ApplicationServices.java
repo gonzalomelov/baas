@@ -6,6 +6,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
@@ -29,7 +30,8 @@ public interface ApplicationServices {
 			throws
 				NombreAppAlreadyRegisteredException,
 				UserNotRegisteredException,
-				MongoDBAlreadyExistsException;
+				MongoDBAlreadyExistsException,
+				EntityCollectionAlreadyExistsException;
 	
 	@WebMethod
 	public boolean existsApplication(

@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
@@ -12,6 +14,7 @@ import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.entities.User;
+import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
@@ -114,7 +117,8 @@ public class AppManagement implements AppManagementLocal{
 			throws
 				NombreAppAlreadyRegisteredException,
 				UserNotRegisteredException,
-				MongoDBAlreadyExistsException{
+				MongoDBAlreadyExistsException,
+				EntityCollectionAlreadyExistsException {
 		//Obtengo el usuario
 		User user = userDao.read(idUser);
 		//Hago los controles
@@ -141,11 +145,18 @@ public class AppManagement implements AppManagementLocal{
 			entidades.add(e);
 			entityDao.create(e);
 		}
+		
 		//Seteo Roles y Entidades a App
 		app.setRoles(roles);
 		app.setEntities(entidades);
 		appDao.create(app);
+		
 		noSqlDbDao.createNoSqlDb(nombreApp);
+		
+		for(Entity e : app.getEntities()) {
+			noSqlDbDao.createEntityCollection(nombreApp, e.getName());
+		}
+		
 		return app.getId();
 	}
 
