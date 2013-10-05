@@ -29,11 +29,13 @@ public class ObjectFactory {
     private final static QName _GetUsersResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getUsersResponse");
     private final static QName _IsUserLoggedIn_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "isUserLoggedIn");
     private final static QName _RegisterUser_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "registerUser");
+    private final static QName _UserRegisterDTO_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "userRegisterDTO");
     private final static QName _LoginUserResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "loginUserResponse");
     private final static QName _ValidateUserResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "validateUserResponse");
     private final static QName _LogoutUser_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "logoutUser");
     private final static QName _IsUserLoggedInResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "isUserLoggedInResponse");
     private final static QName _LogoutUserResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "logoutUserResponse");
+    private final static QName _UserDTO_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "userDTO");
     private final static QName _UserNotRegisteredException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "UserNotRegisteredException");
     private final static QName _RegisterUserResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "registerUserResponse");
     private final static QName _LoginUser_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "loginUser");
@@ -87,6 +89,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link UserRegisterDTO }
+     * 
+     */
+    public UserRegisterDTO createUserRegisterDTO() {
+        return new UserRegisterDTO();
+    }
+
+    /**
      * Create an instance of {@link LoginUserResponse }
      * 
      */
@@ -127,6 +137,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link UserDTO }
+     * 
+     */
+    public UserDTO createUserDTO() {
+        return new UserDTO();
+    }
+
+    /**
      * Create an instance of {@link UserNotRegisteredException }
      * 
      */
@@ -156,22 +174,6 @@ public class ObjectFactory {
      */
     public LoginUser createLoginUser() {
         return new LoginUser();
-    }
-
-    /**
-     * Create an instance of {@link UserRegisterDTO }
-     * 
-     */
-    public UserRegisterDTO createUserRegisterDTO() {
-        return new UserRegisterDTO();
-    }
-
-    /**
-     * Create an instance of {@link UserDTO }
-     * 
-     */
-    public UserDTO createUserDTO() {
-        return new UserDTO();
     }
 
     /**
@@ -220,6 +222,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UserRegisterDTO }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "userRegisterDTO")
+    public JAXBElement<UserRegisterDTO> createUserRegisterDTO(UserRegisterDTO value) {
+        return new JAXBElement<UserRegisterDTO>(_UserRegisterDTO_QNAME, UserRegisterDTO.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link LoginUserResponse }{@code >}}
      * 
      */
@@ -262,6 +273,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "logoutUserResponse")
     public JAXBElement<LogoutUserResponse> createLogoutUserResponse(LogoutUserResponse value) {
         return new JAXBElement<LogoutUserResponse>(_LogoutUserResponse_QNAME, LogoutUserResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UserDTO }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "userDTO")
+    public JAXBElement<UserDTO> createUserDTO(UserDTO value) {
+        return new JAXBElement<UserDTO>(_UserDTO_QNAME, UserDTO.class, null, value);
     }
 
     /**

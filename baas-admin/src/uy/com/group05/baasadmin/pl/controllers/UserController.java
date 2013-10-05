@@ -7,7 +7,7 @@ import uy.com.group05.baascore.sl.services.soap.EmailAlreadyRegisteredException_
 import uy.com.group05.baascore.sl.services.soap.UserDTO;
 import uy.com.group05.baascore.sl.services.soap.UserNotRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.UserRegisterDTO;
-import uy.com.group05.baascore.sl.services.soap.UserSoapFacade;
+import uy.com.group05.baascore.sl.services.impl.UserServices;
 
 public class UserController {
 	
@@ -27,7 +27,7 @@ public class UserController {
 				throw new PasswordRepeatedException("El password no puede ser vacio.");
 			
 			UserServices service = new UserServices();
-			UserSoapFacade port = service.getUserServicesPort();
+			uy.com.group05.baascore.sl.services.soap.UserServices port = service.getUserServicesPort();
 			
 			UserRegisterDTO u = new UserRegisterDTO();
 			u.setEmail(userModel.getEmail());
@@ -59,7 +59,7 @@ public class UserController {
 				throw new LoginException("Los datos ingresados no son correctos.");
 			
 			UserServices service = new UserServices();
-			UserSoapFacade port = service.getUserServicesPort();
+			uy.com.group05.baascore.sl.services.soap.UserServices port = service.getUserServicesPort();
 			
 			UserDTO datosUsuario = port.loginUser(username, password);
 			
