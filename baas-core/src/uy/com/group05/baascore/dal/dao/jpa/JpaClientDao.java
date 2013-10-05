@@ -18,7 +18,8 @@ public class JpaClientDao extends JpaGenericDao<Client> implements ClientDao {
 		CriteriaQuery<Client> cq = cb.createQuery(this.type);
 		Root<Client> r = cq.from(this.type);
 		cq.select(r);
-		cq.where(cb.equal(r.get(Client_.username), username));
+		
+		cq.where(cb.equal(r.get(Client_.name), username));
 		
 		TypedQuery<Client> typedQuery = em.createQuery(cq);
 		

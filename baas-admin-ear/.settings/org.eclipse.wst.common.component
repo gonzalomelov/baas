@@ -5,5 +5,9 @@
             <dependent-object/>
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="prueba-baas.war" deploy-path="/" handle="module:/resource/prueba-baas/prueba-baas">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>

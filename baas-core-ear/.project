@@ -3,7 +3,6 @@
 	<name>baas-core-ear</name>
 	<comment></comment>
 	<projects>
-		<project>baas-core</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

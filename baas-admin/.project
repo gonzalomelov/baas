@@ -3,6 +3,7 @@
 	<name>baas-admin</name>
 	<comment></comment>
 	<projects>
+		<project>baas-core-ear</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

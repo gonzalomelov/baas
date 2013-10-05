@@ -1,6 +1,8 @@
 package uy.com.group05.baascore.sl.entitiesws;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,7 +27,7 @@ public class ApplicationDTO implements Serializable {
 	
 	//private List<Client> clients = new ArrayList<Client>();
 	
-	//private List<Role> roles = new ArrayList<Role>();
+	//private List<RoleDTO> roles = new ArrayList<RoleDTO>();
 	
 	//private List<uy.com.group05.baascore.common.entities.Entity> entities = new ArrayList<uy.com.group05.baascore.common.entities.Entity>();
 
@@ -79,11 +81,11 @@ public class ApplicationDTO implements Serializable {
 //		this.clients = clients;
 //	}
 //
-//	public List<Role> getRoles() {
+//	public List<RoleDTO> getRoles() {
 //		return roles;
 //	}
 //
-//	public void setRoles(List<Role> roles) {
+//	public void setRoles(List<RoleDTO> roles) {
 //		this.roles = roles;
 //	}
 //
