@@ -36,4 +36,9 @@ public interface AppManagementLocal {
 			 	AppNotRegisteredException,
 				MongoDBAlreadyExistsException,
 				EntityCollectionAlreadyExistsException;
+	
+	public boolean addUserApplication(String nombreApp, long idUser)
+			throws
+				AppNotRegisteredException,
+				UserNotRegisteredException;
 }

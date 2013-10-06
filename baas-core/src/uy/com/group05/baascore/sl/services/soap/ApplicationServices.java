@@ -59,4 +59,12 @@ public interface ApplicationServices {
 			 	AppNotRegisteredException,
 				MongoDBAlreadyExistsException,
 				EntityCollectionAlreadyExistsException;
+	
+	@WebMethod
+	public boolean addUserApplication(
+			@WebParam(name = "nombreApp") String nombreApp,
+			@WebParam(name = "idUser") long idUser)
+			throws
+				AppNotRegisteredException,
+				UserNotRegisteredException;
 }

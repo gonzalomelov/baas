@@ -71,4 +71,11 @@ public class ApplicationServicesImpl implements ApplicationServices{
 				EntityCollectionAlreadyExistsException{
 		return appManagementLocal.editApplication(nombreApp, rolesStr, entidadesStr);
 	}
+	
+	public boolean addUserApplication(String nombreApp, long idUser)
+			throws
+				AppNotRegisteredException,
+				UserNotRegisteredException {
+		return appManagementLocal.addUserApplication(nombreApp, idUser);
+	}
 }
