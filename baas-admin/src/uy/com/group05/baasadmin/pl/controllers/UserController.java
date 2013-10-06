@@ -11,7 +11,7 @@ import uy.com.group05.baascore.sl.services.impl.UserServices;
 
 public class UserController {
 	
-	public boolean registerUser(UserModel userModel)
+	public long registerUser(UserModel userModel)
 		throws
 			EmailAlreadyRegisteredException,			
 			UnhandledRegistrationException, PasswordRepeatedException {
@@ -36,9 +36,11 @@ public class UserController {
 			u.setPassword(userModel.getPassword());
 			
 			
-			port.registerUser(u);
+			UserDTO dto = port.registerUser(u);
+			
+			
 		
-			return true;
+			return dto.getId();
 		}
 		catch (EmailAlreadyRegisteredException_Exception e) {
 			throw new EmailAlreadyRegisteredException(e.getMessage());
@@ -68,6 +70,7 @@ public class UserController {
 			retorno.setEmail(datosUsuario.getEmail());
 			retorno.setLastname(datosUsuario.getLastname());
 			retorno.setName(datosUsuario.getName());
+			retorno.setUserId(datosUsuario.getId());
 			
 			
 		

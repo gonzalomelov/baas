@@ -1,11 +1,8 @@
 package uy.com.group05.baasadmin.pl.beans;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 
 import uy.com.group05.baasadmin.pl.controllers.UserController;
 import uy.com.group05.baasadmin.pl.models.UserModel;
@@ -26,7 +23,7 @@ public class UserLoginBean {
 	
 	public UserLoginBean(){
 		error = "";
-		errorVisible = false;
+		setErrorVisible(false);
 	}
 	
 	public UserModel getUser() {
@@ -74,6 +71,7 @@ public class UserLoginBean {
 			user.setName(userModel.getName());
 			
 			
+			
 			userSessionManagementBean.setUser(user);	
 			
 			return "/pages/dashboard/Index.xhtml?faces-redirect=true";
@@ -82,11 +80,19 @@ public class UserLoginBean {
 		catch(Exception e) {
 
 			error = e.getMessage(); 
-			errorVisible = true;
+			setErrorVisible(true);
 			
 			return "/pages/users/login";
 		}
 		
+	}
+
+	public boolean isErrorVisible() {
+		return errorVisible;
+	}
+
+	public void setErrorVisible(boolean errorVisible) {
+		this.errorVisible = errorVisible;
 	}
 	
 //	public String logout() {

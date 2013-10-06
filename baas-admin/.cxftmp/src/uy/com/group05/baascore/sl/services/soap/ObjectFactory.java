@@ -24,20 +24,22 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _ValidateUser_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "validateUser");
-    private final static QName _EmailAlreadyRegisteredException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "EmailAlreadyRegisteredException");
-    private final static QName _GetUsersResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getUsersResponse");
-    private final static QName _IsUserLoggedIn_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "isUserLoggedIn");
-    private final static QName _RegisterUser_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "registerUser");
-    private final static QName _LoginUserResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "loginUserResponse");
-    private final static QName _ValidateUserResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "validateUserResponse");
-    private final static QName _LogoutUser_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "logoutUser");
-    private final static QName _IsUserLoggedInResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "isUserLoggedInResponse");
-    private final static QName _LogoutUserResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "logoutUserResponse");
+    private final static QName _CreateApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "createApplication");
+    private final static QName _CreateApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "createApplicationResponse");
+    private final static QName _ExistsApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsApplication");
+    private final static QName _ListApplications_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "listApplications");
+    private final static QName _ExistsEntityApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsEntityApplication");
+    private final static QName _EntityCollectionAlreadyExistsException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "EntityCollectionAlreadyExistsException");
+    private final static QName _ExistsEntityApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsEntityApplicationResponse");
+    private final static QName _ApplicationDTO_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "applicationDTO");
+    private final static QName _ListApplicationsResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "listApplicationsResponse");
+    private final static QName _AppNotRegisteredException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "AppNotRegisteredException");
+    private final static QName _ExistsApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsApplicationResponse");
+    private final static QName _ExistsRoleApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsRoleApplication");
     private final static QName _UserNotRegisteredException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "UserNotRegisteredException");
-    private final static QName _RegisterUserResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "registerUserResponse");
-    private final static QName _LoginUser_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "loginUser");
-    private final static QName _GetUsers_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getUsers");
+    private final static QName _NombreAppAlreadyRegisteredException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "NombreAppAlreadyRegisteredException");
+    private final static QName _ExistsRoleApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsRoleApplicationResponse");
+    private final static QName _MongoDBAlreadyExistsException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "MongoDBAlreadyExistsException");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: uy.com.group05.baascore.sl.services.soap
@@ -47,83 +49,99 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ValidateUser }
+     * Create an instance of {@link CreateApplication }
      * 
      */
-    public ValidateUser createValidateUser() {
-        return new ValidateUser();
+    public CreateApplication createCreateApplication() {
+        return new CreateApplication();
     }
 
     /**
-     * Create an instance of {@link EmailAlreadyRegisteredException }
+     * Create an instance of {@link CreateApplicationResponse }
      * 
      */
-    public EmailAlreadyRegisteredException createEmailAlreadyRegisteredException() {
-        return new EmailAlreadyRegisteredException();
+    public CreateApplicationResponse createCreateApplicationResponse() {
+        return new CreateApplicationResponse();
     }
 
     /**
-     * Create an instance of {@link GetUsersResponse }
+     * Create an instance of {@link ExistsApplication }
      * 
      */
-    public GetUsersResponse createGetUsersResponse() {
-        return new GetUsersResponse();
+    public ExistsApplication createExistsApplication() {
+        return new ExistsApplication();
     }
 
     /**
-     * Create an instance of {@link IsUserLoggedIn }
+     * Create an instance of {@link ListApplications }
      * 
      */
-    public IsUserLoggedIn createIsUserLoggedIn() {
-        return new IsUserLoggedIn();
+    public ListApplications createListApplications() {
+        return new ListApplications();
     }
 
     /**
-     * Create an instance of {@link RegisterUser }
+     * Create an instance of {@link ExistsEntityApplication }
      * 
      */
-    public RegisterUser createRegisterUser() {
-        return new RegisterUser();
+    public ExistsEntityApplication createExistsEntityApplication() {
+        return new ExistsEntityApplication();
     }
 
     /**
-     * Create an instance of {@link LoginUserResponse }
+     * Create an instance of {@link EntityCollectionAlreadyExistsException }
      * 
      */
-    public LoginUserResponse createLoginUserResponse() {
-        return new LoginUserResponse();
+    public EntityCollectionAlreadyExistsException createEntityCollectionAlreadyExistsException() {
+        return new EntityCollectionAlreadyExistsException();
     }
 
     /**
-     * Create an instance of {@link ValidateUserResponse }
+     * Create an instance of {@link ExistsEntityApplicationResponse }
      * 
      */
-    public ValidateUserResponse createValidateUserResponse() {
-        return new ValidateUserResponse();
+    public ExistsEntityApplicationResponse createExistsEntityApplicationResponse() {
+        return new ExistsEntityApplicationResponse();
     }
 
     /**
-     * Create an instance of {@link LogoutUser }
+     * Create an instance of {@link ApplicationDTO }
      * 
      */
-    public LogoutUser createLogoutUser() {
-        return new LogoutUser();
+    public ApplicationDTO createApplicationDTO() {
+        return new ApplicationDTO();
     }
 
     /**
-     * Create an instance of {@link IsUserLoggedInResponse }
+     * Create an instance of {@link ListApplicationsResponse }
      * 
      */
-    public IsUserLoggedInResponse createIsUserLoggedInResponse() {
-        return new IsUserLoggedInResponse();
+    public ListApplicationsResponse createListApplicationsResponse() {
+        return new ListApplicationsResponse();
     }
 
     /**
-     * Create an instance of {@link LogoutUserResponse }
+     * Create an instance of {@link AppNotRegisteredException }
      * 
      */
-    public LogoutUserResponse createLogoutUserResponse() {
-        return new LogoutUserResponse();
+    public AppNotRegisteredException createAppNotRegisteredException() {
+        return new AppNotRegisteredException();
+    }
+
+    /**
+     * Create an instance of {@link ExistsApplicationResponse }
+     * 
+     */
+    public ExistsApplicationResponse createExistsApplicationResponse() {
+        return new ExistsApplicationResponse();
+    }
+
+    /**
+     * Create an instance of {@link ExistsRoleApplication }
+     * 
+     */
+    public ExistsRoleApplication createExistsRoleApplication() {
+        return new ExistsRoleApplication();
     }
 
     /**
@@ -135,133 +153,135 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RegisterUserResponse }
+     * Create an instance of {@link MongoDBAlreadyExistsException }
      * 
      */
-    public RegisterUserResponse createRegisterUserResponse() {
-        return new RegisterUserResponse();
+    public MongoDBAlreadyExistsException createMongoDBAlreadyExistsException() {
+        return new MongoDBAlreadyExistsException();
     }
 
     /**
-     * Create an instance of {@link GetUsers }
+     * Create an instance of {@link ExistsRoleApplicationResponse }
      * 
      */
-    public GetUsers createGetUsers() {
-        return new GetUsers();
+    public ExistsRoleApplicationResponse createExistsRoleApplicationResponse() {
+        return new ExistsRoleApplicationResponse();
     }
 
     /**
-     * Create an instance of {@link LoginUser }
+     * Create an instance of {@link NombreAppAlreadyRegisteredException }
      * 
      */
-    public LoginUser createLoginUser() {
-        return new LoginUser();
+    public NombreAppAlreadyRegisteredException createNombreAppAlreadyRegisteredException() {
+        return new NombreAppAlreadyRegisteredException();
     }
 
     /**
-     * Create an instance of {@link UserRegisterDTO }
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateApplication }{@code >}}
      * 
      */
-    public UserRegisterDTO createUserRegisterDTO() {
-        return new UserRegisterDTO();
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "createApplication")
+    public JAXBElement<CreateApplication> createCreateApplication(CreateApplication value) {
+        return new JAXBElement<CreateApplication>(_CreateApplication_QNAME, CreateApplication.class, null, value);
     }
 
     /**
-     * Create an instance of {@link UserDTO }
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateApplicationResponse }{@code >}}
      * 
      */
-    public UserDTO createUserDTO() {
-        return new UserDTO();
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "createApplicationResponse")
+    public JAXBElement<CreateApplicationResponse> createCreateApplicationResponse(CreateApplicationResponse value) {
+        return new JAXBElement<CreateApplicationResponse>(_CreateApplicationResponse_QNAME, CreateApplicationResponse.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ValidateUser }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ExistsApplication }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "validateUser")
-    public JAXBElement<ValidateUser> createValidateUser(ValidateUser value) {
-        return new JAXBElement<ValidateUser>(_ValidateUser_QNAME, ValidateUser.class, null, value);
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "existsApplication")
+    public JAXBElement<ExistsApplication> createExistsApplication(ExistsApplication value) {
+        return new JAXBElement<ExistsApplication>(_ExistsApplication_QNAME, ExistsApplication.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link EmailAlreadyRegisteredException }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ListApplications }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "EmailAlreadyRegisteredException")
-    public JAXBElement<EmailAlreadyRegisteredException> createEmailAlreadyRegisteredException(EmailAlreadyRegisteredException value) {
-        return new JAXBElement<EmailAlreadyRegisteredException>(_EmailAlreadyRegisteredException_QNAME, EmailAlreadyRegisteredException.class, null, value);
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "listApplications")
+    public JAXBElement<ListApplications> createListApplications(ListApplications value) {
+        return new JAXBElement<ListApplications>(_ListApplications_QNAME, ListApplications.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetUsersResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ExistsEntityApplication }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "getUsersResponse")
-    public JAXBElement<GetUsersResponse> createGetUsersResponse(GetUsersResponse value) {
-        return new JAXBElement<GetUsersResponse>(_GetUsersResponse_QNAME, GetUsersResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "existsEntityApplication")
+    public JAXBElement<ExistsEntityApplication> createExistsEntityApplication(ExistsEntityApplication value) {
+        return new JAXBElement<ExistsEntityApplication>(_ExistsEntityApplication_QNAME, ExistsEntityApplication.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link IsUserLoggedIn }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link EntityCollectionAlreadyExistsException }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "isUserLoggedIn")
-    public JAXBElement<IsUserLoggedIn> createIsUserLoggedIn(IsUserLoggedIn value) {
-        return new JAXBElement<IsUserLoggedIn>(_IsUserLoggedIn_QNAME, IsUserLoggedIn.class, null, value);
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "EntityCollectionAlreadyExistsException")
+    public JAXBElement<EntityCollectionAlreadyExistsException> createEntityCollectionAlreadyExistsException(EntityCollectionAlreadyExistsException value) {
+        return new JAXBElement<EntityCollectionAlreadyExistsException>(_EntityCollectionAlreadyExistsException_QNAME, EntityCollectionAlreadyExistsException.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link RegisterUser }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ExistsEntityApplicationResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "registerUser")
-    public JAXBElement<RegisterUser> createRegisterUser(RegisterUser value) {
-        return new JAXBElement<RegisterUser>(_RegisterUser_QNAME, RegisterUser.class, null, value);
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "existsEntityApplicationResponse")
+    public JAXBElement<ExistsEntityApplicationResponse> createExistsEntityApplicationResponse(ExistsEntityApplicationResponse value) {
+        return new JAXBElement<ExistsEntityApplicationResponse>(_ExistsEntityApplicationResponse_QNAME, ExistsEntityApplicationResponse.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link LoginUserResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ApplicationDTO }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "loginUserResponse")
-    public JAXBElement<LoginUserResponse> createLoginUserResponse(LoginUserResponse value) {
-        return new JAXBElement<LoginUserResponse>(_LoginUserResponse_QNAME, LoginUserResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "applicationDTO")
+    public JAXBElement<ApplicationDTO> createApplicationDTO(ApplicationDTO value) {
+        return new JAXBElement<ApplicationDTO>(_ApplicationDTO_QNAME, ApplicationDTO.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ValidateUserResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ListApplicationsResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "validateUserResponse")
-    public JAXBElement<ValidateUserResponse> createValidateUserResponse(ValidateUserResponse value) {
-        return new JAXBElement<ValidateUserResponse>(_ValidateUserResponse_QNAME, ValidateUserResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "listApplicationsResponse")
+    public JAXBElement<ListApplicationsResponse> createListApplicationsResponse(ListApplicationsResponse value) {
+        return new JAXBElement<ListApplicationsResponse>(_ListApplicationsResponse_QNAME, ListApplicationsResponse.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link LogoutUser }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link AppNotRegisteredException }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "logoutUser")
-    public JAXBElement<LogoutUser> createLogoutUser(LogoutUser value) {
-        return new JAXBElement<LogoutUser>(_LogoutUser_QNAME, LogoutUser.class, null, value);
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "AppNotRegisteredException")
+    public JAXBElement<AppNotRegisteredException> createAppNotRegisteredException(AppNotRegisteredException value) {
+        return new JAXBElement<AppNotRegisteredException>(_AppNotRegisteredException_QNAME, AppNotRegisteredException.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link IsUserLoggedInResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ExistsApplicationResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "isUserLoggedInResponse")
-    public JAXBElement<IsUserLoggedInResponse> createIsUserLoggedInResponse(IsUserLoggedInResponse value) {
-        return new JAXBElement<IsUserLoggedInResponse>(_IsUserLoggedInResponse_QNAME, IsUserLoggedInResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "existsApplicationResponse")
+    public JAXBElement<ExistsApplicationResponse> createExistsApplicationResponse(ExistsApplicationResponse value) {
+        return new JAXBElement<ExistsApplicationResponse>(_ExistsApplicationResponse_QNAME, ExistsApplicationResponse.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link LogoutUserResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ExistsRoleApplication }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "logoutUserResponse")
-    public JAXBElement<LogoutUserResponse> createLogoutUserResponse(LogoutUserResponse value) {
-        return new JAXBElement<LogoutUserResponse>(_LogoutUserResponse_QNAME, LogoutUserResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "existsRoleApplication")
+    public JAXBElement<ExistsRoleApplication> createExistsRoleApplication(ExistsRoleApplication value) {
+        return new JAXBElement<ExistsRoleApplication>(_ExistsRoleApplication_QNAME, ExistsRoleApplication.class, null, value);
     }
 
     /**
@@ -274,30 +294,30 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link RegisterUserResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link NombreAppAlreadyRegisteredException }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "registerUserResponse")
-    public JAXBElement<RegisterUserResponse> createRegisterUserResponse(RegisterUserResponse value) {
-        return new JAXBElement<RegisterUserResponse>(_RegisterUserResponse_QNAME, RegisterUserResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "NombreAppAlreadyRegisteredException")
+    public JAXBElement<NombreAppAlreadyRegisteredException> createNombreAppAlreadyRegisteredException(NombreAppAlreadyRegisteredException value) {
+        return new JAXBElement<NombreAppAlreadyRegisteredException>(_NombreAppAlreadyRegisteredException_QNAME, NombreAppAlreadyRegisteredException.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link LoginUser }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ExistsRoleApplicationResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "loginUser")
-    public JAXBElement<LoginUser> createLoginUser(LoginUser value) {
-        return new JAXBElement<LoginUser>(_LoginUser_QNAME, LoginUser.class, null, value);
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "existsRoleApplicationResponse")
+    public JAXBElement<ExistsRoleApplicationResponse> createExistsRoleApplicationResponse(ExistsRoleApplicationResponse value) {
+        return new JAXBElement<ExistsRoleApplicationResponse>(_ExistsRoleApplicationResponse_QNAME, ExistsRoleApplicationResponse.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetUsers }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link MongoDBAlreadyExistsException }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "getUsers")
-    public JAXBElement<GetUsers> createGetUsers(GetUsers value) {
-        return new JAXBElement<GetUsers>(_GetUsers_QNAME, GetUsers.class, null, value);
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "MongoDBAlreadyExistsException")
+    public JAXBElement<MongoDBAlreadyExistsException> createMongoDBAlreadyExistsException(MongoDBAlreadyExistsException value) {
+        return new JAXBElement<MongoDBAlreadyExistsException>(_MongoDBAlreadyExistsException_QNAME, MongoDBAlreadyExistsException.class, null, value);
     }
 
 }

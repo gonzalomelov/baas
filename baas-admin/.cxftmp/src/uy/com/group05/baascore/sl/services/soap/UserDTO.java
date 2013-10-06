@@ -21,7 +21,6 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="lastname" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="loggedIn" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="username" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -36,8 +35,7 @@ import javax.xml.bind.annotation.XmlType;
     "id",
     "lastname",
     "loggedIn",
-    "name",
-    "username"
+    "name"
 })
 public class UserDTO {
 
@@ -46,7 +44,6 @@ public class UserDTO {
     protected String lastname;
     protected boolean loggedIn;
     protected String name;
-    protected String username;
 
     /**
      * Gets the value of the email property.
@@ -150,30 +147,6 @@ public class UserDTO {
      */
     public void setName(String value) {
         this.name = value;
-    }
-
-    /**
-     * Gets the value of the username property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * Sets the value of the username property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setUsername(String value) {
-        this.username = value;
     }
 
 }

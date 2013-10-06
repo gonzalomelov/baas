@@ -80,7 +80,9 @@ public class UserRegistrationBean {
 		errorVisible = false;
 		
 		try {
-			userController.registerUser(user);
+			long UserId = userController.registerUser(user);
+			
+			user.setUserId(UserId);
 			
 			userSessionManagementBean.setUser(user);
 			

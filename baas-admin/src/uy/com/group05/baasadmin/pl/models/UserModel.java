@@ -13,6 +13,7 @@ public class UserModel {
 	
 	private String lastname;
 
+	private long UserId;
 
 
 	public String getPassword() {
@@ -53,6 +54,14 @@ public class UserModel {
 
 	public void setRepeatedPassword(String repeatedPassword) {
 		this.repeatedPassword = repeatedPassword;
+	}
+
+	public long getUserId() {
+		return UserId;
+	}
+
+	public void setUserId(long userId) {
+		UserId = userId;
 	}
 
 	
