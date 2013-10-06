@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
-  <display-name>baas-admin</display-name>   
+<web-app id="WebApp_ID" version="3.0"
+ xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+ <display-name>baas-admin</display-name>
+ <filter>
+  <description>Filtro para cuando un usuario este logueado, que vaya al index</description>
+  <display-name>FilterLoggedInUser</display-name>
+  <filter-name>FilterLoggedInUser</filter-name>
+  <filter-class>uy.com.group05.baasadmin.pl.controllers.FiltroDeslogueado</filter-class>
+ </filter>
+ <filter-mapping>
+  <filter-name>FilterLoggedInUser</filter-name>
+  <url-pattern>/index.xhtml</url-pattern>
+  <url-pattern>/pages/users/login.xhtml</url-pattern>
+  <url-pattern>/pages/users/register.xhtml</url-pattern>
+ </filter-mapping>
  <servlet>
   <servlet-name>facesServlet</servlet-name>
   <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
