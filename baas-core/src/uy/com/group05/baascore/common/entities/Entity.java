@@ -68,5 +68,16 @@ public class Entity {
 		this.permission = permission;
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		if (o == null) return false;
+	    if (o == this) return true;
+	    if (!(o instanceof Entity)) return false;
+	    Entity entity = (Entity)o;
+	    if (this.name.equals(entity.getName()) && this.application.equals(entity.getApplication()))
+	    	return true;
+	    else
+	    	return false;
+	}
 	
 }

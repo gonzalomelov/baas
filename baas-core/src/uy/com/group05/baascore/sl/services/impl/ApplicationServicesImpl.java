@@ -64,4 +64,11 @@ public class ApplicationServicesImpl implements ApplicationServices{
 		return appManagementLocal.existsEntityApplication(nomApp, nomEntity);	
 	}
 
+	public long editApplication(String nombreApp, List<String> rolesStr, List<String> entidadesStr)
+			throws
+			 	AppNotRegisteredException,
+				MongoDBAlreadyExistsException,
+				EntityCollectionAlreadyExistsException{
+		return appManagementLocal.editApplication(nombreApp, rolesStr, entidadesStr);
+	}
 }

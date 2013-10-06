@@ -116,5 +116,13 @@ public class Application {
 		this.entities = entities;
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		if (o == null) return false;
+	    if (o == this) return true;
+	    if (!(o instanceof Application)) return false;
+	    Application app = (Application)o;
+	    return this.name.equals(app.getName());
+	}
 	
 }

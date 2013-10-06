@@ -70,5 +70,15 @@ public class Role {
 		this.permissions = permissions;
 	}
 	
-	
+	@Override
+	public boolean equals(Object o){
+		if (o == null) return false;
+	    if (o == this) return true;
+	    if (!(o instanceof Role)) return false;
+	    Role role = (Role)o;
+	    if (this.name.equals(role.getName()) && this.application.equals(role.getApplication()))
+	    	return true;
+	    else
+	    	return false;
+	}
 }

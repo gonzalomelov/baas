@@ -2,9 +2,7 @@ package uy.com.group05.baascore.bll.ejbs;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -39,78 +37,12 @@ public class AppManagement implements AppManagementLocal{
 	@Inject
 	NoSqlDbDao noSqlDbDao;
 	
-	public Application createApplication(String nombreApp, User owner)
-			throws
-				NombreAppAlreadyRegisteredException,
-				UserNotRegisteredException,
-				MongoDBAlreadyExistsException {
-		
-		if (appDao.readByName(nombreApp) != null){ //No existe la app
-			throw new NombreAppAlreadyRegisteredException("Ya existe una aplicacion con ese nombre");
-		}
-		
-		Application app = new Application(nombreApp, owner, new ArrayList<Role>(), new ArrayList<Entity>());
-		
-		noSqlDbDao.createNoSqlDb(nombreApp);
-		
-		return appDao.create(app);
-	}
-	
-	public Role createRole(String nombreApp, String nombreRole) { //Segun DS retorna role, capaz mejor retornar app
-		Application app= appDao.readByName(nombreApp);
-		if (app == null){ //Existe la app
-			//throw new No existe la aplicacion
-		}
-		Iterator<Role> iter = app.getRoles().iterator();
-		boolean existe = false;
-		while (iter.hasNext() && !existe){
-			existe = iter.next().getName().equals(nombreRole);
-		}
-		if (existe){ //Existe el usuario que la crea
-			//throw new Ya existe un rol con el mismo nombre
-		}
-		
-		List<Role> roles = app.getRoles();
-		Role role = new Role(nombreRole, app);
-		roles.add(role);
-		app.setRoles(roles);
-		
-		return roleDao.create(role);
-	}
-	
-	public Entity createEntity(String nombreApp, String nombreEntity) { //Segun DS retorna role, capaz mejor retornar app
-		Application app= appDao.readByName(nombreApp);
-		if (app == null){ //Existe la app
-			//throw new No existe la aplicacion
-		}
-		Iterator<Entity> iter = app.getEntities().iterator();
-		boolean existe = false;
-		while (iter.hasNext() && !existe){
-			existe = iter.next().getName().equals(nombreEntity);
-		}
-		if (existe){ //Existe el usuario que la crea
-			//throw new Ya existe un rol con el mismo nombre
-		}
-		
-		List<Entity> entities = app.getEntities();
-		Entity entity = new Entity(nombreEntity, app);
-		entities.add(entity);
-		app.setEntities(entities);
-		
-		return entityDao.create(entity);
-	}
 	
 	public List<Application> listApplications(long idUser) throws UserNotRegisteredException{
 		User user = userDao.read(idUser);
 		if(user == null)//no existe usuario
 			throw new UserNotRegisteredException("No existe el usuario con id:"+idUser);
-		
 		//Obtenego la lista de apps del usuario
-		/*List<Application> apps= appDao.readFromUser(idUser); 
-		Iterator<Application> iter= apps.iterator();
-		while(iter.hasNext()){
-			System.out.println(iter.next());
-		}*/
 		return appDao.readFromUser(idUser);
 	}
 	
@@ -132,14 +64,14 @@ public class AppManagement implements AppManagementLocal{
 		Application app = new Application(nombreApp, user);
 		
 		//Elimino duplicados de roles y entidades
-		Set<String> rolesSet= new LinkedHashSet<String>();
+		/*Set<String> rolesSet= new LinkedHashSet<String>();
 		rolesSet.addAll(rolesStr);
 		rolesStr.clear();
 		rolesStr.addAll(rolesSet);
 		Set<String> entidadesSet= new LinkedHashSet<String>();
 		entidadesSet.addAll(entidadesStr);
 		entidadesStr.clear();
-		entidadesStr.addAll(entidadesSet);
+		entidadesStr.addAll(entidadesSet);*/
 		
 		List<Role> roles = new ArrayList<Role>();
 		List<Entity> entidades = new ArrayList<Entity>();
@@ -147,14 +79,18 @@ public class AppManagement implements AppManagementLocal{
 		Iterator<String> iter = rolesStr.iterator();
 		while (iter.hasNext()){
 				Role r = new Role(iter.next(), app);
-				roles.add(r);
-				roleDao.create(r);
+				if (!roles.contains(r)){
+					roles.add(r);
+					roleDao.create(r);
+				}
 		}
 		iter = entidadesStr.iterator();
 		while (iter.hasNext()){
 			Entity e = new Entity(iter.next(), app);
-			entidades.add(e);
-			entityDao.create(e);
+			if(!entidades.contains(e)){
+				entidades.add(e);
+				entityDao.create(e);
+			}
 		}
 		
 		//Seteo Roles y Entidades a App
@@ -162,8 +98,9 @@ public class AppManagement implements AppManagementLocal{
 		app.setEntities(entidades);
 		appDao.create(app);
 		
+		// Creo base MongoDB para la nueva APP
 		noSqlDbDao.createNoSqlDb(nombreApp);
-		
+		// Creo las coleciones dentro de la base MongoDB para cada entidad
 		for(Entity e : app.getEntities()) {
 			noSqlDbDao.createEntityCollection(nombreApp, e.getName());
 		}
@@ -198,4 +135,45 @@ public class AppManagement implements AppManagementLocal{
 		}
 		return exist;
 	}
+	
+	public long editApplication(String nombreApp, List<String> rolesStr, List<String> entidadesStr)
+			throws
+			 	AppNotRegisteredException,
+				MongoDBAlreadyExistsException,
+				EntityCollectionAlreadyExistsException {
+	
+		Application app = appDao.readByName(nombreApp);
+		if (app == null)//No existe la app
+			throw new AppNotRegisteredException("No existe una aplicacion con ese nombre");
+
+		//Obtengo Roles y Entidades existentes
+		List<Role> roles = app.getRoles();
+		List<Entity> entidades = app.getEntities();
+		//Creo los roles
+		Iterator<String> iter = rolesStr.iterator();
+		while (iter.hasNext()){
+				Role r = new Role(iter.next(), app);
+				if (!app.getRoles().contains(r)){
+					roles.add(r);
+					roleDao.create(r);
+				}
+		}
+		iter = entidadesStr.iterator();
+		while (iter.hasNext()){
+			Entity e = new Entity(iter.next(), app);
+			if (!app.getEntities().contains(e)){
+				//Creo la coleccion para cada entidad dentro de la base MongoDB de la APP
+				noSqlDbDao.createEntityCollection(nombreApp, e.getName()); //Primero porque si falla, no se va a crear la entidad.
+				entidades.add(e);
+				entityDao.create(e);
+			}
+		}
+		
+		//Seteo Roles y Entidades a App
+		app.setRoles(roles);
+		app.setEntities(entidades);
+		
+		return app.getId();
+	}
+	
 }

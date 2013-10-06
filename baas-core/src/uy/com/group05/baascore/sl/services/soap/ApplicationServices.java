@@ -49,4 +49,14 @@ public interface ApplicationServices {
 			@WebParam(name ="nomApp") String nomApp,
 			@WebParam(name ="nomRole") String nomRole) 
 			throws AppNotRegisteredException;
+	
+	@WebMethod
+	public long editApplication(
+			@WebParam(name = "nombreApp") String nombreApp,
+			@WebParam(name = "rolStr") List<String> rolesStr,
+			@WebParam(name = "entidadStr") List<String> entidadesStr)
+			throws
+			 	AppNotRegisteredException,
+				MongoDBAlreadyExistsException,
+				EntityCollectionAlreadyExistsException;
 }
