@@ -22,4 +22,6 @@ public class UserSessionManagementBean {
 	{
 		return user != null;
 	}
+	
+	
 }

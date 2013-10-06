@@ -6,6 +6,8 @@ import java.util.List;
 public class AppModel {
 
 	private List<Application> aplicaciones;
+	
+	private int cantApps;
 
 	public AppModel(){
 		aplicaciones = new ArrayList<Application>();
@@ -18,6 +20,12 @@ public class AppModel {
 	public void setAplicaciones(List<Application> aplicaciones) {
 		this.aplicaciones = aplicaciones;
 	}
+
+	public int getCantApps() {
+		return aplicaciones.size();
+	}
+
+	
 	
 	
 }

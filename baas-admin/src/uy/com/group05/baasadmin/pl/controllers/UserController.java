@@ -87,8 +87,15 @@ public class UserController {
 		}
 	}
 	
-	public boolean logoutUser(String username) {
-		return false;
+	public boolean logoutUser(String email) {
+		UserServices service = new UserServices();
+		uy.com.group05.baascore.sl.services.soap.UserServices port = service.getUserServicesPort();
+		
+		 try {
+			return port.logoutUser(email);
+		} catch (UserNotRegisteredException_Exception e) {
+			return false;
+		}
 	}
 	
 	public boolean validateUser(String username, String password) {

@@ -3,6 +3,7 @@ package uy.com.group05.baasadmin.pl.beans;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 import uy.com.group05.baasadmin.pl.controllers.UserController;
 import uy.com.group05.baasadmin.pl.models.UserModel;
@@ -35,6 +36,14 @@ public class UserLoginBean {
 	}
 	
 	public UserSessionManagementBean getUserSessionManagementBean() {
+		if(userSessionManagementBean == null){
+			FacesContext context = FacesContext.getCurrentInstance();
+			userSessionManagementBean = context.getApplication()
+					.evaluateExpressionGet(context,"#{userSessionManagementBean}", 
+							UserSessionManagementBean.class);
+			
+		}
+		
 		return userSessionManagementBean;
 	}
 
@@ -95,15 +104,15 @@ public class UserLoginBean {
 		this.errorVisible = errorVisible;
 	}
 	
-//	public String logout() {
-//		boolean logoutOk = userController.logoutUser(userSessionManagementBean.getUser().getUsername());
-//		
+	public String logout() {
+		//boolean logoutOk = userController.logoutUser(getUserSessionManagementBean().getUser().getEmail());
+		
 //		if (!logoutOk) {
-//			return "/profile";
+//			return "";
 //		}
-//		
-//		userSessionManagementBean.setUser(null);
-//		
-//		return "/index";
-//	}
+		
+		userSessionManagementBean.setUser(null);
+		
+		return "/index.xhtml?faces-redirect=true";
+	}
 }
