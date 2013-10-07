@@ -7,6 +7,9 @@ import uy.com.group05.baasadmin.pl.models.AppModel;
 import uy.com.group05.baasadmin.pl.models.Application;
 import uy.com.group05.baascore.sl.services.impl.ApplicationServices;
 import uy.com.group05.baascore.sl.services.soap.ApplicationDTO;
+import uy.com.group05.baascore.sl.services.soap.EntityCollectionAlreadyExistsException_Exception;
+import uy.com.group05.baascore.sl.services.soap.MongoDBAlreadyExistsException_Exception;
+import uy.com.group05.baascore.sl.services.soap.NombreAppAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.UserNotRegisteredException_Exception;
 
 public class ApplicationController {
@@ -45,4 +48,27 @@ public class ApplicationController {
 		
 
 	}
+
+	public void CreateApplication(long UserId, String appName, List<String> roles, List<String> entities) throws ApplicationException{
+		
+		ApplicationServices service = new ApplicationServices();
+		
+		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
+		
+		try {
+			port.createApplication(UserId, appName, roles, entities);
+		} catch (NombreAppAlreadyRegisteredException_Exception e) {
+			throw new ApplicationException(e.getMessage());
+		} catch (MongoDBAlreadyExistsException_Exception e) {
+			throw new ApplicationException(e.getMessage());
+		} catch (EntityCollectionAlreadyExistsException_Exception e) {
+			throw new ApplicationException(e.getMessage());
+		} catch (UserNotRegisteredException_Exception e) {
+			throw new ApplicationException(e.getMessage());
+		}
+		
+		
+		
+	}
+
 }

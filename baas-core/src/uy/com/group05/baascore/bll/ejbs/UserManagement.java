@@ -73,7 +73,7 @@ public class UserManagement implements UserManagementLocal {
 			throw new UserNotRegisteredException("Usuario no registrado");
 		}
 		
-		if (!user.getPassword().equals(password) || user.isLoggedIn()) {
+		if (!user.getPassword().equals(password) ) {
 			return null;
 		}
 		

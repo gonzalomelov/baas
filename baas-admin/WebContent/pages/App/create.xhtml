@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+
+<h:head>
+	<script src="../../js/jquery-1.7.2.min.js"></script>
+	<script src="../../js/CreateApp.js"></script>
+
+
+</h:head> 
+<body> 
+	<h1>JSF 2 dataTable example</h1>
+	
+		<span>Application Name</span>
+		<h:form>
+		<h:inputText size="10" value="#{createApplicationBean.appName}" styleClass="appNamePosta"  />
+		<h:commandButton value="Create" action="#{createApplicationBean.Create()}" />	
+	</h:form>
+		
+	
+	
+    	<h:form>
+    		<h:dataTable value="#{createApplicationBean.rolList}" var="o"
+    			styleClass="order-table"
+    			headerClass="order-table-header"
+    			rowClasses="order-table-odd-row,order-table-even-row"
+    		>
+ 
+    		<h:column>
+ 
+    			<f:facet name="header">Name</f:facet>
+    			#{o}
+ 
+    		</h:column>
+ 
+    		
+ 
+    		<h:column>
+ 
+    			<f:facet name="header">Action</f:facet>
+ 
+    			<h:commandLink value="Delete" 
+                                   action="#{createApplicationBean.deleteRole(o)}" />
+ 
+    		</h:column>
+ 
+    		</h:dataTable>
+ 
+    		<h3>Add Rol</h3>
+    		<table>
+    		<tr>
+    			<td>Role Name :</td>
+    			<td><h:inputText size="10" value="#{createApplicationBean.roleName}" /></td>
+    		</tr>    		
+    		</table>
+ 
+ 			<h:inputText value="#{createApplicationBean.appNameRol}" styleClass="appNameInput" style="display: none;"/>
+ 
+    		<h:commandButton value="Add" action="#{createApplicationBean.addRole}" />
+ 
+    	</h:form>
+    	
+    	
+    	<h:form>
+    		<h:dataTable value="#{createApplicationBean.entityList}" var="o"
+    			styleClass="order-table"
+    			headerClass="order-table-header"
+    			rowClasses="order-table-odd-row,order-table-even-row"
+    		>
+ 
+    		<h:column>
+ 
+    			<f:facet name="header">Name</f:facet>
+    			#{o}
+ 
+    		</h:column>
+ 
+    		
+ 
+    		<h:column>
+ 
+    			<f:facet name="header">Action</f:facet>
+ 
+    			<h:commandLink value="Delete" 
+                                   action="#{createApplicationBean.deleteEntity(o)}" />
+ 
+    		</h:column>
+ 
+    		</h:dataTable>
+ 
+    		<h3>Add Entity</h3>
+    		<table>
+    		<tr>
+    			<td>Entity Name :</td>
+    			<td><h:inputText size="10" value="#{createApplicationBean.entityName}" /></td>
+    		</tr>    		
+    		</table>
+
+			<h:inputText value="#{createApplicationBean.appNameEntity}" styleClass="appNameInput" style="display: none;"/>
+ 
+    		<h:commandButton value="Add" action="#{createApplicationBean.addEntity()}" />
+ 
+    	</h:form>
+
+
+	
+
+
+</body> 
+</html>

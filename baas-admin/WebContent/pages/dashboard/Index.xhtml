@@ -16,6 +16,15 @@ body {
 .sidebar-nav {
 	padding: 9px 0;
 }
+
+	.h2Title{
+		padding-left: 5%;
+		float: left;
+		width: 75%;
+	}
+	
+	.fn_create{float: left;}
+
 </style>
 	<link href="../../css/bootstrap-responsive.css" rel="stylesheet" />
 	<link href="../../css/charisma-app.css" rel="stylesheet" />
@@ -105,9 +114,10 @@ body {
 	</div>
 
 
-	<h2>Applications</h2>
+	<h2 class="h2Title">Applications</h2>
+	<h:link value="Create" outcome="/pages/App/create" styleClass="btn btn-large btn-primary btn-round fn_create"></h:link>
 
-
+<!-- 	<button class="btn btn-large btn-primary btn-round fn_create">Create</button> -->
 
 
 	<div id="content" class="span10">
