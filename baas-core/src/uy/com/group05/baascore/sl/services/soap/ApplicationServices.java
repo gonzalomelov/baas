@@ -61,7 +61,7 @@ public interface ApplicationServices {
 				EntityCollectionAlreadyExistsException;
 	
 	@WebMethod
-	public boolean addUserApplication(
+	public boolean assignUserToApplication(
 			@WebParam(name = "nombreApp") String nombreApp,
 			@WebParam(name = "idUser") long idUser)
 			throws

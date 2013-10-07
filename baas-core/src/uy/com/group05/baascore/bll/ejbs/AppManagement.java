@@ -176,7 +176,7 @@ public class AppManagement implements AppManagementLocal{
 		return app.getId();
 	}
 	
-	public boolean addUserApplication(String nombreApp, long idUser) throws AppNotRegisteredException, UserNotRegisteredException {
+	public boolean assignUserToApplication(String nombreApp, long idUser) throws AppNotRegisteredException, UserNotRegisteredException {
 		Application app = appDao.readByName(nombreApp);
 		if (app == null)
 			throw new AppNotRegisteredException("No existe una aplicacion con ese nombre");
