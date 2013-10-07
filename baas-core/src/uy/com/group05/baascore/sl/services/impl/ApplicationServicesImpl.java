@@ -78,4 +78,11 @@ public class ApplicationServicesImpl implements ApplicationServices{
 				UserNotRegisteredException {
 		return appManagementLocal.assignUserToApplication(nombreApp, idUser);
 	}
+	
+	public boolean unassignUserFromApplication(String nombreApp, long idUser)
+			throws
+				AppNotRegisteredException,
+				UserNotRegisteredException {
+		return appManagementLocal.unassignUserFromApplication(nombreApp, idUser);
+	}
 }

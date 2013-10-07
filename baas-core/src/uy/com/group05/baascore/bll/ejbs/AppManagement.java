@@ -191,11 +191,44 @@ public class AppManagement implements AppManagementLocal{
 		if (!userApps.contains(app)) {
 			// Agrego la app a la lista de apps del usuario
 			userApps.add(app);
+			user.setApplications(userApps);
 			userDao.update(user);
 			
 			// Agrego el usuario a la lista de usuarios de la app
 			List<User> appUsers = app.getUsers();
 			appUsers.add(user);
+			app.setUsers(appUsers);
+			appDao.update(app);
+		}
+		else
+			return false;
+		
+		return true;
+	}
+
+	public boolean unassignUserFromApplication(String nombreApp, long idUser)
+			throws AppNotRegisteredException, UserNotRegisteredException {
+		
+		Application app = appDao.readByName(nombreApp);
+		if (app == null)
+			throw new AppNotRegisteredException("No existe una aplicacion con ese nombre");
+		
+		User user = userDao.read(idUser);
+		if (user == null)
+			throw new UserNotRegisteredException("No existe el usuario con id:" + idUser);
+		
+		// Si el usuario ya tenía asignada la app, se la desasigno
+		// Si no tenía asignada la app, devuelvo false
+		List<Application> userApps = user.getApplications();
+		if (userApps.contains(app)) {
+			// Elimino la app e la lista de apps del usuario
+			userApps.remove(app);
+			user.setApplications(userApps);
+			userDao.update(user);
+			
+			// Elimino el usuario de la lista de usuarios de la app
+			List<User> appUsers = app.getUsers();
+			appUsers.remove(user);
 			app.setUsers(appUsers);
 			appDao.update(app);
 		}

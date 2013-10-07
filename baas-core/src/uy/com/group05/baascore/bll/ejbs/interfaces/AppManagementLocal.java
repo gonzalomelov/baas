@@ -41,4 +41,9 @@ public interface AppManagementLocal {
 			throws
 				AppNotRegisteredException,
 				UserNotRegisteredException;
+	
+	public boolean unassignUserFromApplication(String nombreApp, long idUser)
+			throws
+			AppNotRegisteredException,
+			UserNotRegisteredException;
 }

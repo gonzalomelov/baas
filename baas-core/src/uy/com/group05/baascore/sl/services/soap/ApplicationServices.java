@@ -67,4 +67,12 @@ public interface ApplicationServices {
 			throws
 				AppNotRegisteredException,
 				UserNotRegisteredException;
+	
+	@WebMethod
+	public boolean unassignUserFromApplication(
+			@WebParam(name = "nombreApp") String nombreApp,
+			@WebParam(name = "idUser") long idUser)
+			throws
+				AppNotRegisteredException,
+				UserNotRegisteredException;
 }
