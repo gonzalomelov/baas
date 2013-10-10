@@ -41,6 +41,11 @@ body {
     	
     }
 
+	
+	.errorMessage {
+	    margin-top: 10%;
+	}
+
 </style>
 	<link href="../../css/bootstrap-responsive.css" rel="stylesheet" />
 	<link href="../../css/charisma-app.css" rel="stylesheet" />
@@ -133,6 +138,13 @@ body {
 			<h1>Create Application</h1>
 	  	</div>
 	
+		<h:panelGroup rendered="#{createApplicationBean.error.length() > 0 }" >  
+    					<div class="alert alert-error ">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<strong>Error</strong> <h:outputLabel value="#{createApplicationBean.error}" />
+						</div>  
+						</h:panelGroup>  
+	
 		
 		<span>Application Name</span>
 		<h:form>
@@ -179,7 +191,7 @@ body {
 					</div>
     	
 
-
+			
     		<table class="tablaAdd">
     		<tr>
     			<td>Role Name :</td>
@@ -190,6 +202,14 @@ body {
  			<h:inputText value="#{createApplicationBean.appNameRol}" styleClass="appNameInput" style="display: none;"/>
  
     		<h:commandButton value="Add" action="#{createApplicationBean.addRole}" styleClass="buttonAdd"/>
+ 
+ 			<h:panelGroup rendered="#{createApplicationBean.errorRol.length() > 0 }" >  
+    					<div class="alert alert-error errorMessage">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<strong>Error</strong> <h:outputLabel value="#{createApplicationBean.errorRol}" />
+						</div>  
+						</h:panelGroup>  
+ 
  
     	</h:form>
     	
@@ -241,6 +261,14 @@ body {
 			<h:inputText value="#{createApplicationBean.appNameEntity}" styleClass="appNameInput" style="display: none;"/>
  
     		<h:commandButton value="Add" action="#{createApplicationBean.addEntity()}" styleClass="buttonAdd"/>
+ 
+ 			<h:panelGroup rendered="#{createApplicationBean.errorEntity.length() > 0 }" >  
+    					<div class="alert alert-error errorMessage">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<strong>Error</strong> <h:outputLabel value="#{createApplicationBean.errorEntity}" />
+						</div>  
+						</h:panelGroup>  
+ 
  
     	</h:form>
 

@@ -1,10 +1,11 @@
 package uy.com.group05.baasadmin.pl.beans;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import uy.com.group05.baasadmin.pl.controllers.ApplicationController;
@@ -12,7 +13,7 @@ import uy.com.group05.baasadmin.pl.controllers.ApplicationController;
 
 
 @ManagedBean(name="createApplicationBean")
-@SessionScoped
+@ViewScoped
 public class CreateApplicationBean {
 	
 	private String roleName;
@@ -25,6 +26,13 @@ public class CreateApplicationBean {
 	
 	private String appNameEntity;
 	
+	private String errorRol;
+	
+	private String errorEntity;
+	
+	private String error;
+	
+		
 	@ManagedProperty(value="#{userSessionManagementBean}")
 	private UserSessionManagementBean userSessionManagementBean;
 	
@@ -68,9 +76,17 @@ public class CreateApplicationBean {
  
 	public String addRole() {
  
+		CleanErrorMessages();
+		
 		appName = appNameRol;
 		
-		System.out.println("addRole: "+ appNameRol);
+		
+		if(ExisteEnLista(roleName, rolList)){
+			errorRol = "Ya existe el rol:"+ roleName;
+			roleName = "";
+			return null;
+		}
+		
 		
 		rolList.add(roleName);
 		roleName = "";
@@ -86,8 +102,15 @@ public class CreateApplicationBean {
 	
 	public String addEntity() {
 		 
-		
+		CleanErrorMessages();
 		appName = appNameEntity;
+		
+		if(ExisteEnLista(entityName, entityList)){
+			errorEntity = "Ya existe la entidad:"+ entityName;
+			entityName = "";
+			return null;
+		}
+		
 		
 		entityList.add(entityName);
 		entityName = "";
@@ -127,6 +150,8 @@ public class CreateApplicationBean {
 
 	public String Create(){
 		
+		CleanErrorMessages();
+		
 		ApplicationController appController = new ApplicationController();
 		
 		long userId = getUserSessionManagementBean().getUser().getUserId();
@@ -142,6 +167,8 @@ public class CreateApplicationBean {
 		}
 		catch(Exception e){
 		
+			error = e.getMessage();
+			
 			return "";
 			
 		}
@@ -171,5 +198,48 @@ public class CreateApplicationBean {
 	public void setAppNameEntity(String appNameEntity) {
 		this.appNameEntity = appNameEntity;
 	}
+
+	public String getErrorRol() {
+		return errorRol;
+	}
+
+	public void setErrorRol(String errorRol) {
+		this.errorRol = errorRol;
+	}
 	
+	private boolean ExisteEnLista(String element, List<String> list){
+		
+		boolean retorno = false;
+		
+		for (String elem : list) {
+			if(elem.equals(element)){
+				return true;
+			}
+		}
+		
+		return retorno;
+	}
+
+	public String getErrorEntity() {
+		return errorEntity;
+	}
+
+	public void setErrorEntity(String errorEntity) {
+		this.errorEntity = errorEntity;
+	}
+	
+	
+	private void CleanErrorMessages(){
+		errorEntity = "";
+		errorRol = "" ;
+		error = "";
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
 }
