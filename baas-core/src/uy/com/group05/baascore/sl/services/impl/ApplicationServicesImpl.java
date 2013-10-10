@@ -11,6 +11,7 @@ import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.common.mapper.Mapper;
 import uy.com.group05.baascore.sl.entitiesws.ApplicationDTO;
@@ -56,14 +57,29 @@ public class ApplicationServicesImpl implements ApplicationServices{
 		return appManagementLocal.existsApplication(nombre);
 	}
 	
-	public boolean existsRoleApplication(String nomApp, String nomRole) throws AppNotRegisteredException{
-		return appManagementLocal.existsRoleApplication(nomApp, nomRole);	
+	public boolean existsRoleApplication(long idApp, String nomRole) throws AppNotRegisteredException{
+		return appManagementLocal.existsRoleApplication(idApp, nomRole);	
 	}
 	
-	public boolean existsEntityApplication(String nomApp, String nomEntity) throws AppNotRegisteredException{
-		return appManagementLocal.existsEntityApplication(nomApp, nomEntity);	
+	public boolean existsEntityApplication(long idApp, String nomEntity) throws AppNotRegisteredException{
+		return appManagementLocal.existsEntityApplication(idApp, nomEntity);	
 	}
 
+	public long editRoleApplication(long idApp, long idUser, String nomRole)
+			throws
+			 	AppNotRegisteredException,
+			 	UserCantAccessAppException {
+		return appManagementLocal.editRoleApplication(idApp, idUser, nomRole);
+	}
+	
+	public long editEntityApplication(long idApp, long idUser, String nomEntity)
+			throws
+			 	AppNotRegisteredException,
+			 	UserCantAccessAppException,
+			 	EntityCollectionAlreadyExistsException{
+		return appManagementLocal.editEntityApplication(idApp, idUser, nomEntity);
+	}
+	
 	public long editApplication(String nombreApp, List<String> rolesStr, List<String> entidadesStr)
 			throws
 			 	AppNotRegisteredException,

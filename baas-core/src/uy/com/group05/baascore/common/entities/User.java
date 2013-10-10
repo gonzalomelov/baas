@@ -88,5 +88,16 @@ public class User {
 		this.applications = applications;
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		if (o == null) return false;
+	    if (o == this) return true;
+	    if (!(o instanceof User)) return false;
+	    User user = (User)o;
+	    if (this.email.equals(user.getEmail()))
+	    	return true;
+	    else
+	    	return false;
+	}
 	
 }

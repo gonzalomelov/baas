@@ -10,6 +10,7 @@ import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.sl.entitiesws.ApplicationDTO;
 
@@ -40,15 +41,34 @@ public interface ApplicationServices {
 	
 	@WebMethod
 	public boolean existsEntityApplication(
-			@WebParam(name ="nomApp") String nomApp,
+			@WebParam(name ="idApp") long idApp,
 			@WebParam(name ="nomEntity") String nomEntity) 
 			throws AppNotRegisteredException;
 	
 	@WebMethod
 	public boolean existsRoleApplication(
-			@WebParam(name ="nomApp") String nomApp,
+			@WebParam(name ="idApp") long idApp,
 			@WebParam(name ="nomRole") String nomRole) 
 			throws AppNotRegisteredException;
+	
+	@WebMethod
+	public long editRoleApplication(
+			@WebParam(name ="idApp")long idApp, 
+			@WebParam(name ="idUser")long idUser, 
+			@WebParam(name ="nomRole") String nomRole)
+			throws
+			 	AppNotRegisteredException,
+			 	UserCantAccessAppException;
+	
+	@WebMethod
+	public long editEntityApplication(
+			@WebParam(name ="idApp") long idApp, 
+			@WebParam(name ="idUser") long idUser, 
+			@WebParam(name ="nomEntity") String nomEntity)
+			throws
+			 	AppNotRegisteredException,
+			 	UserCantAccessAppException,
+			 	EntityCollectionAlreadyExistsException;
 	
 	@WebMethod
 	public long editApplication(
