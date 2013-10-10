@@ -126,6 +126,11 @@
 						</fieldset>
 					</h:form>
 
+					<h:form id="loginForm">
+			            <a href="#{loginPageCode.facebookUrlAuth}"><img src="../../img/fb_login_button.png" alt="Login Facebook" /></a>
+			            <br/><br/>
+			            <h:outputText value="#{loginPageCode.userFromSession}"></h:outputText>
+			        </h:form>
 
 						
 				</div><!--/span-->
@@ -135,6 +140,8 @@
 			
 		
 	</div>
+	
+	
 
 
 </body> 
