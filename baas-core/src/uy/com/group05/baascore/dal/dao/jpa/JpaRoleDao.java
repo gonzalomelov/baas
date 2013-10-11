@@ -7,6 +7,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.entities.Role_;
 import uy.com.group05.baascore.dal.dao.RoleDao;
@@ -39,6 +40,19 @@ public class JpaRoleDao extends JpaGenericDao<Role> implements RoleDao {
 	
 	public List<Role> readAll(long appId) {
 		TypedQuery<Role> query = em.createQuery("SELECT c FROM ROLES c WHERE c.application.id = :appId", Role.class);
+		return query.getResultList();
+	}
+	
+	public List<Role> readAll(long appId, long clientId) {
+		TypedQuery<Role> query =
+				em.createQuery("select distinct r "
+						+ "from Client c inner join c.roles r "
+						+ "where c.id = :clientId and"
+						+ "c.application.id = :appId", Role.class);
+		
+		query.setParameter("appId", appId);
+		query.setParameter("clientId", clientId);
+		
 		return query.getResultList();
 	}
 }

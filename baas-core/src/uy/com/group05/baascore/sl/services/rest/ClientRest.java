@@ -20,8 +20,8 @@ public interface ClientRest {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ClientRegistrationDTO register(
-			@HeaderParam("client_id") String apiClientId,
-			@HeaderParam("client_secret") String apiClientSecret,
+			@HeaderParam("apiClientId") String apiClientId,
+			@HeaderParam("apiClientSecret") String apiClientSecret,
 			ClientDTO client);
 
 	@POST
@@ -29,9 +29,9 @@ public interface ClientRest {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ClientAuthenticationDTO authenticate(
-			@HeaderParam("client_id") String apiClientId,
-			@HeaderParam("client_secret") String apiClientSecret,
+			@HeaderParam("apiClientId") String apiClientId,
+			@HeaderParam("apiClientSecret") String apiClientSecret,
+			@FormParam("appName") String appName,
 			@FormParam("email") String email,
-			@FormParam("password") String password,
-			@FormParam("appName") String appName);
+			@FormParam("password") String password);
 }

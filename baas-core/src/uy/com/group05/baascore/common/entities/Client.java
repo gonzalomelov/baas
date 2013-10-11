@@ -33,6 +33,10 @@ public class Client {
 
 	private boolean loggedIn;
 	
+	private String accessToken;
+	
+	private String refreshToken;
+	
 	@ManyToOne
 	private Application application;
 	
@@ -86,6 +90,22 @@ public class Client {
 
 	public void setLoggedIn(boolean loggedIn) {
 		this.loggedIn = loggedIn;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public String getRefreshToken() {
+		return refreshToken;
+	}
+
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
 	}
 
 	public Application getApplication() {

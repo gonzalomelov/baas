@@ -31,10 +31,6 @@ public class JpaApplicationDao extends JpaGenericDao<Application> implements App
 				em.createQuery("select distinct a "
 						+ "from Application a inner join a.users b "
 						+ "where b.id = :userId", Application.class);
-		/*TypedQuery<Application> query =
-				em.createQuery("select a "
-						+ "from Application a, users_applications b "
-						+ "where b.application_id=a.id AND b.users_id = :userId", Application.class);*/
 		
 		query.setParameter("userId", userId);
 		

@@ -3,6 +3,7 @@ package uy.com.group05.baascore.bll.ejbs;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -98,9 +99,15 @@ public class AppManagement implements AppManagementLocal{
 				}
 			}
 		}
+		
+		//Genero appId y appSecret
+		app.setApiClientId(UUID.randomUUID().toString());
+		app.setApiClientSecret(UUID.randomUUID().toString());
+		
 		//Seteo Roles y Entidades a App
 		app.setRoles(roles);
 		app.setEntities(entidades);
+		
 		appDao.create(app);
 		
 		// Creo base MongoDB para la nueva APP

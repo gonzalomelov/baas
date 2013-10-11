@@ -8,5 +8,6 @@ public interface ClientDao extends GenericDao<Client> {
 	Client readByEmail(String email);
 	Client readByEmail(long appId, String email);
 	List<Client> readAll(long appId);
+	Client readByAccessToken(long appId, String accessToken);
 }
 

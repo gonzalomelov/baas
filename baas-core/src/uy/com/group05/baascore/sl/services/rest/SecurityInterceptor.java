@@ -1,6 +1,7 @@
 package uy.com.group05.baascore.sl.services.rest;
 
-import javax.xml.bind.DatatypeConverter;
+import java.lang.reflect.Method;
+
 import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
@@ -12,12 +13,14 @@ import org.jboss.resteasy.core.ResourceMethod;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.Failure;
 import org.jboss.resteasy.spi.HttpRequest;
+import org.jboss.resteasy.spi.interception.AcceptedByMethod;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.ClientManagementLocal;
+import uy.com.group05.baascore.sl.services.impl.ClientRestImpl;
 
 @ServerInterceptor
-public class SecurityInterceptor implements PreProcessInterceptor {
+public class SecurityInterceptor implements PreProcessInterceptor, AcceptedByMethod {
 
 	@Inject
 	private ClientManagementLocal clientManagementLocal;
@@ -26,32 +29,43 @@ public class SecurityInterceptor implements PreProcessInterceptor {
 	public ServerResponse preProcess(HttpRequest request, ResourceMethod method)
 			throws Failure, WebApplicationException {
 		
-		/*HttpHeaders httpHeaders = request.getHttpHeaders();
+		HttpHeaders httpHeaders = request.getHttpHeaders();
 		
 		MultivaluedMap<String, String> requestHeaders = httpHeaders.getRequestHeaders();
 		
-		String authorization = requestHeaders.getFirst("Authorization");
+		String accessToken = requestHeaders.getFirst("accessToken");
 	
-		if (authorization == null || !authorization.substring(0, 5).equals("Basic")) {
+		if (accessToken == null) {
 			return new ServerResponse("Access denied for these resource", 403, new Headers<Object>());	
 		}
 		
-		String credentialsBase64 = authorization.substring(6);
+		String operation = request.getHttpMethod();
 		
-		byte[] decoded = DatatypeConverter.parseBase64Binary(credentialsBase64);
-		String credentials = new String(decoded); 
+		String url = request.getUri().getPath();
+		String[] urlParams = url.split("/");
 		
-		String[] s = credentials.split(":");
+		String appName = urlParams[3];
+		String entity = urlParams[4];
 		
-		String email = s[0];
-		String password = s[1];
-		
-		if (!clientManagementLocal.validateClientCredentials(email, password))
+		if (!clientManagementLocal.validate(appName, operation, entity, accessToken))
 		{
 			return new ServerResponse("Access denied for these resource", 403, new Headers<Object>());
-		}*/
+		}
 		
 		return null;
+	}
+
+	@Override
+	public boolean accept(Class declaring, Method method) {
+		if (declaring == ClientRest.class) {
+			return false;
+		}
+		
+		if (declaring == APIRest.class) {
+			return true;
+		}
+		
+		return true;
 	}
 
 }

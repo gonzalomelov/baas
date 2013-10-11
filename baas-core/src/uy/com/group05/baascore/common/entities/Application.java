@@ -2,7 +2,6 @@ package uy.com.group05.baascore.common.entities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -24,10 +23,9 @@ public class Application {
 	@Column(unique = true)
 	private String name;
 	
-	@Column(unique = true)
-	private String url;
+	private String apiClientId;
 	
-	private UUID token;
+	private String apiClientSecret;
 	
 	@JoinTable(name = "USERS_APPLICATIONS")
 	@ManyToMany
@@ -75,12 +73,20 @@ public class Application {
 		this.name = name;
 	}
 
-	public UUID getToken() {
-		return token;
+	public String getApiClientId() {
+		return apiClientId;
 	}
 
-	public void setToken(UUID token) {
-		this.token = token;
+	public void setApiClientId(String apiClientId) {
+		this.apiClientId = apiClientId;
+	}
+
+	public String getApiClientSecret() {
+		return apiClientSecret;
+	}
+
+	public void setApiClientSecret(String apiClientSecret) {
+		this.apiClientSecret = apiClientSecret;
 	}
 
 	public List<User> getUsers() {

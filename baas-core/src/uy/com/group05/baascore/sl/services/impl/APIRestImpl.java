@@ -12,10 +12,6 @@ public class APIRestImpl implements APIRest {
 	@Inject
 	private APIManagementLocal apiManagementLocal;
 	
-	public String get() {
-		return "{helloWorld:1}";
-	}
-	
 	public String get(String appName, String entity) {
 
 	    return apiManagementLocal.get(appName, entity, "");

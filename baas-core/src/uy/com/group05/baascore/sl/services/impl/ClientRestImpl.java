@@ -16,7 +16,6 @@ public class ClientRestImpl implements ClientRest {
 	
 	@EJB
 	private ClientManagementLocal clientManagementLocal;
-
 	
 	public ClientRegistrationDTO register(
 			String apiClientId,
@@ -29,10 +28,10 @@ public class ClientRestImpl implements ClientRest {
 	public ClientAuthenticationDTO authenticate(
 			String apiClientId,
 			String apiClientSecret, 
+			String appName,
 			String email,
-			String password,
-			String appName) {
+			String password) {
 		
-		return clientManagementLocal.authenticate(apiClientId, apiClientSecret, email, password, appName);
+		return clientManagementLocal.authenticate(appName, apiClientId, apiClientSecret, email, password);
 	}
 }

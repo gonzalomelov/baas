@@ -15,9 +15,11 @@ public interface ClientManagementLocal {
 			ClientDTO client);
 
 	public ClientAuthenticationDTO authenticate(
+			String appName,
 			String apiClientId,
 			String apiClientSecret,
 			String email,
-			String password,
-			String appName);
+			String password);
+	
+	public boolean validate(String appName, String operation, String entityName, String accessToken);
 }

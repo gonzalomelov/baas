@@ -41,4 +41,14 @@ public class JpaClientDao extends JpaGenericDao<Client> implements ClientDao {
 		TypedQuery<Client> query = em.createQuery("SELECT c FROM CLIENTS c WHERE c.application.id = :appId", Client.class);
 		return query.getResultList();
 	}
+	
+	public Client readByAccessToken(long appId, String accessToken) {
+		TypedQuery<Client> query = em.createQuery("SELECT c FROM CLIENTS c WHERE c.application.id = :appId AND c.accessToken = :accessToken", Client.class);
+		query.setParameter("appId", appId);
+		query.setParameter("accessToken", accessToken);
+		
+		List<Client> users = query.getResultList();
+		
+		return users.isEmpty() ? null : users.get(0);
+	}
 }
