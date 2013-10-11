@@ -26,7 +26,7 @@ public class SecurityInterceptor implements PreProcessInterceptor {
 	public ServerResponse preProcess(HttpRequest request, ResourceMethod method)
 			throws Failure, WebApplicationException {
 		
-		HttpHeaders httpHeaders = request.getHttpHeaders();
+		/*HttpHeaders httpHeaders = request.getHttpHeaders();
 		
 		MultivaluedMap<String, String> requestHeaders = httpHeaders.getRequestHeaders();
 		
@@ -49,7 +49,7 @@ public class SecurityInterceptor implements PreProcessInterceptor {
 		if (!clientManagementLocal.validateClientCredentials(email, password))
 		{
 			return new ServerResponse("Access denied for these resource", 403, new Headers<Object>());
-		}
+		}*/
 		
 		return null;
 	}

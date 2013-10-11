@@ -70,21 +70,13 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 	}
 
 	@Override
-	public List<String> getEntities(String application, String entity) {
+	public String getEntities(String application, String entity) {
 		DB mongoDb = mongo.getDB(application);
 		DBCollection dbCollection = mongoDb.getCollection(entity);
 		
-		DBCursor dbCursor = dbCollection.find();
+		String jsonResult = com.mongodb.util.JSON.serialize(dbCollection.find());
 		
-		List<String> jsonEntities = new ArrayList<String>();
-		
-		while (dbCursor.hasNext()) {
-			DBObject dbObject = dbCursor.next();
-			String jsonEntity = dbObject.toString();
-			jsonEntities.add(jsonEntity);			
-		}
-		
-		return jsonEntities;
+		return jsonResult;
 	}
 
 }

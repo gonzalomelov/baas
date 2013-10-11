@@ -12,7 +12,7 @@ public class APIManagement implements APIManagementLocal {
 	private NoSqlDbDao noSqlDbDao;
 	
 	@Override
-	public List<String> get(String appName, String entity, String query) {
+	public String get(String appName, String entity, String query) {
 	    if(appName == null){
 	    	return null;
 	    }
