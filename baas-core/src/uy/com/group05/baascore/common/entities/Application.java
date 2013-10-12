@@ -41,6 +41,9 @@ public class Application {
 	private List<uy.com.group05.baascore.common.entities.Entity> entities
 		= new ArrayList<uy.com.group05.baascore.common.entities.Entity>();
 
+	@OneToMany(mappedBy = "application")
+	private List<PushChannel> pushChannels = new ArrayList<PushChannel>();
+	
 	public Application() {}
 	
 	public Application(String nombreApp, User owner) {
