@@ -21,7 +21,7 @@ public class LoginPageCode implements Serializable {
         String redirectUrl = "http://localhost:8080/baas-admin/index.sec";
         String returnValue = "https://www.facebook.com/dialog/oauth?client_id="
                 + appId + "&redirect_uri=" + redirectUrl
-                + "&scope=email,user_birthday&state=" + sessionId;
+                + "&scope=email&state=" + sessionId;
         return returnValue;
     }
  

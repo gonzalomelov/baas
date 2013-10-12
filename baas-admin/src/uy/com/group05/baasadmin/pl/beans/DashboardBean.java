@@ -8,6 +8,7 @@ import javax.inject.Named;
 import uy.com.group05.baasadmin.common.exceptions.ApplicationException;
 import uy.com.group05.baasadmin.pl.controllers.ApplicationController;
 import uy.com.group05.baasadmin.pl.models.AppModel;
+import uy.com.group05.baasadmin.pl.models.Application;
 
 @Named("dashboardBean")
 @RequestScoped
@@ -51,6 +52,10 @@ public class DashboardBean {
 
 	public void setAppModel(AppModel appModel) {
 		this.appModel = appModel;
+	}
+	
+	public String ViewApp(Application app){
+		return "/pages/App/Index.xhtml?faces-redirect=true&Id=" + app.getId();
 	}
 
 }

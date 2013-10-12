@@ -1,10 +1,14 @@
 package uy.com.group05.baasadmin.pl.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import uy.com.group05.baasadmin.common.exceptions.ApplicationException;
 import uy.com.group05.baasadmin.pl.models.AppModel;
 import uy.com.group05.baasadmin.pl.models.Application;
+import uy.com.group05.baasadmin.pl.models.Cliente;
+import uy.com.group05.baasadmin.pl.models.Entity;
+import uy.com.group05.baasadmin.pl.models.Rol;
 import uy.com.group05.baascore.sl.services.impl.ApplicationServices;
 import uy.com.group05.baascore.sl.services.soap.ApplicationDTO;
 import uy.com.group05.baascore.sl.services.soap.EntityCollectionAlreadyExistsException_Exception;
@@ -71,4 +75,62 @@ public class ApplicationController {
 		
 	}
 
+	public Application GetAplication(long id){
+		
+//		ApplicationServices service = new ApplicationServices();
+//		
+//		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
+//		
+	//	port.
+		
+		Application response = new Application();
+		response.setId(id);
+		response.setName("gallito");
+		
+		List<Rol> roles = new ArrayList<Rol>();
+		roles.add(new Rol("admin", 1));
+		roles.add(new Rol("guest", 2));
+		
+		response.setRoles(roles);
+		
+		List<Entity> entidades = new ArrayList<Entity>();
+		Entity e = new Entity();
+		e.setId(1);
+		e.setName("casas");
+		entidades.add(e);
+		
+		e = new Entity();
+		e.setId(2);
+		e.setName("autos");
+		entidades.add(e);
+		
+		e = new Entity();
+		e.setId(3);
+		e.setName("trabajo");
+		entidades.add(e);
+		
+		response.setEntidades(entidades);
+		
+		List<Cliente> clientes = new ArrayList<Cliente>();
+		
+		Cliente c = new Cliente();
+		c.setId(1);
+		c.setName("Diego Forlan");
+		clientes.add(c);
+		
+		c = new Cliente();
+		c.setId(2);
+		c.setName("Luis Suarez");
+		clientes.add(c);
+		
+		c = new Cliente();
+		c.setId(3);
+		c.setName("Edinson Cavani");
+		clientes.add(c);
+		
+		
+		response.setClientes(clientes);
+		
+		return response;
+	}
 }

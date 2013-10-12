@@ -5,7 +5,6 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
-
 	<link id="bs-css" href="../../css/bootstrap-classic.css"
 		rel="stylesheet" />
 	<style type="text/css">
@@ -16,16 +15,8 @@ body {
 .sidebar-nav {
 	padding: 9px 0;
 }
-
-	.h2Title{
-		padding-left: 5%;
-		float: left;
-		width: 75%;
-	}
-	
-	.fn_create{float: left;}
-
 </style>
+
 	<link href="../../css/bootstrap-responsive.css" rel="stylesheet" />
 	<link href="../../css/charisma-app.css" rel="stylesheet" />
 	<link href="../../css/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
@@ -43,10 +34,9 @@ body {
 	<link href='../../css/jquery.iphone.toggle.css' rel='stylesheet' />
 	<link href='../../css/opa-icons.css' rel='stylesheet' />
 	<link href='../../css/uploadify.css' rel='stylesheet' />
-
-
+	<link href="../../css/appIndex.css" rel="stylesheet" />
 </h:head>
-<h:body>
+<body>
 
 	<div class="navbar">
 		<div class="navbar-inner">
@@ -113,85 +103,102 @@ body {
 		</div>
 	</div>
 
-
-	<h2 class="h2Title">Applications</h2>
-	<div id="AppId" style="display: none">
-		<h:inputHidden value="#{dashboardBean.userSessionManagementBean.user.userId}" />
+	<div class="page-header">
+		<h1>#{appViewBean.app.name}</h1>
 	</div>
-	<h:link value="Create" outcome="/pages/App/create" styleClass="btn btn-large btn-primary btn-round fn_create"></h:link>
 
-<!-- 	<button class="btn btn-large btn-primary btn-round fn_create">Create</button> -->
-
-
-	<div id="content" class="span10">
-		<!-- content starts -->
+	<div>
+	
+		<div class="clientsBox">
 
 
-
-		<div class="row-fluid sortable">
-			<div class="box span12">
-				<div class="box-header well">
-					<h2>Applications</h2>
-
+			<div class="box-header well">
+				<h2>Users</h2>
+				<div class="box-icon">
+					<a href="#" class="btn btn-minimize btn-round"><i
+						class="icon-chevron-up"></i></a>
 				</div>
-				<h:panelGroup rendered="#{dashboardBean.appModel.cantApps > 0}">
-					<div class="box-content">
+			</div>
+			<div class="box-content">
+				<h:dataTable value="#{appViewBean.app.clientes}" var="e"
+					styleClass="table table-bordered">
+
+					<h:column>
+
+						<f:facet name="header">Name</f:facet>
+    			#{e.name}
+ 
+    		</h:column>
 
 
 
 
-						<h:dataTable
-							value="#{dashboardBean.appModel.aplicaciones.toArray()}" var="o"
-							styleClass="table table-striped table-bordered bootstrap-datatable datatable"
-							headerClass="" rowClasses="">
+				</h:dataTable>
+			</div>
 
-							<!-- <h:column>
-    				
-    				<f:facet name="header">Id</f:facet>
-    				
-    				#{o.getId()}
-    			</h:column> -->
 
-							<h:column>
-								<f:facet name="header">Name</f:facet>
-    				#{o.getName()}
-    			</h:column>
 
-							<h:column>
-								<f:facet name="header"></f:facet>
-								<h:link value="View" outcome="/pages/App/Index" styleClass="btn btn-info" >
-    								<f:param name="id" value="#{o.getId()}" />
-								</h:link>
-								
-								
-								<a class="btn btn-danger" href="#"> <i
-									class="icon-trash icon-white"></i> Delete
-								</a>
-							</h:column>
+		</div>
 
-						</h:dataTable>
+		<div class="rolesBox">
 
-					</div>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{dashboardBean.appModel.cantApps == 0}">
-				
-				<div class="box-content">
-				<table class="table table-striped table-bordered bootstrap-datatable datatable">
-						  
-							<tr>
-								<td>You haven't create an app yet !
-								</td>
-							</tr>
-							</table>
+
+			<div class="box-header well">
+				<h2>Roles</h2>
+				<div class="box-icon">
+					<a href="#" class="btn btn-minimize btn-round"><i
+						class="icon-chevron-up"></i></a>
 				</div>
+			</div>
+			<div class="box-content">
+				<h:dataTable value="#{appViewBean.app.roles}" var="rol"
+					styleClass="table table-bordered">
 
-										
-				</h:panelGroup>
+					<h:column>
+
+						<f:facet name="header">Name</f:facet>
+    			#{rol.roleName}
+ 
+    		</h:column>
+				</h:dataTable>
+
 
 			</div>
 		</div>
-	</div>
 
+		<div class="entityBox">
+
+
+			<div class="box-header well">
+				<h2>Entities</h2>
+				<div class="box-icon">
+					<a href="#" class="btn btn-minimize btn-round"><i
+						class="icon-chevron-up"></i></a>
+				</div>
+			</div>
+			<div class="box-content">
+				<h:dataTable value="#{appViewBean.app.entidades}" var="e"
+					styleClass="table table-bordered">
+
+					<h:column>
+
+						<f:facet name="header">Name</f:facet>
+    			#{e.name}
+ 
+    		</h:column>
+
+
+
+
+				</h:dataTable>
+			</div>
+
+
+
+		</div>
+
+	</div>
+	
 	<!-- external javascript
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -258,8 +265,7 @@ body {
 	<script src="../../js/jquery.history.js"></script>
 	<!-- application script for Charisma demo -->
 	<script src="../../js/charisma.js"></script>
+	
 
-</h:body>
-
-
+</body>
 </html>

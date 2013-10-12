@@ -25,6 +25,10 @@ public class AppModel {
 		return aplicaciones.size();
 	}
 
+	public void setCantApps(int cantApps) {
+		this.cantApps = cantApps;
+	}
+
 	
 	
 	

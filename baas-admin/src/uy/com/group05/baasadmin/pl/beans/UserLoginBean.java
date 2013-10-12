@@ -74,14 +74,7 @@ public class UserLoginBean {
 		
 			UserModel userModel = userController.loginUser(user.getEmail(), user.getPassword());
 			
-					
-			user.setEmail(userModel.getEmail());
-			user.setLastname(userModel.getLastname());
-			user.setName(userModel.getName());
-			
-			
-			
-			userSessionManagementBean.setUser(user);	
+			userSessionManagementBean.setUser(userModel);	
 			
 			return "/pages/dashboard/Index.xhtml?faces-redirect=true";
 			

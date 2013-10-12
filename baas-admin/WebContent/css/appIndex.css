@@ -1,0 +1,6 @@
+.rolesBox, .clientsBox, .entityBox {
+	width: 30%;
+	float: left;
+	margin: 1.5%;
+}
+

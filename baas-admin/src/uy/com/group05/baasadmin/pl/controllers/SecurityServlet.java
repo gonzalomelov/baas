@@ -45,7 +45,7 @@ public class SecurityServlet extends HttpServlet {
         String accessToken = getFacebookAccessToken(faceCode);
         JSONObject datos = getUserMailAddressFromJsonResponse(accessToken, httpSession);
         String sessionID = httpSession.getId();
-        if (state.equals(sessionID)){
+       
             
                 //do some specific user data operation like saving to DB or login user
                 
@@ -81,9 +81,7 @@ public class SecurityServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath());
                 return;
             }
-        } else {
-            System.err.println("CSRF protection validation");
-        }
+        
     }
  
     private String getFacebookAccessToken(String faceCode){

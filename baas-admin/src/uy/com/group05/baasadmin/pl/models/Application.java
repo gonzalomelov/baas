@@ -1,10 +1,34 @@
 package uy.com.group05.baasadmin.pl.models;
 
+import java.util.List;
+
 public class Application {
 	
 	private long Id;
 	
+	public List<Rol> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Rol> roles) {
+		this.roles = roles;
+	}
+
+	public List<Entity> getEntidades() {
+		return entidades;
+	}
+
+	public void setEntidades(List<Entity> entidades) {
+		this.entidades = entidades;
+	}
+
 	private String Name;
+	
+	private List<Rol> roles;
+	
+	private List<Entity> entidades;
+	
+	private List<Cliente> clientes;
 	
 	public Application() {
 		
@@ -29,6 +53,14 @@ public class Application {
 
 	public void setName(String name) {
 		Name = name;
+	}
+
+	public List<Cliente> getClientes() {
+		return clientes;
+	}
+
+	public void setClientes(List<Cliente> clientes) {
+		this.clientes = clientes;
 	}
 
 }
