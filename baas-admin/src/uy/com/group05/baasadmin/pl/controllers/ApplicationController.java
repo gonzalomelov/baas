@@ -8,6 +8,7 @@ import uy.com.group05.baasadmin.pl.models.AppModel;
 import uy.com.group05.baasadmin.pl.models.Application;
 import uy.com.group05.baasadmin.pl.models.Cliente;
 import uy.com.group05.baasadmin.pl.models.Entity;
+import uy.com.group05.baasadmin.pl.models.Operacion;
 import uy.com.group05.baasadmin.pl.models.Rol;
 import uy.com.group05.baascore.sl.services.impl.ApplicationServices;
 import uy.com.group05.baascore.sl.services.soap.ApplicationDTO;
@@ -132,5 +133,48 @@ public class ApplicationController {
 		response.setClientes(clientes);
 		
 		return response;
+	}
+	
+	
+	public List<Rol> getRoles(long appId){
+		
+		//Application response = new Application();
+		
+		List<Rol> roles = new ArrayList<Rol>();
+		roles.add(new Rol("admin", 1));
+		roles.add(new Rol("guest", 2));
+		
+		//response.setRoles(roles);
+		
+		return roles;
+	}
+	
+	public List<Operacion> getOperaciones(long appId){
+		
+		List<Operacion> opreaciones = new ArrayList<Operacion>();
+		opreaciones.add(new Operacion(1,"DELETE"));
+		opreaciones.add(new Operacion(2,"GET"));
+		opreaciones.add(new Operacion(3,"POST"));
+		opreaciones.add(new Operacion(4,"PUT"));
+		
+		return opreaciones;
+		
+	}
+	
+	public Entity getEntity(long entityId){
+		
+		Entity e = new Entity();
+		e.setId(entityId);
+		String nombre = "trabajo";
+		if(entityId == 1){
+			nombre = "casas"; 
+		}
+		else if( entityId == 2){
+			nombre = "autos";
+		}
+		e.setName("casas");
+		
+		e.setName(nombre);
+		return e;
 	}
 }

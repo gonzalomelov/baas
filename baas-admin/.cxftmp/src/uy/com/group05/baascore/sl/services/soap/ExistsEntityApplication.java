@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="nomApp" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="idApp" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="nomEntity" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -28,36 +28,28 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "existsEntityApplication", propOrder = {
-    "nomApp",
+    "idApp",
     "nomEntity"
 })
 public class ExistsEntityApplication {
 
-    protected String nomApp;
+    protected long idApp;
     protected String nomEntity;
 
     /**
-     * Gets the value of the nomApp property.
+     * Gets the value of the idApp property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
      */
-    public String getNomApp() {
-        return nomApp;
+    public long getIdApp() {
+        return idApp;
     }
 
     /**
-     * Sets the value of the nomApp property.
+     * Sets the value of the idApp property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
      */
-    public void setNomApp(String value) {
-        this.nomApp = value;
+    public void setIdApp(long value) {
+        this.idApp = value;
     }
 
     /**

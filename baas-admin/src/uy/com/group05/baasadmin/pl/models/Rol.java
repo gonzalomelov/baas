@@ -3,9 +3,9 @@ package uy.com.group05.baasadmin.pl.models;
 public class Rol {
 
 	private String roleName;
-	private int id;
+	private long id;
 	
-	public Rol(String name, int id){
+	public Rol(String name, long id){
 		this.roleName = name;
 		this.id = id;
 	}
@@ -16,10 +16,10 @@ public class Rol {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	

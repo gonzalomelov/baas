@@ -48,7 +48,7 @@ public final class UserServices_UserServicesPort_Client {
         }
       
         UserServices ss = new UserServices(wsdlURL, SERVICE_NAME);
-        uy.com.group05.baascore.sl.services.soap.UserServices port = ss.getUserServicesPort();  
+        UserServices port = (UserServices) ss.getUserServicesPort();  
         
         {
         System.out.println("Invoking isUserLoggedIn...");
@@ -77,7 +77,7 @@ public final class UserServices_UserServicesPort_Client {
         _registerUser_user.setName("Name-1299534850");
         _registerUser_user.setPassword("Password1263669186");
         try {
-            uy.com.group05.baascore.sl.services.soap.UserDTO _registerUser__return = port.registerUser(_registerUser_user);
+            uy.com.group05.baascore.sl.services.soap.UserDTO _registerUser__return = ((uy.com.group05.baascore.sl.services.soap.UserServices) port).registerUser(_registerUser_user);
             System.out.println("registerUser.result=" + _registerUser__return);
 
         } catch (EmailAlreadyRegisteredException_Exception e) { 
@@ -89,7 +89,7 @@ public final class UserServices_UserServicesPort_Client {
         System.out.println("Invoking logoutUser...");
         java.lang.String _logoutUser_email = "_logoutUser_email1089921052";
         try {
-            boolean _logoutUser__return = port.logoutUser(_logoutUser_email);
+            boolean _logoutUser__return = ((uy.com.group05.baascore.sl.services.soap.UserServices) port).logoutUser(_logoutUser_email);
             System.out.println("logoutUser.result=" + _logoutUser__return);
 
         } catch (UserNotRegisteredException_Exception e) { 
@@ -102,7 +102,7 @@ public final class UserServices_UserServicesPort_Client {
         java.lang.String _validateUser_email = "_validateUser_email-494726503";
         java.lang.String _validateUser_password = "_validateUser_password-1406737200";
         try {
-            boolean _validateUser__return = port.validateUser(_validateUser_email, _validateUser_password);
+            boolean _validateUser__return = ((uy.com.group05.baascore.sl.services.soap.UserServices) port).validateUser(_validateUser_email, _validateUser_password);
             System.out.println("validateUser.result=" + _validateUser__return);
 
         } catch (UserNotRegisteredException_Exception e) { 

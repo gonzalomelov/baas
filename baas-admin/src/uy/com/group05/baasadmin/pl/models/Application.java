@@ -30,9 +30,10 @@ public class Application {
 	
 	private List<Cliente> clientes;
 	
-	public Application() {
-		
-	};
+	private List<Operacion> operaciones;
+	
+	
+	public Application(){}
 	
 	public Application(String name, long id){
 		this.Name = name;
@@ -61,6 +62,14 @@ public class Application {
 
 	public void setClientes(List<Cliente> clientes) {
 		this.clientes = clientes;
+	}
+
+	public List<Operacion> getOperaciones() {
+		return operaciones;
+	}
+
+	public void setOperaciones(List<Operacion> operaciones) {
+		this.operaciones = operaciones;
 	}
 
 }

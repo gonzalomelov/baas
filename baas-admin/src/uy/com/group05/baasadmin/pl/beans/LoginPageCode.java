@@ -14,14 +14,12 @@ public class LoginPageCode implements Serializable {
     private static final long serialVersionUID = -1611162265998907599L;
  
     public String getFacebookUrlAuth() {
-        HttpSession session =
-        (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        String sessionId = session.getId();
+        
         String appId = "641457435904811";
         String redirectUrl = "http://localhost:8080/baas-admin/index.sec";
         String returnValue = "https://www.facebook.com/dialog/oauth?client_id="
                 + appId + "&redirect_uri=" + redirectUrl
-                + "&scope=email&state=" + sessionId;
+                + "&scope=email";
         return returnValue;
     }
  

@@ -183,7 +183,11 @@ body {
 					<h:column>
 
 						<f:facet name="header">Name</f:facet>
-    			#{e.name}
+						<h:link value="#{e.name}" outcome="/pages/Entity/Index" >
+    								<f:param name="appId" value="#{appViewBean.app.id}" />
+    								<f:param name="entityId" value="#{e.id}" />
+								</h:link>
+    			
  
     		</h:column>
 
