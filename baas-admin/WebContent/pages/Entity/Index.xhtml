@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+
+<h:head></h:head> 
+<body> 
+Esta es la entidad 
+	#{entityBean.entity.name}
+	
+	<t:dataTable value="#{entityBean.roleList}" var="row">
+    <t:columns value="#{entityBean.operationList}" var="column">
+        <f:facet name="header">
+            <h:outputText value="#{column.name}"/>
+        </f:facet>
+        <h:outputText value="#{row[column.name]}"/>
+    </t:columns>
+</t:dataTable>
+	
+	
+	
+	
+</body> 
+</html>
