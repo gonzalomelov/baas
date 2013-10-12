@@ -10,10 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @javax.persistence.Entity
-@Table(name = "CANALESPUSH")
+@Table(name = "PUSHCHANNELS")
 public class PushChannel {
 
 	@Id

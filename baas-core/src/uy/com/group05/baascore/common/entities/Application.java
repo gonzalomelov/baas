@@ -43,7 +43,7 @@ public class Application {
 
 	@OneToMany(mappedBy = "application")
 	private List<PushChannel> pushChannels = new ArrayList<PushChannel>();
-	
+
 	public Application() {}
 	
 	public Application(String nombreApp, User owner) {
@@ -123,6 +123,14 @@ public class Application {
 	public void setEntities(
 			List<uy.com.group05.baascore.common.entities.Entity> entities) {
 		this.entities = entities;
+	}
+	
+	public List<PushChannel> getPushChannels() {
+		return pushChannels;
+	}
+
+	public void setPushChannels(List<PushChannel> pushChannels) {
+		this.pushChannels = pushChannels;
 	}
 	
 	@Override

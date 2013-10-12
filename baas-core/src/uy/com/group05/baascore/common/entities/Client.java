@@ -47,7 +47,7 @@ public class Client {
 
 	@ManyToMany(mappedBy = "clients")
 	private List<PushChannel> pushChannels = new ArrayList<PushChannel>();
-	
+
 	public long getId() {
 		return id;
 	}
@@ -126,6 +126,14 @@ public class Client {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+	
+	public List<PushChannel> getPushChannels() {
+		return pushChannels;
+	}
+
+	public void setPushChannels(List<PushChannel> pushChannels) {
+		this.pushChannels = pushChannels;
 	}
 	
 	
