@@ -1,13 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
 	<script src="../../js/jquery-1.7.2.min.js"></script>
-	<script src="../../js/CreateApp.js"></script>
-	
+
 	<link id="bs-css" href="../../css/bootstrap-classic.css"
 		rel="stylesheet" />
 	<style type="text/css">
@@ -19,33 +18,47 @@ body {
 	padding: 9px 0;
 }
 
-	.h2Title{
-		padding-left: 5%;
-		float: left;
-		width: 75%;
-	}
-	
-	.fn_create{float: left;}
-	
-	.rolesBox { float: left; width: 40%; padding-left: 2%; padding-right: 2% }
-	
-	.entityBox { float: left; width: 40%; padding-left: 2%; padding-right: 2%}
-	
-	.buttonAdd { float: left; margin-left: 5%;}
-	
-	.tablaAdd { float:left; }
-	
-	.SubmitApp{ 
-		left: 72%;
-    	position: relative;
-    	
-    }
+.h2Title {
+	padding-left: 5%;
+	float: left;
+	width: 75%;
+}
 
-	
-	.errorMessage {
-	    margin-top: 10%;
-	}
+.fn_create {
+	float: left;
+}
 
+.rolesBox {
+	float: left;
+	width: 40%;
+	padding-left: 2%;
+	padding-right: 2%
+}
+
+.entityBox {
+	float: left;
+	width: 40%;
+	padding-left: 2%;
+	padding-right: 2%
+}
+
+.buttonAdd {
+	float: left;
+	margin-left: 5%;
+}
+
+.tablaAdd {
+	float: left;
+}
+
+.SubmitApp {
+	left: 72%;
+	position: relative;
+}
+
+.errorMessage {
+	margin-top: 10%;
+}
 </style>
 	<link href="../../css/bootstrap-responsive.css" rel="stylesheet" />
 	<link href="../../css/charisma-app.css" rel="stylesheet" />
@@ -66,8 +79,8 @@ body {
 	<link href='../../css/uploadify.css' rel='stylesheet' />
 
 
-</h:head> 
-<body> 
+</h:head>
+<body>
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="container-fluid">
@@ -134,145 +147,167 @@ body {
 	</div>
 
 
-		<div class="page-header">
-			<h1>Create Application</h1>
-	  	</div>
-	
-		<h:panelGroup rendered="#{createApplicationBean.error.length() > 0 }" >  
-    					<div class="alert alert-error ">
-							<button type="button" class="close" data-dismiss="alert">×</button>
-							<strong>Error</strong> <h:outputLabel value="#{createApplicationBean.error}" />
-						</div>  
-						</h:panelGroup>  
-	
-		
-		<span>Application Name</span>
-		<h:form>
-		<h:inputText size="10" value="#{createApplicationBean.appName}" styleClass="appNamePosta"  />
-		<h:commandButton value="Create" action="#{createApplicationBean.Create()}" class="SubmitApp btn btn-large btn-success"/>	
+	<div class="page-header">
+		<h1>Create Application</h1>
+	</div>
+
+	<h:panelGroup rendered="#{createApplicationBean.error.length() > 0 }">
+		<div class="alert alert-error ">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<strong>Error</strong>
+			<h:outputLabel value="#{createApplicationBean.error}" />
+		</div>
+	</h:panelGroup>
+
+
+	<span>Application Name</span>
+	<h:form>
+		<h:inputText size="10" value="#{createApplicationBean.appName}"
+			styleClass="appNamePosta" />
+		<h:commandButton value="Create"
+			action="#{createApplicationBean.Create()}"
+			class="SubmitApp btn btn-large btn-success" />
 	</h:form>
-		
-	
-	<div class="rolesBox">
-	
-    	<h:form>
-    	<div class="box-header well" >
-						<h2>Roles</h2>
-						<div class="box-icon">							
-							<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>							
-						</div>
-					</div>
-    	<div class="box-content">
-	    		<h:dataTable value="#{createApplicationBean.rolList}" var="o"
-    			styleClass="table table-bordered"
-    		>
- 
-    		<h:column>
- 
-    			<f:facet name="header">Name</f:facet>
+
+	<h:form>
+		<div class="rolesBox">
+
+
+			<div class="box-header well">
+				<h2>Roles</h2>
+				<div class="box-icon">
+					<a href="#" class="btn btn-minimize btn-round"><i
+						class="icon-chevron-up"></i></a>
+				</div>
+			</div>
+			<div class="box-content">
+				<h:dataTable value="#{createApplicationBean.rolList}" var="o"
+					styleClass="table table-bordered">
+
+					<h:column>
+
+						<f:facet name="header">Name</f:facet>
     			#{o}
  
     		</h:column>
- 
-    		
- 
-    		<h:column>
- 
-    			<f:facet name="header">Action</f:facet>
- 
-    			<h:commandLink value="Delete" 
-                                   action="#{createApplicationBean.deleteRole(o)}" />
+
+
+
+					<h:column>
+
+						<f:facet name="header">Action</f:facet>
+
+						<h:commandLink value="Delete">
+							<f:ajax render="@form"
+								listener="#{createApplicationBean.deleteRole(o)}" />
+						</h:commandLink>
+					</h:column>
+
+				</h:dataTable>
+
+
+			</div>
+
+
+
+			<table class="tablaAdd">
+				<tr>
+					<td>Role Name :</td>
+					<td><h:inputText size="10"
+							value="#{createApplicationBean.roleName}" /></td>
+				</tr>
+			</table>			
+			
+				
+			<h:commandButton value="Add" styleClass="buttonAdd">
+				<f:ajax execute="@form" render="@form"
+					listener="#{createApplicationBean.addRole}" />
+			</h:commandButton>
+
+			<h:panelGroup
+				rendered="#{createApplicationBean.errorRol.length() > 0 }">
+				<div class="alert alert-error errorMessage">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<strong>Error</strong>
+					<h:outputLabel value="#{createApplicationBean.errorRol}" />
+				</div>
+			</h:panelGroup>
+
+
+
+
+		</div>
+	</h:form>
+	<h:form>
+		<div class="entityBox" id="entityBox">
+
+
+			<div class="box-header well">
+				<h2>Entities</h2>
+				<div class="box-icon">
+					<a href="#" class="btn btn-minimize btn-round"><i
+						class="icon-chevron-up"></i></a>
+				</div>
+			</div>
+			<div class="box-content">
+				<h:dataTable value="#{createApplicationBean.entityList}" var="o"
+					styleClass="table table-bordered" id="entityListTable">
+
+					<h:column>
+
+						<f:facet name="header">Name</f:facet>
+    			#{o}
  
     		</h:column>
- 
-    		</h:dataTable>
-   
-						      
-					</div>
-    	
+
+
+
+					<h:column>
+
+						<f:facet name="header">Action</f:facet>
+
+						<h:commandLink value="Delete"
+							action="#{createApplicationBean.deleteEntity(o)}">
+							<f:ajax render="@form"
+								listener="#{createApplicationBean.deleteEntity(o)}" />
+
+						</h:commandLink>
+
+					</h:column>
+
+				</h:dataTable>
+			</div>
+
+
+			<table class="tablaAdd">
+				<tr>
+					<td>Entity Name :</td>
+					<td><h:inputText size="10"
+							value="#{createApplicationBean.entityName}" id="entityName" /></td>
+				</tr>
+			</table>
 
 			
-    		<table class="tablaAdd">
-    		<tr>
-    			<td>Role Name :</td>
-    			<td><h:inputText size="10" value="#{createApplicationBean.roleName}" /></td>
-    		</tr>    		
-    		</table>
- 
- 			<h:inputText value="#{createApplicationBean.appNameRol}" styleClass="appNameInput" style="display: none;"/>
- 
-    		<h:commandButton value="Add" action="#{createApplicationBean.addRole}" styleClass="buttonAdd"/>
- 
- 			<h:panelGroup rendered="#{createApplicationBean.errorRol.length() > 0 }" >  
-    					<div class="alert alert-error errorMessage">
-							<button type="button" class="close" data-dismiss="alert">×</button>
-							<strong>Error</strong> <h:outputLabel value="#{createApplicationBean.errorRol}" />
-						</div>  
-						</h:panelGroup>  
- 
- 
-    	</h:form>
-    	
-    </div>
-    
-    <div class="entityBox">
-    	
-    	<h:form>
-    	<div class="box-header well" >
-						<h2>Entities</h2>
-						<div class="box-icon">							
-							<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>							
-						</div>
-					</div>
-    	<div class="box-content">
-    		<h:dataTable value="#{createApplicationBean.entityList}" var="o"
-    			styleClass="table table-bordered"
-    		>
- 
-    		<h:column>
- 
-    			<f:facet name="header">Name</f:facet>
-    			#{o}
- 
-    		</h:column>
- 
-    		
- 
-    		<h:column>
- 
-    			<f:facet name="header">Action</f:facet>
- 
-    			<h:commandLink value="Delete" 
-                                   action="#{createApplicationBean.deleteEntity(o)}" />
- 
-    		</h:column>
- 
-    		</h:dataTable>
-    		</div>
- 
-    		
-    		<table class="tablaAdd">
-    		<tr>
-    			<td>Entity Name :</td>
-    			<td><h:inputText size="10" value="#{createApplicationBean.entityName}" /></td>
-    		</tr>    		
-    		</table>
 
-			<h:inputText value="#{createApplicationBean.appNameEntity}" styleClass="appNameInput" style="display: none;"/>
- 
-    		<h:commandButton value="Add" action="#{createApplicationBean.addEntity()}" styleClass="buttonAdd"/>
- 
- 			<h:panelGroup rendered="#{createApplicationBean.errorEntity.length() > 0 }" >  
-    					<div class="alert alert-error errorMessage">
-							<button type="button" class="close" data-dismiss="alert">×</button>
-							<strong>Error</strong> <h:outputLabel value="#{createApplicationBean.errorEntity}" />
-						</div>  
-						</h:panelGroup>  
- 
- 
-    	</h:form>
+			<h:commandButton value="Add" styleClass="buttonAdd">
+				<f:ajax execute="entityName" render="@form"
+					listener="#{createApplicationBean.addEntity()}" />
+			</h:commandButton>
 
-	</div>
+			<h:panelGroup
+				rendered="#{createApplicationBean.errorEntity.length() > 0 }"
+				id="errorEntityPanel">
+				<div class="alert alert-error errorMessage">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<strong>Error</strong>
+					<h:outputLabel value="#{createApplicationBean.errorEntity}" />
+				</div>
+			</h:panelGroup>
+
+		</div>
+	</h:form>
+
+
 
 	<!-- external javascript
 	================================================== -->
@@ -340,5 +375,5 @@ body {
 	<script src="../../js/charisma.js"></script>
 
 
-</body> 
+</body>
 </html>

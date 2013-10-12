@@ -20,11 +20,7 @@ public class CreateApplicationBean {
 	
 	private String entityName;
 	
-	private String appName;
-	
-	private String appNameRol;
-	
-	private String appNameEntity;
+	private String appName;	
 	
 	private String errorRol;
 	
@@ -78,8 +74,6 @@ public class CreateApplicationBean {
  
 		CleanErrorMessages();
 		
-		appName = appNameRol;
-		
 		
 		if(ExisteEnLista(roleName, rolList)){
 			errorRol = "Ya existe el rol:"+ roleName;
@@ -103,7 +97,6 @@ public class CreateApplicationBean {
 	public String addEntity() {
 		 
 		CleanErrorMessages();
-		appName = appNameEntity;
 		
 		if(ExisteEnLista(entityName, entityList)){
 			errorEntity = "Ya existe la entidad:"+ entityName;
@@ -181,23 +174,7 @@ public class CreateApplicationBean {
 		return "/pages/dashboard/Index.xhtml?faces-redirect=true";
 		
 		//return "";
-	}
-
-	public String getAppNameRol() {
-		return appNameRol;
-	}
-
-	public void setAppNameRol(String appNameRol) {
-		this.appNameRol = appNameRol;
-	}
-
-	public String getAppNameEntity() {
-		return appNameEntity;
-	}
-
-	public void setAppNameEntity(String appNameEntity) {
-		this.appNameEntity = appNameEntity;
-	}
+	}	
 
 	public String getErrorRol() {
 		return errorRol;
