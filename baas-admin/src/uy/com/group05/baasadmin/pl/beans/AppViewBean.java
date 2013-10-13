@@ -1,37 +1,44 @@
 package uy.com.group05.baasadmin.pl.beans;
 
+import java.util.List;
 import java.util.Map;
 
-import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import uy.com.group05.baasadmin.pl.controllers.ApplicationController;
 import uy.com.group05.baasadmin.pl.models.Application;
+import uy.com.group05.baasadmin.pl.models.Entity;
 
-@Named("appViewBean")
-@RequestScoped
+@ManagedBean(name="appViewBean")
+@ViewScoped
 public class AppViewBean {
 
-	
-	
 	private Application app;
+	
+	private String entityName;
+	
+	private String errorEntity;
 
 	public AppViewBean() {
 
-		Map<String, String> parameterMap = (Map<String, String>) FacesContext
-				.getCurrentInstance().getExternalContext()
-				.getRequestParameterMap();
-		String paramId = parameterMap.get("id");
+		if (app == null) {
 
-		long id = Long.parseLong(paramId);
+			Map<String, String> parameterMap = (Map<String, String>) FacesContext
+					.getCurrentInstance().getExternalContext()
+					.getRequestParameterMap();
+			String paramId = parameterMap.get("id");
 
-		ApplicationController appController = new ApplicationController();
+			long id = Long.parseLong(paramId);
 
-		setApp(appController.GetAplication(id));
+			ApplicationController appController = new ApplicationController();
 
-		
+			setApp(appController.GetAplication(id));
+
+		}
 
 	}
 
@@ -64,5 +71,59 @@ public class AppViewBean {
 		this.app = app;
 	}
 
+	public String getErrorEntity() {
+		return errorEntity;
+	}
+
+	public void setErrorEntity(String errorEntity) {
+		this.errorEntity = errorEntity;
+	}
+
+	public String getEntityName() {
+		return entityName;
+	}
+
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
+	}
 	
+	public String addEntity() {
+		 
+		CleanErrorMessages();
+		
+		if(ExisteEntityEnLista(entityName, app.getEntidades())){
+			errorEntity = "Ya existe la entidad:"+ entityName;
+			entityName = "";
+			return null;
+		}
+		
+		Entity e = new Entity();
+		e.setId(app.getEntidades().size() + 1);
+		e.setName(entityName);
+		
+		app.getEntidades().add(e);
+		entityName = "";
+		
+		return null;
+	}
+	
+	private void CleanErrorMessages(){
+		errorEntity = "";
+		/*errorRol = "" ;
+		error = "";*/
+	}
+	
+	private boolean ExisteEntityEnLista(String element, List<Entity> list){
+		
+		boolean retorno = false;
+		
+		for (Entity elem : list) {
+			if(elem.getName().equals(element)){
+				return true;
+			}
+		}
+		
+		return retorno;
+	}
+
 }

@@ -104,7 +104,7 @@ body {
 	</div>
 
 	<div class="page-header">
-		<h1>#{appViewBean.app.name}</h1>
+		<h1 class="h1Title">#{appViewBean.app.name}</h1>
 	</div>
 
 	<div>
@@ -166,6 +166,7 @@ body {
 			</div>
 		</div>
 
+		<h:form>
 		<div class="entityBox">
 
 
@@ -184,6 +185,7 @@ body {
 
 						<f:facet name="header">Name</f:facet>
 						<h:link value="#{e.name}" outcome="/pages/Entity/Index" >
+						
     								<f:param name="appId" value="#{appViewBean.app.id}" />
     								<f:param name="entityId" value="#{e.id}" />
 								</h:link>
@@ -196,10 +198,37 @@ body {
 
 				</h:dataTable>
 			</div>
+			
+			<table class="tablaAdd">
+				<tr>
+					<td>Entity Name :</td>
+					<td><h:inputText size="10"
+							value="#{appViewBean.entityName}" id="entityName" /></td>
+				</tr>
+			</table>
+
+			
+
+			<h:commandButton value="Add" styleClass="buttonAdd">
+				<f:ajax execute="entityName" render="@form"
+					listener="#{appViewBean.addEntity}" />
+			</h:commandButton>
+
+			<h:panelGroup
+				rendered="#{appViewBean.errorEntity.length() > 0 }"
+				id="errorEntityPanel">
+				<div class="alert alert-error errorMessage">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<strong>Error</strong>
+					<h:outputLabel value="#{appViewBean.errorEntity}" />
+				</div>
+			</h:panelGroup>
 
 
 
 		</div>
+		</h:form>
+		
 
 	</div>
 	

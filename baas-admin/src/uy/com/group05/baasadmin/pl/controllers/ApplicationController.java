@@ -143,7 +143,7 @@ public class ApplicationController {
 		List<Rol> roles = new ArrayList<Rol>();
 		roles.add(new Rol("admin", 1));
 		roles.add(new Rol("guest", 2));
-		
+		roles.add(new Rol("super", 3));
 		//response.setRoles(roles);
 		
 		return roles;
