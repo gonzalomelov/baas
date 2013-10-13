@@ -139,7 +139,7 @@ body {
 
 
 		</div>
-
+<h:form>
 		<div class="rolesBox">
 
 
@@ -164,8 +164,32 @@ body {
 
 
 			</div>
-		</div>
+			
+			<table class="tablaAdd">
+				<tr>
+					<td>Role Name :</td>
+					<td><h:inputText size="10"
+							value="#{appViewBean.rolName}" /></td>
+				</tr>
+			</table>			
+			
+				
+			<h:commandButton value="Add" styleClass="buttonAdd">
+				<f:ajax execute="@form" render="@form"
+					listener="#{appViewBean.addRol}" />
+			</h:commandButton>
 
+			<h:panelGroup
+				rendered="#{appViewBean.errorRol.length() > 0 }">
+				<div class="alert alert-error errorMessage">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<strong>Error</strong>
+					<h:outputLabel value="#{appViewBean.errorRol}" />
+				</div>
+			</h:panelGroup>
+			
+		</div>
+</h:form>
 		<h:form>
 		<div class="entityBox">
 

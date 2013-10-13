@@ -7,11 +7,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
 
 import uy.com.group05.baasadmin.pl.controllers.ApplicationController;
 import uy.com.group05.baasadmin.pl.models.Application;
 import uy.com.group05.baasadmin.pl.models.Entity;
+import uy.com.group05.baasadmin.pl.models.Rol;
 
 @ManagedBean(name="appViewBean")
 @ViewScoped
@@ -22,6 +22,26 @@ public class AppViewBean {
 	private String entityName;
 	
 	private String errorEntity;
+	
+	private String rolName;
+	
+	private String errorRol;
+
+	public String getRolName() {
+		return rolName;
+	}
+
+	public void setRolName(String rolName) {
+		this.rolName = rolName;
+	}
+
+	public String getErrorRol() {
+		return errorRol;
+	}
+
+	public void setErrorRol(String errorRol) {
+		this.errorRol = errorRol;
+	}
 
 	public AppViewBean() {
 
@@ -107,10 +127,34 @@ public class AppViewBean {
 		return null;
 	}
 	
+	public String addRol() {
+		 
+		CleanErrorMessages();
+		
+		if(rolName == null || rolName.equals("")){
+			errorRol = "El nombre no puede ser vacio";
+			rolName = "";
+			return null;
+		}
+		
+		if(ExisteRolEnLista(rolName, app.getRoles())){
+			errorRol = "Ya existe el rol:"+ rolName;
+			rolName = "";
+			return null;
+		}
+		
+		Rol r = new Rol(rolName, app.getRoles().size() + 1);
+		
+		app.getRoles().add(r);
+		rolName = "";
+		
+		return null;
+	}
+	
 	private void CleanErrorMessages(){
 		errorEntity = "";
-		/*errorRol = "" ;
-		error = "";*/
+		errorRol = "" ;
+		//error = "";
 	}
 	
 	private boolean ExisteEntityEnLista(String element, List<Entity> list){
@@ -119,6 +163,19 @@ public class AppViewBean {
 		
 		for (Entity elem : list) {
 			if(elem.getName().equals(element)){
+				return true;
+			}
+		}
+		
+		return retorno;
+	}
+	
+	private boolean ExisteRolEnLista(String element, List<Rol> list){
+		
+		boolean retorno = false;
+		
+		for (Rol elem : list) {
+			if(elem.getRoleName().equals(element)){
 				return true;
 			}
 		}
