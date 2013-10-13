@@ -108,7 +108,7 @@ body {
 	</div>
 
 	<div>
-	
+
 		<div class="clientsBox">
 
 
@@ -126,9 +126,14 @@ body {
 					<h:column>
 
 						<f:facet name="header">Name</f:facet>
-    			#{e.name}
- 
-    		</h:column>
+
+						<h:link value="#{e.name}" outcome="/pages/Users/Index">
+
+							<f:param name="appId" value="#{appViewBean.app.id}" />
+							<f:param name="entityId" value="#{e.id}" />
+						</h:link>
+
+					</h:column>
 
 
 
@@ -139,123 +144,120 @@ body {
 
 
 		</div>
-<h:form>
-		<div class="rolesBox">
+		<h:form>
+			<div class="rolesBox">
 
 
-			<div class="box-header well">
-				<h2>Roles</h2>
-				<div class="box-icon">
-					<a href="#" class="btn btn-minimize btn-round"><i
-						class="icon-chevron-up"></i></a>
+				<div class="box-header well">
+					<h2>Roles</h2>
+					<div class="box-icon">
+						<a href="#" class="btn btn-minimize btn-round"><i
+							class="icon-chevron-up"></i></a>
+					</div>
 				</div>
-			</div>
-			<div class="box-content">
-				<h:dataTable value="#{appViewBean.app.roles}" var="rol"
-					styleClass="table table-bordered">
+				<div class="box-content">
+					<h:dataTable value="#{appViewBean.app.roles}" var="rol"
+						styleClass="table table-bordered">
 
-					<h:column>
+						<h:column>
 
-						<f:facet name="header">Name</f:facet>
+							<f:facet name="header">Name</f:facet>
     			#{rol.roleName}
  
     		</h:column>
-				</h:dataTable>
+					</h:dataTable>
 
+
+				</div>
+
+				<table class="tablaAdd">
+					<tr>
+						<td>Role Name :</td>
+						<td><h:inputText size="10" value="#{appViewBean.rolName}" /></td>
+					</tr>
+				</table>
+
+
+				<h:commandButton value="Add" styleClass="buttonAdd">
+					<f:ajax execute="@form" render="@form"
+						listener="#{appViewBean.addRol}" />
+				</h:commandButton>
+
+				<h:panelGroup rendered="#{appViewBean.errorRol.length() > 0 }">
+					<div class="alert alert-error errorMessage">
+						<button type="button" class="close" data-dismiss="alert">×</button>
+						<strong>Error</strong>
+						<h:outputLabel value="#{appViewBean.errorRol}" />
+					</div>
+				</h:panelGroup>
 
 			</div>
-			
-			<table class="tablaAdd">
-				<tr>
-					<td>Role Name :</td>
-					<td><h:inputText size="10"
-							value="#{appViewBean.rolName}" /></td>
-				</tr>
-			</table>			
-			
-				
-			<h:commandButton value="Add" styleClass="buttonAdd">
-				<f:ajax execute="@form" render="@form"
-					listener="#{appViewBean.addRol}" />
-			</h:commandButton>
-
-			<h:panelGroup
-				rendered="#{appViewBean.errorRol.length() > 0 }">
-				<div class="alert alert-error errorMessage">
-					<button type="button" class="close" data-dismiss="alert">×</button>
-					<strong>Error</strong>
-					<h:outputLabel value="#{appViewBean.errorRol}" />
-				</div>
-			</h:panelGroup>
-			
-		</div>
-</h:form>
-		<h:form>
-		<div class="entityBox">
-
-
-			<div class="box-header well">
-				<h2>Entities</h2>
-				<div class="box-icon">
-					<a href="#" class="btn btn-minimize btn-round"><i
-						class="icon-chevron-up"></i></a>
-				</div>
-			</div>
-			<div class="box-content">
-				<h:dataTable value="#{appViewBean.app.entidades}" var="e"
-					styleClass="table table-bordered">
-
-					<h:column>
-
-						<f:facet name="header">Name</f:facet>
-						<h:link value="#{e.name}" outcome="/pages/Entity/Index" >
-						
-    								<f:param name="appId" value="#{appViewBean.app.id}" />
-    								<f:param name="entityId" value="#{e.id}" />
-								</h:link>
-    			
- 
-    		</h:column>
-
-
-
-
-				</h:dataTable>
-			</div>
-			
-			<table class="tablaAdd">
-				<tr>
-					<td>Entity Name :</td>
-					<td><h:inputText size="10"
-							value="#{appViewBean.entityName}" id="entityName" /></td>
-				</tr>
-			</table>
-
-			
-
-			<h:commandButton value="Add" styleClass="buttonAdd">
-				<f:ajax execute="entityName" render="@form"
-					listener="#{appViewBean.addEntity}" />
-			</h:commandButton>
-
-			<h:panelGroup
-				rendered="#{appViewBean.errorEntity.length() > 0 }"
-				id="errorEntityPanel">
-				<div class="alert alert-error errorMessage">
-					<button type="button" class="close" data-dismiss="alert">×</button>
-					<strong>Error</strong>
-					<h:outputLabel value="#{appViewBean.errorEntity}" />
-				</div>
-			</h:panelGroup>
-
-
-
-		</div>
 		</h:form>
-		
+		<h:form>
+			<div class="entityBox">
+
+
+				<div class="box-header well">
+					<h2>Entities</h2>
+					<div class="box-icon">
+						<a href="#" class="btn btn-minimize btn-round"><i
+							class="icon-chevron-up"></i></a>
+					</div>
+				</div>
+				<div class="box-content">
+					<h:dataTable value="#{appViewBean.app.entidades}" var="e"
+						styleClass="table table-bordered">
+
+						<h:column>
+
+							<f:facet name="header">Name</f:facet>
+							<h:link value="#{e.name}" outcome="/pages/Entity/Index">
+
+								<f:param name="appId" value="#{appViewBean.app.id}" />
+								<f:param name="entityId" value="#{e.id}" />
+							</h:link>
+
+
+						</h:column>
+
+
+
+
+					</h:dataTable>
+				</div>
+
+				<table class="tablaAdd">
+					<tr>
+						<td>Entity Name :</td>
+						<td><h:inputText size="10" value="#{appViewBean.entityName}"
+								id="entityName" /></td>
+					</tr>
+				</table>
+
+
+
+				<h:commandButton value="Add" styleClass="buttonAdd">
+					<f:ajax execute="entityName" render="@form"
+						listener="#{appViewBean.addEntity}" />
+				</h:commandButton>
+
+				<h:panelGroup rendered="#{appViewBean.errorEntity.length() > 0 }"
+					id="errorEntityPanel">
+					<div class="alert alert-error errorMessage">
+						<button type="button" class="close" data-dismiss="alert">×</button>
+						<strong>Error</strong>
+						<h:outputLabel value="#{appViewBean.errorEntity}" />
+					</div>
+				</h:panelGroup>
+
+
+
+			</div>
+		</h:form>
+
 
 	</div>
-	
+
 	<!-- external javascript
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -322,7 +324,7 @@ body {
 	<script src="../../js/jquery.history.js"></script>
 	<!-- application script for Charisma demo -->
 	<script src="../../js/charisma.js"></script>
-	
+
 
 </body>
 </html>

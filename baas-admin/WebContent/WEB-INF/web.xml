@@ -9,11 +9,19 @@
   <filter-name>FilterLoggedInUser</filter-name>
   <filter-class>uy.com.group05.baasadmin.pl.controllers.FiltroDeslogueado</filter-class>
  </filter>
+ <filter>
+  <description>Filtro para que si no esta logueado, se loguee</description>
+  <display-name>FiltroLogueado</display-name>
+  <filter-name>FiltroLogueado</filter-name>
+  <filter-class>uy.com.group05.baasadmin.pl.controllers.FiltroLogueado</filter-class>
+ </filter>
  <filter-mapping>
   <filter-name>FilterLoggedInUser</filter-name>
   <url-pattern>/index.xhtml</url-pattern>
-  <url-pattern>/pages/users/login.xhtml</url-pattern>
-  <url-pattern>/pages/users/register.xhtml</url-pattern>
+ </filter-mapping>
+  <filter-mapping>
+  <filter-name>FiltroLogueado</filter-name>
+  <url-pattern>/*</url-pattern>
  </filter-mapping>
  <servlet>
   <servlet-name>facesServlet</servlet-name>

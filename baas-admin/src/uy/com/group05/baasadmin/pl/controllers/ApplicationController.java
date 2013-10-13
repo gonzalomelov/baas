@@ -116,17 +116,17 @@ public class ApplicationController {
 		
 		Cliente c = new Cliente();
 		c.setId(1);
-		c.setName("Diego Forlan");
+		c.setName("Diego@Forlan.com");
 		clientes.add(c);
 		
 		c = new Cliente();
 		c.setId(2);
-		c.setName("Luis Suarez");
+		c.setName("Luis@Suarez.com");
 		clientes.add(c);
 		
 		c = new Cliente();
 		c.setId(3);
-		c.setName("Edinson Cavani");
+		c.setName("Edinson@Cavani.com");
 		clientes.add(c);
 		
 		
