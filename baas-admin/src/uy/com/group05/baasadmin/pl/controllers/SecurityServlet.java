@@ -41,38 +41,30 @@ public class SecurityServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession httpSession = request.getSession();
         String faceCode = request.getParameter("code");
-        String state = request.getParameter("state");
+//        String state = request.getParameter("state");
         String accessToken = getFacebookAccessToken(faceCode);
         JSONObject datos = getUserMailAddressFromJsonResponse(accessToken, httpSession);
-        String sessionID = httpSession.getId();
+//        String sessionID = httpSession.getId();
        
             
                 //do some specific user data operation like saving to DB or login user
                 
             	try {
         			
-            		UserModel user = new UserModel();
+            		
             		
             		UserController userController = new UserController();
             		
-            		user.setEmail(datos.getString("email"));
-            		user.setLastname(datos.getString("last_name"));
-            		user.setName(datos.getString("first_name"));
-            		user.setPassword(datos.getString("id"));
-            		user.setRepeatedPassword(datos.getString("id"));
+            		UserModel user = userController.loginFacebook(datos.getString("email"), 
+            				datos.getString("first_name"), datos.getString("last_name"), datos.getString("id"));
             		
-        			long userId = userController.registerUser(user);
-        			
-        			user.setUserId(userId);
-        			
-        			
+            		
         			UserSessionManagementBean userSessionManagementBean = 
         					(UserSessionManagementBean)request.getSession().getAttribute("userSessionManagementBean");
         			
         			userSessionManagementBean.setUser(user);
         			
-        			response.sendRedirect(request.getContextPath()+  "/pages/dashboard/Index.xhtml");
-        		
+        			response.sendRedirect(request.getContextPath()+  "/pages/dashboard/Index.xhtml");    		
             	
             	
             	

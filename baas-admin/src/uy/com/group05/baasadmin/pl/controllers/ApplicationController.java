@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uy.com.group05.baasadmin.common.exceptions.ApplicationException;
+import uy.com.group05.baasadmin.common.exceptions.EntityException;
 import uy.com.group05.baasadmin.pl.models.AppModel;
 import uy.com.group05.baasadmin.pl.models.Application;
 import uy.com.group05.baasadmin.pl.models.Cliente;
@@ -11,10 +12,13 @@ import uy.com.group05.baasadmin.pl.models.Entity;
 import uy.com.group05.baasadmin.pl.models.Operacion;
 import uy.com.group05.baasadmin.pl.models.Rol;
 import uy.com.group05.baascore.sl.services.impl.ApplicationServices;
+import uy.com.group05.baascore.sl.services.soap.AppNotRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.ApplicationDTO;
+import uy.com.group05.baascore.sl.services.soap.EntityAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.EntityCollectionAlreadyExistsException_Exception;
 import uy.com.group05.baascore.sl.services.soap.MongoDBAlreadyExistsException_Exception;
 import uy.com.group05.baascore.sl.services.soap.NombreAppAlreadyRegisteredException_Exception;
+import uy.com.group05.baascore.sl.services.soap.UserCantAccessAppException_Exception;
 import uy.com.group05.baascore.sl.services.soap.UserNotRegisteredException_Exception;
 
 public class ApplicationController {
@@ -176,5 +180,24 @@ public class ApplicationController {
 		
 		e.setName(nombre);
 		return e;
+	}
+	
+	
+	public long addEntity(long userId, long appId, String entityName) throws EntityException{
+		ApplicationServices service = new ApplicationServices();
+		
+		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
+		
+		try {
+			return port.editEntityApplication(appId, userId, entityName);
+		} catch (UserCantAccessAppException_Exception e) {
+			throw new EntityException(e.getMessage());
+		} catch (AppNotRegisteredException_Exception e) {
+			throw new EntityException(e.getMessage());
+		} catch (EntityCollectionAlreadyExistsException_Exception e) {
+			throw new EntityException(e.getMessage());
+		} catch (EntityAlreadyRegisteredException_Exception e) {
+			throw new EntityException(e.getMessage());
+		}
 	}
 }

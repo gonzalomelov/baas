@@ -168,12 +168,12 @@ public class AppManagement implements AppManagementLocal{
 		if (roles.contains(r))
 			throw new RoleAlreadyRegisteredException("Ya existe un rol con ese nombre");
 		roles.add(r);
-		roleDao.create(r);
+		Role retorno = roleDao.create(r);
 
 		//Seteo nuevos roles
 		app.setRoles(roles);
 		
-		return app.getId();
+		return retorno.getId();
 	}
 	
 	public long editEntityApplication(long idApp, long idUser, String nomEntity)
@@ -200,12 +200,12 @@ public class AppManagement implements AppManagementLocal{
 		//Creo la coleccion para cada entidad dentro de la base MongoDB de la APP
 		noSqlDbDao.createEntityCollection(app.getName(), e.getName()); //Primero porque si falla, no se va a crear la entidad.
 		entities.add(e);
-		entityDao.create(e);
+		Entity retorno = entityDao.create(e);
 	
 		//Seteo nuevos entidades
 		app.setEntities(entities);
 		
-		return app.getId();
+		return retorno.getId();
 	}
 	
 	public long editApplication(String nombreApp, List<String> rolesStr, List<String> entidadesStr)

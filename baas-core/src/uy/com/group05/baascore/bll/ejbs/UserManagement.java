@@ -90,10 +90,10 @@ public class UserManagement implements UserManagementLocal {
 		if (u == null) {
 			u = userDao.readByEmail(user.getEmail());
 			if (u == null) {
-				userDao.create(u);
+				u = userDao.create(user); 
 			} else {
 				u.setFbId(user.getFbId());
-				userDao.update(u);
+				u = userDao.update(u);
 			}
 		}
 		

@@ -105,4 +105,22 @@ public class UserController {
 	public boolean isUserLoggedIn(String username) {
 		return false;
 	}
+	
+	public UserModel loginFacebook(String email, String name, String lastname, String fbID){
+		UserServices service = new UserServices();
+		uy.com.group05.baascore.sl.services.soap.UserServices port = service.getUserServicesPort();
+		
+		UserDTO userResponse = port.loginUserFacebook(email, name, lastname, fbID);
+		
+		
+		UserModel retorno = new UserModel();
+		
+		retorno.setEmail(userResponse.getEmail());
+		retorno.setLastname(userResponse.getLastname());
+		retorno.setName(userResponse.getName());
+		retorno.setUserId(userResponse.getId());
+		
+		return retorno;
+		
+	}
 }
