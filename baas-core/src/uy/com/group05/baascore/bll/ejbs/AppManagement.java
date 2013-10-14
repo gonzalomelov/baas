@@ -10,16 +10,19 @@ import javax.inject.Inject;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
+import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
@@ -144,7 +147,8 @@ public class AppManagement implements AppManagementLocal{
 	public long editRoleApplication(long idApp, long idUser, String nomRole)
 			throws
 			 	AppNotRegisteredException,
-			 	UserCantAccessAppException {
+			 	UserCantAccessAppException,
+			 	RoleAlreadyRegisteredException{
 		
 		Application app = appDao.read(idApp);
 		if (app == null)//No existe la app
@@ -156,10 +160,11 @@ public class AppManagement implements AppManagementLocal{
 		//Obtengo Roles existentes
 		List<Role> roles = app.getRoles();
 		Role r = new Role(nomRole, app);
-		if (!roles.contains(r)){
-			roles.add(r);
-			roleDao.create(r);
-		}
+		if (roles.contains(r))
+			throw new RoleAlreadyRegisteredException("Ya existe un rol con ese nombre");
+		roles.add(r);
+		roleDao.create(r);
+
 		//Seteo nuevos roles
 		app.setRoles(roles);
 		
@@ -169,6 +174,7 @@ public class AppManagement implements AppManagementLocal{
 	public long editEntityApplication(long idApp, long idUser, String nomEntity)
 			throws
 			 	AppNotRegisteredException,
+			 	EntityAlreadyRegisteredException,
 			 	UserCantAccessAppException, 
 			 	EntityCollectionAlreadyExistsException {
 		
@@ -182,12 +188,15 @@ public class AppManagement implements AppManagementLocal{
 		//Obtengo Entidades existentes
 		List<Entity> entities = app.getEntities();
 		Entity e = new Entity(nomEntity, app);
-		if (!entities.contains(e)){
-			//Creo la coleccion para cada entidad dentro de la base MongoDB de la APP
-			noSqlDbDao.createEntityCollection(app.getName(), e.getName()); //Primero porque si falla, no se va a crear la entidad.
-			entities.add(e);
-			entityDao.create(e);
+		
+		if (entities.contains(e)){
+			throw new EntityAlreadyRegisteredException("Ya existe una entidad con ese nombre");
 		}
+		//Creo la coleccion para cada entidad dentro de la base MongoDB de la APP
+		noSqlDbDao.createEntityCollection(app.getName(), e.getName()); //Primero porque si falla, no se va a crear la entidad.
+		entities.add(e);
+		entityDao.create(e);
+	
 		//Seteo nuevos entidades
 		app.setEntities(entities);
 		
@@ -348,4 +357,43 @@ public class AppManagement implements AppManagementLocal{
 			throw new PushChanNotRegisteredException("No existe el canal push con nombre " + nombreCanal + " para la aplicación de nombre " + nombreApp);
 	}
 	
+	public List<Role> getRolesApplication(long idApp) throws AppNotRegisteredException{
+		
+		Application app = appDao.read(idApp);
+		if (app == null)
+			throw new AppNotRegisteredException("No existe la aplicación con id= "+ idApp);
+		
+		return app.getRoles();
+		
+	}
+	
+	public List<Entity> getEntitiesApplication(long idApp) throws AppNotRegisteredException{
+		
+		Application app = appDao.read(idApp);
+		if (app == null)
+			throw new AppNotRegisteredException("No existe la aplicación con id= "+ idApp);
+		
+		return app.getEntities();
+		
+	}
+	
+	public List<Client> getClientsApplication(long idApp) throws AppNotRegisteredException{
+		
+		Application app = appDao.read(idApp);
+		if (app == null)
+			throw new AppNotRegisteredException("No existe la aplicación con id= "+ idApp);
+		
+		return app.getClients();
+		
+	}
+	
+	public List<PushChannel> getPushChannelsApplication(long idApp) throws AppNotRegisteredException{
+		
+		Application app = appDao.read(idApp);
+		if (app == null)
+			throw new AppNotRegisteredException("No existe la aplicación con id= "+ idApp);
+		
+		return app.getPushChannels();
+		
+	}
 }

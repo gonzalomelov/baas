@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
@@ -37,12 +39,14 @@ public interface AppManagementLocal {
 	public long editRoleApplication(long idApp, long idUser, String nomRole)
 			throws
 			 	AppNotRegisteredException,
-			 	UserCantAccessAppException;
+			 	UserCantAccessAppException,
+			 	RoleAlreadyRegisteredException;
 
 	public long editEntityApplication(long idApp, long idUser, String nomEntity)
 			throws
 			 	AppNotRegisteredException,
 			 	UserCantAccessAppException,
+			 	EntityAlreadyRegisteredException,
 			 	EntityCollectionAlreadyExistsException;
 	
 	public long editApplication(String nombreApp, List<String> rolesStr, List<String> entidadesStr)

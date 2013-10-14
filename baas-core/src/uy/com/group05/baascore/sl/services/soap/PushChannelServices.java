@@ -46,6 +46,7 @@ public interface PushChannelServices {
 				PushChanNotRegisteredException,
 				ClientNotRegisteredException;
 	
+	@WebMethod
 	public boolean sendNotificationToPushChannel(
 			@WebParam(name = "nombreApp") String nombreApp,
 			@WebParam(name = "nombreCanal") String nombreCanal,

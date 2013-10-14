@@ -6,7 +6,9 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
@@ -60,6 +62,7 @@ public interface ApplicationServices {
 			@WebParam(name ="nomRole") String nomRole)
 			throws
 			 	AppNotRegisteredException,
+			 	RoleAlreadyRegisteredException,
 			 	UserCantAccessAppException;
 	
 	@WebMethod
@@ -70,6 +73,7 @@ public interface ApplicationServices {
 			throws
 			 	AppNotRegisteredException,
 			 	UserCantAccessAppException,
+			 	EntityAlreadyRegisteredException,
 			 	EntityCollectionAlreadyExistsException;
 	
 	@WebMethod
@@ -120,4 +124,6 @@ public interface ApplicationServices {
 			throws
 				AppNotRegisteredException,
 				PushChanNotRegisteredException;
+	
+	
 }

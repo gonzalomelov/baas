@@ -5,14 +5,19 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.jws.WebService;
 
+
+
+
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.common.mapper.Mapper;
@@ -70,6 +75,7 @@ public class ApplicationServicesImpl implements ApplicationServices{
 	public long editRoleApplication(long idApp, long idUser, String nomRole)
 			throws
 			 	AppNotRegisteredException,
+			 	RoleAlreadyRegisteredException,
 			 	UserCantAccessAppException {
 		return appManagementLocal.editRoleApplication(idApp, idUser, nomRole);
 	}
@@ -78,6 +84,7 @@ public class ApplicationServicesImpl implements ApplicationServices{
 			throws
 			 	AppNotRegisteredException,
 			 	UserCantAccessAppException,
+			 	EntityAlreadyRegisteredException,
 			 	EntityCollectionAlreadyExistsException{
 		return appManagementLocal.editEntityApplication(idApp, idUser, nomEntity);
 	}
