@@ -6,7 +6,14 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+<<<<<<< .mine
+import uy.com.group05.baascore.common.entities.Client;
+import uy.com.group05.baascore.common.entities.Entity;
+import uy.com.group05.baascore.common.entities.PushChannel;
+import uy.com.group05.baascore.common.entities.Role;
+=======
 import uy.com.group05.baascore.common.entities.Permission;
+>>>>>>> .r106
 import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
@@ -129,6 +136,27 @@ public interface ApplicationServices {
 				PushChanNotRegisteredException;
 	
 	@WebMethod
+	public List<RoleDTO> getRolesApplication(
+			@WebParam(name = "idApp") long idApp) 
+			throws AppNotRegisteredException;
+	
+	@WebMethod
 	public List<PermissionDTO> getPermissionsForEntity(long appId, long entityId)
 			throws AppNotRegisteredException, EntityCollectionNotRegisteredException;
+
+	@WebMethod
+	public List<EntityDTO> getEntitiesApplication(
+			@WebParam(name = "idApp") long idApp) 
+			throws AppNotRegisteredException;
+	
+	@WebMethod
+	public List<ClientDTO> getClientsApplication(
+			@WebParam(name = "idApp") long idApp) 
+			throws AppNotRegisteredException;
+	
+	@WebMethod
+	public List<PushChannelDTO> getPushChannelsApplication(
+			@WebParam(name = "idApp") long idApp) 
+			throws AppNotRegisteredException;
+	
 }

@@ -6,6 +6,10 @@ import javax.ejb.Local;
 
 import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.entities.Application;
+import uy.com.group05.baascore.common.entities.Client;
+import uy.com.group05.baascore.common.entities.Entity;
+import uy.com.group05.baascore.common.entities.PushChannel;
+import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.entities.Permission;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
@@ -80,6 +84,18 @@ public interface AppManagementLocal {
 			throws
 				AppNotRegisteredException,
 				PushChanNotRegisteredException;
+	
+	public List<Role> getRolesApplication(long idApp) 
+			throws AppNotRegisteredException;
+	
+	public List<Entity> getEntitiesApplication(long idApp) 
+			throws AppNotRegisteredException;
+	
+	public List<Client> getClientsApplication(long idApp) 
+			throws AppNotRegisteredException;
+	
+	public List<PushChannel> getPushChannelsApplication(long idApp) 
+			throws AppNotRegisteredException;
 	
 	public List<Permission> getPermissionsForEntity(long appId, long entityId)
 			throws AppNotRegisteredException, EntityCollectionNotRegisteredException;

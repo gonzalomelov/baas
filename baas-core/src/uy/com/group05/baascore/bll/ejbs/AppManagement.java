@@ -401,6 +401,7 @@ public class AppManagement implements AppManagementLocal{
 		return app.getPushChannels();
 		
 	}
+	
 	@Override
 	public List<Permission> getPermissionsForEntity(long appId, long entityId)
 			throws AppNotRegisteredException, EntityCollectionNotRegisteredException {
