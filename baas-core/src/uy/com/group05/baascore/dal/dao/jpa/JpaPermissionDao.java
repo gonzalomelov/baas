@@ -36,7 +36,7 @@ public class JpaPermissionDao extends JpaGenericDao<Permission> implements Permi
 						+ "p.application.id = :appId", Permission.class);
 		
 		query.setParameter("appId", appId);
-		query.setParameter("roleId", entityId);
+		query.setParameter("entityId", entityId);
 		
 		return query.getResultList();
 	}
