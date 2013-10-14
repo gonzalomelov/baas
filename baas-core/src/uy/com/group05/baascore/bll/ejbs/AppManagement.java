@@ -28,6 +28,7 @@ import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
+import uy.com.group05.baascore.dal.dao.ClientDao;
 import uy.com.group05.baascore.dal.dao.EntityDao;
 import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
 import uy.com.group05.baascore.dal.dao.PermissionDao;
@@ -49,6 +50,8 @@ public class AppManagement implements AppManagementLocal{
 	NoSqlDbDao noSqlDbDao;
 	@Inject
 	PermissionDao permissionDao;
+	@Inject
+	ClientDao clientDao;
 	
 	
 	public List<Application> listApplications(long idUser) throws UserNotRegisteredException{
@@ -420,7 +423,12 @@ public class AppManagement implements AppManagementLocal{
 	}
 	
 	public Application getApplication(long appId) throws AppNotRegisteredException {
-		Application app = appDao.read(appId);
+		Application app = appDao.readById(appId);
+		
+		app.setClients(clientDao.readAll(appId));
+		app.setRoles(roleDao.readAll(appId));
+		app.setEntities(entityDao.readAll(appId));
+		
 		if (app == null)
 			throw new AppNotRegisteredException("No existe la aplicación con id " + appId);
 		

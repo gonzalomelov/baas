@@ -30,6 +30,7 @@ public class JpaRoleDao extends JpaGenericDao<Role> implements RoleDao {
 	
 	public List<Role> readAll(long appId) {
 		TypedQuery<Role> query = em.createQuery("SELECT c FROM Role c WHERE c.application.id = :appId", Role.class);
+		query.setParameter("appId", appId);
 		return query.getResultList();
 	}
 	

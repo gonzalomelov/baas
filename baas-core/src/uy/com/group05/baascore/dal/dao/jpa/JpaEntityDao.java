@@ -29,7 +29,8 @@ public class JpaEntityDao extends JpaGenericDao<Entity> implements EntityDao {
 	}
 	
 	public List<Entity> readAll(long appId) {
-		TypedQuery<Entity> query = em.createQuery("SELECT c FROM ENTITIES c WHERE c.application.id = :appId", Entity.class);
+		TypedQuery<Entity> query = em.createQuery("SELECT c FROM Entity c WHERE c.application.id = :appId", Entity.class);
+		query.setParameter("appId", appId);
 		return query.getResultList();
 	}
 }

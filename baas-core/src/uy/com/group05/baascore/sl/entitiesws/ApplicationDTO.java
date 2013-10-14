@@ -21,9 +21,7 @@ public class ApplicationDTO implements Serializable {
 	
 	private String name;
 	
-	private String url;
-	
-	private UUID token;
+	private UUID apiClientId;
 	
 	private List<UserDTO> users = new ArrayList<UserDTO>();
 	
@@ -51,20 +49,12 @@ public class ApplicationDTO implements Serializable {
 		this.name = name;
 	}
 
-	public String getUrl() {
-		return url;
+	public UUID getApiClientId() {
+		return apiClientId;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public UUID getToken() {
-		return token;
-	}
-
-	public void setToken(UUID token) {
-		this.token = token;
+	public void setApiClientId(UUID apiClientId) {
+		this.apiClientId = apiClientId;
 	}
 
 	public List<UserDTO> getUsers() {

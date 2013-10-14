@@ -8,6 +8,7 @@ import uy.com.group05.baascore.common.entities.ExternalApplication;
 import uy.com.group05.baascore.common.entities.Role;
 
 public interface ApplicationDao extends GenericDao<Application> {
+	Application readById(long id);
 	Application readByName(String name);
 	List<Application> readFromUser(long userId);
 	Application readFromApiClientId(UUID apiClientId);

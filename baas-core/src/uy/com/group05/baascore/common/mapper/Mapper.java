@@ -47,8 +47,18 @@ public class Mapper {
 		
 		//Application <> ApplicationDTO
 		mapperFactory.classMap(Application.class, ApplicationDTO.class)
-		.byDefault()
-		.register();
+			.exclude("users")	
+			.exclude("clients")
+			.field("clients{id}", "clients{id}")
+			.field("clients{email}", "clients{email}")
+			.exclude("entities")
+			.field("entities{id}", "entities{id}")
+			.field("entities{name}", "entities{name}")
+			.exclude("roles")
+			.field("roles{id}", "roles{id}")
+			.field("roles{name}", "roles{name}")
+			.byDefault()
+			.register();
 		
 		//Role <> RoleDTO
 		mapperFactory.classMap(Role.class, RoleDTO.class)
@@ -62,10 +72,16 @@ public class Mapper {
 
 		//Permission <> PermissionDTO
 		mapperFactory.classMap(Permission.class, PermissionDTO.class)
-			.exclude("application")
+			.exclude("application")	
+			.field("application.id", "application.id")
+			.field("application.name", "application.name")
+			.field("application.apiClientId", "application.name")
 			.exclude("entity")
-			.exclude("role.application")
-			.exclude("role.permissions")
+			.field("entity.id", "entity.id")
+			.field("entity.name", "entity.name")
+			.exclude("role")
+			.field("role.id", "role.id")
+			.field("role.name", "role.name")
 			.byDefault()
 			.register(); 
 		

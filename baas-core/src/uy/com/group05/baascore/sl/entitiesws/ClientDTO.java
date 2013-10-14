@@ -9,6 +9,8 @@ public class ClientDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = -9089335284964856471L;
 	
+	private long id;
+	
 	private String email;
 	
 	private String password;
@@ -19,6 +21,14 @@ public class ClientDTO implements Serializable {
 	
 	private String appName;
 	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	public String getEmail() {
 		return email;
 	}

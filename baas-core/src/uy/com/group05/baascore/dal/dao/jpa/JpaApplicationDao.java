@@ -6,11 +6,21 @@ import java.util.UUID;
 import javax.persistence.TypedQuery;
 
 import uy.com.group05.baascore.common.entities.Application;
+import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.entities.ExternalApplication;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
 
 public class JpaApplicationDao extends JpaGenericDao<Application> implements ApplicationDao {
+	
+	public Application readById(long appId) {
+		TypedQuery<Application> query = em.createQuery("SELECT a FROM Application a WHERE a.id = :appId", Application.class);
+		query.setParameter("appId", appId);
+		 
+		List<Application> applications = query.getResultList();
+		
+		return applications.isEmpty() ? null : applications.get(0);
+	}
 	
 	public Application readByName(String name) {
 		TypedQuery<Application> query = em.createQuery("SELECT a FROM Application a WHERE a.name = :name", Application.class);
