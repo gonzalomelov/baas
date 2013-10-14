@@ -7,6 +7,8 @@ import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import uy.com.group05.baascore.common.entities.Entity;
+
 @XmlRootElement
 public class ApplicationDTO implements Serializable {
 	
@@ -23,13 +25,13 @@ public class ApplicationDTO implements Serializable {
 	
 	private UUID token;
 	
-	//private List<User> users = new ArrayList<User>();
+	private List<UserDTO> users = new ArrayList<UserDTO>();
 	
-	//private List<Client> clients = new ArrayList<Client>();
+	private List<ClientDTO> clients = new ArrayList<ClientDTO>();
 	
-	//private List<RoleDTO> roles = new ArrayList<RoleDTO>();
+	private List<RoleDTO> roles = new ArrayList<RoleDTO>();
 	
-	//private List<uy.com.group05.baascore.common.entities.Entity> entities = new ArrayList<uy.com.group05.baascore.common.entities.Entity>();
+	private List<EntityDTO> entities = new ArrayList<EntityDTO>();
 
 	public ApplicationDTO() {}
 		
@@ -65,38 +67,36 @@ public class ApplicationDTO implements Serializable {
 		this.token = token;
 	}
 
-//	public List<User> getUsers() {
-//		return users;
-//	}
-//
-//	public void setUsers(List<User> users) {
-//		this.users = users;
-//	}
-//
-//	public List<Client> getClients() {
-//		return clients;
-//	}
-//
-//	public void setClients(List<Client> clients) {
-//		this.clients = clients;
-//	}
-//
-//	public List<RoleDTO> getRoles() {
-//		return roles;
-//	}
-//
-//	public void setRoles(List<RoleDTO> roles) {
-//		this.roles = roles;
-//	}
-//
-//	public List<uy.com.group05.baascore.common.entities.Entity> getEntities() {
-//		return entities;
-//	}
-//
-//	public void setEntities(
-//			List<uy.com.group05.baascore.common.entities.Entity> entities) {
-//		this.entities = entities;
-//	}
-//	
+	public List<UserDTO> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<UserDTO> users) {
+		this.users = users;
+	}
+
+	public List<ClientDTO> getClients() {
+		return clients;
+	}
+
+	public void setClients(List<ClientDTO> clients) {
+		this.clients = clients;
+	}
+
+	public List<RoleDTO> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<RoleDTO> roles) {
+		this.roles = roles;
+	}
+
+	public List<EntityDTO> getEntities() {
+		return entities;
+	}
+
+	public void setEntities(List<EntityDTO> entities) {
+		this.entities = entities;
+	}
 	
 }
