@@ -4,8 +4,14 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 
 import uy.com.group05.baascore.common.entities.Application;
+import uy.com.group05.baascore.common.entities.Operation;
+import uy.com.group05.baascore.common.entities.Permission;
+import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.sl.entitiesws.ApplicationDTO;
+import uy.com.group05.baascore.sl.entitiesws.OperationDTO;
+import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
+import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
 import uy.com.group05.baascore.sl.entitiesws.UserDTO;
 import uy.com.group05.baascore.sl.entitiesws.UserRegisterDTO;
 import ma.glasnost.orika.MapperFacade;
@@ -42,6 +48,20 @@ public class Mapper {
 		.byDefault()
 		.register();
 		
+		//Role <> RoleDTO
+		mapperFactory.classMap(Role.class, RoleDTO.class)
+			.byDefault()
+			.register();
+		
+		//Permission <> PermissionDTO
+		mapperFactory.classMap(Permission.class, PermissionDTO.class)
+			.byDefault()
+			.register(); 
+		
+		//Operation <> OperationDTO
+		mapperFactory.classMap(Operation.class, OperationDTO.class)
+			.byDefault()
+			.register();
 		
 		/* Fin Mappings */
 		
