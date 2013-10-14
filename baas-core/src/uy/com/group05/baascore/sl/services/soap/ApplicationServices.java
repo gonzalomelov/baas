@@ -7,6 +7,9 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 
 <<<<<<< .mine
+
+
+
 import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.PushChannel;
@@ -26,7 +29,10 @@ import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.sl.entitiesws.ApplicationDTO;
+import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
+import uy.com.group05.baascore.sl.entitiesws.EntityDTO;
 import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
+import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
 
 @WebService
 public interface ApplicationServices {
