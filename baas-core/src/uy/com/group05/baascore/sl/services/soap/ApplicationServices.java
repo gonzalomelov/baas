@@ -10,6 +10,8 @@ import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.sl.entitiesws.ApplicationDTO;
@@ -95,4 +97,27 @@ public interface ApplicationServices {
 			throws
 				AppNotRegisteredException,
 				UserNotRegisteredException;
+	
+	@WebMethod
+	public boolean existsPushChannelApplication(
+			@WebParam(name = "nombreApp") String nombreApp,
+			@WebParam(name = "nombreCanal") String nombreCanal)
+			throws
+				AppNotRegisteredException;
+	
+	@WebMethod
+	public long addPushChannelToApplication(
+			@WebParam(name = "nombreApp") String nombreApp,
+			@WebParam(name = "nombreCanal") String nombreCanal)
+			throws
+				AppNotRegisteredException,
+				PushChanAlreadyRegisteredException;
+	
+	@WebMethod
+	public long removePushChannelFromApplication(
+			@WebParam(name = "nombreApp") String nombreApp,
+			@WebParam(name = "nombreCanal") String nombreCanal)
+			throws
+				AppNotRegisteredException,
+				PushChanNotRegisteredException;
 }

@@ -11,12 +11,15 @@ import javax.inject.Inject;
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Entity;
+import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
@@ -292,6 +295,58 @@ public class AppManagement implements AppManagementLocal{
 			return false;
 		
 		return true;
+	}
+
+	@Override
+	public boolean existsPushChannelApplication(String nombreApp,
+			String nombreCanal) throws AppNotRegisteredException {
+		
+		Application app = appDao.readByName(nombreApp);
+		if (app == null)
+			throw new AppNotRegisteredException("No existe la aplicación de nombre " + nombreApp);
+		
+		return (app.getPushChannel(nombreCanal) != null);
+	}
+
+	@Override
+	public long addPushChannelToApplication(String nombreApp,
+			String nombreCanal)
+					throws
+						AppNotRegisteredException,
+						PushChanAlreadyRegisteredException {
+		
+		Application app = appDao.readByName(nombreApp);
+		if (app == null)
+			throw new AppNotRegisteredException("No existe la aplicación de nombre " + nombreApp);
+		
+		if (app.getPushChannel(nombreCanal) == null) {
+			PushChannel pc = new PushChannel(nombreCanal,app);
+			app.addPushChannel(pc);
+			appDao.update(app);
+			return pc.getId();
+		}
+		else
+			throw new PushChanAlreadyRegisteredException("Ya existe el canal push con nombre " + nombreCanal + " para la aplicación de nombre " + nombreApp);
+		
+	}
+
+	@Override
+	public long removePushChannelFromApplication(String nombreApp,
+			String nombreCanal) throws AppNotRegisteredException,
+			PushChanNotRegisteredException {
+		
+		Application app = appDao.readByName(nombreApp);
+		if (app == null)
+			throw new AppNotRegisteredException("No existe la aplicación de nombre " + nombreApp);
+		
+		if (app.getPushChannel(nombreCanal) != null) {
+			PushChannel pc = app.getPushChannel(nombreCanal);
+			app.removePushChannel(pc);
+			appDao.update(app);
+			return pc.getId();
+		}
+		else
+			throw new PushChanNotRegisteredException("No existe el canal push con nombre " + nombreCanal + " para la aplicación de nombre " + nombreApp);
 	}
 	
 }

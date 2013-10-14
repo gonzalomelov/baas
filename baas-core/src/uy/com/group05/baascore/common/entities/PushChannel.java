@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @javax.persistence.Entity
@@ -60,6 +59,29 @@ public class PushChannel {
 
 	public void setClients(List<Client> clients) {
 		this.clients = clients;
+	}
+	
+	public void addClient(Client client) {
+		if (!this.clients.contains(client))
+			this.clients.add(client);
+	}
+	
+	public void removeClient(Client client) {
+		if (this.clients.contains(client))
+			this.clients.remove(client);
+	}
+	
+	public boolean hasClient(Client client) {
+		return this.clients.contains(client);
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if (o == null) return false;
+	    if (o == this) return true;
+	    if (!(o instanceof PushChannel)) return false;
+	    PushChannel pc = (PushChannel)o;
+	    return this.name.equals(pc.getName());
 	}
 	
 }

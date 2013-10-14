@@ -11,6 +11,8 @@ import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.common.mapper.Mapper;
@@ -100,5 +102,31 @@ public class ApplicationServicesImpl implements ApplicationServices{
 				AppNotRegisteredException,
 				UserNotRegisteredException {
 		return appManagementLocal.unassignUserFromApplication(nombreApp, idUser);
+	}
+
+
+	@Override
+	public boolean existsPushChannelApplication(String nombreApp, String nombreCanal)
+			throws
+				AppNotRegisteredException {
+		return appManagementLocal.existsPushChannelApplication(nombreApp, nombreCanal);
+	}
+
+
+	@Override
+	public long addPushChannelToApplication(String nombreApp, String nombreCanal)
+			throws
+				AppNotRegisteredException,
+				PushChanAlreadyRegisteredException {
+		return appManagementLocal.addPushChannelToApplication(nombreApp, nombreCanal);
+	}
+
+
+	@Override
+	public long removePushChannelFromApplication(String nombreApp, String nombreCanal)
+			throws
+				AppNotRegisteredException,
+				PushChanNotRegisteredException {
+		return appManagementLocal.removePushChannelFromApplication(nombreApp, nombreCanal);
 	}
 }

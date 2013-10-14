@@ -133,6 +133,25 @@ public class Application {
 		this.pushChannels = pushChannels;
 	}
 	
+	public void addPushChannel(PushChannel pushChannel) {
+		if (!this.pushChannels.contains(pushChannel))
+			this.pushChannels.add(pushChannel);
+	}
+	
+	public void removePushChannel(PushChannel pushChannel) {
+		if (this.pushChannels.contains(pushChannel))
+			this.pushChannels.remove(pushChannel);
+	}
+	
+	public PushChannel getPushChannel(String nombreCanal) {
+		for (PushChannel pc : this.pushChannels) {
+			if (pc.getName().equalsIgnoreCase(nombreCanal))
+				return pc;
+		}
+		
+		return null;
+	}
+	
 	@Override
 	public boolean equals(Object o){
 		if (o == null) return false;

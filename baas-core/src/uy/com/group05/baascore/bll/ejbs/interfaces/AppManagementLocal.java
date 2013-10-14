@@ -9,6 +9,8 @@ import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
+import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 
@@ -58,4 +60,18 @@ public interface AppManagementLocal {
 			throws
 			AppNotRegisteredException,
 			UserNotRegisteredException;
+	
+	public boolean existsPushChannelApplication(String nombreApp, String nombreCanal)
+			throws
+			AppNotRegisteredException;
+	
+	public long addPushChannelToApplication(String nombreApp, String nombreCanal)
+			throws
+				AppNotRegisteredException,
+				PushChanAlreadyRegisteredException;
+	
+	public long removePushChannelFromApplication(String nombreApp, String nombreCanal)
+			throws
+				AppNotRegisteredException,
+				PushChanNotRegisteredException;
 }
