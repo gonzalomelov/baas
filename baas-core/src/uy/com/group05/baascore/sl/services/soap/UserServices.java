@@ -44,6 +44,13 @@ public interface UserServices {
 				UserNotRegisteredException;
 	
 	@WebMethod
+	UserDTO loginUserFacebook(
+			@WebParam(name = "email") String email,
+			@WebParam(name = "name") String name,
+			@WebParam(name = "lastname") String lastname,
+			@WebParam(name = "fbId") String fbId);
+	
+	@WebMethod
 	boolean logoutUser(
 			@WebParam(name = "email") String email)
 			throws

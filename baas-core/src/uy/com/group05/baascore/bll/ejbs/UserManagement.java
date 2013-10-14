@@ -84,6 +84,23 @@ public class UserManagement implements UserManagementLocal {
 	}
 	
 	@Override
+	public User loginUserFacebook(User user) {
+		User u = userDao.readByFbId(user.getFbId());
+		
+		if (u == null) {
+			u = userDao.readByEmail(user.getEmail());
+			if (u == null) {
+				userDao.create(u);
+			} else {
+				u.setFbId(user.getFbId());
+				userDao.update(u);
+			}
+		}
+		
+		return u;
+	}
+	
+	@Override
 	public boolean logoutUser(String email)
 		throws
 			UserNotRegisteredException {

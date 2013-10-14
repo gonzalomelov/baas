@@ -3,6 +3,7 @@ package uy.com.group05.baascore.sl.services.impl;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.UserManagementLocal;
@@ -77,6 +78,21 @@ public class UserServicesImpl implements UserServices {
 		return userDTO;
 	}
 
+	@Override
+	public UserDTO loginUserFacebook(String email, String name, String lastname, String fbId) {
+		User user = new User();
+		user.setEmail(email);
+		user.setName(name);
+		user.setLastname(lastname);
+		user.setFbId(fbId);
+		
+		user = userManagementLocal.loginUserFacebook(user);
+		
+		UserDTO userDTO = mapper.getMapper().map(user, UserDTO.class);
+		
+		return userDTO;
+	}
+	
 	@Override
 	public boolean logoutUser(String email)
 		throws

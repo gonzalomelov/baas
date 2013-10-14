@@ -17,4 +17,13 @@ public class JpaUserDao extends JpaGenericDao<User> implements UserDao {
 		
 		return users.isEmpty() ? null : users.get(0);
 	}
+	
+	public User readByFbId(String fbId) {
+		TypedQuery<User> typedQuery = em.createQuery("select u from User u where u.fbId = :fbId", User.class);
+		typedQuery.setParameter("fbId", fbId);
+		
+		List<User> users = typedQuery.getResultList();
+		
+		return users.isEmpty() ? null : users.get(0);
+	}
 }

@@ -26,7 +26,9 @@ public interface UserManagementLocal {
 	
 	User loginUser(String email, String password)
 		throws
-			UserNotRegisteredException;;
+			UserNotRegisteredException;
+	
+	User loginUserFacebook(User user);
 	
 	boolean logoutUser(String email)
 		throws
