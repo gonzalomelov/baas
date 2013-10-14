@@ -7,8 +7,10 @@ import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Operation;
 import uy.com.group05.baascore.common.entities.Permission;
 import uy.com.group05.baascore.common.entities.Role;
+import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.sl.entitiesws.ApplicationDTO;
+import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
 import uy.com.group05.baascore.sl.entitiesws.OperationDTO;
 import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
 import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
@@ -53,6 +55,11 @@ public class Mapper {
 			.byDefault()
 			.register();
 		
+		//PushChannel <> PushChannelDTO
+		mapperFactory.classMap(PushChannel.class, PushChannelDTO.class)
+		.byDefault()
+		.register();
+
 		//Permission <> PermissionDTO
 		mapperFactory.classMap(Permission.class, PermissionDTO.class)
 			.byDefault()
