@@ -10,6 +10,7 @@ import javax.jws.WebService;
 
 
 
+
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Permission;
@@ -26,7 +27,11 @@ import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.common.mapper.Mapper;
 import uy.com.group05.baascore.sl.entitiesws.ApplicationDTO;
+import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
+import uy.com.group05.baascore.sl.entitiesws.EntityDTO;
 import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
+import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
+import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
 import uy.com.group05.baascore.sl.services.soap.ApplicationServices;
 
 @WebService(
@@ -160,5 +165,37 @@ public class ApplicationServicesImpl implements ApplicationServices{
 		ApplicationDTO appDto = mapper.getMapper().map(app, ApplicationDTO.class);
 		
 		return appDto; 
+	}
+
+
+	@Override
+	public List<RoleDTO> getRolesApplication(long idApp)
+			throws AppNotRegisteredException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<EntityDTO> getEntitiesApplication(long idApp)
+			throws AppNotRegisteredException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<ClientDTO> getClientsApplication(long idApp)
+			throws AppNotRegisteredException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<PushChannelDTO> getPushChannelsApplication(long idApp)
+			throws AppNotRegisteredException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
