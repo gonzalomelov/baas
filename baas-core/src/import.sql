@@ -10,7 +10,7 @@ INSERT INTO applications(name, apiclientid) VALUES ('aname', '7dc53df5-703e-49b3
 
 INSERT INTO users_applications(applications_id, users_id) VALUES (1,1);
 
-INSERT INTO entities(id, name, application_id) VALUES (1, 'aentity', 1);
+INSERT INTO entities(name, application_id) VALUES ('aentity', 1);
 
 INSERT INTO roles (name, application_id) values ('Publico', 1);
 
