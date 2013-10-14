@@ -2,11 +2,13 @@ package uy.com.group05.baascore.common.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -23,9 +25,7 @@ public class Application {
 	@Column(unique = true)
 	private String name;
 	
-	private String apiClientId;
-	
-	private String apiClientSecret;
+	private UUID apiClientId;
 	
 	@JoinTable(name = "USERS_APPLICATIONS")
 	@ManyToMany
@@ -43,7 +43,17 @@ public class Application {
 
 	@OneToMany(mappedBy = "application")
 	private List<PushChannel> pushChannels = new ArrayList<PushChannel>();
-
+	
+	@ManyToMany(mappedBy = "applications")
+	private List<ExternalApplication> externalApplications = new ArrayList<ExternalApplication>();
+	
+	@OneToMany(mappedBy = "application")
+	private List<ExternalClient> externalClients = new ArrayList<ExternalClient>();
+	
+	@OneToMany
+	@JoinColumn(name = "APPLICATIONS_EXTERNALCLIENTSROLES", referencedColumnName = "id")
+	private List<Role> externalClientsRoles;
+	
 	public Application() {}
 	
 	public Application(String nombreApp, User owner) {
@@ -76,20 +86,12 @@ public class Application {
 		this.name = name;
 	}
 
-	public String getApiClientId() {
+	public UUID getApiClientId() {
 		return apiClientId;
 	}
 
-	public void setApiClientId(String apiClientId) {
+	public void setApiClientId(UUID apiClientId) {
 		this.apiClientId = apiClientId;
-	}
-
-	public String getApiClientSecret() {
-		return apiClientSecret;
-	}
-
-	public void setApiClientSecret(String apiClientSecret) {
-		this.apiClientSecret = apiClientSecret;
 	}
 
 	public List<User> getUsers() {
@@ -132,7 +134,32 @@ public class Application {
 	public void setPushChannels(List<PushChannel> pushChannels) {
 		this.pushChannels = pushChannels;
 	}
-	
+
+	public List<ExternalApplication> getExternalApplications() {
+		return externalApplications;
+	}
+
+	public void setExternalApplications(
+			List<ExternalApplication> externalApplications) {
+		this.externalApplications = externalApplications;
+	}
+
+	public List<ExternalClient> getExternalClients() {
+		return externalClients;
+	}
+
+	public void setExternalClients(List<ExternalClient> externalClients) {
+		this.externalClients = externalClients;
+	}
+
+	public List<Role> getExternalClientsRoles() {
+		return externalClientsRoles;
+	}
+
+	public void setExternalClientsRoles(List<Role> externalClientsRoles) {
+		this.externalClientsRoles = externalClientsRoles;
+	}
+
 	public void addPushChannel(PushChannel pushChannel) {
 		if (!this.pushChannels.contains(pushChannel))
 			this.pushChannels.add(pushChannel);

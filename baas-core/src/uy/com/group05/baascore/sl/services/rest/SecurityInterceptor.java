@@ -1,6 +1,7 @@
 package uy.com.group05.baascore.sl.services.rest;
 
 import java.lang.reflect.Method;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
@@ -33,12 +34,15 @@ public class SecurityInterceptor implements PreProcessInterceptor, AcceptedByMet
 		
 		MultivaluedMap<String, String> requestHeaders = httpHeaders.getRequestHeaders();
 		
-		String accessToken = requestHeaders.getFirst("accessToken");
-	
-		if (accessToken == null) {
-			return new ServerResponse("Access denied for these resource", 403, new Headers<Object>());	
-		}
+		UUID accessToken;
 		
+		try {
+			accessToken = UUID.fromString(requestHeaders.getFirst("accessToken"));
+		}
+		catch (IllegalArgumentException e) {
+			return new ServerResponse("Access denied for these resource", 403, new Headers<Object>());
+		}
+	
 		String operation = request.getHttpMethod();
 		
 		String url = request.getUri().getPath();

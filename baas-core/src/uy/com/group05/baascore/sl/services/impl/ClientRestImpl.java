@@ -1,5 +1,7 @@
 package uy.com.group05.baascore.sl.services.impl;
 
+import java.util.UUID;
+
 import javax.ejb.EJB;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.ClientManagementLocal;
@@ -17,21 +19,13 @@ public class ClientRestImpl implements ClientRest {
 	@EJB
 	private ClientManagementLocal clientManagementLocal;
 	
-	public ClientRegistrationDTO register(
-			String apiClientId,
-			String apiClientSecret,
-			ClientDTO client) {
-
-		return clientManagementLocal.register(apiClientId, apiClientSecret, client);
+	@Override
+	public ClientRegistrationDTO register(UUID apiClientId, ClientDTO client) {
+		return clientManagementLocal.register(apiClientId, client);
 	}
 
-	public ClientAuthenticationDTO authenticate(
-			String apiClientId,
-			String apiClientSecret, 
-			String appName,
-			String email,
-			String password) {
-		
-		return clientManagementLocal.authenticate(appName, apiClientId, apiClientSecret, email, password);
+	@Override
+	public ClientAuthenticationDTO authenticate(UUID apiClientId, String appName, String email, String password) {
+		return clientManagementLocal.authenticate(appName, apiClientId, email, password);
 	}
 }

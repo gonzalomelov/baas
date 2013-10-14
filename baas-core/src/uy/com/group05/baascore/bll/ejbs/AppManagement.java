@@ -103,9 +103,8 @@ public class AppManagement implements AppManagementLocal{
 			}
 		}
 		
-		//Genero appId y appSecret
-		app.setApiClientId(UUID.randomUUID().toString());
-		app.setApiClientSecret(UUID.randomUUID().toString());
+		//Genero appId
+		app.setApiClientId(UUID.randomUUID());
 		
 		//Seteo Roles y Entidades a App
 		app.setRoles(roles);

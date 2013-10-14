@@ -15,6 +15,7 @@ public interface APIRest {
 	@Path("/entities/{appName}/{entity}")
 	@Produces(MediaType.APPLICATION_JSON)	
 	public String get(
+			//@HeaderParam("accessToken") UUID accessToken,
 			@PathParam("appName") String appName,
 			@PathParam("entity") String entity);
 	
@@ -23,6 +24,7 @@ public interface APIRest {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)	
 	public boolean post(
+			//@HeaderParam("accessToken") UUID accessToken,
 			@PathParam("appName") String appName,
 			@PathParam("entity") String entity,
 			String jsonObj);

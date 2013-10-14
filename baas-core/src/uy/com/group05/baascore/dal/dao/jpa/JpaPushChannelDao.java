@@ -4,8 +4,7 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
-import com.sun.security.ntlm.Client;
-
+import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.entities.Permission;
 import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.entities.Role;

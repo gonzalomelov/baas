@@ -10,7 +10,8 @@ import uy.com.group05.baascore.dal.dao.PermissionDao;
 
 public class JpaPermissionDao extends JpaGenericDao<Permission> implements PermissionDao {
 	public List<Permission> readAll(long appId) {
-		TypedQuery<Permission> query = em.createQuery("SELECT c FROM PERMISSIONS c WHERE c.application.id = :appId", Permission.class);
+		TypedQuery<Permission> query = em.createQuery("SELECT c FROM Permission c WHERE c.application.id = :appId", Permission.class);
+		query.setParameter("appId", appId);
 		return query.getResultList();
 	}
 	
@@ -20,6 +21,9 @@ public class JpaPermissionDao extends JpaGenericDao<Permission> implements Permi
 						+ "from Permission p "
 						+ "where p.role.id = :roleId and "
 						+ "p.application.id = :appId", Permission.class);
+		
+		query.setParameter("appId", appId);
+		query.setParameter("roleId", roleId);
 		
 		return query.getResultList();
 	}

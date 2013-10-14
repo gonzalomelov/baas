@@ -2,8 +2,7 @@ package uy.com.group05.baascore.dal.dao;
 
 import java.util.List;
 
-import com.sun.security.ntlm.Client;
-
+import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.entities.PushChannel;
 
 public interface PushChannelDao extends GenericDao<PushChannel> {

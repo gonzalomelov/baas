@@ -2,16 +2,35 @@
 <resources>
 	<string name="app_name">Trueques</string>
     
-    <!-- Activities Titles -->
-    <string name="title_activity_login">Login</string>
-    <string name="title_activity_main">Main</string>
-    
+    <!-- Home -->
+    <string name="title_activity_home">Home</string>
     
     <!-- Login -->
+    <string name="title_activity_login">Login</string>
     <string name="login_email">Email</string>
     <string name="login_password">Password</string>
+    <string name="login_notRegistered">Not registered?</string>
+    <string name="login_register">Register Now!</string>
     
+    <!-- Register -->
+    <string name="title_activity_register">Register</string>
+    <string name="register_email">Email</string>
+    <string name="register_password">Password</string>
+    <string name="register_name">Name</string>
+    <string name="register_lastname">Lastname</string>
+    <string name="register_ok">Register</string>
+    <string name="register_waiting">Registering..</string>
+    <string name="register_unsuccessful">Try Again!</string>
     
+    <!-- Main -->    
+    <string name="title_activity_main">Main</string>
+    <string name="main_getButton">Get</string>
+    <string name="main_postButton">Post</string>
+    <string name="main_waiting">Registering..</string>
+    <string name="main_unsuccessful">Try Again!</string>
+    
+    <!-- Submit -->
+    <string name="title_activity_submit">Submit</string>
     <string name="action_settings">Settings</string>
     <string name="button_send">Login</string>
     

@@ -55,9 +55,12 @@ public class LoginActivity extends Activity {
 	    	
 	    	textView.setText("Try again!");
 	    }
-		
-		
 	} 
+	
+	public void register(View view) {
+		Intent intent = new Intent(this, RegisterActivity.class);
+		startActivity(intent);
+	}
 	
 	private class LoginTask extends AsyncTask<String, Void, Boolean> {
 
@@ -66,11 +69,6 @@ public class LoginActivity extends Activity {
 	    private LoginTask(Context context) {
 	        this.context = context.getApplicationContext();
 	    }
-		
-		@Override
-		protected void onPreExecute() {
-			textView.setText("Executing");
-		}
 
 		@Override
 		protected Boolean doInBackground(String... args) {
@@ -97,8 +95,8 @@ public class LoginActivity extends Activity {
 		}
 		
 		@Override
-		protected void onPostExecute(Boolean b) {
-			if(!b) {
+		protected void onPostExecute(Boolean result) {
+			if(!result) {
 				textView.setText("Try again!");
 			} else {
 		        Intent intent = new Intent(context, MainActivity.class);
@@ -107,5 +105,9 @@ public class LoginActivity extends Activity {
 			}
 		}
 		
+		@Override
+		protected void onPreExecute() {
+			textView.setText("Logging...");
+		}
 	}
 }

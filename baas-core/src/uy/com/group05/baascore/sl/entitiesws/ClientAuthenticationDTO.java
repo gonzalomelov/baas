@@ -1,6 +1,7 @@
 package uy.com.group05.baascore.sl.entitiesws;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class ClientAuthenticationDTO implements Serializable {
 	/**
@@ -9,8 +10,8 @@ public class ClientAuthenticationDTO implements Serializable {
 	private static final long serialVersionUID = -4239100687374087964L;
 	
 	private boolean ok;
-	private String accessToken;
-	private String refreshToken;
+	private UUID accessToken;
+	private UUID refreshToken;
 	
 	public boolean isOk() {
 		return ok;
@@ -18,16 +19,16 @@ public class ClientAuthenticationDTO implements Serializable {
 	public void setOk(boolean ok) {
 		this.ok = ok;
 	}
-	public String getAccessToken() {
+	public UUID getAccessToken() {
 		return accessToken;
 	}
-	public void setAccessToken(String accessToken) {
+	public void setAccessToken(UUID accessToken) {
 		this.accessToken = accessToken;
 	}
-	public String getRefreshToken() {
+	public UUID getRefreshToken() {
 		return refreshToken;
 	}
-	public void setRefreshToken(String refreshToken) {
+	public void setRefreshToken(UUID refreshToken) {
 		this.refreshToken = refreshToken;
 	}
 	

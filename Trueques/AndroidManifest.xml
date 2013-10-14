@@ -18,11 +18,19 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="uy.com.group05.baasclient.trueques.LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="uy.com.group05.baasclient.trueques.RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:parentActivityName="uy.com.group05.baasclient.trueques.Loginctivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uy.com.group05.baasclient.trueques.Loginctivity" />
         </activity>
         <activity
             android:name="uy.com.group05.baasclient.trueques.MainActivity"
@@ -32,6 +40,16 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="uy.com.group05.baasclient.trueques.LoginActivity" />
+
+        </activity>
+        <activity
+            android:name="uy.com.group05.baasclient.trueques.SubmitActivity"
+            android:label="@string/title_activity_submit"
+            android:parentActivityName="uy.com.group05.baasclient.trueques.MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uy.com.group05.baasclient.trueques.MainActivity" />
 
         </activity>
     </application>

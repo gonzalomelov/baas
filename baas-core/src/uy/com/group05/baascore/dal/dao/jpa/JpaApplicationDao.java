@@ -1,27 +1,22 @@
 package uy.com.group05.baascore.dal.dao.jpa;
 
 import java.util.List;
+import java.util.UUID;
+
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import uy.com.group05.baascore.common.entities.Application;
-import uy.com.group05.baascore.common.entities.Application_;
+import uy.com.group05.baascore.common.entities.ExternalApplication;
+import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
 
 public class JpaApplicationDao extends JpaGenericDao<Application> implements ApplicationDao {
 	
 	public Application readByName(String name) {
-		CriteriaBuilder cb = this.em.getCriteriaBuilder();
-		CriteriaQuery<Application> cq = cb.createQuery(this.type);
-		Root<Application> r = cq.from(this.type);
-		cq.select(r);
-		cq.where(cb.equal(r.get(Application_.name), name));
-		
-		TypedQuery<Application> typedQuery = em.createQuery(cq);
+		TypedQuery<Application> query = em.createQuery("SELECT a FROM Application a WHERE a.name = :name", Application.class);
+		query.setParameter("name", name);
 		 
-		List<Application> applications = typedQuery.getResultList();
+		List<Application> applications = query.getResultList();
 		
 		return applications.isEmpty() ? null : applications.get(0);
 	}
@@ -37,5 +32,34 @@ public class JpaApplicationDao extends JpaGenericDao<Application> implements App
 		List<Application> applications = query.getResultList();
 		
 		return applications;
+	}
+	
+	public Application readFromApiClientId(UUID apiClientId) {
+		TypedQuery<Application> query = em.createQuery("SELECT a FROM Application a WHERE a.apiClientId = :apiClientId", Application.class);
+		query.setParameter("apiClientId", apiClientId);
+		
+		List<Application> applications = query.getResultList();
+		
+		return applications.isEmpty() ? null : applications.get(0);
+	}
+	
+	public ExternalApplication readAssociatedExternalApplication(long appId, long externalAppId) {
+		TypedQuery<ExternalApplication> query =
+				em.createQuery("select a from ExternalApplication a"
+						+ "inner join a.applications b"
+						+ "where a.id = :appId and b.id == :externalAppId", ExternalApplication.class);
+		
+		List<ExternalApplication> externalApplications = query.getResultList();
+		
+		return externalApplications.isEmpty() ? null : externalApplications.get(0);
+	}
+	
+	public List<Role> readExternalClientsAppRole(long appId) {
+		TypedQuery<Application> query = em.createQuery("SELECT a FROM Application a WHERE a.id = :appId", Application.class);
+		query.setParameter("appId", appId);
+		
+		List<Application> applications = query.getResultList();
+		
+		return applications.isEmpty() ? null : applications.get(0).getExternalClientsRoles();
 	}
 }

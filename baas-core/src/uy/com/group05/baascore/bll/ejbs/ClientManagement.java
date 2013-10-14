@@ -11,11 +11,15 @@ import uy.com.group05.baascore.bll.ejbs.interfaces.ClientManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.entities.Entity;
+import uy.com.group05.baascore.common.entities.ExternalApplication;
+import uy.com.group05.baascore.common.entities.ExternalClient;
 import uy.com.group05.baascore.common.entities.Permission;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
 import uy.com.group05.baascore.dal.dao.ClientDao;
 import uy.com.group05.baascore.dal.dao.EntityDao;
+import uy.com.group05.baascore.dal.dao.ExternalApplicationDao;
+import uy.com.group05.baascore.dal.dao.ExternalClientDao;
 import uy.com.group05.baascore.dal.dao.OperationDao;
 import uy.com.group05.baascore.dal.dao.PermissionDao;
 import uy.com.group05.baascore.dal.dao.RoleDao;
@@ -44,9 +48,14 @@ public class ClientManagement implements ClientManagementLocal {
 	@Inject
 	private PermissionDao permissionDao;
 
+	@Inject
+	private ExternalApplicationDao externalAppDao;
+	
+	@Inject
+	private ExternalClientDao externalClientDao;
+	
 	@Override
-	public ClientRegistrationDTO register(String apiClientId,
-			String apiClientSecret, ClientDTO client) {
+	public ClientRegistrationDTO register(UUID apiClientId, ClientDTO client) {
 		
 		ClientRegistrationDTO registration = new ClientRegistrationDTO();
 		registration.setOk(false);
@@ -58,9 +67,7 @@ public class ClientManagement implements ClientManagementLocal {
 			return registration;
 		}
 		
-		if (!app.getApiClientId().equals(apiClientId) ||
-			!app.getApiClientSecret().equals(apiClientSecret)) {
-			
+		if (!app.getApiClientId().equals(apiClientId)) {
 			return registration;
 		}
 		
@@ -86,13 +93,13 @@ public class ClientManagement implements ClientManagementLocal {
 	}
 
 	@Override
-	public ClientAuthenticationDTO authenticate(String appName, String apiClientId,
-			String apiClientSecret, String email, String password) {
+	public ClientAuthenticationDTO authenticate(String appName, UUID apiClientId,
+			String email, String password) {
 
 		ClientAuthenticationDTO auten = new ClientAuthenticationDTO();
-		auten.setAccessToken("");
+		auten.setAccessToken(null);
 		auten.setOk(false);
-		auten.setRefreshToken("");
+		auten.setRefreshToken(null);
 		
 		//App validation
 		Application app = appDao.readByName(appName);
@@ -101,9 +108,7 @@ public class ClientManagement implements ClientManagementLocal {
 			return auten;
 		}
 		
-		if (!app.getApiClientId().equals(apiClientId) ||
-			!app.getApiClientSecret().equals(apiClientSecret)) {
-			
+		if (!app.getApiClientId().equals(apiClientId)) {
 			return auten;
 		}
 		
@@ -119,8 +124,8 @@ public class ClientManagement implements ClientManagementLocal {
 		}
 		
 		//Ok
-		String accessToken = UUID.randomUUID().toString();
-		String refreshToken = UUID.randomUUID().toString();
+		UUID accessToken = UUID.randomUUID();
+		UUID refreshToken = UUID.randomUUID();
 		
 		client.setAccessToken(accessToken);
 		client.setRefreshToken(refreshToken);
@@ -135,7 +140,7 @@ public class ClientManagement implements ClientManagementLocal {
 	}
 
 	@Override
-	public boolean validate(String appName, String operation, String entityName, String accessToken) {
+	public boolean validate(String appName, String operation, String entityName, UUID accessToken) {
 		
 		//App validation
 		Application app = appDao.readByName(appName);
@@ -165,7 +170,7 @@ public class ClientManagement implements ClientManagementLocal {
 			for (Permission permission : rolePermissions) {
 				if (permission.getApplication().getId() == app.getId() &&
 					permission.getEntity().getId() == entity.getId() &&
-					permission.getOperation().getName() == operation &&
+					permission.getOperation().getName().equals(operation) &&
 					permission.getRole().getId() == role.getId()) {
 					
 					return true;
@@ -175,5 +180,115 @@ public class ClientManagement implements ClientManagementLocal {
 		
 		return false;
 	} 
+
+	@Override
+	public ClientAuthenticationDTO authenticateExternal(long appId, long externalAppId, UUID apiClientId,
+			String email, String password) {
+		
+		ClientAuthenticationDTO auten = new ClientAuthenticationDTO();
+		auten.setAccessToken(null);
+		auten.setOk(false);
+		auten.setRefreshToken(null);
+		
+		//App validation
+		Application app = appDao.read(appId);
+		
+		if (app == null) {
+			return auten;
+		}
+		
+		if (app.getApiClientId() != apiClientId) {
+			return auten;
+		}
+		
+		//External App validation
+		ExternalApplication externalApp = externalAppDao.read(externalAppId);
+		
+		if (externalApp == null) {
+			return auten;
+		}
+		
+		//Association between App and External App
+		ExternalApplication associatedExternalApp = appDao.readAssociatedExternalApplication(app.getId(), externalAppId);
+		
+		if (associatedExternalApp == null) {
+			return auten;
+		}
+		
+		//Client validation
+		
+		//########################################################################
+		//TODO Llamar al servicio validarUsuarioAplicacionExterna(appId, externalAppId, apiClientId, email, password)
+		boolean externalUserValid = true;
+		//########################################################################
+		
+		if (!externalUserValid) {
+			return auten;
+		}
+		
+		//Ok
+		UUID accessToken = UUID.randomUUID();
+		UUID refreshToken = UUID.randomUUID();
+		
+		ExternalClient externalClient = new ExternalClient();
+		externalClient.setAccessToken(accessToken);
+		externalClient.setApplication(app);
+		externalClient.setRefreshToken(refreshToken);
+		
+		app.getExternalClients().add(externalClient);
+		
+		externalClientDao.create(externalClient);
+		
+		appDao.update(app);
+		
+		auten.setAccessToken(accessToken);
+		auten.setOk(true);
+		auten.setRefreshToken(refreshToken);
+		
+		return auten;
+	}
+
+	
+	public boolean validateExternal(String appName, String operation, String entityName, UUID accessToken) {
+		
+		//App validation
+		Application app = appDao.readByName(appName);
+		
+		if (app == null) {
+			return false;
+		}
+		
+		//Client validation
+		ExternalClient externalClient = externalClientDao.readByAccessToken(app.getId(), accessToken);
+		
+		if (externalClient == null) {
+			return false;	
+		}
+		
+		Entity entity = entityDao.readByName(app.getId(), entityName); 
+		
+		if (entity == null) {
+			return false;
+		}
+		
+		List<Role> externalClientsAppRoles = appDao.readExternalClientsAppRole(app.getId());
+
+		for (Role role : externalClientsAppRoles) {
+			List<Permission> rolePermissions = permissionDao.readAll(app.getId(), role.getId());
+			
+			for (Permission permission : rolePermissions) {
+				if (permission.getApplication().getId() == app.getId() &&
+					permission.getEntity().getId() == entity.getId() &&
+					permission.getOperation().getName() == operation &&
+					permission.getRole().getId() == role.getId()) {
+					
+					return true;
+				}
+			}	
+		}
+		
+		
+		return false;
+	}
 }
 
