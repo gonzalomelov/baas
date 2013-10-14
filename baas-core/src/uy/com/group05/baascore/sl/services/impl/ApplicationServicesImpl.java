@@ -162,7 +162,7 @@ public class ApplicationServicesImpl implements ApplicationServices{
 				EntityCollectionNotRegisteredException {
 		
 		List<Permission> permissions = appManagementLocal.getPermissionsForEntity(appId, entityId);
-		
+
 		List<PermissionDTO> response = mapper.getMapper().mapAsList(permissions, PermissionDTO.class);
 		
 		return response;

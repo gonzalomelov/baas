@@ -1,5 +1,10 @@
 package uy.com.group05.baascore.sl.entitiesws;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import uy.com.group05.baascore.common.entities.Permission;
+
 public class RoleDTO {
 	private long id;
 	
@@ -7,6 +12,8 @@ public class RoleDTO {
 
 	private ApplicationDTO application;
 
+	private List<PermissionDTO> permissions = new ArrayList<PermissionDTO>();
+	
 	public long getId() {
 		return id;
 	}
@@ -29,6 +36,14 @@ public class RoleDTO {
 
 	public void setApplication(ApplicationDTO application) {
 		this.application = application;
+	}
+
+	public List<PermissionDTO> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(List<PermissionDTO> permissions) {
+		this.permissions = permissions;
 	}
 	
 	

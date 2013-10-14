@@ -138,7 +138,9 @@ public interface ApplicationServices {
 			throws AppNotRegisteredException;
 	
 	@WebMethod
-	public List<PermissionDTO> getPermissionsForEntity(long appId, long entityId)
+	public List<PermissionDTO> getPermissionsForEntity(
+			@WebParam(name = "appId") long appId,
+			@WebParam(name = "entityId") long entityId)
 			throws AppNotRegisteredException, EntityCollectionNotRegisteredException;
 
 	@WebMethod

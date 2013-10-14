@@ -62,6 +62,10 @@ public class Mapper {
 
 		//Permission <> PermissionDTO
 		mapperFactory.classMap(Permission.class, PermissionDTO.class)
+			.exclude("application")
+			.exclude("entity")
+			.exclude("role.application")
+			.exclude("role.permissions")
 			.byDefault()
 			.register(); 
 		
