@@ -29,6 +29,8 @@ public class User {
 
 	private boolean loggedIn;
 	
+	private String fbId;
+	
 	@ManyToMany(mappedBy = "users")
 	private List<Application> applications = new ArrayList<Application>();
 
@@ -98,6 +100,14 @@ public class User {
 	    	return true;
 	    else
 	    	return false;
+	}
+
+	public String getFbId() {
+		return fbId;
+	}
+
+	public void setFbId(String fbId) {
+		this.fbId = fbId;
 	}
 	
 }
