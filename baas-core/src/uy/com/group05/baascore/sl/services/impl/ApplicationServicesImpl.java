@@ -153,4 +153,12 @@ public class ApplicationServicesImpl implements ApplicationServices{
 		
 		return response;
 	}
+	
+	public ApplicationDTO getApplication(long appId) throws AppNotRegisteredException {
+		Application app = appManagementLocal.getApplication(appId);
+		
+		ApplicationDTO appDto = mapper.getMapper().map(app, ApplicationDTO.class);
+		
+		return appDto; 
+	}
 }

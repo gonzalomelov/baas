@@ -419,4 +419,11 @@ public class AppManagement implements AppManagementLocal{
 		return permissionDao.readAllFromEntity(appId, entityId);
 	}
 	
+	public Application getApplication(long appId) throws AppNotRegisteredException {
+		Application app = appDao.read(appId);
+		if (app == null)
+			throw new AppNotRegisteredException("No existe la aplicación con id " + appId);
+		
+		return app;
+	}
 }

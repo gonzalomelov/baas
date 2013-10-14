@@ -165,4 +165,7 @@ public interface ApplicationServices {
 			@WebParam(name = "idApp") long idApp) 
 			throws AppNotRegisteredException;
 	
+	@WebMethod
+	public ApplicationDTO getApplication(long appId)
+			throws AppNotRegisteredException;
 }

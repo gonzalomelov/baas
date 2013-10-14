@@ -100,4 +100,6 @@ public interface AppManagementLocal {
 	public List<Permission> getPermissionsForEntity(long appId, long entityId)
 			throws AppNotRegisteredException, EntityCollectionNotRegisteredException;
 	
+	public Application getApplication(long appId) throws AppNotRegisteredException;
+	
 }
