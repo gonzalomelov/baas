@@ -3,6 +3,7 @@ package uy.com.group05.baascore.bll.ejbs;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.bll.ejbs.interfaces.PushChannelManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Client;
@@ -25,7 +26,7 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 	@Inject
 	ClientDao clientDao;
 	@Inject
-	AppManagement appMgmt;
+	AppManagementLocal appMgmt;
 	
 	@Override	
 	public long createPushChannel(String nombreApp, String nombreCanal)
