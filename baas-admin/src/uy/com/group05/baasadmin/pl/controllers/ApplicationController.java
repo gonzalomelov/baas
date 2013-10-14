@@ -5,6 +5,7 @@ import java.util.List;
 
 import uy.com.group05.baasadmin.common.exceptions.ApplicationException;
 import uy.com.group05.baasadmin.common.exceptions.EntityException;
+import uy.com.group05.baasadmin.common.exceptions.RoleException;
 import uy.com.group05.baasadmin.pl.models.AppModel;
 import uy.com.group05.baasadmin.pl.models.Application;
 import uy.com.group05.baasadmin.pl.models.Cliente;
@@ -18,6 +19,7 @@ import uy.com.group05.baascore.sl.services.soap.EntityAlreadyRegisteredException
 import uy.com.group05.baascore.sl.services.soap.EntityCollectionAlreadyExistsException_Exception;
 import uy.com.group05.baascore.sl.services.soap.MongoDBAlreadyExistsException_Exception;
 import uy.com.group05.baascore.sl.services.soap.NombreAppAlreadyRegisteredException_Exception;
+import uy.com.group05.baascore.sl.services.soap.RoleAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.UserCantAccessAppException_Exception;
 import uy.com.group05.baascore.sl.services.soap.UserNotRegisteredException_Exception;
 
@@ -199,5 +201,24 @@ public class ApplicationController {
 		} catch (EntityAlreadyRegisteredException_Exception e) {
 			throw new EntityException(e.getMessage());
 		}
+	}
+	
+	public long addRole(long userId, long appId, String roleName) throws RoleException{
+		
+		ApplicationServices service = new ApplicationServices();
+		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
+		
+		try {
+			return port.editRoleApplication(appId, userId, roleName);
+		} catch (RoleAlreadyRegisteredException_Exception e) {
+			throw new RoleException(e.getMessage());
+		} catch (UserCantAccessAppException_Exception e) {
+			throw new RoleException(e.getMessage());
+		} catch (AppNotRegisteredException_Exception e) {
+			throw new RoleException(e.getMessage());
+		}
+		
+		
+		
 	}
 }

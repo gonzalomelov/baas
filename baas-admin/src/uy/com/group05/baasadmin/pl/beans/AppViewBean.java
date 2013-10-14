@@ -9,6 +9,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import uy.com.group05.baasadmin.common.exceptions.EntityException;
+import uy.com.group05.baasadmin.common.exceptions.RoleException;
 import uy.com.group05.baasadmin.pl.controllers.ApplicationController;
 import uy.com.group05.baasadmin.pl.models.Application;
 import uy.com.group05.baasadmin.pl.models.Entity;
@@ -153,10 +154,24 @@ public class AppViewBean {
 			rolName = "";
 			return null;
 		}
+		
+		try{
+			ApplicationController appController = new ApplicationController();
+			long id = appController.addRole(userSessionManagementBean.getUser()
+							.getUserId(), app.getId(), rolName);
+			
+			Rol r = new Rol(rolName, id);
+			
+			app.getRoles().add(r);
+		}
+		catch(RoleException e){
+			errorRol = e.getMessage();
+			rolName = "";
+			return null;
+		}
+		
 
-		Rol r = new Rol(rolName, app.getRoles().size() + 1);
-
-		app.getRoles().add(r);
+		
 		rolName = "";
 
 		return null;
