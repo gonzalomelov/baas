@@ -11,9 +11,18 @@ import javax.jws.WebService;
 
 
 
+
+
+
+
+
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
+import uy.com.group05.baascore.common.entities.Client;
+import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.Permission;
+import uy.com.group05.baascore.common.entities.PushChannel;
+import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
@@ -30,9 +39,9 @@ import uy.com.group05.baascore.sl.entitiesws.ApplicationDTO;
 import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
 import uy.com.group05.baascore.sl.entitiesws.EntityDTO;
 import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
-import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
 import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
 import uy.com.group05.baascore.sl.services.soap.ApplicationServices;
+import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
 
 @WebService(
 	endpointInterface="uy.com.group05.baascore.sl.services.soap.ApplicationServices",
@@ -159,8 +168,8 @@ public class ApplicationServicesImpl implements ApplicationServices{
 		return response;
 	}
 	
-	public ApplicationDTO getApplication(long appId) throws AppNotRegisteredException {
-		Application app = appManagementLocal.getApplication(appId);
+	public ApplicationDTO getApplication(long idApp) throws AppNotRegisteredException {
+		Application app = appManagementLocal.getApplication(idApp);
 		
 		ApplicationDTO appDto = mapper.getMapper().map(app, ApplicationDTO.class);
 		
@@ -171,31 +180,39 @@ public class ApplicationServicesImpl implements ApplicationServices{
 	@Override
 	public List<RoleDTO> getRolesApplication(long idApp)
 			throws AppNotRegisteredException {
-		// TODO Auto-generated method stub
-		return null;
+		List<Role> roles = appManagementLocal.getRolesApplication(idApp);
+		List<RoleDTO> rolesDTO = mapper.getMapper().mapAsList(roles, RoleDTO.class); 
+		
+		return rolesDTO;
 	}
 
 
 	@Override
 	public List<EntityDTO> getEntitiesApplication(long idApp)
 			throws AppNotRegisteredException {
-		// TODO Auto-generated method stub
-		return null;
+		List<Entity> entities = appManagementLocal.getEntitiesApplication(idApp);
+		List<EntityDTO> entitiesDTO = mapper.getMapper().mapAsList(entities, EntityDTO.class); 
+		
+		return entitiesDTO;
 	}
 
 
 	@Override
 	public List<ClientDTO> getClientsApplication(long idApp)
 			throws AppNotRegisteredException {
-		// TODO Auto-generated method stub
-		return null;
+		List<Client> clients = appManagementLocal.getClientsApplication(idApp);
+		List<ClientDTO> clientsDTO = mapper.getMapper().mapAsList(clients, ClientDTO.class); 
+		
+		return clientsDTO;
 	}
 
 
 	@Override
 	public List<PushChannelDTO> getPushChannelsApplication(long idApp)
 			throws AppNotRegisteredException {
-		// TODO Auto-generated method stub
-		return null;
+		List<PushChannel> pushChannels = appManagementLocal.getPushChannelsApplication(idApp);
+		List<PushChannelDTO> pushChannelsDTO = mapper.getMapper().mapAsList(pushChannels, PushChannelDTO.class); 
+		
+		return pushChannelsDTO;
 	}
 }

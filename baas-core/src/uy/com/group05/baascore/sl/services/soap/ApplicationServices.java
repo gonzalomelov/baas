@@ -7,15 +7,6 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 
 
-
-
-
-
-import uy.com.group05.baascore.common.entities.Client;
-import uy.com.group05.baascore.common.entities.Entity;
-import uy.com.group05.baascore.common.entities.PushChannel;
-import uy.com.group05.baascore.common.entities.Role;
-import uy.com.group05.baascore.common.entities.Permission;
 import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
@@ -166,6 +157,7 @@ public interface ApplicationServices {
 			throws AppNotRegisteredException;
 	
 	@WebMethod
-	public ApplicationDTO getApplication(long appId)
+	public ApplicationDTO getApplication(
+			@WebParam(name = "idApp") long idApp)
 			throws AppNotRegisteredException;
 }
