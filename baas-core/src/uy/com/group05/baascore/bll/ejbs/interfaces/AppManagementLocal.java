@@ -6,9 +6,11 @@ import javax.ejb.Local;
 
 import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.entities.Application;
+import uy.com.group05.baascore.common.entities.Permission;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
+import uy.com.group05.baascore.common.exceptions.EntityCollectionNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
@@ -78,4 +80,8 @@ public interface AppManagementLocal {
 			throws
 				AppNotRegisteredException,
 				PushChanNotRegisteredException;
+	
+	public List<Permission> getPermissionsForEntity(long appId, long entityId)
+			throws AppNotRegisteredException, EntityCollectionNotRegisteredException;
+	
 }

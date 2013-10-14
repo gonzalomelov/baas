@@ -12,12 +12,14 @@ import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.entities.Entity;
+import uy.com.group05.baascore.common.entities.Permission;
 import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
+import uy.com.group05.baascore.common.exceptions.EntityCollectionNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
@@ -28,6 +30,7 @@ import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
 import uy.com.group05.baascore.dal.dao.EntityDao;
 import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
+import uy.com.group05.baascore.dal.dao.PermissionDao;
 import uy.com.group05.baascore.dal.dao.RoleDao;
 import uy.com.group05.baascore.dal.dao.UserDao;
 
@@ -44,6 +47,8 @@ public class AppManagement implements AppManagementLocal{
 	EntityDao entityDao;
 	@Inject
 	NoSqlDbDao noSqlDbDao;
+	@Inject
+	PermissionDao permissionDao;
 	
 	
 	public List<Application> listApplications(long idUser) throws UserNotRegisteredException{
@@ -396,4 +401,21 @@ public class AppManagement implements AppManagementLocal{
 		return app.getPushChannels();
 		
 	}
+	@Override
+	public List<Permission> getPermissionsForEntity(long appId, long entityId)
+			throws AppNotRegisteredException, EntityCollectionNotRegisteredException {
+		
+		Application app = appDao.read(appId);
+		if (app == null)
+			throw new AppNotRegisteredException("No existe la aplicación con id " + appId);
+		
+		Entity entity = entityDao.read(entityId);
+		
+		if (entity == null) {
+			throw new EntityCollectionNotRegisteredException("No existe la entidad");
+		}
+		
+		return permissionDao.readAllFromEntity(appId, entityId);
+	}
+	
 }

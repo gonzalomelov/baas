@@ -6,10 +6,12 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import uy.com.group05.baascore.common.entities.Permission;
 import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
+import uy.com.group05.baascore.common.exceptions.EntityCollectionNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
@@ -17,6 +19,7 @@ import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.sl.entitiesws.ApplicationDTO;
+import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
 
 @WebService
 public interface ApplicationServices {
@@ -125,5 +128,7 @@ public interface ApplicationServices {
 				AppNotRegisteredException,
 				PushChanNotRegisteredException;
 	
-	
+	@WebMethod
+	public List<PermissionDTO> getPermissionsForEntity(long appId, long entityId)
+			throws AppNotRegisteredException, EntityCollectionNotRegisteredException;
 }

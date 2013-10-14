@@ -27,4 +27,17 @@ public class JpaPermissionDao extends JpaGenericDao<Permission> implements Permi
 		
 		return query.getResultList();
 	}
+	
+	public List<Permission> readAllFromEntity(long appId, long entityId) {
+		TypedQuery<Permission> query =
+				em.createQuery("select distinct p "
+						+ "from Permission p "
+						+ "where p.entity.id = :entityId and "
+						+ "p.application.id = :appId", Permission.class);
+		
+		query.setParameter("appId", appId);
+		query.setParameter("roleId", entityId);
+		
+		return query.getResultList();
+	}
 }

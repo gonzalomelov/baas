@@ -8,11 +8,15 @@ import javax.jws.WebService;
 
 
 
+
+
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
+import uy.com.group05.baascore.common.entities.Permission;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
+import uy.com.group05.baascore.common.exceptions.EntityCollectionNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
@@ -22,6 +26,7 @@ import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.common.mapper.Mapper;
 import uy.com.group05.baascore.sl.entitiesws.ApplicationDTO;
+import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
 import uy.com.group05.baascore.sl.services.soap.ApplicationServices;
 
 @WebService(
@@ -135,5 +140,17 @@ public class ApplicationServicesImpl implements ApplicationServices{
 				AppNotRegisteredException,
 				PushChanNotRegisteredException {
 		return appManagementLocal.removePushChannelFromApplication(nombreApp, nombreCanal);
+	}
+	
+	public List<PermissionDTO> getPermissionsForEntity(long appId, long entityId)
+			throws
+				AppNotRegisteredException,
+				EntityCollectionNotRegisteredException {
+		
+		List<Permission> permissions = appManagementLocal.getPermissionsForEntity(appId, entityId);
+		
+		List<PermissionDTO> response = mapper.getMapper().mapAsList(permissions, PermissionDTO.class);
+		
+		return response;
 	}
 }
