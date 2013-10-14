@@ -21,7 +21,7 @@
  </filter-mapping>
   <filter-mapping>
   <filter-name>FiltroLogueado</filter-name>
-  <url-pattern>/*</url-pattern>
+  <url-pattern>*.xhtml</url-pattern>
  </filter-mapping>
  <servlet>
   <servlet-name>facesServlet</servlet-name>
