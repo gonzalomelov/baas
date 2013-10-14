@@ -29,6 +29,7 @@ public class User {
 
 	private boolean loggedIn;
 	
+	@Column(unique=true)
 	private String fbId;
 	
 	@ManyToMany(mappedBy = "users")
