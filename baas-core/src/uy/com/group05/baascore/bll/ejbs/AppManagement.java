@@ -368,10 +368,11 @@ public class AppManagement implements AppManagementLocal{
 	public List<Role> getRolesApplication(long idApp) throws AppNotRegisteredException{
 		
 		Application app = appDao.read(idApp);
+		
 		if (app == null)
 			throw new AppNotRegisteredException("No existe la aplicación con id= "+ idApp);
 		
-		return app.getRoles();
+		return roleDao.readAll(idApp);
 		
 	}
 	

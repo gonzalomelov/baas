@@ -181,6 +181,7 @@ public class ApplicationServicesImpl implements ApplicationServices{
 	public List<RoleDTO> getRolesApplication(long idApp)
 			throws AppNotRegisteredException {
 		List<Role> roles = appManagementLocal.getRolesApplication(idApp);
+		
 		List<RoleDTO> rolesDTO = mapper.getMapper().mapAsList(roles, RoleDTO.class); 
 		
 		return rolesDTO;

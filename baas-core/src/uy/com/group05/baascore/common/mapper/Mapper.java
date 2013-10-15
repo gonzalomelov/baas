@@ -62,6 +62,8 @@ public class Mapper {
 		
 		//Role <> RoleDTO
 		mapperFactory.classMap(Role.class, RoleDTO.class)
+			.exclude("application")
+			.exclude("permissions")
 			.byDefault()
 			.register();
 		
