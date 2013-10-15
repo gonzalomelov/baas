@@ -59,7 +59,10 @@ public class AppManagement implements AppManagementLocal{
 		if(user == null)//no existe usuario
 			throw new UserNotRegisteredException("No existe el usuario con id:"+idUser);
 		//Obtenego la lista de apps del usuario
-		return appDao.readFromUser(idUser);
+		
+		List<Application> apps = appDao.readFromUser(idUser);
+		
+		return apps;
 	}
 	
 	public long createApplication(long idUser, String nombreApp, List<String> rolesStr, List<String> entidadesStr)

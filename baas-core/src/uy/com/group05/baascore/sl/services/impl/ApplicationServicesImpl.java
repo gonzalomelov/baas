@@ -1,9 +1,11 @@
 package uy.com.group05.baascore.sl.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.jws.WebService;
+
 
 
 
@@ -62,7 +64,15 @@ public class ApplicationServicesImpl implements ApplicationServices{
 		
 		List<Application> listApps = appManagementLocal.listApplications(idUser);
 		
-		List<ApplicationDTO> response = mapper.getMapper().mapAsList(listApps, ApplicationDTO.class);
+		List<ApplicationDTO> response = new ArrayList<ApplicationDTO>();
+		
+		for (Application application : listApps) {
+			ApplicationDTO appDto = new ApplicationDTO();
+			appDto.setId(application.getId());
+			appDto.setName(application.getName());
+			
+			response.add(appDto);
+		}
 		
 		return response;
 	}
