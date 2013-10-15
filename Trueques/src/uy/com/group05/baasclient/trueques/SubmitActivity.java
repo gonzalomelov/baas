@@ -38,14 +38,17 @@ public class SubmitActivity extends Activity {
 	}
 	
 	public void post(View view) {
-    	String marca = ((EditText) findViewById(R.id.submit_marca)).getText().toString();
+		String entity = getIntent().getStringExtra("entity");
+		
+		String marca = ((EditText) findViewById(R.id.submit_marca)).getText().toString();
     	String anio = ((EditText) findViewById(R.id.submit_anio)).getText().toString();
 		
 		ConnectivityManager connMgr = (ConnectivityManager) 
     	        getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+	    
 	    if (networkInfo != null && networkInfo.isConnected()) {
-	    	new PostTask(this).execute(marca, anio);
+	    	new PostTask(this).execute(entity, marca, anio);
 	    } else {
 	    	resultView.setText("@string/main_unsuccessful");
 	    }
@@ -64,11 +67,13 @@ public class SubmitActivity extends Activity {
 			
 			try
 			{
+				String entity = args[0];
+				
 				Auto auto = new Auto();
 				auto.setMarca(args[0]);
 				auto.setAnio(args[1]);
 				
-				boolean ok = SDKFactory.getAPIFacade().post(context, "aentity", auto, Auto.class);
+				boolean ok = SDKFactory.getAPIFacade().post(context, entity, auto, Auto.class);
 				
 				return ok;
 			}

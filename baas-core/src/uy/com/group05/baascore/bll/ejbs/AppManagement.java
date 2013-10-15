@@ -429,10 +429,6 @@ public class AppManagement implements AppManagementLocal{
 	public Application getApplication(long appId) throws AppNotRegisteredException {
 		Application app = appDao.readById(appId);
 		
-		app.setClients(clientDao.readAll(appId));
-		app.setRoles(roleDao.readAll(appId));
-		app.setEntities(entityDao.readAll(appId));
-		
 		if (app == null)
 			throw new AppNotRegisteredException("No existe la aplicación con id " + appId);
 		

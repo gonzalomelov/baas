@@ -27,8 +27,8 @@ import com.google.gson.Gson;
 
 public class MainActivity extends Activity {    
     private TableLayout entitiesTable;
-    
     private TextView resultView;
+    private TextView entityTextView;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,7 @@ public class MainActivity extends Activity {
         
         entitiesTable = (TableLayout) findViewById(R.id.main_tableLayout);
         resultView = (TextView) findViewById(R.id.main_waiting);
+        entityTextView = (TextView) findViewById(R.id.main_entity);
     }
 
 	@Override
@@ -46,18 +47,24 @@ public class MainActivity extends Activity {
 	}
 
     public void get(View view) {
+    	String entity = entityTextView.getText().toString();
+    	
     	ConnectivityManager connMgr = (ConnectivityManager) 
     	        getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 	    if (networkInfo != null && networkInfo.isConnected()) {
-	    	new GetTask(this).execute();
+	    	new GetTask(this).execute(entity);
 	    } else {
 	    	resultView.setText("@string/main_unsuccessful");
 	    }
     }
     
     public void post(View view) {
+    	String entity = entityTextView.getText().toString();
+    	
     	Intent intent = new Intent(this, SubmitActivity.class);
+    	intent.putExtra("entity", entity);
+    	
     	startActivity(intent);
     }
     
@@ -74,7 +81,8 @@ public class MainActivity extends Activity {
 			
 			try
 			{
-				String json = SDKFactory.getAPIFacade().get(context, "aentity");
+				String entity = args[0];
+				String json = SDKFactory.getAPIFacade().get(context, entity);
 				return json;
 			}
 			catch (UnsupportedEncodingException e) {

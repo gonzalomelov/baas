@@ -18,7 +18,6 @@ import org.jboss.resteasy.spi.interception.AcceptedByMethod;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.ClientManagementLocal;
-import uy.com.group05.baascore.sl.services.impl.ClientRestImpl;
 
 @ServerInterceptor
 public class SecurityInterceptor implements PreProcessInterceptor, AcceptedByMethod {

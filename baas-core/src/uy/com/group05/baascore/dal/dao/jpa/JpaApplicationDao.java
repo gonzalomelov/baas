@@ -19,7 +19,17 @@ public class JpaApplicationDao extends JpaGenericDao<Application> implements App
 		 
 		List<Application> applications = query.getResultList();
 		
-		return applications.isEmpty() ? null : applications.get(0);
+		if (applications.isEmpty()) {
+			return null;
+		}
+		
+		Application a = applications.get(0);
+		
+		a.getClients().size();
+		a.getEntities().size();
+		a.getRoles().size();
+		
+		return a;
 	}
 	
 	public Application readByName(String name) {
@@ -28,7 +38,17 @@ public class JpaApplicationDao extends JpaGenericDao<Application> implements App
 		 
 		List<Application> applications = query.getResultList();
 		
-		return applications.isEmpty() ? null : applications.get(0);
+		if (applications.isEmpty()) {
+			return null;
+		}
+		
+		Application a = applications.get(0);
+		
+		a.getClients().size();
+		a.getEntities().size();
+		a.getRoles().size();
+		
+		return a;
 	}
 	
 	public List<Application> readFromUser(long userId) {
@@ -50,7 +70,17 @@ public class JpaApplicationDao extends JpaGenericDao<Application> implements App
 		
 		List<Application> applications = query.getResultList();
 		
-		return applications.isEmpty() ? null : applications.get(0);
+		if (applications.isEmpty()) {
+			return null;
+		}
+		
+		Application a = applications.get(0);
+		
+		a.getClients().size();
+		a.getEntities().size();
+		a.getRoles().size();
+		
+		return a;
 	}
 	
 	public ExternalApplication readAssociatedExternalApplication(long appId, long externalAppId) {

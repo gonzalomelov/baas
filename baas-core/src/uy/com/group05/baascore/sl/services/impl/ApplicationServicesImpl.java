@@ -18,6 +18,7 @@ import javax.jws.WebService;
 
 
 
+
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Client;
@@ -42,6 +43,7 @@ import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
 import uy.com.group05.baascore.sl.entitiesws.EntityDTO;
 import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
 import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
+import uy.com.group05.baascore.sl.entitiesws.SimpleApplicationDTO;
 import uy.com.group05.baascore.sl.services.soap.ApplicationServices;
 import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
 
@@ -58,22 +60,14 @@ public class ApplicationServicesImpl implements ApplicationServices{
 	@Inject
 	AppManagementLocal appManagementLocal;
 	
-	public List<ApplicationDTO> listApplications(long idUser) 
+	public List<SimpleApplicationDTO> listApplications(long idUser) 
 			throws 
 				UserNotRegisteredException{
 		
 		List<Application> listApps = appManagementLocal.listApplications(idUser);
 		
-		List<ApplicationDTO> response = new ArrayList<ApplicationDTO>();
-		
-		for (Application application : listApps) {
-			ApplicationDTO appDto = new ApplicationDTO();
-			appDto.setId(application.getId());
-			appDto.setName(application.getName());
-			
-			response.add(appDto);
-		}
-		
+		List<SimpleApplicationDTO> response = mapper.getMapper().mapAsList(listApps, SimpleApplicationDTO.class);
+
 		return response;
 	}
 

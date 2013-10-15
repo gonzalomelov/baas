@@ -8,6 +8,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
         
+        <EditText
+            android:id="@+id/main_entity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+        
         <Button
 	        android:id="@+id/main_postButton"
 	        android:layout_width="wrap_content"

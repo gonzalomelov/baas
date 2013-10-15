@@ -14,6 +14,7 @@ import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
 import uy.com.group05.baascore.sl.entitiesws.OperationDTO;
 import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
 import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
+import uy.com.group05.baascore.sl.entitiesws.SimpleApplicationDTO;
 import uy.com.group05.baascore.sl.entitiesws.UserDTO;
 import uy.com.group05.baascore.sl.entitiesws.UserRegisterDTO;
 import ma.glasnost.orika.MapperFacade;
@@ -57,6 +58,11 @@ public class Mapper {
 			.exclude("roles")
 			.field("roles{id}", "roles{id}")
 			.field("roles{name}", "roles{name}")
+			.byDefault()
+			.register();
+		
+		//Application <> ApplicationDTO
+		mapperFactory.classMap(Application.class, SimpleApplicationDTO.class)
 			.byDefault()
 			.register();
 		

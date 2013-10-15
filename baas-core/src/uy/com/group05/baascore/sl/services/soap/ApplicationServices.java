@@ -7,6 +7,7 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 
 
+
 import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
@@ -24,12 +25,13 @@ import uy.com.group05.baascore.sl.entitiesws.EntityDTO;
 import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
 import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
 import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
+import uy.com.group05.baascore.sl.entitiesws.SimpleApplicationDTO;
 
 @WebService
 public interface ApplicationServices {
 	
 	@WebMethod
-	public List<ApplicationDTO> listApplications( 
+	public List<SimpleApplicationDTO> listApplications( 
 			@WebParam(name = "idUser") long idUser)
 			throws 
 				UserNotRegisteredException;

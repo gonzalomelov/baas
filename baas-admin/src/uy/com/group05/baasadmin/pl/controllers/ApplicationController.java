@@ -142,15 +142,24 @@ public class ApplicationController {
 	
 	public List<Rol> getRoles(long appId){
 		
-		//Application response = new Application();
+		ApplicationServices service = new ApplicationServices();
 		
-		List<Rol> roles = new ArrayList<Rol>();
-		roles.add(new Rol("admin", 1));
-		roles.add(new Rol("guest", 2));
-		roles.add(new Rol("super", 3));
-		//response.setRoles(roles);
+		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
 		
-		return roles;
+		try {
+			List<RoleDTO> rolesDto = port.getRolesApplication(appId);
+			List<Rol> roles = new ArrayList<Rol>();
+			
+			for (RoleDTO roleDto : rolesDto) {
+				Rol r = new Rol(roleDto.getName(), roleDto.getId());
+				roles.add(r);
+			}
+			
+			return roles;
+			
+		} catch (AppNotRegisteredException_Exception e) {
+			return null;
+		}
 	}
 	
 	public List<Operacion> getOperaciones(long appId){
@@ -176,9 +185,9 @@ public class ApplicationController {
 		else if( entityId == 2){
 			nombre = "autos";
 		}
-		e.setName("casas");
+		e.setName("Edit");
 		
-		e.setName(nombre);
+		//e.setName(nombre);
 		return e;
 	}
 	
