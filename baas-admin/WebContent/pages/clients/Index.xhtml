@@ -81,8 +81,8 @@ body {
 				<!-- user dropdown starts -->
 				<div class="btn-group pull-right">
 					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-						<i class="icon-user"></i><span class="hidden-phone">#{entityBean.userSessionManagementBean.user.name}
-							#{entityBean.userSessionManagementBean.user.lastname}</span> <span
+						<i class="icon-user"></i><span class="hidden-phone">#{clientRoleBean.userSessionManagementBean.user.name}
+							#{clientRoleBean.userSessionManagementBean.user.lastname}</span> <span
 						class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
@@ -105,33 +105,32 @@ body {
 	</div>
 
 	<div class="page-header">
-		<h1 class="h1Title">#{entityBean.entity.name}</h1>
+		<h1 class="h1Title">#{clientRoleBean.cliente.name}</h1>
 	</div>
 
 	<h:form>
 		<div class="PermTable">
-			<p:dataTable var="rowName" value="#{entityBean.roleList}"
+			<p:dataTable var="rowName" value="#{clientRoleBean.roleList}"
 				rowIndexVar="rowIdx">
 				<p:column headerText="" styleClass="ui-widget-header">
 					<h:outputText value="#{rowName.roleName}" />
 				</p:column>
 
-				<p:columns var="columnName" value="#{entityBean.operationList}"
-					headerText="#{columnName.name}" columnIndexVar="colIdx"
+				<p:columns var="columnName" value="#{clientRoleBean.permisos}"
+					headerText="#{columnName}" columnIndexVar="colIdx"
 					styleClass="PermColumns">
 
 					<p:selectBooleanCheckbox
-						value="#{entityBean.datosVista[rowIdx][colIdx]}">
-						<p:ajax event="change" listener="#{entityBean.changePermissionAjax}" />
+						value="#{clientRoleBean.datosVista[rowIdx]}">
+						<p:ajax event="change" listener="#{clientRoleBean.changePermissionAjax}" />
 						<f:attribute name="row" value="#{rowIdx}"></f:attribute>
-						<f:attribute name="col" value="#{colIdx}"></f:attribute>
 					</p:selectBooleanCheckbox>
 				</p:columns>
 			</p:dataTable>
 
 
 		</div>
-		<h:commandButton value="Guardar" action="#{entityBean.submit}" />
+		<h:commandButton value="Guardar" action="#{clientRoleBean.submit}" />
 	</h:form>
 	<!-- external javascript
 	================================================== -->

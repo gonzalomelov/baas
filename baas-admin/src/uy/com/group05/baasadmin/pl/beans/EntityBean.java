@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -29,6 +30,26 @@ public class EntityBean {
 	private Boolean[][] datosVista;
 	
 	private long appId;
+	
+	@ManagedProperty(value="#{userSessionManagementBean}")
+	private UserSessionManagementBean userSessionManagementBean;
+	
+	public UserSessionManagementBean getUserSessionManagementBean() {
+		if(userSessionManagementBean == null){
+			FacesContext context = FacesContext.getCurrentInstance();
+			userSessionManagementBean = context.getApplication()
+					.evaluateExpressionGet(context,"#{userSessionManagementBean}", 
+							UserSessionManagementBean.class);
+			
+		}
+		
+		return userSessionManagementBean;
+	}
+
+	public void setUserSessionManagementBean(
+			UserSessionManagementBean userSessionManagementBean) {
+		this.userSessionManagementBean = userSessionManagementBean;
+	}
 
 	public List<Rol> getRoleList() {
 		return roleList;

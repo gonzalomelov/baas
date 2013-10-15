@@ -121,7 +121,7 @@ public class ApplicationController {
 			for (ClientDTO cliente : app.getClients()) {
 				Cliente c = new Cliente();
 				c.setId(cliente.getId());
-				c.setName(cliente.getAppName());
+				c.setName(cliente.getEmail());
 				clientes.add(c);
 			}		
 			
@@ -186,6 +186,23 @@ public class ApplicationController {
 			nombre = "autos";
 		}
 		e.setName("Edit");
+		
+		//e.setName(nombre);
+		return e;
+	}
+	
+	public Cliente getCliente(long clientId){
+		
+		Cliente e = new Cliente();
+		e.setId(clientId);
+//		String nombre = "trabajo";
+//		if(entityId == 1){
+//			nombre = "casas"; 
+//		}
+//		else if( entityId == 2){
+//			nombre = "autos";
+//		}
+		e.setName("Diego Forlan");
 		
 		//e.setName(nombre);
 		return e;

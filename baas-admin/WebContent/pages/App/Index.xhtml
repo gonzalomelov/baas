@@ -141,10 +141,10 @@ body {
 
 						<f:facet name="header">Name</f:facet>
 
-						<h:link value="#{e.name}" outcome="/pages/Users/Index">
+						<h:link value="#{e.name}" outcome="/pages/clients/Index">
 
 							<f:param name="appId" value="#{appViewBean.app.id}" />
-							<f:param name="entityId" value="#{e.id}" />
+							<f:param name="clientId" value="#{e.id}" />
 						</h:link>
 
 					</h:column>
