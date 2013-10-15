@@ -38,6 +38,15 @@ body {
 </h:head>
 <body>
 
+				<h:panelGroup rendered="#{appViewBean.error.length() > 0 }">
+					<div class="alert alert-error errorMessage">
+						<button type="button" class="close" data-dismiss="alert">×</button>
+						<strong>Error</strong>
+						<h:outputLabel value="#{appViewBean.error}" />
+					</div>
+				</h:panelGroup>
+
+	<h:panelGroup rendered="#{appViewBean.error.length() == 0 }">
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="container-fluid">
@@ -108,7 +117,12 @@ body {
 	</div>
 
 	<div>
-
+		<div class="rolSecret">
+			<label >Application Secret</label>
+			<span class="input-xlarge uneditable-input">#{appViewBean.app.token}</span>
+			
+			
+		</div>
 		<div class="clientsBox">
 
 
@@ -144,9 +158,9 @@ body {
 
 
 		</div>
-		<h:form>
+		
 			<div class="rolesBox">
-
+				<h:form>
 
 				<div class="box-header well">
 					<h2>Roles</h2>
@@ -190,12 +204,12 @@ body {
 						<h:outputLabel value="#{appViewBean.errorRol}" />
 					</div>
 				</h:panelGroup>
-
+				</h:form>
 			</div>
-		</h:form>
-		<h:form>
+		
+		
 			<div class="entityBox">
-
+				<h:form>
 
 				<div class="box-header well">
 					<h2>Entities</h2>
@@ -251,13 +265,14 @@ body {
 				</h:panelGroup>
 
 
-
+				</h:form>
 			</div>
-		</h:form>
+		
 
 
 	</div>
 
+	</h:panelGroup>
 	<!-- external javascript
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->

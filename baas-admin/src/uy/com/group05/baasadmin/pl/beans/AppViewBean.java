@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import uy.com.group05.baasadmin.common.exceptions.ApplicationException;
 import uy.com.group05.baasadmin.common.exceptions.EntityException;
 import uy.com.group05.baasadmin.common.exceptions.RoleException;
 import uy.com.group05.baasadmin.pl.controllers.ApplicationController;
@@ -29,6 +30,8 @@ public class AppViewBean {
 
 	private String errorRol;
 
+	private String error;
+	
 	public String getRolName() {
 		return rolName;
 	}
@@ -48,6 +51,8 @@ public class AppViewBean {
 	public AppViewBean() {
 
 		if (app == null) {
+			
+			error = "";
 
 			Map<String, String> parameterMap = (Map<String, String>) FacesContext
 					.getCurrentInstance().getExternalContext()
@@ -58,10 +63,22 @@ public class AppViewBean {
 
 			ApplicationController appController = new ApplicationController();
 
-			setApp(appController.GetAplication(id));
+			try {
+				setApp(appController.GetAplication(id));
+			} catch (ApplicationException e) {
+				error = e.getMessage();
+			}
 
 		}
 
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
 	}
 
 	@ManagedProperty(value = "#{userSessionManagementBean}")

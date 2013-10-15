@@ -1,6 +1,7 @@
 package uy.com.group05.baasadmin.pl.models;
 
 import java.util.List;
+import java.util.UUID;
 
 public class Application {
 	
@@ -32,7 +33,17 @@ public class Application {
 	
 	private List<Operacion> operaciones;
 	
+	private String Token;
 	
+	
+	public String getToken() {
+		return Token;
+	}
+
+	public void setToken(String token) {
+		Token = token;
+	}
+
 	public Application(){}
 	
 	public Application(String name, long id){

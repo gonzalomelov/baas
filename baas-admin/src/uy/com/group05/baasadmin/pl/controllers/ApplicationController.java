@@ -15,11 +15,14 @@ import uy.com.group05.baasadmin.pl.models.Rol;
 import uy.com.group05.baascore.sl.services.impl.ApplicationServices;
 import uy.com.group05.baascore.sl.services.soap.AppNotRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.ApplicationDTO;
+import uy.com.group05.baascore.sl.services.soap.ClientDTO;
 import uy.com.group05.baascore.sl.services.soap.EntityAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.EntityCollectionAlreadyExistsException_Exception;
+import uy.com.group05.baascore.sl.services.soap.EntityDTO;
 import uy.com.group05.baascore.sl.services.soap.MongoDBAlreadyExistsException_Exception;
 import uy.com.group05.baascore.sl.services.soap.NombreAppAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.RoleAlreadyRegisteredException_Exception;
+import uy.com.group05.baascore.sl.services.soap.RoleDTO;
 import uy.com.group05.baascore.sl.services.soap.UserCantAccessAppException_Exception;
 import uy.com.group05.baascore.sl.services.soap.UserNotRegisteredException_Exception;
 
@@ -82,63 +85,58 @@ public class ApplicationController {
 		
 	}
 
-	public Application GetAplication(long id){
+	public Application GetAplication(long id) throws ApplicationException{
 		
-//		ApplicationServices service = new ApplicationServices();
-//		
-//		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
-//		
-	//	port.
+		ApplicationServices service = new ApplicationServices();
 		
-		Application response = new Application();
-		response.setId(id);
-		response.setName("gallito");
+		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
 		
-		List<Rol> roles = new ArrayList<Rol>();
-		roles.add(new Rol("admin", 1));
-		roles.add(new Rol("guest", 2));
-		
-		response.setRoles(roles);
-		
-		List<Entity> entidades = new ArrayList<Entity>();
-		Entity e = new Entity();
-		e.setId(1);
-		e.setName("casas");
-		entidades.add(e);
-		
-		e = new Entity();
-		e.setId(2);
-		e.setName("autos");
-		entidades.add(e);
-		
-		e = new Entity();
-		e.setId(3);
-		e.setName("trabajo");
-		entidades.add(e);
-		
-		response.setEntidades(entidades);
-		
-		List<Cliente> clientes = new ArrayList<Cliente>();
-		
-		Cliente c = new Cliente();
-		c.setId(1);
-		c.setName("Diego@Forlan.com");
-		clientes.add(c);
-		
-		c = new Cliente();
-		c.setId(2);
-		c.setName("Luis@Suarez.com");
-		clientes.add(c);
-		
-		c = new Cliente();
-		c.setId(3);
-		c.setName("Edinson@Cavani.com");
-		clientes.add(c);
+		try {
+			ApplicationDTO app = port.getApplication(id);
+			
+			Application response = new Application();
+			
+			response.setId(id);
+			response.setName(app.getName());
+			response.setToken(app.getApiClientId());
+			
+			List<Rol> roles = new ArrayList<Rol>();
+			for (RoleDTO rol : app.getRoles()) {
+				roles.add(new Rol(rol.getName(), rol.getId()));
+			}
+			
+			response.setRoles(roles);
+			
+			List<Entity> entidades = new ArrayList<Entity>();
+			for (EntityDTO entity : app.getEntities()) {
+				Entity e = new Entity();
+				e.setId(entity.getId());
+				e.setName(entity.getName());
+				entidades.add(e);
+			}
+			
+			response.setEntidades(entidades);
+			
+			List<Cliente> clientes = new ArrayList<Cliente>();
+			for (ClientDTO cliente : app.getClients()) {
+				Cliente c = new Cliente();
+				c.setId(cliente.getId());
+				c.setName(cliente.getAppName());
+				clientes.add(c);
+			}		
+			
+			response.setClientes(clientes);
+			
+			return response;
+			
+			
+			
+			
+		} catch (AppNotRegisteredException_Exception e1) {
+			throw new ApplicationException(e1.getMessage());
+		}
 		
 		
-		response.setClientes(clientes);
-		
-		return response;
 	}
 	
 	
