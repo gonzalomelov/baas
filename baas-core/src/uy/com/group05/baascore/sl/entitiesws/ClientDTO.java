@@ -1,6 +1,10 @@
 package uy.com.group05.baascore.sl.entitiesws;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import uy.com.group05.baascore.common.entities.Role;
 
 
 public class ClientDTO implements Serializable {
@@ -20,6 +24,10 @@ public class ClientDTO implements Serializable {
 	private String lastname;
 	
 	private String appName;
+	
+	private ApplicationDTO application;
+	
+	private List<SimpleRoleDTO> roles = new ArrayList<SimpleRoleDTO>();
 	
 	public long getId() {
 		return id;
@@ -68,4 +76,21 @@ public class ClientDTO implements Serializable {
 	public void setAppName(String appName) {
 		this.appName = appName;
 	}
+
+	public ApplicationDTO getApplication() {
+		return application;
+	}
+
+	public void setApplication(ApplicationDTO application) {
+		this.application = application;
+	}
+
+	public List<SimpleRoleDTO> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<SimpleRoleDTO> roles) {
+		this.roles = roles;
+	}
+
 }

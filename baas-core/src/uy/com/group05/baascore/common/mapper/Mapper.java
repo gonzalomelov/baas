@@ -4,12 +4,14 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 
 import uy.com.group05.baascore.common.entities.Application;
+import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.entities.Operation;
 import uy.com.group05.baascore.common.entities.Permission;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.sl.entitiesws.ApplicationDTO;
+import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
 import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
 import uy.com.group05.baascore.sl.entitiesws.OperationDTO;
 import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
@@ -95,6 +97,12 @@ public class Mapper {
 		
 		//Operation <> OperationDTO
 		mapperFactory.classMap(Operation.class, OperationDTO.class)
+			.byDefault()
+			.register();
+		
+		//Operation <> OperationDTO
+		mapperFactory.classMap(Client.class, ClientDTO.class)
+			.exclude("application")
 			.byDefault()
 			.register();
 		

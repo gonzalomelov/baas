@@ -55,6 +55,18 @@ public class ClientManagement implements ClientManagementLocal {
 	private ExternalClientDao externalClientDao;
 	
 	@Override
+	public Client getClient(long appId, long clientId) {
+		//App validation
+		Application app = appDao.read(appId);
+		
+		if (app == null) {
+			return null;
+		}
+		
+		return clientDao.read(clientId);
+	}
+	
+	@Override
 	public ClientRegistrationDTO register(UUID apiClientId, ClientDTO client) {
 		
 		ClientRegistrationDTO registration = new ClientRegistrationDTO();

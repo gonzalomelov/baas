@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.ejb.Local;
 
+import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
 import uy.com.group05.baascore.sl.entitiesws.ClientAuthenticationDTO;
 import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
@@ -11,6 +12,9 @@ import uy.com.group05.baascore.sl.entitiesws.ClientRegistrationDTO;
 
 @Local
 public interface ClientManagementLocal {
+	
+	public Client getClient(long appId, long clientId);
+	
 	/**
 	 * Registrar un cliente a una aplicación
 	 * @param apiClientId Validar aplicación que realiza la llamada

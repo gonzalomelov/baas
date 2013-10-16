@@ -2,6 +2,7 @@ package uy.com.group05.baasclient.trueques;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -103,20 +104,28 @@ public class MainActivity extends Activity {
 			
 			Gson gson = new Gson();
 			
-			Auto[] autosArray = gson.fromJson(result, Auto[].class); 
-			List<Auto> autos = Arrays.asList(autosArray);
+			Auto[] autosArray = gson.fromJson(result, Auto[].class);
 			
-			for (Auto auto : autos) {
-				TableRow tr = new TableRow(context);
-				tr.setLayoutParams(new TableRow.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-				
-				TextView value = new TextView(context);
-				value.setText(auto.getMarca() + " - " + auto.getAnio());
-				
-				tr.addView(value);
-				
-				entitiesTable.addView(tr);
+			List<Auto> autos = autosArray != null && autosArray.length > 0 ? Arrays.asList(autosArray) : new ArrayList<Auto>();
+			
+			if (!autos.isEmpty()) {
+				for (Auto auto : autos) {
+					TableRow tr = new TableRow(context);
+					tr.setLayoutParams(new TableRow.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+					
+					TextView value = new TextView(context);
+					value.setText(auto.getMarca() + " - " + auto.getAnio());
+					
+					tr.addView(value);
+					
+					entitiesTable.addView(tr);
+				}	
+			} else {
+				resultView.setText("No hay autos");
 			}
+			
+			
+			resultView.setText("");
 			
 		}
 		
