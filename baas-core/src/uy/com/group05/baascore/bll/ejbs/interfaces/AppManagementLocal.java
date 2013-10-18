@@ -15,6 +15,7 @@ import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.InvalidNameException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
@@ -34,7 +35,8 @@ public interface AppManagementLocal {
 				NombreAppAlreadyRegisteredException,
 				UserNotRegisteredException,
 				MongoDBAlreadyExistsException,
-				EntityCollectionAlreadyExistsException;
+				EntityCollectionAlreadyExistsException, 
+				InvalidNameException;
 	
 	public boolean existsApplication(String nombre);
 	
@@ -46,14 +48,14 @@ public interface AppManagementLocal {
 			throws
 			 	AppNotRegisteredException,
 			 	UserCantAccessAppException,
-			 	RoleAlreadyRegisteredException;
+			 	RoleAlreadyRegisteredException, InvalidNameException;
 
 	public long editEntityApplication(long idApp, long idUser, String nomEntity)
 			throws
 			 	AppNotRegisteredException,
 			 	UserCantAccessAppException,
 			 	EntityAlreadyRegisteredException,
-			 	EntityCollectionAlreadyExistsException;
+			 	EntityCollectionAlreadyExistsException, InvalidNameException;
 	
 	public long editApplication(String nombreApp, List<String> rolesStr, List<String> entidadesStr)
 			throws

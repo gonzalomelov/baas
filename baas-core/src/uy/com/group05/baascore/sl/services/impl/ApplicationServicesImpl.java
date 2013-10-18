@@ -1,14 +1,9 @@
 package uy.com.group05.baascore.sl.services.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.jws.WebService;
-
-
-
-
 
 
 
@@ -30,6 +25,7 @@ import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.InvalidNameException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
@@ -78,7 +74,7 @@ public class ApplicationServicesImpl implements ApplicationServices{
 				NombreAppAlreadyRegisteredException,
 				UserNotRegisteredException,
 				MongoDBAlreadyExistsException,
-				EntityCollectionAlreadyExistsException {
+				EntityCollectionAlreadyExistsException, InvalidNameException {
 		return appManagementLocal.createApplication(idUser, nombreApp, rolesStr, entidadesStr);
 	}
 	
@@ -99,7 +95,7 @@ public class ApplicationServicesImpl implements ApplicationServices{
 			throws
 			 	AppNotRegisteredException,
 			 	RoleAlreadyRegisteredException,
-			 	UserCantAccessAppException {
+			 	UserCantAccessAppException, InvalidNameException {
 		return appManagementLocal.editRoleApplication(idApp, idUser, nomRole);
 	}
 	
@@ -108,7 +104,7 @@ public class ApplicationServicesImpl implements ApplicationServices{
 			 	AppNotRegisteredException,
 			 	UserCantAccessAppException,
 			 	EntityAlreadyRegisteredException,
-			 	EntityCollectionAlreadyExistsException{
+			 	EntityCollectionAlreadyExistsException, InvalidNameException{
 		return appManagementLocal.editEntityApplication(idApp, idUser, nomEntity);
 	}
 	

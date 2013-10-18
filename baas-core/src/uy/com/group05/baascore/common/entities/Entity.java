@@ -1,6 +1,7 @@
 package uy.com.group05.baascore.common.entities;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.GeneratedValue;
@@ -68,6 +69,7 @@ public class Entity {
 		this.permission = permission;
 	}
 	
+	//++++++++++++++++++++++++++++//
 	@Override
 	public boolean equals(Object o){
 		if (o == null) return false;
@@ -80,4 +82,23 @@ public class Entity {
 	    	return false;
 	}
 	
+	public boolean existsPermission(long idRole, long idOperation){
+		if (this.permission.isEmpty())
+			return false;
+		Iterator<Permission> iter = this.permission.iterator();
+		boolean encontre = false;
+		while (iter.hasNext() && !encontre){
+			Permission per = iter.next();
+			encontre = (per.getRole().getId() == idRole) && (per.getOperation().getId() == idOperation);
+		}
+		return encontre;
+	}
+	
+	public void addPermission(Permission per) {
+		this.permission.add(per);
+	}
+	
+	public void removePermission(Permission per){
+		this.permission.remove(per);
+	}
 }

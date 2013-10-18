@@ -8,6 +8,8 @@ import javax.jws.WebService;
 
 
 
+
+import uy.com.group05.baascore.common.exceptions.InvalidNameException;
 import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
@@ -46,7 +48,8 @@ public interface ApplicationServices {
 				NombreAppAlreadyRegisteredException,
 				UserNotRegisteredException,
 				MongoDBAlreadyExistsException,
-				EntityCollectionAlreadyExistsException;
+				EntityCollectionAlreadyExistsException, 
+				InvalidNameException;
 	
 	@WebMethod
 	public boolean existsApplication(
@@ -72,7 +75,7 @@ public interface ApplicationServices {
 			throws
 			 	AppNotRegisteredException,
 			 	RoleAlreadyRegisteredException,
-			 	UserCantAccessAppException;
+			 	UserCantAccessAppException, InvalidNameException;
 	
 	@WebMethod
 	public long editEntityApplication(
@@ -83,7 +86,7 @@ public interface ApplicationServices {
 			 	AppNotRegisteredException,
 			 	UserCantAccessAppException,
 			 	EntityAlreadyRegisteredException,
-			 	EntityCollectionAlreadyExistsException;
+			 	EntityCollectionAlreadyExistsException, InvalidNameException;
 	
 	@WebMethod
 	public long editApplication(

@@ -20,6 +20,7 @@ import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.InvalidNameException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.NombreAppAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
@@ -70,12 +71,14 @@ public class AppManagement implements AppManagementLocal{
 				NombreAppAlreadyRegisteredException,
 				UserNotRegisteredException,
 				MongoDBAlreadyExistsException,
-				EntityCollectionAlreadyExistsException {
+				EntityCollectionAlreadyExistsException, InvalidNameException {
 		//Obtengo el usuario
 		User user = userDao.read(idUser);
 		//Hago los controles
 		if(user == null) //no existe usuario
 			throw new UserNotRegisteredException("No existe el usuario con id:"+idUser);
+		if (nombreApp.equals(""))//No existe la app
+			throw new InvalidNameException("Debe ingresar un nombre para la aplicacion");
 		if (appDao.readByName(nombreApp) != null)//No existe la app
 			throw new NombreAppAlreadyRegisteredException("Ya existe una aplicacion con ese nombre");
 
@@ -99,7 +102,7 @@ public class AppManagement implements AppManagementLocal{
 			Iterator<String> iter = rolesStr.iterator();
 			while (iter.hasNext()){
 					Role r = new Role(iter.next(), app);
-					if (!roles.contains(r)){
+					if (!roles.contains(r) && !r.getName().equals("")){
 						roles.add(r);
 						roleDao.create(r);
 					}
@@ -110,7 +113,7 @@ public class AppManagement implements AppManagementLocal{
 			Iterator<String> iter = entidadesStr.iterator();
 			while (iter.hasNext()){
 				Entity e = new Entity(iter.next(), app);
-				if(!entidades.contains(e)){
+				if(!entidades.contains(e) && !e.getName().equals("")){
 					entidades.add(e);
 					entityDao.create(e);
 				}
@@ -159,7 +162,7 @@ public class AppManagement implements AppManagementLocal{
 			throws
 			 	AppNotRegisteredException,
 			 	UserCantAccessAppException,
-			 	RoleAlreadyRegisteredException{
+			 	RoleAlreadyRegisteredException, InvalidNameException{
 		
 		Application app = appDao.read(idApp);
 		if (app == null)//No existe la app
@@ -173,6 +176,9 @@ public class AppManagement implements AppManagementLocal{
 		Role r = new Role(nomRole, app);
 		if (roles.contains(r))
 			throw new RoleAlreadyRegisteredException("Ya existe un rol con ese nombre");
+		if (nomRole.equals(""))//No existe la app
+			throw new InvalidNameException("Debe ingresar un nombre para el Rol");
+		
 		roles.add(r);
 		Role retorno = roleDao.create(r);
 
@@ -187,7 +193,7 @@ public class AppManagement implements AppManagementLocal{
 			 	AppNotRegisteredException,
 			 	EntityAlreadyRegisteredException,
 			 	UserCantAccessAppException, 
-			 	EntityCollectionAlreadyExistsException {
+			 	EntityCollectionAlreadyExistsException, InvalidNameException {
 		
 		Application app = appDao.read(idApp);
 		if (app == null)//No existe la app
@@ -195,6 +201,8 @@ public class AppManagement implements AppManagementLocal{
 		if (!app.getUsers().contains(userDao.read(idUser))) {
 			throw new UserCantAccessAppException ("El usuario no es administrador de la aplicacion");
 		}
+		if (nomEntity.equals(""))//No existe la app
+			throw new InvalidNameException("Debe ingresar un nombre para la entidad");
 		//Compruebo
 		//Obtengo Entidades existentes
 		List<Entity> entities = app.getEntities();

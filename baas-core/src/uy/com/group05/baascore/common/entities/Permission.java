@@ -26,6 +26,17 @@ public class Permission {
 	@ManyToOne
 	private Operation operation;
 
+	public Permission() {
+	}
+	
+	public Permission(Application app, Entity entity, Role role, Operation oper){
+		this.application = app;
+		this.entity = entity;
+		this.role = role;
+		this.operation = oper;
+		
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -66,5 +77,18 @@ public class Permission {
 		this.operation = operation;
 	}
 	
+	//++++++++++++++++++++++++++++//
+	@Override
+	public boolean equals(Object o){
+		if (o == null) return false;
+	    if (o == this) return true;
+	    if (!(o instanceof Permission)) return false;
+	    Permission per = (Permission)o;
+	    if (this.application.equals(per.getApplication()) && this.entity.equals(per.getEntity()) 
+	    		&& this.role.equals(per.getRole()) && this.operation.equals(per.getOperation()))
+	    	return true;
+	    else
+	    	return false;
+	}
 	
 }
