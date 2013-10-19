@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -13,7 +14,7 @@ import javax.persistence.criteria.Root;
 import uy.com.group05.baascore.dal.dao.GenericDao;
 
 public abstract class JpaGenericDao<T> implements GenericDao<T> {
-	@PersistenceContext
+	@PersistenceContext(unitName ="primary")
 	protected EntityManager em;
 	
 	protected Class<T> type;

@@ -3,6 +3,7 @@ package uy.com.group05.baascore.bll.ejbs;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.persistence.PersistenceContext;
 

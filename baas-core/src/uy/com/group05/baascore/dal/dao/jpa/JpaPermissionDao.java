@@ -2,12 +2,14 @@ package uy.com.group05.baascore.dal.dao.jpa;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Permission;
 import uy.com.group05.baascore.dal.dao.PermissionDao;
 
+@Stateless
 public class JpaPermissionDao extends JpaGenericDao<Permission> implements PermissionDao {
 	public List<Permission> readAll(long appId) {
 		TypedQuery<Permission> query = em.createQuery("SELECT c FROM Permission c WHERE c.application.id = :appId", Permission.class);
@@ -52,7 +54,7 @@ public class JpaPermissionDao extends JpaGenericDao<Permission> implements Permi
 		
 		query.setParameter("appId", appId);
 		query.setParameter("entityId", entityId);
-		query.setParameter("roleID", roleId);
+		query.setParameter("roleId", roleId);
 		query.setParameter("operId", operId);
 		
 		return query.getSingleResult();
