@@ -3,6 +3,8 @@ package uy.com.group05.baascore.dal.dao.mongodb;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.Stateless;
+
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
@@ -16,6 +18,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.util.JSON;
 import com.mongodb.util.JSONParseException;
 
+@Stateless
 public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 
 	private MongoClient mongo;

@@ -2,11 +2,13 @@ package uy.com.group05.baascore.dal.dao.jpa;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.dal.dao.UserDao;
 
+@Stateless
 public class JpaUserDao extends JpaGenericDao<User> implements UserDao {
 	
 	public User readByEmail(String email) {

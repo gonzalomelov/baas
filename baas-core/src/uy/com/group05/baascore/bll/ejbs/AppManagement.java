@@ -380,18 +380,18 @@ public class AppManagement implements AppManagementLocal{
 	
 	public List<Role> getRolesApplication(long idApp) throws AppNotRegisteredException{
 		
-		Application app = appDao.read(idApp);
+		Application app = appDao.readById(idApp);
 		
 		if (app == null)
 			throw new AppNotRegisteredException("No existe la aplicación con id= "+ idApp);
 		
-		return roleDao.readAll(idApp);
+		return app.getRoles();//roleDao.readAll(idApp);
 		
 	}
 	
 	public List<Entity> getEntitiesApplication(long idApp) throws AppNotRegisteredException{
 		
-		Application app = appDao.read(idApp);
+		Application app = appDao.readById(idApp);
 		if (app == null)
 			throw new AppNotRegisteredException("No existe la aplicación con id= "+ idApp);
 		
@@ -401,7 +401,7 @@ public class AppManagement implements AppManagementLocal{
 	
 	public List<Client> getClientsApplication(long idApp) throws AppNotRegisteredException{
 		
-		Application app = appDao.read(idApp);
+		Application app = appDao.readById(idApp);
 		if (app == null)
 			throw new AppNotRegisteredException("No existe la aplicación con id= "+ idApp);
 		
@@ -411,7 +411,7 @@ public class AppManagement implements AppManagementLocal{
 	
 	public List<PushChannel> getPushChannelsApplication(long idApp) throws AppNotRegisteredException{
 		
-		Application app = appDao.read(idApp);
+		Application app = appDao.readById(idApp);
 		if (app == null)
 			throw new AppNotRegisteredException("No existe la aplicación con id= "+ idApp);
 		

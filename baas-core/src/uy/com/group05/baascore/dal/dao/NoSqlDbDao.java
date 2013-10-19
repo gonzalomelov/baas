@@ -2,11 +2,14 @@ package uy.com.group05.baascore.dal.dao;
 
 import java.util.List;
 
+import javax.ejb.Local;
+
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.MongoDBAlreadyExistsException;
 
 import com.mongodb.util.JSONParseException;
 
+@Local
 public interface NoSqlDbDao {
 	
 	void createNoSqlDb(String dbName)

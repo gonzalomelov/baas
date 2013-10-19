@@ -2,6 +2,7 @@ package uy.com.group05.baascore.dal.dao.jpa;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
 import uy.com.group05.baascore.common.entities.Client;
@@ -10,6 +11,7 @@ import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.dal.dao.PushChannelDao;
 
+@Stateless
 public class JpaPushChannelDao extends JpaGenericDao<PushChannel> implements PushChannelDao {
 
 	@Override

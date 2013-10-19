@@ -28,10 +28,12 @@ public class JpaApplicationDao extends JpaGenericDao<Application> implements App
 		
 		Application a = em.find(Application.class, appId);//applications.get(0);
 		
-		a.getUsers().size();
-		a.getClients().size();
-		a.getEntities().size();
-		a.getRoles().size();
+		if(a !=null){
+			a.getUsers().size();
+			a.getClients().size();
+			a.getEntities().size();
+			a.getRoles().size();
+		}
 		
 		return a;
 	}

@@ -3,11 +3,13 @@ package uy.com.group05.baascore.dal.dao.jpa;
 import java.util.List;
 import java.util.UUID;
 
+import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
 import uy.com.group05.baascore.common.entities.ExternalClient;
 import uy.com.group05.baascore.dal.dao.ExternalClientDao;
 
+@Stateless
 public class JpaExternalClientDao extends JpaGenericDao<ExternalClient> implements ExternalClientDao {
 
 	@Override

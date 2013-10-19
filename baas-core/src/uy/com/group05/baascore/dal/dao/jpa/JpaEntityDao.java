@@ -2,6 +2,7 @@ package uy.com.group05.baascore.dal.dao.jpa;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
@@ -9,6 +10,7 @@ import org.apache.log4j.Logger;
 import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.dal.dao.EntityDao;
 
+@Stateless
 public class JpaEntityDao extends JpaGenericDao<Entity> implements EntityDao {
 	
 	static final Logger logger = Logger.getLogger(JpaEntityDao.class);

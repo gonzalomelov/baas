@@ -99,6 +99,9 @@ public class PermissionManagement implements IPermissionManagement {
 
 	public boolean assingPermissionEntity(long idUser, long idApp, long idEntity, List<PermissionRoleDTO> permRoles) 
 			throws EntityNotRegisteredException, AppNotRegisteredException, UserCantAccessAppException{
+		//+++++++++++++++
+		//FALTA CONTROLAR QUE LOS ROLES PERTENEZCAN A LA APP
+		//+++++++++++++++
 		
 		Application app = appDao.readById(idApp);
 		if (app == null)//No existe la app

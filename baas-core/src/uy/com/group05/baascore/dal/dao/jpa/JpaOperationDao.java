@@ -2,11 +2,13 @@ package uy.com.group05.baascore.dal.dao.jpa;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
 import uy.com.group05.baascore.common.entities.Operation;
 import uy.com.group05.baascore.dal.dao.OperationDao;
 
+@Stateless
 public class JpaOperationDao extends JpaGenericDao<Operation> implements OperationDao {
 	
 	public Operation readByName(String name) {
