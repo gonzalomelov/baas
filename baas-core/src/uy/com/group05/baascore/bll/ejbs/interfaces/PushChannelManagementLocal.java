@@ -1,7 +1,11 @@
 package uy.com.group05.baascore.bll.ejbs.interfaces;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
+import uy.com.group05.baascore.common.entities.Client;
+import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
@@ -10,31 +14,38 @@ import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 @Local
 public interface PushChannelManagementLocal {
 	
-	public long createPushChannel(String nombreApp, String nombreCanal)
+	public long createPushChannel(long idApp, String nombreCanal)
 			throws AppNotRegisteredException,
 			PushChanAlreadyRegisteredException;
 	
-	public long deletePushChannel(String nombreApp, String nombreCanal)
+	public long deletePushChannel(long idApp, long idCanal)
 			throws AppNotRegisteredException, PushChanNotRegisteredException;
 
 
-	public boolean existsPushChannel(String nombreApp, String nombreCanal)
+	public boolean existsPushChannelApplication(long idApp, String nombreCanal)
 			throws AppNotRegisteredException;
+	
+	public boolean existsPushChannel(long idCanal);
 
-
-	public boolean assignClientToPushChannel(String nombreApp,
-			String nombreCanal, String mailCliente)
+	public boolean assignClientToPushChannel(long idApp,
+			long idCanal, long idCliente)
 			throws AppNotRegisteredException, PushChanNotRegisteredException,
 			ClientNotRegisteredException;
 
 
-	public boolean unassignClientFromPushChannel(String nombreApp,
-			String nombreCanal, String mailCliente)
+	public boolean unassignClientFromPushChannel(long idApp,
+			long idCanal, long idCliente)
 			throws AppNotRegisteredException, PushChanNotRegisteredException,
 			ClientNotRegisteredException;
+	
+	public List<PushChannel> getPushChannelsOfApplication(long idApp)
+			throws AppNotRegisteredException;
+	
+	public List<Client> getClientsFromPushChannel(long idApp, long idCanal)
+			throws AppNotRegisteredException, PushChanNotRegisteredException;
 
 
-	public boolean sendNotificationToPushChannel(String nombreApp,
-			String nombreCanal, String mensaje) throws AppNotRegisteredException,
+	public boolean sendNotificationToPushChannel(long idApp,
+			long idCanal, String mensaje) throws AppNotRegisteredException,
 			PushChanNotRegisteredException;
 }

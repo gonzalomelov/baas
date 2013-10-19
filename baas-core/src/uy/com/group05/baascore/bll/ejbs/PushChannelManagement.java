@@ -1,11 +1,13 @@
 package uy.com.group05.baascore.bll.ejbs;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
+import uy.com.group05.baascore.bll.ejbs.interfaces.ClientManagementLocal;
 import uy.com.group05.baascore.bll.ejbs.interfaces.PushChannelManagementLocal;
-import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
@@ -27,44 +29,50 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 	ClientDao clientDao;
 	@Inject
 	AppManagementLocal appMgmt;
+	@Inject
+	ClientManagementLocal clientMgmt;
 	
 	@Override	
-	public long createPushChannel(String nombreApp, String nombreCanal)
+	public long createPushChannel(long idApp, String nombreCanal)
 			throws AppNotRegisteredException,
 			PushChanAlreadyRegisteredException {
 		
-		return appMgmt.addPushChannelToApplication(nombreApp, nombreCanal);
+		return appMgmt.addPushChannelToApplication(idApp, nombreCanal);
 	}
 
 	@Override
-	public long deletePushChannel(String nombreApp, String nombreCanal)
+	public long deletePushChannel(long idApp, long idCanal)
 			throws AppNotRegisteredException, PushChanNotRegisteredException {
 		
-		return appMgmt.removePushChannelFromApplication(nombreApp, nombreCanal);
+		return appMgmt.removePushChannelFromApplication(idApp, idCanal);
 	}
 
 	@Override
-	public boolean existsPushChannel(String nombreApp, String nombreCanal)
+	public boolean existsPushChannelApplication(long idApp, String nombreCanal)
 			throws AppNotRegisteredException {
 		
-		return appMgmt.existsPushChannelApplication(nombreApp, nombreCanal);
+		return appMgmt.existsPushChannelApplication(idApp, nombreCanal);
+	}
+	
+	@Override
+	public boolean existsPushChannel(long idCanal) {
+		return (pushDao.read(idCanal) != null);
 	}
 
 	@Override
-	public boolean assignClientToPushChannel(String nombreApp,
-			String nombreCanal, String mailCliente)
+	public boolean assignClientToPushChannel(long idApp,
+			long idCanal, long idCliente)
 			throws AppNotRegisteredException, PushChanNotRegisteredException,
 			ClientNotRegisteredException {
 		
-		if (!appMgmt.existsApplication(nombreApp))
-			throw new AppNotRegisteredException("No existe la aplicación con nombre " + nombreApp);
+		if (!appMgmt.existsApplication(idApp))
+			throw new AppNotRegisteredException("No existe la aplicación con id " + idApp);
 		
-		if (!this.existsPushChannel(nombreApp, nombreCanal))
-			throw new PushChanNotRegisteredException("No existe el canal push de nombre " + nombreCanal);
+		if (!this.existsPushChannel(idCanal))
+			throw new PushChanNotRegisteredException("No existe el canal push con id " + idCanal);
 		
-		Application app = appDao.readByName(nombreApp);
-		PushChannel pushChannel = pushDao.readByName(app.getId(), nombreCanal);
-		Client client = clientDao.readByEmail(app.getId(), mailCliente);
+		PushChannel pushChannel = pushDao.read(idCanal);
+		Client client = clientMgmt.getClient(idCliente);
 		
 		// Si el cliente ya está suscripto, no hago nada
 		if (pushChannel.hasClient(client))
@@ -77,20 +85,19 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 	}
 
 	@Override
-	public boolean unassignClientFromPushChannel(String nombreApp,
-			String nombreCanal, String mailCliente)
+	public boolean unassignClientFromPushChannel(long idApp,
+			long idCanal, long idCliente)
 			throws AppNotRegisteredException, PushChanNotRegisteredException,
 			ClientNotRegisteredException {
 		
-		if (!appMgmt.existsApplication(nombreApp))
-			throw new AppNotRegisteredException("No existe la aplicación con nombre " + nombreApp);
+		if (!appMgmt.existsApplication(idApp))
+			throw new AppNotRegisteredException("No existe la aplicación con id " + idApp);
 		
-		if (!this.existsPushChannel(nombreApp, nombreCanal))
-			throw new PushChanNotRegisteredException("No existe el canal push de nombre " + nombreCanal);
+		if (!this.existsPushChannel(idCanal))
+			throw new PushChanNotRegisteredException("No existe el canal push con id " + idCanal);
 		
-		Application app = appDao.readByName(nombreApp);
-		PushChannel pushChannel = pushDao.readByName(app.getId(), nombreCanal);
-		Client client = clientDao.readByEmail(app.getId(), mailCliente);
+		PushChannel pushChannel = pushDao.read(idCanal);
+		Client client = clientMgmt.getClient(idCliente);
 		
 		// Si el cliente no está suscripto, no hago nada
 		if (!pushChannel.hasClient(client))
@@ -101,10 +108,33 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		pushDao.update(pushChannel);
 		return true;
 	}
+	
+	@Override
+	public List<PushChannel> getPushChannelsOfApplication(long idApp)
+			throws AppNotRegisteredException {
+		
+		if (!appMgmt.existsApplication(idApp))
+			throw new AppNotRegisteredException("No existe la aplicación con id " + idApp);
+		
+		return appMgmt.getPushChannelsApplication(idApp);
+	}
 
 	@Override
-	public boolean sendNotificationToPushChannel(String nombreApp,
-			String nombreCanal, String mensaje)
+	public List<Client> getClientsFromPushChannel(long idApp, long idCanal)
+			throws AppNotRegisteredException, PushChanNotRegisteredException {
+		
+		if (!appMgmt.existsApplication(idApp))
+			throw new AppNotRegisteredException("No existe la aplicación con id " + idApp);
+		
+		if (!this.existsPushChannel(idCanal))
+			throw new PushChanNotRegisteredException("No existe el canal push con id " + idCanal);
+		
+		return pushDao.readAllFromCanal(idApp, idCanal);
+	}
+
+	@Override
+	public boolean sendNotificationToPushChannel(long idApp,
+			long idCanal, String mensaje)
 			throws AppNotRegisteredException, PushChanNotRegisteredException {
 		// TODO Auto-generated method stub
 		

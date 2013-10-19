@@ -100,7 +100,7 @@ public interface ApplicationServices {
 	
 	@WebMethod
 	public boolean assignUserToApplication(
-			@WebParam(name = "nombreApp") String nombreApp,
+			@WebParam(name = "idApp") long idApp,
 			@WebParam(name = "idUser") long idUser)
 			throws
 				AppNotRegisteredException,
@@ -108,7 +108,7 @@ public interface ApplicationServices {
 	
 	@WebMethod
 	public boolean unassignUserFromApplication(
-			@WebParam(name = "nombreApp") String nombreApp,
+			@WebParam(name = "idApp") long idApp,
 			@WebParam(name = "idUser") long idUser)
 			throws
 				AppNotRegisteredException,
@@ -116,14 +116,14 @@ public interface ApplicationServices {
 	
 	@WebMethod
 	public boolean existsPushChannelApplication(
-			@WebParam(name = "nombreApp") String nombreApp,
+			@WebParam(name = "idApp") long idApp,
 			@WebParam(name = "nombreCanal") String nombreCanal)
 			throws
 				AppNotRegisteredException;
 	
 	@WebMethod
 	public long addPushChannelToApplication(
-			@WebParam(name = "nombreApp") String nombreApp,
+			@WebParam(name = "idApp") long idApp,
 			@WebParam(name = "nombreCanal") String nombreCanal)
 			throws
 				AppNotRegisteredException,
@@ -131,8 +131,8 @@ public interface ApplicationServices {
 	
 	@WebMethod
 	public long removePushChannelFromApplication(
-			@WebParam(name = "nombreApp") String nombreApp,
-			@WebParam(name = "nombreCanal") String nombreCanal)
+			@WebParam(name = "idApp") long idApp,
+			@WebParam(name = "idCanal") long idCanal)
 			throws
 				AppNotRegisteredException,
 				PushChanNotRegisteredException;

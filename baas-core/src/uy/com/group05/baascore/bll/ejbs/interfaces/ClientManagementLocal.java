@@ -64,4 +64,6 @@ public interface ClientManagementLocal {
 	 * @return True si para dicho token la aplicación tiene permisos en su rol para clientes externos para realizar la operacion sobre la entidad
 	 */
 	public boolean validateExternal(String appName, String operation, String entityName, UUID accessToken);
+	
+	public Client getClient(long idClient);
 }

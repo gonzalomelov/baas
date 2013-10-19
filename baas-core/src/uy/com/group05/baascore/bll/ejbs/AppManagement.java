@@ -262,8 +262,8 @@ public class AppManagement implements AppManagementLocal{
 		return app.getId();
 	}
 	
-	public boolean assignUserToApplication(String nombreApp, long idUser) throws AppNotRegisteredException, UserNotRegisteredException {
-		Application app = appDao.readByName(nombreApp);
+	public boolean assignUserToApplication(long idApp, long idUser) throws AppNotRegisteredException, UserNotRegisteredException {
+		Application app = appDao.read(idApp);
 		if (app == null)
 			throw new AppNotRegisteredException("No existe una aplicacion con ese nombre");
 		
@@ -292,10 +292,10 @@ public class AppManagement implements AppManagementLocal{
 		return true;
 	}
 
-	public boolean unassignUserFromApplication(String nombreApp, long idUser)
+	public boolean unassignUserFromApplication(long idApp, long idUser)
 			throws AppNotRegisteredException, UserNotRegisteredException {
 		
-		Application app = appDao.readByName(nombreApp);
+		Application app = appDao.read(idApp);
 		if (app == null)
 			throw new AppNotRegisteredException("No existe una aplicacion con ese nombre");
 		
@@ -325,26 +325,26 @@ public class AppManagement implements AppManagementLocal{
 	}
 
 	@Override
-	public boolean existsPushChannelApplication(String nombreApp,
+	public boolean existsPushChannelApplication(long idApp,
 			String nombreCanal) throws AppNotRegisteredException {
 		
-		Application app = appDao.readByName(nombreApp);
+		Application app = appDao.read(idApp);
 		if (app == null)
-			throw new AppNotRegisteredException("No existe la aplicación de nombre " + nombreApp);
+			throw new AppNotRegisteredException("No existe la aplicación con id " + idApp);
 		
 		return (app.getPushChannel(nombreCanal) != null);
 	}
 
 	@Override
-	public long addPushChannelToApplication(String nombreApp,
+	public long addPushChannelToApplication(long idApp,
 			String nombreCanal)
 					throws
 						AppNotRegisteredException,
 						PushChanAlreadyRegisteredException {
 		
-		Application app = appDao.readByName(nombreApp);
+		Application app = appDao.read(idApp);
 		if (app == null)
-			throw new AppNotRegisteredException("No existe la aplicación de nombre " + nombreApp);
+			throw new AppNotRegisteredException("No existe la aplicación con id " + idApp);
 		
 		if (app.getPushChannel(nombreCanal) == null) {
 			PushChannel pc = new PushChannel(nombreCanal,app);
@@ -353,27 +353,29 @@ public class AppManagement implements AppManagementLocal{
 			return pc.getId();
 		}
 		else
-			throw new PushChanAlreadyRegisteredException("Ya existe el canal push con nombre " + nombreCanal + " para la aplicación de nombre " + nombreApp);
+			throw new PushChanAlreadyRegisteredException("Ya existe el canal push con nombre " + nombreCanal + " para la aplicación con id " + idApp);
 		
 	}
 
 	@Override
-	public long removePushChannelFromApplication(String nombreApp,
-			String nombreCanal) throws AppNotRegisteredException,
+	public long removePushChannelFromApplication(long idApp,
+			long idCanal) throws AppNotRegisteredException,
 			PushChanNotRegisteredException {
 		
-		Application app = appDao.readByName(nombreApp);
+		Application app = appDao.read(idApp);
 		if (app == null)
-			throw new AppNotRegisteredException("No existe la aplicación de nombre " + nombreApp);
+			throw new AppNotRegisteredException("No existe la aplicación de nombre " + idApp);
 		
-		if (app.getPushChannel(nombreCanal) != null) {
-			PushChannel pc = app.getPushChannel(nombreCanal);
-			app.removePushChannel(pc);
-			appDao.update(app);
-			return pc.getId();
+		
+		for (PushChannel pc : app.getPushChannels()) {
+			if (pc.getId() == idCanal) {
+				app.removePushChannel(pc);
+				appDao.update(app);
+				return pc.getId();
+			}
 		}
-		else
-			throw new PushChanNotRegisteredException("No existe el canal push con nombre " + nombreCanal + " para la aplicación de nombre " + nombreApp);
+		
+		throw new PushChanNotRegisteredException("No existe el canal push con id " + idCanal + " para la aplicación con id " + idApp);
 	}
 	
 	public List<Role> getRolesApplication(long idApp) throws AppNotRegisteredException{
@@ -441,5 +443,10 @@ public class AppManagement implements AppManagementLocal{
 			throw new AppNotRegisteredException("No existe la aplicación con id " + appId);
 		
 		return app;
+	}
+
+	@Override
+	public boolean existsApplication(long idApp) {
+		return (appDao.read(idApp) != null);
 	}
 }

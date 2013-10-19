@@ -1,5 +1,7 @@
 package uy.com.group05.baascore.sl.services.soap;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -8,29 +10,47 @@ import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
+import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
+import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
 
 @WebService
 public interface PushChannelServices {	
 	@WebMethod
+	public List<PushChannelDTO> getPushChannelsOfApplication(long idApp)
+			throws AppNotRegisteredException;
+	
+	@WebMethod
 	public long createPushChannel(
-			@WebParam(name = "nombreApp") String nombreApp,
+			@WebParam(name = "idApp") long idApp,
 			@WebParam(name = "nombreCanal") String nombreCanal)
 			throws
 				AppNotRegisteredException,
 				PushChanAlreadyRegisteredException;
 	
 	@WebMethod
-	public boolean existsPushChannel(
-			@WebParam(name = "nombreApp") String nombreApp,
+	public long deletePushChannel(
+			@WebParam(name = "idApp") long idApp,
+			@WebParam(name = "idCanal") long idCanal)
+			throws
+				AppNotRegisteredException,
+				PushChanNotRegisteredException;
+	
+	@WebMethod
+	public boolean existsPushChannelApplication(
+			@WebParam(name = "idApp") long idApp,
 			@WebParam(name = "nombreCanal") String nombre)
 			throws
 			AppNotRegisteredException;
 	
 	@WebMethod
+	public boolean existsPushChannel(
+			@WebParam(name = "idCanal") long idCanal);	
+	
+	@WebMethod
 	public boolean assignClientToPushChannel(
-			@WebParam(name = "nombreApp") String nombreApp,
-			@WebParam(name = "nombreCanal") String nombreCanal,
-			@WebParam(name = "idCliente") String mailCliente)
+			@WebParam(name = "idApp") long idApp,
+			@WebParam(name = "idCanal") long idCanal,
+			@WebParam(name = "idCliente") long idCliente)
 			throws
 				AppNotRegisteredException,
 				PushChanNotRegisteredException,
@@ -38,18 +58,26 @@ public interface PushChannelServices {
 	
 	@WebMethod
 	public boolean unassignClientFromPushChannel(
-			@WebParam(name = "nombreApp") String nombreApp,
-			@WebParam(name = "nombreCanal") String nombreCanal,
-			@WebParam(name = "idCliente") String mailCliente)
+			@WebParam(name = "idApp") long idApp,
+			@WebParam(name = "idCanal") long idCanal,
+			@WebParam(name = "idCliente") long idCliente)
 			throws
 				AppNotRegisteredException,
 				PushChanNotRegisteredException,
 				ClientNotRegisteredException;
 	
 	@WebMethod
+	public List<ClientDTO> getClientsFromPushChannel(
+			@WebParam(name = "idApp") long idApp,
+			@WebParam(name = "idCanal") long idCanal)
+			throws
+				AppNotRegisteredException,
+				PushChanNotRegisteredException;
+	
+	@WebMethod
 	public boolean sendNotificationToPushChannel(
-			@WebParam(name = "nombreApp") String nombreApp,
-			@WebParam(name = "nombreCanal") String nombreCanal,
+			@WebParam(name = "idApp") long idApp,
+			@WebParam(name = "idCanal") long idCanal,
 			@WebParam(name = "mensaje") String mensaje)
 			throws
 				AppNotRegisteredException,

@@ -116,44 +116,44 @@ public class ApplicationServicesImpl implements ApplicationServices{
 		return appManagementLocal.editApplication(nombreApp, rolesStr, entidadesStr);
 	}
 	
-	public boolean assignUserToApplication(String nombreApp, long idUser)
+	public boolean assignUserToApplication(long idApp, long idUser)
 			throws
 				AppNotRegisteredException,
 				UserNotRegisteredException {
-		return appManagementLocal.assignUserToApplication(nombreApp, idUser);
+		return appManagementLocal.assignUserToApplication(idApp, idUser);
 	}
 	
-	public boolean unassignUserFromApplication(String nombreApp, long idUser)
+	public boolean unassignUserFromApplication(long idApp, long idUser)
 			throws
 				AppNotRegisteredException,
 				UserNotRegisteredException {
-		return appManagementLocal.unassignUserFromApplication(nombreApp, idUser);
+		return appManagementLocal.unassignUserFromApplication(idApp, idUser);
 	}
 
 
 	@Override
-	public boolean existsPushChannelApplication(String nombreApp, String nombreCanal)
+	public boolean existsPushChannelApplication(long idApp, String nombreCanal)
 			throws
 				AppNotRegisteredException {
-		return appManagementLocal.existsPushChannelApplication(nombreApp, nombreCanal);
+		return appManagementLocal.existsPushChannelApplication(idApp, nombreCanal);
 	}
 
 
 	@Override
-	public long addPushChannelToApplication(String nombreApp, String nombreCanal)
+	public long addPushChannelToApplication(long idApp, String nombreCanal)
 			throws
 				AppNotRegisteredException,
 				PushChanAlreadyRegisteredException {
-		return appManagementLocal.addPushChannelToApplication(nombreApp, nombreCanal);
+		return appManagementLocal.addPushChannelToApplication(idApp, nombreCanal);
 	}
 
 
 	@Override
-	public long removePushChannelFromApplication(String nombreApp, String nombreCanal)
+	public long removePushChannelFromApplication(long idApp, long idCanal)
 			throws
 				AppNotRegisteredException,
 				PushChanNotRegisteredException {
-		return appManagementLocal.removePushChannelFromApplication(nombreApp, nombreCanal);
+		return appManagementLocal.removePushChannelFromApplication(idApp, idCanal);
 	}
 	
 	public List<PermissionDTO> getPermissionsForEntity(long appId, long entityId)

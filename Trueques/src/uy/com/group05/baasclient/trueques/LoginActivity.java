@@ -16,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -34,11 +35,22 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 		
 		textView = (TextView) findViewById(R.id.login_state);
+		
+		// Para que aparezcan los 3 puntos en la ActionBar aunque el teléfono tenga botón físico de Menú
+		/*try {
+	        ViewConfiguration config = ViewConfiguration.get(this);
+	        if(ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey") != null) {
+	        	ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey").setAccessible(true);
+	        	ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey").setBoolean(config, false);
+	        }
+	    } catch (Exception ex) {
+	        // Ignore
+	    }*/
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.login, menu);
 		return true;
 	}
 

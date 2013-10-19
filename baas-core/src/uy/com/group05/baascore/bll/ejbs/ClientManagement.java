@@ -302,5 +302,9 @@ public class ClientManagement implements ClientManagementLocal {
 		
 		return false;
 	}
+	
+	public Client getClient(long idClient) {
+		return clientDao.read(idClient);
+	}
 }
 

@@ -24,13 +24,13 @@ public class JpaPushChannelDao extends JpaGenericDao<PushChannel> implements Pus
 	}
 
 	@Override
-	public List<PushChannel> readAll(long appId) {
+	public List<PushChannel> readAllFromApp(long appId) {
 		TypedQuery<PushChannel> query = em.createQuery("SELECT c FROM PushChannel c WHERE c.application.id = :appId", PushChannel.class);
 		return query.getResultList();
 	}
 
 	@Override
-	public List<PushChannel> readAll(long appId, long clientId) {
+	public List<PushChannel> readAllFromClient(long appId, long clientId) {
 		TypedQuery<PushChannel> query =
 				em.createQuery("select distinct r "
 						+ "from PushChannel c inner join c.clients r "
@@ -44,15 +44,15 @@ public class JpaPushChannelDao extends JpaGenericDao<PushChannel> implements Pus
 	}
 
 	@Override
-	public List<Client> readAll(long appId, String name) {
+	public List<Client> readAllFromCanal(long appId, long canalId) {
 		TypedQuery<Client> query =
 				em.createQuery("select distinct r "
 						+ "from Client c inner join c.pushChannels p "
-						+ "where p.name = :name and "
+						+ "where p.id = :canalId and "
 						+ "c.application.id = :appId", Client.class);
 		
 		query.setParameter("appId", appId);
-		query.setParameter("name", name);
+		query.setParameter("canalId", canalId);
 		
 		return query.getResultList();
 	}

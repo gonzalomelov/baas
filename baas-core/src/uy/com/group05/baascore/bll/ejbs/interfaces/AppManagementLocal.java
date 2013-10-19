@@ -40,6 +40,8 @@ public interface AppManagementLocal {
 	
 	public boolean existsApplication(String nombre);
 	
+	public boolean existsApplication(long idApp);
+	
 	public boolean existsEntityApplication(long idApp, String nomEntity) throws AppNotRegisteredException;
 	
 	public boolean existsRoleApplication(long idApp, String nomRole) throws AppNotRegisteredException;
@@ -63,26 +65,26 @@ public interface AppManagementLocal {
 				MongoDBAlreadyExistsException,
 				EntityCollectionAlreadyExistsException;
 	
-	public boolean assignUserToApplication(String nombreApp, long idUser)
+	public boolean assignUserToApplication(long idApp, long idUser)
 			throws
 				AppNotRegisteredException,
 				UserNotRegisteredException;
 	
-	public boolean unassignUserFromApplication(String nombreApp, long idUser)
+	public boolean unassignUserFromApplication(long idApp, long idUser)
 			throws
 			AppNotRegisteredException,
 			UserNotRegisteredException;
 	
-	public boolean existsPushChannelApplication(String nombreApp, String nombreCanal)
+	public boolean existsPushChannelApplication(long idApp, String nombreCanal)
 			throws
 			AppNotRegisteredException;
 	
-	public long addPushChannelToApplication(String nombreApp, String nombreCanal)
+	public long addPushChannelToApplication(long idApp, String nombreCanal)
 			throws
 				AppNotRegisteredException,
 				PushChanAlreadyRegisteredException;
 	
-	public long removePushChannelFromApplication(String nombreApp, String nombreCanal)
+	public long removePushChannelFromApplication(long idApp, long idCanal)
 			throws
 				AppNotRegisteredException,
 				PushChanNotRegisteredException;

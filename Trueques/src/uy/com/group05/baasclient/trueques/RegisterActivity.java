@@ -33,7 +33,7 @@ public class RegisterActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.register, menu);
 		return true;
 	}
 
@@ -50,7 +50,8 @@ public class RegisterActivity extends Activity {
 	    	new RegisterTask(this).execute(email, password, name, lastname);
 	    } else {
 	    	
-	    	registerWaiting.setText("@string/register_unsuccessful");
+	    	//registerWaiting.setText("@string/register_unsuccessful");
+	    	registerWaiting.setText(R.string.register_unsuccessful);
 	    }
 		
 		
