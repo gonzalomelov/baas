@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.PersistenceContext;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import uy.com.group05.baascore.bll.ejbs.interfaces.IPermissionManagement;
@@ -12,6 +13,7 @@ import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.Operation;
 import uy.com.group05.baascore.common.entities.Permission;
 import uy.com.group05.baascore.common.entities.Role;
+import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
@@ -25,7 +27,6 @@ import uy.com.group05.baascore.sl.entitiesws.PermissionRoleDTO;
 
 
 public class PermissionManagement implements IPermissionManagement {
-
 	
 	@Inject
 	private PermissionDao permissionDao;
@@ -98,10 +99,11 @@ public class PermissionManagement implements IPermissionManagement {
 	public boolean assingPermissionEntity(long idUser, long idApp, long idEntity, List<PermissionRoleDTO> permRoles) 
 			throws EntityNotRegisteredException, AppNotRegisteredException, UserCantAccessAppException{
 		
-		Application app = appDao.read(idApp);
+		Application app = appDao.readById(idApp);
 		if (app == null)//No existe la app
 			throw new AppNotRegisteredException("No existe una aplicacion con ese id");
-		if (!app.getUsers().contains(userDao.read(idUser))) {
+		List<User> users = app.getUsers();
+		if (!users.contains(userDao.read(idUser))) {
 			throw new UserCantAccessAppException ("El usuario no es administrador de la aplicacion");
 		}
 		Entity entity = entityDao.read(idEntity);
@@ -117,6 +119,7 @@ public class PermissionManagement implements IPermissionManagement {
 		while (iter.hasNext()) {
 			PermissionRoleDTO pr = iter.next();
 			if (pr.isHas()){ //creo si no existe
+				
 				if(!entity.existsPermission(pr.getIdRole(), pr.getIdOperation())){
 					Role role = roleDao.read(pr.getIdRole());
 					Permission per = new Permission(app, entity, role, operDao.read(pr.getIdOperation()));

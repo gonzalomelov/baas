@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +27,7 @@ public class Entity {
 	@ManyToOne
 	private Application application;
 	
-	@OneToMany(mappedBy = "entity")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "entity" )
 	@JsonIgnore
 	private List<Permission> permission = new ArrayList<Permission>();
 

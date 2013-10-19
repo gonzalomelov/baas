@@ -39,8 +39,7 @@ public class Application {
 	private List<Role> roles = new ArrayList<Role>();
 	
 	@OneToMany(mappedBy = "application")
-	private List<uy.com.group05.baascore.common.entities.Entity> entities
-		= new ArrayList<uy.com.group05.baascore.common.entities.Entity>();
+	private List<Entity> entities = new ArrayList<Entity>();
 
 	@OneToMany(mappedBy = "application")
 	private List<PushChannel> pushChannels = new ArrayList<PushChannel>();
