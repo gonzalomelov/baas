@@ -47,5 +47,12 @@
         android:layout_height="wrap_content"
         android:text="@string/login_register"
         android:onClick="register" />
+    
+    <Button
+        android:id="@+id/regGCM"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_registro_con_GCM"
+        android:onClick="registroConGCM" />
 
 </LinearLayout>

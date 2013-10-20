@@ -35,6 +35,9 @@
     <string name="button_send">Login</string>
     <string name="action_new">New</string>
     <string name="action_search">Search</string>
+    <string name="login_registro_con_GCM">Registro con GCM</string>
+    <string name="title_activity_registrargcm">Registrar con GCM</string>
+    <string name="registrarGCM_recibir_notificaciones">Recibir notificaciones</string>
     
     
 

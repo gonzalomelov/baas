@@ -5,6 +5,8 @@ import java.io.UnsupportedEncodingException;
 
 import org.apache.http.client.ClientProtocolException;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
 import uy.com.group05.baasclient.sdk.SDKFactory;
 import uy.com.group05.baasclient.sdk.entities.ClientAuthenticationDTO;
 import android.app.Activity;
@@ -36,6 +38,7 @@ public class LoginActivity extends Activity {
 		
 		textView = (TextView) findViewById(R.id.login_state);
 		
+		// Edit: se puede hacer en la especificacion del menu
 		// Para que aparezcan los 3 puntos en la ActionBar aunque el teléfono tenga botón físico de Menú
 		/*try {
 	        ViewConfiguration config = ViewConfiguration.get(this);
@@ -67,7 +70,12 @@ public class LoginActivity extends Activity {
 	    	
 	    	textView.setText("Try again!");
 	    }
-	} 
+	}
+	
+	public void registroConGCM(View view) {
+		Intent intent = new Intent(this, RegistrarGcmActivity.class);
+		startActivity(intent);
+	}
 	
 	public void register(View view) {
 		Intent intent = new Intent(this, RegisterActivity.class);
