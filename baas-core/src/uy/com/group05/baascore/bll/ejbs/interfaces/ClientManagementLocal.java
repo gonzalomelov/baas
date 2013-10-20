@@ -5,7 +5,10 @@ import java.util.UUID;
 import javax.ejb.Local;
 
 import uy.com.group05.baascore.common.entities.Client;
+import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.sl.entitiesws.ClientAuthenticationDTO;
 import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
 import uy.com.group05.baascore.sl.entitiesws.ClientRegistrationDTO;
@@ -66,4 +69,7 @@ public interface ClientManagementLocal {
 	public boolean validateExternal(String appName, String operation, String entityName, UUID accessToken);
 	
 	public Client getClient(long idClient);
+	
+	public boolean assignRoleToClient(long idApp, long idUser, long idRole, long idClient) 
+			throws ClientNotRegisteredException, EntityNotRegisteredException, UserCantAccessAppException, AppNotRegisteredException;
 }

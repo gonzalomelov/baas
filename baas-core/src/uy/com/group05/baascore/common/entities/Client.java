@@ -1,6 +1,7 @@
 package uy.com.group05.baascore.common.entities;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -137,5 +138,36 @@ public class Client {
 		this.pushChannels = pushChannels;
 	}
 	
+	//+++++++++++++++++++++++++++++++++++//
+	@Override
+	public boolean equals(Object o){ //Modificar con token de FB
+		if (o == null) return false;
+	    if (o == this) return true;
+	    if (!(o instanceof Client)) return false;
+	    Client client = (Client)o;
+	    if (this.email.equals(client.getEmail()) && this.name.equals(client.getName()))
+	    	return true;
+	    else
+	    	return false;
+	}
 	
+	public boolean existsRole(long idRole){
+		if (this.roles.isEmpty())
+			return false;
+		Iterator<Role> iter = this.roles.iterator();
+		boolean encontre = false;
+		while (iter.hasNext() && !encontre){
+			Role r = iter.next();
+			encontre = (r.getId() == idRole);
+		}
+		return encontre;
+	}
+	
+	public void addRole(Role role) {
+		this.roles.add(role);
+	}
+	
+	public void removeRole(Role role){
+		this.roles.remove(role);
+	}
 }
