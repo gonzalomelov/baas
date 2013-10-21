@@ -1,16 +1,20 @@
 package uy.com.group05.baascore.sl.services.impl;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.jws.WebService;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.ClientManagementLocal;
 import uy.com.group05.baascore.common.entities.Client;
+import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.mapper.Mapper;
 import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
+import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
 import uy.com.group05.baascore.sl.services.soap.ClientServices;
 
 @WebService(
@@ -38,5 +42,14 @@ public class ClientServicesImpl implements ClientServices {
 			throws ClientNotRegisteredException, EntityNotRegisteredException, UserCantAccessAppException, AppNotRegisteredException{
 		
 		return clientManagementLocal.assignRoleToClient(idApp, idUser, idRole, idClient);
+	}
+	
+	public List<RoleDTO> getRolesFromClient(long idApp, long idUser, long idClient) 
+			throws ClientNotRegisteredException, UserCantAccessAppException, AppNotRegisteredException{
+		
+		List<Role> roles = clientManagementLocal.getRolesFromClient(idApp, idUser, idClient);
+		List<RoleDTO> rolesDTO = mapper.getMapper().mapAsList(roles, RoleDTO.class); 
+		
+		return rolesDTO;
 	}
 }

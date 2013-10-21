@@ -1,10 +1,12 @@
 package uy.com.group05.baascore.bll.ejbs.interfaces;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.ejb.Local;
 
 import uy.com.group05.baascore.common.entities.Client;
+import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
@@ -72,4 +74,6 @@ public interface ClientManagementLocal {
 	
 	public boolean assignRoleToClient(long idApp, long idUser, long idRole, long idClient) 
 			throws ClientNotRegisteredException, EntityNotRegisteredException, UserCantAccessAppException, AppNotRegisteredException;
+	
+	public List<Role> getRolesFromClient(long idApp, long idUser, long idClient) throws ClientNotRegisteredException, UserCantAccessAppException, AppNotRegisteredException;
 }

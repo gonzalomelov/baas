@@ -340,6 +340,25 @@ public class ClientManagement implements ClientManagementLocal {
 		return true;
 	}
 	
+	public List<Role> getRolesFromClient(long idApp, long idUser, long idClient) throws ClientNotRegisteredException, UserCantAccessAppException, AppNotRegisteredException{
+		
+		Application app = appDao.readById(idApp);
+		if (app == null)//No existe la app
+			throw new AppNotRegisteredException("No existe una aplicacion con ese id");
+		List<User> users = app.getUsers();
+		if (!users.contains(userDao.read(idUser))) {
+			throw new UserCantAccessAppException ("El usuario no es administrador de la aplicacion");
+		}
+		Client client = clientDao.read(idClient);
+		if (client==null || !app.getClients().contains(client)){
+			throw new ClientNotRegisteredException ("No existe un client con ese id en la app");
+		}
+		
+		List<Role> rs=client.getRoles();
+		rs.size();
+		return rs;
+	}
+	
 	
 }
 
