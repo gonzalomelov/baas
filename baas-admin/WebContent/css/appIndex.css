@@ -1,5 +1,5 @@
-.rolesBox, .clientsBox, .entityBox {
-	width: 30%;
+.rolesBox, .clientsBox, .entityBox, .pushBox {
+	width: 45%;
 	float: left;
 	margin: 1.5%;
 }
@@ -15,4 +15,15 @@
     margin-left: 2%;
     margin-right: 2%;
     padding-top: 0.5%;
+}
+
+.buttonAdd {
+    float: left;
+    margin-left: 5%;
+}
+
+
+.tablaAdd {
+    float: left;
+    
 }

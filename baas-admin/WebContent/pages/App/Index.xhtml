@@ -127,7 +127,7 @@ body {
 
 
 			<div class="box-header well">
-				<h2>Users</h2>
+				<h2>Clients</h2>
 				<div class="box-icon">
 					<a href="#" class="btn btn-minimize btn-round"><i
 						class="icon-chevron-up"></i></a>
@@ -156,6 +156,63 @@ body {
 			</div>
 
 
+
+		</div>
+		
+		<div class="pushBox">
+		<h:form>
+
+
+			<div class="box-header well">
+				<h2>Push Channels</h2>
+				<div class="box-icon">
+					<a href="#" class="btn btn-minimize btn-round"><i
+						class="icon-chevron-up"></i></a>
+				</div>
+			</div>
+			<div class="box-content">
+				<h:dataTable value="#{appViewBean.app.pushChannels}" var="e"
+					styleClass="table table-bordered">
+
+					<h:column>
+
+						<f:facet name="header">Name</f:facet>
+
+<!-- 						<h:link value="#{e.name}" outcome="/pages/clients/Index"> -->
+
+<!-- 							<f:param name="appId" value="#{appViewBean.app.id}" /> -->
+<!-- 							<f:param name="clientId" value="#{e.id}" /> -->
+<!-- 						</h:link> -->
+						#{e.name}
+					</h:column>
+
+
+
+
+				</h:dataTable>
+			</div>
+
+			<table class="tablaAdd">
+					<tr>
+						<td>Name :</td>
+						<td><h:inputText size="10" value="#{appViewBean.pushChannelName}" /></td>
+					</tr>
+				</table>
+
+
+				<h:commandButton value="Add" styleClass="buttonAdd btn btn-large btn-success">
+					<f:ajax execute="@form" render="@form"
+						listener="#{appViewBean.addPushChannel}" />
+				</h:commandButton>
+
+				<h:panelGroup rendered="#{appViewBean.pushChannelsError.length() > 0 }">
+					<div class="alert alert-error errorMessage">
+						<button type="button" class="close" data-dismiss="alert">×</button>
+						<strong>Error</strong>
+						<h:outputLabel value="#{appViewBean.pushChannelsError}" />
+					</div>
+				</h:panelGroup>
+</h:form>
 
 		</div>
 		
@@ -192,7 +249,7 @@ body {
 				</table>
 
 
-				<h:commandButton value="Add" styleClass="buttonAdd">
+				<h:commandButton value="Add" styleClass="buttonAdd btn btn-large btn-success">
 					<f:ajax execute="@form" render="@form"
 						listener="#{appViewBean.addRol}" />
 				</h:commandButton>
@@ -250,7 +307,7 @@ body {
 
 
 
-				<h:commandButton value="Add" styleClass="buttonAdd">
+				<h:commandButton value="Add" styleClass="buttonAdd btn btn-large btn-success">
 					<f:ajax execute="entityName" render="@form"
 						listener="#{appViewBean.addEntity}" />
 				</h:commandButton>

@@ -5,12 +5,14 @@ import java.util.List;
 
 import uy.com.group05.baasadmin.common.exceptions.ApplicationException;
 import uy.com.group05.baasadmin.common.exceptions.EntityException;
+import uy.com.group05.baasadmin.common.exceptions.PushChannelException;
 import uy.com.group05.baasadmin.common.exceptions.RoleException;
 import uy.com.group05.baasadmin.pl.models.AppModel;
 import uy.com.group05.baasadmin.pl.models.Application;
 import uy.com.group05.baasadmin.pl.models.Cliente;
 import uy.com.group05.baasadmin.pl.models.Entity;
 import uy.com.group05.baasadmin.pl.models.Operacion;
+import uy.com.group05.baasadmin.pl.models.PushChannel;
 import uy.com.group05.baasadmin.pl.models.Rol;
 import uy.com.group05.baasadmin.pl.models.RolEntityPermission;
 import uy.com.group05.baascore.sl.services.impl.ApplicationServices;
@@ -25,6 +27,8 @@ import uy.com.group05.baascore.sl.services.soap.InvalidNameException_Exception;
 import uy.com.group05.baascore.sl.services.soap.MongoDBAlreadyExistsException_Exception;
 import uy.com.group05.baascore.sl.services.soap.NombreAppAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.PermissionDTO;
+import uy.com.group05.baascore.sl.services.soap.PushChanAlreadyRegisteredException_Exception;
+import uy.com.group05.baascore.sl.services.soap.PushChannelDTO;
 import uy.com.group05.baascore.sl.services.soap.RoleAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.RoleDTO;
 import uy.com.group05.baascore.sl.services.soap.SimpleApplicationDTO;
@@ -133,6 +137,20 @@ public class ApplicationController {
 			}		
 			
 			response.setClientes(clientes);
+			
+			List<PushChannel> canalesPush = new ArrayList<PushChannel>();
+			
+			List<PushChannelDTO> pushChannelDTOList = port.getPushChannelsApplication(id);
+			for (PushChannelDTO dto : pushChannelDTOList) {
+				PushChannel p = new PushChannel();
+				p.setId(dto.getId());
+				p.setName(dto.getName());
+				canalesPush.add(p);
+			}
+			
+			
+			
+			response.setPushChannels(canalesPush);
 			
 			return response;
 			
@@ -253,6 +271,22 @@ public class ApplicationController {
 			throw new RoleException(e.getMessage());
 		}
 		
+		
+		
+	}
+	
+	public long addPushChannel(long appId, String name) throws PushChannelException{
+		
+		ApplicationServices service = new ApplicationServices();
+		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
+		
+		try {
+			return port.addPushChannelToApplication(appId, name);
+		} catch (PushChanAlreadyRegisteredException_Exception e) {
+			throw new PushChannelException(e.getMessage());
+		} catch (AppNotRegisteredException_Exception e) {
+			throw new PushChannelException(e.getMessage());
+		}
 		
 		
 	}

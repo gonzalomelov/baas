@@ -33,6 +33,8 @@ public class Application {
 	
 	private List<Operacion> operaciones;
 	
+	private List<PushChannel> pushChannels;
+	
 	private String Token;
 	
 	
@@ -81,6 +83,14 @@ public class Application {
 
 	public void setOperaciones(List<Operacion> operaciones) {
 		this.operaciones = operaciones;
+	}
+
+	public List<PushChannel> getPushChannels() {
+		return pushChannels;
+	}
+
+	public void setPushChannels(List<PushChannel> pushChannels) {
+		this.pushChannels = pushChannels;
 	}
 
 }

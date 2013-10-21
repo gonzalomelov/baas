@@ -33,6 +33,7 @@ import uy.com.group05.baascore.dal.dao.ClientDao;
 import uy.com.group05.baascore.dal.dao.EntityDao;
 import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
 import uy.com.group05.baascore.dal.dao.PermissionDao;
+import uy.com.group05.baascore.dal.dao.PushChannelDao;
 import uy.com.group05.baascore.dal.dao.RoleDao;
 import uy.com.group05.baascore.dal.dao.UserDao;
 
@@ -53,7 +54,8 @@ public class AppManagement implements AppManagementLocal{
 	PermissionDao permissionDao;
 	@Inject
 	ClientDao clientDao;
-	
+	@Inject
+	PushChannelDao pushChannelDao;
 	
 	public List<Application> listApplications(long idUser) throws UserNotRegisteredException{
 		User user = userDao.read(idUser);
@@ -348,8 +350,14 @@ public class AppManagement implements AppManagementLocal{
 		
 		if (app.getPushChannel(nombreCanal) == null) {
 			PushChannel pc = new PushChannel(nombreCanal,app);
-			app.addPushChannel(pc);
-			appDao.update(app);
+			//app.addPushChannel(pc);
+			pc.setApplication(app);
+			
+			//appDao.update(app);
+			
+			pushChannelDao.create(pc);
+			
+			
 			return pc.getId();
 		}
 		else

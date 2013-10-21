@@ -1,5 +1,6 @@
 package uy.com.group05.baasadmin.pl.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import uy.com.group05.baasadmin.common.exceptions.RoleException;
 import uy.com.group05.baasadmin.pl.controllers.ApplicationController;
 import uy.com.group05.baasadmin.pl.models.Application;
 import uy.com.group05.baasadmin.pl.models.Entity;
+import uy.com.group05.baasadmin.pl.models.PushChannel;
 import uy.com.group05.baasadmin.pl.models.Rol;
 
 @ManagedBean(name = "appViewBean")
@@ -31,6 +33,10 @@ public class AppViewBean {
 	private String errorRol;
 
 	private String error;
+	
+	private String pushChannelsError;
+	
+	private String pushChannelName;
 	
 	public String getRolName() {
 		return rolName;
@@ -64,7 +70,9 @@ public class AppViewBean {
 			ApplicationController appController = new ApplicationController();
 
 			try {
-				setApp(appController.GetAplication(id));
+				Application app = appController.GetAplication(id);
+				
+				setApp(app);
 			} catch (ApplicationException e) {
 				error = e.getMessage();
 			}
@@ -193,10 +201,52 @@ public class AppViewBean {
 
 		return null;
 	}
+	
+	public String addPushChannel() {
+
+		CleanErrorMessages();
+
+		if (pushChannelName == null || pushChannelName.equals("")) {
+			errorRol = "El nombre no puede ser vacio";
+			pushChannelName = "";
+			return null;
+		}
+
+		if (ExisteCanalPushEnLista(pushChannelName, app.getPushChannels())) {
+			pushChannelsError = "Ya existe el canal:" + pushChannelName;
+			pushChannelName = "";
+			return null;
+		}
+		
+		try{
+			ApplicationController appController = new ApplicationController();
+			long id = appController.addPushChannel(app.getId(), pushChannelName);
+			
+			
+			PushChannel p = new PushChannel();
+			p.setName(pushChannelName);
+			p.setId(id);
+			
+			app.getPushChannels().add(p);
+			
+		}
+		catch(Exception e){
+			pushChannelName = e.getMessage();
+			pushChannelName = "";
+			return null;
+		}
+		
+
+		
+		pushChannelName = "";
+
+		return null;
+	}
 
 	private void CleanErrorMessages() {
 		errorEntity = "";
 		errorRol = "";
+		pushChannelsError = "";
 		// error = "";
 	}
 
@@ -224,6 +274,35 @@ public class AppViewBean {
 		}
 
 		return retorno;
+	}
+	
+	private boolean ExisteCanalPushEnLista(String element, List<PushChannel> list){
+		
+		boolean retorno = false;
+
+		for (PushChannel elem : list) {
+			if (elem.getName().equals(element)) {
+				return true;
+			}
+		}
+
+		return retorno;
+	}
+
+	public String getPushChannelsError() {
+		return pushChannelsError;
+	}
+
+	public void setPushChannelsError(String pushChannelsError) {
+		this.pushChannelsError = pushChannelsError;
+	}
+
+	public String getPushChannelName() {
+		return pushChannelName;
+	}
+
+	public void setPushChannelName(String pushChannelName) {
+		this.pushChannelName = pushChannelName;
 	}
 
 }
