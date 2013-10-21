@@ -17,6 +17,7 @@ import uy.com.group05.baascore.sl.entitiesws.OperationDTO;
 import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
 import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
 import uy.com.group05.baascore.sl.entitiesws.SimpleApplicationDTO;
+import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelDTO;
 import uy.com.group05.baascore.sl.entitiesws.UserDTO;
 import uy.com.group05.baascore.sl.entitiesws.UserRegisterDTO;
 import ma.glasnost.orika.MapperFacade;
@@ -77,8 +78,15 @@ public class Mapper {
 		
 		//PushChannel <> PushChannelDTO
 		mapperFactory.classMap(PushChannel.class, PushChannelDTO.class)
-		.byDefault()
-		.register();
+			.byDefault()
+			.register();
+		
+		//PushChannel <> SimplePushChannelDTO
+		mapperFactory.classMap(PushChannel.class, SimplePushChannelDTO.class)
+			.exclude("application")
+			.exclude("clients")
+			.byDefault()
+			.register();
 
 		//Permission <> PermissionDTO
 		mapperFactory.classMap(Permission.class, PermissionDTO.class)

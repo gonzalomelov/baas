@@ -9,6 +9,7 @@ import javax.jws.WebService;
 
 
 
+
 import uy.com.group05.baascore.common.exceptions.InvalidNameException;
 import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
@@ -28,6 +29,7 @@ import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
 import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
 import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
 import uy.com.group05.baascore.sl.entitiesws.SimpleApplicationDTO;
+import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelDTO;
 
 @WebService
 public interface ApplicationServices {
@@ -159,7 +161,7 @@ public interface ApplicationServices {
 			throws AppNotRegisteredException;
 	
 	@WebMethod
-	public List<PushChannelDTO> getPushChannelsApplication(
+	public List<SimplePushChannelDTO> getPushChannelsApplication(
 			@WebParam(name = "idApp") long idApp) 
 			throws AppNotRegisteredException;
 	

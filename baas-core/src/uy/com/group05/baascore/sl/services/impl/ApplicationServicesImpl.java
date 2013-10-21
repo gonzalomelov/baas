@@ -14,6 +14,7 @@ import javax.jws.WebService;
 
 
 
+
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Client;
@@ -40,6 +41,7 @@ import uy.com.group05.baascore.sl.entitiesws.EntityDTO;
 import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
 import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
 import uy.com.group05.baascore.sl.entitiesws.SimpleApplicationDTO;
+import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelDTO;
 import uy.com.group05.baascore.sl.services.soap.ApplicationServices;
 import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
 
@@ -209,10 +211,11 @@ public class ApplicationServicesImpl implements ApplicationServices{
 
 
 	@Override
-	public List<PushChannelDTO> getPushChannelsApplication(long idApp)
+	public List<SimplePushChannelDTO> getPushChannelsApplication(long idApp)
 			throws AppNotRegisteredException {
 		List<PushChannel> pushChannels = appManagementLocal.getPushChannelsApplication(idApp);
-		List<PushChannelDTO> pushChannelsDTO = mapper.getMapper().mapAsList(pushChannels, PushChannelDTO.class); 
+		
+		List<SimplePushChannelDTO> pushChannelsDTO = mapper.getMapper().mapAsList(pushChannels, SimplePushChannelDTO.class); 
 		
 		return pushChannelsDTO;
 	}

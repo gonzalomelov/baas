@@ -53,6 +53,14 @@ public class PushChannel {
 		this.name = name;
 	}
 
+	public Application getApplication() {
+		return application;
+	}
+
+	public void setApplication(Application application) {
+		this.application = application;
+	}
+	
 	public List<Client> getClients() {
 		return clients;
 	}

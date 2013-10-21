@@ -17,14 +17,6 @@ public class JpaApplicationDao extends JpaGenericDao<Application> implements App
 	
 	
 	public Application readById(long appId) {
-		/*TypedQuery<Application> query = em.createQuery("SELECT a FROM Application a WHERE a.id = :appId", Application.class);
-		query.setParameter("appId", appId);
-		 
-		List<Application> applications = query.getResultList();
-		
-		if (applications.isEmpty()) {
-			return null;
-		}*/
 		
 		Application a = em.find(Application.class, appId);//applications.get(0);
 		
@@ -33,6 +25,7 @@ public class JpaApplicationDao extends JpaGenericDao<Application> implements App
 			a.getClients().size();
 			a.getEntities().size();
 			a.getRoles().size();
+			a.getPushChannels().size();
 		}
 		
 		return a;
