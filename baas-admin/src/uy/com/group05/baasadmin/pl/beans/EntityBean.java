@@ -24,6 +24,8 @@ public class EntityBean {
 	private List<Rol> roleList;
 
 	private List<Operacion> operationList;
+	
+	private List<RolEntityPermission> permissionList;
 
 	private RolEntityPermission[][] datos;
 	
@@ -84,15 +86,26 @@ public class EntityBean {
 			roleList = appController.getRoles(appId);
 			operationList = appController.getOperaciones(appId);
 			entity = appController.getEntity(entityId);
-
+			permissionList = appController.getPermissions(appId, entityId);
+			
 			datos = new RolEntityPermission[roleList.size()][operationList.size()];
 			datosVista = new Boolean[roleList.size()][operationList.size()];
 			for (int i = 0; i < roleList.size(); i++) {
 				for (int j = 0; j < operationList.size(); j++) {
 					RolEntityPermission perm = new RolEntityPermission();
 					perm.setEntityId(entityId);
-					perm.setPermissionId(operationList.get(j).getId());
 					perm.setRolId(roleList.get(i).getId());
+					
+					
+					for (RolEntityPermission roleEntityPermission : permissionList) {
+						if (roleEntityPermission.getEntityId() == entityId &&
+							roleEntityPermission.getRolId() == roleList.get(i).getId() &&
+							roleEntityPermission.getRolId() == operationList.get(j).getId()) {
+							
+						} 
+					}
+					perm.setPermissionId(operationList.get(j).getId());
+					
 					if ((j % 2) == 0) {
 						perm.setPermission(true);
 						datosVista[i][j] = true;

@@ -1,8 +1,11 @@
 
 package uy.com.group05.baascore.sl.services.soap;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -17,11 +20,13 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="appName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="application" type="{http://soap.services.sl.baascore.group05.com.uy/}applicationDTO" minOccurs="0"/>
  *         &lt;element name="email" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="lastname" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="roles" type="{http://soap.services.sl.baascore.group05.com.uy/}simpleRoleDTO" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -33,20 +38,25 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "clientDTO", propOrder = {
     "appName",
+    "application",
     "email",
     "id",
     "lastname",
     "name",
-    "password"
+    "password",
+    "roles"
 })
 public class ClientDTO {
 
     protected String appName;
+    protected ApplicationDTO application;
     protected String email;
     protected long id;
     protected String lastname;
     protected String name;
     protected String password;
+    @XmlElement(nillable = true)
+    protected List<SimpleRoleDTO> roles;
 
     /**
      * Gets the value of the appName property.
@@ -70,6 +80,30 @@ public class ClientDTO {
      */
     public void setAppName(String value) {
         this.appName = value;
+    }
+
+    /**
+     * Gets the value of the application property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link ApplicationDTO }
+     *     
+     */
+    public ApplicationDTO getApplication() {
+        return application;
+    }
+
+    /**
+     * Sets the value of the application property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ApplicationDTO }
+     *     
+     */
+    public void setApplication(ApplicationDTO value) {
+        this.application = value;
     }
 
     /**
@@ -182,6 +216,35 @@ public class ClientDTO {
      */
     public void setPassword(String value) {
         this.password = value;
+    }
+
+    /**
+     * Gets the value of the roles property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the roles property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getRoles().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link SimpleRoleDTO }
+     * 
+     * 
+     */
+    public List<SimpleRoleDTO> getRoles() {
+        if (roles == null) {
+            roles = new ArrayList<SimpleRoleDTO>();
+        }
+        return this.roles;
     }
 
 }

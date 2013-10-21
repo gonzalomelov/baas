@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="return" type="{http://soap.services.sl.baascore.group05.com.uy/}applicationDTO" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="return" type="{http://soap.services.sl.baascore.group05.com.uy/}simpleApplicationDTO" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 public class ListApplicationsResponse {
 
     @XmlElement(name = "return")
-    protected List<ApplicationDTO> _return;
+    protected List<SimpleApplicationDTO> _return;
 
     /**
      * Gets the value of the return property.
@@ -55,13 +55,13 @@ public class ListApplicationsResponse {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link ApplicationDTO }
+     * {@link SimpleApplicationDTO }
      * 
      * 
      */
-    public List<ApplicationDTO> getReturn() {
+    public List<SimpleApplicationDTO> getReturn() {
         if (_return == null) {
-            _return = new ArrayList<ApplicationDTO>();
+            _return = new ArrayList<SimpleApplicationDTO>();
         }
         return this._return;
     }

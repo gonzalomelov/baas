@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="nombreApp" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="idApp" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="nombreCanal" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -28,36 +28,28 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "addPushChannelToApplication", propOrder = {
-    "nombreApp",
+    "idApp",
     "nombreCanal"
 })
 public class AddPushChannelToApplication {
 
-    protected String nombreApp;
+    protected long idApp;
     protected String nombreCanal;
 
     /**
-     * Gets the value of the nombreApp property.
+     * Gets the value of the idApp property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
      */
-    public String getNombreApp() {
-        return nombreApp;
+    public long getIdApp() {
+        return idApp;
     }
 
     /**
-     * Sets the value of the nombreApp property.
+     * Sets the value of the idApp property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
      */
-    public void setNombreApp(String value) {
-        this.nombreApp = value;
+    public void setIdApp(long value) {
+        this.idApp = value;
     }
 
     /**

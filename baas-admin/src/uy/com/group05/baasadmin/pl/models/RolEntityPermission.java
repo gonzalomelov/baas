@@ -9,6 +9,8 @@ public class RolEntityPermission {
 	
 	private boolean permission;
 
+	private long operationId;
+	
 	public long getRolId() {
 		return RolId;
 	}
@@ -39,6 +41,14 @@ public class RolEntityPermission {
 
 	public void setPermission(boolean permission) {
 		this.permission = permission;
+	}
+
+	public long getOperationId() {
+		return operationId;
+	}
+
+	public void setOperationId(long operationId) {
+		this.operationId = operationId;
 	}
 	
 	

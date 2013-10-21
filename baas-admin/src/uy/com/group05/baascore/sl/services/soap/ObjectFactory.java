@@ -41,6 +41,7 @@ public class ObjectFactory {
     private final static QName _GetEntitiesApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getEntitiesApplication");
     private final static QName _GetRolesApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getRolesApplication");
     private final static QName _UserNotRegisteredException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "UserNotRegisteredException");
+    private final static QName _InvalidNameException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "InvalidNameException");
     private final static QName _MongoDBAlreadyExistsException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "MongoDBAlreadyExistsException");
     private final static QName _ExistsRoleApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsRoleApplicationResponse");
     private final static QName _AssignUserToApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "assignUserToApplication");
@@ -485,6 +486,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link InvalidNameException }
+     * 
+     */
+    public InvalidNameException createInvalidNameException() {
+        return new InvalidNameException();
+    }
+
+    /**
      * Create an instance of {@link ExistsRoleApplicationResponse }
      * 
      */
@@ -517,6 +526,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link SimpleRoleDTO }
+     * 
+     */
+    public SimpleRoleDTO createSimpleRoleDTO() {
+        return new SimpleRoleDTO();
+    }
+
+    /**
      * Create an instance of {@link PermissionDTO }
      * 
      */
@@ -538,6 +555,14 @@ public class ObjectFactory {
      */
     public ClientDTO createClientDTO() {
         return new ClientDTO();
+    }
+
+    /**
+     * Create an instance of {@link SimpleApplicationDTO }
+     * 
+     */
+    public SimpleApplicationDTO createSimpleApplicationDTO() {
+        return new SimpleApplicationDTO();
     }
 
     /**
@@ -691,6 +716,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "UserNotRegisteredException")
     public JAXBElement<UserNotRegisteredException> createUserNotRegisteredException(UserNotRegisteredException value) {
         return new JAXBElement<UserNotRegisteredException>(_UserNotRegisteredException_QNAME, UserNotRegisteredException.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InvalidNameException }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "InvalidNameException")
+    public JAXBElement<InvalidNameException> createInvalidNameException(InvalidNameException value) {
+        return new JAXBElement<InvalidNameException>(_InvalidNameException_QNAME, InvalidNameException.class, null, value);
     }
 
     /**

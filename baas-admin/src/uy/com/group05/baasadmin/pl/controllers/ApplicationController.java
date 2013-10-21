@@ -12,17 +12,22 @@ import uy.com.group05.baasadmin.pl.models.Cliente;
 import uy.com.group05.baasadmin.pl.models.Entity;
 import uy.com.group05.baasadmin.pl.models.Operacion;
 import uy.com.group05.baasadmin.pl.models.Rol;
+import uy.com.group05.baasadmin.pl.models.RolEntityPermission;
 import uy.com.group05.baascore.sl.services.impl.ApplicationServices;
 import uy.com.group05.baascore.sl.services.soap.AppNotRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.ApplicationDTO;
 import uy.com.group05.baascore.sl.services.soap.ClientDTO;
 import uy.com.group05.baascore.sl.services.soap.EntityAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.EntityCollectionAlreadyExistsException_Exception;
+import uy.com.group05.baascore.sl.services.soap.EntityCollectionNotRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.EntityDTO;
+import uy.com.group05.baascore.sl.services.soap.InvalidNameException_Exception;
 import uy.com.group05.baascore.sl.services.soap.MongoDBAlreadyExistsException_Exception;
 import uy.com.group05.baascore.sl.services.soap.NombreAppAlreadyRegisteredException_Exception;
+import uy.com.group05.baascore.sl.services.soap.PermissionDTO;
 import uy.com.group05.baascore.sl.services.soap.RoleAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.RoleDTO;
+import uy.com.group05.baascore.sl.services.soap.SimpleApplicationDTO;
 import uy.com.group05.baascore.sl.services.soap.UserCantAccessAppException_Exception;
 import uy.com.group05.baascore.sl.services.soap.UserNotRegisteredException_Exception;
 
@@ -42,11 +47,11 @@ public class ApplicationController {
 			
 			uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
 			
-			List<ApplicationDTO> lista = port.listApplications(UserId);
+			List<SimpleApplicationDTO> lista = port.listApplications(UserId);
 			
 			
 			
-			for (ApplicationDTO app : lista) {
+			for (SimpleApplicationDTO app : lista) {
 				Application a = new Application(app.getName(), app.getId());
 				model.getAplicaciones().add(a);				
 				
@@ -71,6 +76,8 @@ public class ApplicationController {
 		
 		try {
 			port.createApplication(UserId, appName, roles, entities);
+		} catch (InvalidNameException_Exception e) {
+			throw new ApplicationException(e.getMessage());
 		} catch (NombreAppAlreadyRegisteredException_Exception e) {
 			throw new ApplicationException(e.getMessage());
 		} catch (MongoDBAlreadyExistsException_Exception e) {
@@ -216,6 +223,8 @@ public class ApplicationController {
 		
 		try {
 			return port.editEntityApplication(appId, userId, entityName);
+		} catch (InvalidNameException_Exception e) {
+			throw new EntityException(e.getMessage());
 		} catch (UserCantAccessAppException_Exception e) {
 			throw new EntityException(e.getMessage());
 		} catch (AppNotRegisteredException_Exception e) {
@@ -234,6 +243,8 @@ public class ApplicationController {
 		
 		try {
 			return port.editRoleApplication(appId, userId, roleName);
+		} catch (InvalidNameException_Exception e) {
+			throw new RoleException(e.getMessage());
 		} catch (RoleAlreadyRegisteredException_Exception e) {
 			throw new RoleException(e.getMessage());
 		} catch (UserCantAccessAppException_Exception e) {
@@ -244,5 +255,33 @@ public class ApplicationController {
 		
 		
 		
+	}
+	
+	public List<RolEntityPermission> getPermissions(long appId, long entityId) {
+		ApplicationServices service = new ApplicationServices();
+		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
+		
+		try {
+			List<PermissionDTO> permissionsDTO = port.getPermissionsForEntity(appId, entityId); 
+			List<RolEntityPermission> roleEntityPermissions = new ArrayList<RolEntityPermission>();
+			
+			for (PermissionDTO permissionDTO : permissionsDTO) {
+				RolEntityPermission roleEntityPermission = new RolEntityPermission();
+				roleEntityPermission.setEntityId(permissionDTO.getEntity().getId());
+				roleEntityPermission.setPermission(true);
+				roleEntityPermission.setPermissionId(permissionDTO.getId());
+				roleEntityPermission.setRolId(permissionDTO.getRole().getId());
+				roleEntityPermission.setOperationId(permissionDTO.getOperation().getId());
+				roleEntityPermissions.add(roleEntityPermission);
+			}
+			
+			return roleEntityPermissions;	
+		}
+		catch (AppNotRegisteredException_Exception e) {
+			return null;
+		}
+		catch (EntityCollectionNotRegisteredException_Exception e) {
+			return null;
+		}
 	}
 }

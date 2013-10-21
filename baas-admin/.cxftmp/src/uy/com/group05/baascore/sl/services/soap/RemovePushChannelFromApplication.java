@@ -16,8 +16,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="nombreApp" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="nombreCanal" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="idApp" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="idCanal" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -28,60 +28,44 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "removePushChannelFromApplication", propOrder = {
-    "nombreApp",
-    "nombreCanal"
+    "idApp",
+    "idCanal"
 })
 public class RemovePushChannelFromApplication {
 
-    protected String nombreApp;
-    protected String nombreCanal;
+    protected long idApp;
+    protected long idCanal;
 
     /**
-     * Gets the value of the nombreApp property.
+     * Gets the value of the idApp property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
      */
-    public String getNombreApp() {
-        return nombreApp;
+    public long getIdApp() {
+        return idApp;
     }
 
     /**
-     * Sets the value of the nombreApp property.
+     * Sets the value of the idApp property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
      */
-    public void setNombreApp(String value) {
-        this.nombreApp = value;
+    public void setIdApp(long value) {
+        this.idApp = value;
     }
 
     /**
-     * Gets the value of the nombreCanal property.
+     * Gets the value of the idCanal property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
      */
-    public String getNombreCanal() {
-        return nombreCanal;
+    public long getIdCanal() {
+        return idCanal;
     }
 
     /**
-     * Sets the value of the nombreCanal property.
+     * Sets the value of the idCanal property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
      */
-    public void setNombreCanal(String value) {
-        this.nombreCanal = value;
+    public void setIdCanal(long value) {
+        this.idCanal = value;
     }
 
 }
