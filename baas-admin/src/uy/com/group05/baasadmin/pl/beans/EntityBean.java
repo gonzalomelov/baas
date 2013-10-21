@@ -96,22 +96,20 @@ public class EntityBean {
 					perm.setEntityId(entityId);
 					perm.setRolId(roleList.get(i).getId());
 					
+					perm.setPermission(false);
+					datosVista[i][j] = false;
 					
 					for (RolEntityPermission roleEntityPermission : permissionList) {
 						if (roleEntityPermission.getEntityId() == entityId &&
 							roleEntityPermission.getRolId() == roleList.get(i).getId() &&
-							roleEntityPermission.getRolId() == operationList.get(j).getId()) {
+							roleEntityPermission.getOperationId() == operationList.get(j).getId()) {
 							
+							perm.setPermissionId(roleEntityPermission.getPermissionId());
+							
+							perm.setPermission(true);
+							datosVista[i][j] = true;
+							break;
 						} 
-					}
-					perm.setPermissionId(operationList.get(j).getId());
-					
-					if ((j % 2) == 0) {
-						perm.setPermission(true);
-						datosVista[i][j] = true;
-					} else {
-						perm.setPermission(false);
-						datosVista[i][j] = false;
 					}
 					
 					datos[i][j] = perm;

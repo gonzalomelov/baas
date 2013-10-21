@@ -190,10 +190,10 @@ public class ApplicationController {
 	public List<Operacion> getOperaciones(long appId){
 		
 		List<Operacion> opreaciones = new ArrayList<Operacion>();
-		opreaciones.add(new Operacion(1,"DELETE"));
-		opreaciones.add(new Operacion(2,"GET"));
-		opreaciones.add(new Operacion(3,"POST"));
-		opreaciones.add(new Operacion(4,"PUT"));
+		opreaciones.add(new Operacion(1,"GET"));
+		opreaciones.add(new Operacion(2,"POST"));
+		opreaciones.add(new Operacion(3,"PUT"));
+		opreaciones.add(new Operacion(4,"DELETE"));
 		
 		return opreaciones;
 		
