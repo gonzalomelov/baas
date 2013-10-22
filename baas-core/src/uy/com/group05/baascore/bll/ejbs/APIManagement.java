@@ -2,11 +2,13 @@ package uy.com.group05.baascore.bll.ejbs;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.APIManagementLocal;
 import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
 
+@Stateless
 public class APIManagement implements APIManagementLocal {
 	@Inject
 	private NoSqlDbDao noSqlDbDao;
