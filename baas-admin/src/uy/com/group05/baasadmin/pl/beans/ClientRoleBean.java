@@ -3,6 +3,7 @@ package uy.com.group05.baasadmin.pl.beans;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Exchanger;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -10,13 +11,19 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
+import org.jboss.security.auth.spi.Users;
+
+import uy.com.group05.baasadmin.common.exceptions.ClientRolException;
+import uy.com.group05.baasadmin.common.exceptions.EntityPermissionException;
 import uy.com.group05.baasadmin.pl.controllers.ApplicationController;
+import uy.com.group05.baasadmin.pl.controllers.ClientController;
 import uy.com.group05.baasadmin.pl.models.Cliente;
-import uy.com.group05.baasadmin.pl.models.Entity;
-import uy.com.group05.baasadmin.pl.models.Operacion;
 import uy.com.group05.baasadmin.pl.models.Rol;
 import uy.com.group05.baasadmin.pl.models.RolEntityPermission;
 import uy.com.group05.baasadmin.pl.models.RoleCliente;
+import uy.com.group05.baascore.sl.services.soap.PermissionRoleDTO;
+import uy.com.group05.baascore.sl.services.soap.RoleDTO;
+import uy.com.group05.baascore.sl.services.soap.RolesClientDTO;
 
 @ManagedBean(name = "clientRoleBean")
 @ViewScoped
@@ -33,6 +40,8 @@ public class ClientRoleBean {
 	private List<String> permisos;
 
 	private long appId;
+	
+	private String error;
 	
 	@ManagedProperty(value="#{userSessionManagementBean}")
 	private UserSessionManagementBean userSessionManagementBean;
@@ -70,8 +79,10 @@ public class ClientRoleBean {
 		String paramAppId = parameterMap.get("appId");
 
 		String paramClientId = parameterMap.get("clientId");
+		error = "";
 		if (paramAppId != null && paramClientId != null) {
 			
+			try{
 			permisos = new ArrayList<String>();
 			
 			permisos.add("");
@@ -84,7 +95,13 @@ public class ClientRoleBean {
 			roleList = appController.getRoles(appId);
 			// operationList = appController.getOperaciones(appId);
 			cliente = appController.getCliente(clientId);
-
+			
+			ClientController clientController = new ClientController();
+			
+			List<RoleDTO> rolesCliente =  clientController.GetClientRoles(appId, 
+					getUserSessionManagementBean().getUser().getUserId(), clientId);
+			
+			
 			datos = new RoleCliente[roleList.size()];
 			datosVista = new Boolean[roleList.size()];
 			for (int i = 0; i < roleList.size(); i++) {
@@ -92,19 +109,32 @@ public class ClientRoleBean {
 				RoleCliente rolCliente = new RoleCliente();
 				rolCliente.setClientId(clientId);
 				rolCliente.setRoleId(roleList.get(i).getId());
-				if ((i % 2) == 0) {
-					rolCliente.setRol(true);
-					datosVista[i] = true;
-				} else {
-					rolCliente.setRol(false);
-					datosVista[i] = false;
+				
+				
+				rolCliente.setRol(false);
+				datosVista[i] = false;
+				
+				for (RoleDTO rol : rolesCliente) {
+					if (rol.getId() == rolCliente.getRoleId()) {
+						
+						rolCliente.setRol(true);
+						datosVista[i] = true;
+						break;
+					} 
 				}
 
 				datos[i] = rolCliente;
 			}
-		}
+			}
+			catch(Exception e){
+				error = e.getMessage();
+				return;
+			}
 
-		printArray();
+			
+		}
+		
+		
 
 	}
 
@@ -129,9 +159,38 @@ public class ClientRoleBean {
 
 	public String submit() {
 
+		
 		printArray();
-
-		return "/pages/App/Index.xhtml?faces-redirect=true&id=" + appId;
+		try{
+			error = "";
+			
+			ClientController clientController = new ClientController();
+			
+			List<RolesClientDTO> permisos = new ArrayList<RolesClientDTO>();
+			
+			for (int i = 0; i < roleList.size(); i++) {	
+				RolesClientDTO r = new RolesClientDTO();
+				r.setIdRole(datos[i].getRoleId());
+				r.setHas(datos[i].isRol());
+				permisos.add(r);
+				
+				
+			}
+			
+			
+			clientController.saveClientRoles(appId, getUserSessionManagementBean().getUser().getUserId(), 
+					cliente.getId(), permisos);
+			
+		
+			return "/pages/App/Index.xhtml?faces-redirect=true&id=" + appId;
+		
+		
+		} catch (ClientRolException e) {
+			error = e.getMessage();
+			return "";
+		}
+		
+		
 	}
 
 	public String changePermission() {
@@ -206,5 +265,13 @@ public class ClientRoleBean {
 
 	public void setPermisos(List<String> permisos) {
 		this.permisos = permisos;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
 	}
 }

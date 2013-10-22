@@ -224,16 +224,10 @@ public class ApplicationController {
 		
 		Cliente e = new Cliente();
 		e.setId(clientId);
-//		String nombre = "trabajo";
-//		if(entityId == 1){
-//			nombre = "casas"; 
-//		}
-//		else if( entityId == 2){
-//			nombre = "autos";
-//		}
-		e.setName("Diego Forlan");
+
+		e.setName("edit");
 		
-		//e.setName(nombre);
+
 		return e;
 	}
 	

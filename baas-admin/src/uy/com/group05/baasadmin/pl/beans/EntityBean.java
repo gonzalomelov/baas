@@ -169,7 +169,7 @@ public class EntityBean {
 			}
 			
 			
-			appController.saveEntityPermissions(userSessionManagementBean.getUser().getUserId(), appId, 
+			appController.saveEntityPermissions(getUserSessionManagementBean().getUser().getUserId(), appId, 
 					entity.getId(), permisos );
 			
 		
