@@ -13,12 +13,14 @@ import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.ExternalApplication;
 import uy.com.group05.baascore.common.entities.ExternalClient;
+import uy.com.group05.baascore.common.entities.Operation;
 import uy.com.group05.baascore.common.entities.Permission;
 import uy.com.group05.baascore.common.entities.Role;
 import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.RoleNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
 import uy.com.group05.baascore.dal.dao.ClientDao;
@@ -32,6 +34,8 @@ import uy.com.group05.baascore.dal.dao.UserDao;
 import uy.com.group05.baascore.sl.entitiesws.ClientAuthenticationDTO;
 import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
 import uy.com.group05.baascore.sl.entitiesws.ClientRegistrationDTO;
+import uy.com.group05.baascore.sl.entitiesws.PermissionEntityDTO;
+import uy.com.group05.baascore.sl.entitiesws.RolesClientDTO;
 
 @Stateless
 public class ClientManagement implements ClientManagementLocal {
@@ -357,6 +361,49 @@ public class ClientManagement implements ClientManagementLocal {
 		List<Role> rs=client.getRoles();
 		rs.size();
 		return rs;
+	}
+	
+	public boolean assignRoleToClients(long idApp, long idUser, long idClient, List<RolesClientDTO> rolesClient) 
+			throws AppNotRegisteredException, UserCantAccessAppException, ClientNotRegisteredException{
+		
+		Application app = appDao.readById(idApp);
+		if (app == null)//No existe la app
+			throw new AppNotRegisteredException("No existe una aplicacion con ese id");
+		List<User> users = app.getUsers();
+		if (!users.contains(userDao.read(idUser))) {
+			throw new UserCantAccessAppException ("El usuario no es administrador de la aplicacion");
+		}
+		Client client = clientDao.read(idClient);
+		if (client==null || !app.getClients().contains(client)){
+			throw new ClientNotRegisteredException ("No existe un client con ese id en la app");
+		}
+		// Si la lista es vacia no hago nada.
+		if (rolesClient == null){
+			return true;
+		}
+		// Asigno los roles al cliente.
+		for (RolesClientDTO rc : rolesClient){
+			if (rc.isHas()){ //creo si no existe
+				
+				if(!client.existsRole(rc.getIdRole())) {
+					Role role = roleDao.read(rc.getIdRole());
+					if(role!=null && role.getApplication().getId()==idApp){
+						client.addRole(role);
+					}
+				}
+			}
+			else{ //elimino si existe
+				if(client.existsRole(rc.getIdRole())){
+					//Elimino el permiso, Rol.Permissions, Permission, Entity.Permissions
+					Role role = roleDao.read(rc.getIdRole());
+					if(role!=null && role.getApplication().getId()==idApp){
+						client.removeRole(role);
+					}
+				}
+			
+			}
+		}	
+		return true;
 	}
 	
 	

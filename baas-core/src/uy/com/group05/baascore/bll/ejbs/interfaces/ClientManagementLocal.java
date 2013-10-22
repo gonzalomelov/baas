@@ -14,6 +14,7 @@ import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.sl.entitiesws.ClientAuthenticationDTO;
 import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
 import uy.com.group05.baascore.sl.entitiesws.ClientRegistrationDTO;
+import uy.com.group05.baascore.sl.entitiesws.RolesClientDTO;
 
 @Local
 public interface ClientManagementLocal {
@@ -76,4 +77,7 @@ public interface ClientManagementLocal {
 			throws ClientNotRegisteredException, EntityNotRegisteredException, UserCantAccessAppException, AppNotRegisteredException;
 	
 	public List<Role> getRolesFromClient(long idApp, long idUser, long idClient) throws ClientNotRegisteredException, UserCantAccessAppException, AppNotRegisteredException;
+	
+	public boolean assignRoleToClients(long idApp, long idUser, long idClient, List<RolesClientDTO> rolesClient) 
+			throws AppNotRegisteredException, UserCantAccessAppException, ClientNotRegisteredException;
 }

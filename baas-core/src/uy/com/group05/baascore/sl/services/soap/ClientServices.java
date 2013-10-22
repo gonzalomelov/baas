@@ -12,6 +12,7 @@ import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
 import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
+import uy.com.group05.baascore.sl.entitiesws.RolesClientDTO;
 
 @WebService
 public interface ClientServices {
@@ -35,5 +36,11 @@ public interface ClientServices {
 			@WebParam(name = "idClient") long idClient) 
 			throws ClientNotRegisteredException, UserCantAccessAppException, AppNotRegisteredException;
 	
-	
+	@WebMethod
+	public boolean assignRoleToClients(
+			@WebParam(name = "idApp") long idApp, 
+			@WebParam(name = "idUser") long idUser, 
+			@WebParam(name = "idClient") long idClient,
+			@WebParam(name = "rolesClient") List<RolesClientDTO> rolesClient) 
+			throws AppNotRegisteredException, UserCantAccessAppException, ClientNotRegisteredException;
 }

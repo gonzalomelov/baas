@@ -15,6 +15,7 @@ import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.mapper.Mapper;
 import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
 import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
+import uy.com.group05.baascore.sl.entitiesws.RolesClientDTO;
 import uy.com.group05.baascore.sl.services.soap.ClientServices;
 
 @WebService(
@@ -51,5 +52,10 @@ public class ClientServicesImpl implements ClientServices {
 		List<RoleDTO> rolesDTO = mapper.getMapper().mapAsList(roles, RoleDTO.class); 
 		
 		return rolesDTO;
+	}
+	
+	public boolean assignRoleToClients(long idApp, long idUser, long idClient, List<RolesClientDTO> rolesClient) 
+			throws AppNotRegisteredException, UserCantAccessAppException, ClientNotRegisteredException{
+		return clientManagementLocal.assignRoleToClients(idApp, idUser, idClient, rolesClient);
 	}
 }
