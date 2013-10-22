@@ -1,5 +1,6 @@
 package uy.com.group05.baasadmin.pl.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,11 +10,13 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
+import uy.com.group05.baasadmin.common.exceptions.EntityPermissionException;
 import uy.com.group05.baasadmin.pl.controllers.ApplicationController;
 import uy.com.group05.baasadmin.pl.models.Entity;
 import uy.com.group05.baasadmin.pl.models.Operacion;
 import uy.com.group05.baasadmin.pl.models.Rol;
 import uy.com.group05.baasadmin.pl.models.RolEntityPermission;
+import uy.com.group05.baascore.sl.services.soap.PermissionRoleDTO;
 
 @ManagedBean(name="entityBean")
 @ViewScoped
@@ -32,6 +35,8 @@ public class EntityBean {
 	private Boolean[][] datosVista;
 	
 	private long appId;
+	
+	private String error;
 	
 	@ManagedProperty(value="#{userSessionManagementBean}")
 	private UserSessionManagementBean userSessionManagementBean;
@@ -95,7 +100,7 @@ public class EntityBean {
 					RolEntityPermission perm = new RolEntityPermission();
 					perm.setEntityId(entityId);
 					perm.setRolId(roleList.get(i).getId());
-					
+					perm.setOperationId(operationList.get(j).getId());
 					perm.setPermission(false);
 					datosVista[i][j] = false;
 					
@@ -143,9 +148,39 @@ public class EntityBean {
 	
 	public String submit(){
 		
-		printArray();
+		try{
+			error = "";
+			
+			ApplicationController appController = new ApplicationController();
+			
+			
+			
+			List<PermissionRoleDTO> permisos = new ArrayList<PermissionRoleDTO>();
+			
+			for (int i = 0; i < roleList.size(); i++) {				
+				for (int j = 0; j < operationList.size(); j++) {
+					PermissionRoleDTO p = new PermissionRoleDTO();
+					p.setHas(datos[i][j].isPermission());
+					p.setIdOperation(datos[i][j].getOperationId());
+					p.setIdRole(datos[i][j].getRolId());
+					permisos.add(p);
+				}
+				
+			}
+			
+			
+			appController.saveEntityPermissions(userSessionManagementBean.getUser().getUserId(), appId, 
+					entity.getId(), permisos );
+			
 		
-		return "/pages/App/Index.xhtml?faces-redirect=true&id=" + appId;
+			return "/pages/App/Index.xhtml?faces-redirect=true&id=" + appId;
+		
+		}
+		catch(EntityPermissionException e){
+			error = e.getMessage();
+			return "";
+		}
+		
 	}
 
 	public String changePermission() {
@@ -209,5 +244,13 @@ public class EntityBean {
 			}
 		}
 		
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
 	}
 }

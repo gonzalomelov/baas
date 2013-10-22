@@ -5,6 +5,7 @@ import java.util.List;
 
 import uy.com.group05.baasadmin.common.exceptions.ApplicationException;
 import uy.com.group05.baasadmin.common.exceptions.EntityException;
+import uy.com.group05.baasadmin.common.exceptions.EntityPermissionException;
 import uy.com.group05.baasadmin.common.exceptions.PushChannelException;
 import uy.com.group05.baasadmin.common.exceptions.RoleException;
 import uy.com.group05.baasadmin.pl.models.AppModel;
@@ -16,6 +17,7 @@ import uy.com.group05.baasadmin.pl.models.PushChannel;
 import uy.com.group05.baasadmin.pl.models.Rol;
 import uy.com.group05.baasadmin.pl.models.RolEntityPermission;
 import uy.com.group05.baascore.sl.services.impl.ApplicationServices;
+import uy.com.group05.baascore.sl.services.impl.PermissionServices;
 import uy.com.group05.baascore.sl.services.soap.AppNotRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.ApplicationDTO;
 import uy.com.group05.baascore.sl.services.soap.ClientDTO;
@@ -23,10 +25,12 @@ import uy.com.group05.baascore.sl.services.soap.EntityAlreadyRegisteredException
 import uy.com.group05.baascore.sl.services.soap.EntityCollectionAlreadyExistsException_Exception;
 import uy.com.group05.baascore.sl.services.soap.EntityCollectionNotRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.EntityDTO;
+import uy.com.group05.baascore.sl.services.soap.EntityNotRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.InvalidNameException_Exception;
 import uy.com.group05.baascore.sl.services.soap.MongoDBAlreadyExistsException_Exception;
 import uy.com.group05.baascore.sl.services.soap.NombreAppAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.PermissionDTO;
+import uy.com.group05.baascore.sl.services.soap.PermissionRoleDTO;
 import uy.com.group05.baascore.sl.services.soap.PushChanAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.PushChannelDTO;
 import uy.com.group05.baascore.sl.services.soap.RoleAlreadyRegisteredException_Exception;
@@ -317,5 +321,22 @@ public class ApplicationController {
 		catch (EntityCollectionNotRegisteredException_Exception e) {
 			return null;
 		}
+	}
+	
+	public void saveEntityPermissions(long userId, long appId, long entityId, List<PermissionRoleDTO> permisos ) throws EntityPermissionException{
+		
+		PermissionServices service = new PermissionServices();
+		uy.com.group05.baascore.sl.services.soap.PermissionServices port = service.getPermissionServicesPort();		
+		
+		try {
+			port.assingPermissionEntity(userId, appId, entityId, permisos);
+		} catch (EntityNotRegisteredException_Exception e) {
+			throw new EntityPermissionException(e.getMessage());
+		} catch (UserCantAccessAppException_Exception e) {
+			throw new EntityPermissionException(e.getMessage());
+		} catch (AppNotRegisteredException_Exception e) {
+			throw new EntityPermissionException(e.getMessage());
+		}
+		
 	}
 }
