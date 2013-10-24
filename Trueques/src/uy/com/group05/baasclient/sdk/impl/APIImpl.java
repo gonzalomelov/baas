@@ -18,11 +18,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import com.google.gson.Gson;
 
 import uy.com.group05.baasclient.sdk.APIFacade;
-import uy.com.group05.baasclient.sdk.entities.ClientDTO;
-import uy.com.group05.baasclient.sdk.entities.ClientRegistrationDTO;
 import uy.com.group05.baasclient.sdk.utils.AssetsPropertyReader;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 public class APIImpl implements APIFacade {
 
@@ -36,43 +36,20 @@ public class APIImpl implements APIFacade {
 	public String get(String entity)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
-		
-		
-		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
-		
-		String appName = AssetsPropertyReader.getProperties(context, "appName");
-		
-		String url = serviceUrl + "/api/entities" + "/" + appName + "/" + entity;
-		
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(url);
-		
-		SharedPreferences prefs =
-				context.getSharedPreferences("uy.com.group05.baasclient.sdk",Context.MODE_PRIVATE);
-		
-		String accessToken = prefs.getString("accessToken", "Invalid");
-		
-		httpGet.setHeader("accessToken", accessToken);
-		
-		HttpResponse httpResponse = httpClient.execute(httpGet);
-		
-		int statusCode = httpResponse.getStatusLine().getStatusCode();
-		
-		if (statusCode != HttpStatus.SC_OK) {
-			return "";	
-		}
-		
-		BufferedReader br = new BufferedReader(
-				new InputStreamReader(httpResponse.getEntity().getContent()));
-		
-		StringBuilder builder = new StringBuilder();
-		String aux = "";
-
-		while ((aux = br.readLine()) != null) {
-		    builder.append(aux);
-		}
-
-		String json = builder.toString();
+		ConnectivityManager connMgr = (ConnectivityManager) 
+    	        context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+	    
+	    String json;
+	    
+	    if (networkInfo != null && networkInfo.isConnected()) {
+	    	//Llamo al servicio
+	    	APIRestClient restClient = new APIRestClient(context);
+	    	json = restClient.get(entity);
+	    } else {
+	    	//Llamo a la base local
+	    	json = "";
+	    }
 		
 		return json;
 	}
@@ -81,45 +58,22 @@ public class APIImpl implements APIFacade {
 	public boolean post(String entity, Object jsonObj, Type type )
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
-		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
+		ConnectivityManager connMgr = (ConnectivityManager) 
+    	        context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+	    
+	    boolean result;
+	    
+	    if (networkInfo != null && networkInfo.isConnected()) {
+	    	//Llamo al servicio
+	    	APIRestClient restClient = new APIRestClient(context);
+	    	result = restClient.post(entity, jsonObj, type);
+	    } else {
+	    	//Llamo a la base local
+	    	result = false;
+	    }
 		
-		String appName = AssetsPropertyReader.getProperties(context, "appName");
-		
-		String url = serviceUrl + "/api/entities" + "/" + appName + "/" + entity;
-		
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(url);
-		
-		SharedPreferences prefs =
-				context.getSharedPreferences("uy.com.group05.baasclient.sdk",Context.MODE_PRIVATE);
-		
-		String accessToken = prefs.getString("accessToken", "Invalid");
-		
-		httpPost.setHeader("accessToken", accessToken);
-		
-		Gson gson = new Gson();
-		
-		StringEntity strEntity = new StringEntity(gson.toJson(jsonObj, type));
-		strEntity.setContentType("application/json");
-		
-		httpPost.setEntity(strEntity);
-		
-		HttpResponse httpResponse = httpClient.execute(httpPost);
-		
-		int statusCode = httpResponse.getStatusLine().getStatusCode();
-		
-		Boolean ret = Boolean.valueOf(false);
-		
-		if (statusCode != HttpStatus.SC_OK) {
-			return ret;
-		}
-		
-		BufferedReader br = new BufferedReader(
-				new InputStreamReader(httpResponse.getEntity().getContent()));
-		
-		ret = gson.fromJson(br, Boolean.class);
-		
-		return ret;
+		return result;
 	}
 
 }
