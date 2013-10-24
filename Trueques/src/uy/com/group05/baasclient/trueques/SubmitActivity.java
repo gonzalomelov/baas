@@ -69,11 +69,11 @@ public class SubmitActivity extends Activity {
 			{
 				String entity = args[0];
 				
-				Auto auto = new Auto();
+				Trueque auto = new Trueque();
 				auto.setMarca(args[0]);
 				auto.setAnio(args[1]);
 				
-				boolean ok = SDKFactory.getAPIFacade().post(context, entity, auto, Auto.class);
+				boolean ok = SDKFactory.getAPIFacade(context).post(entity, auto, Trueque.class);
 				
 				return ok;
 			}

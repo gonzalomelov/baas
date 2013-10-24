@@ -30,10 +30,15 @@ import com.google.gson.Gson;
 
 public class ClientImpl implements ClientFacade {
 
+	private Context context;
+	
+	public ClientImpl (Context context) {
+		this.context = context;
+	}
+	
 	@Override
-	public ClientRegistrationDTO register(Context context, String email, String password,
-			String name, String lastname)
-				throws UnsupportedEncodingException, ClientProtocolException, IOException {
+	public ClientRegistrationDTO register(String email, String password, String name, String lastname)
+			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 				
 		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
 		
@@ -82,7 +87,7 @@ public class ClientImpl implements ClientFacade {
 	}
 
 	@Override
-	public ClientAuthenticationDTO authenticate(Context context, String email, String password)
+	public ClientAuthenticationDTO authenticate(String email, String password)
 		throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
 		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");

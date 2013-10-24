@@ -1,6 +1,6 @@
 package uy.com.group05.baasclient.trueques;
 
-public class Auto {
+public class Trueque {
 	private String marca;
 	private String anio;
 	

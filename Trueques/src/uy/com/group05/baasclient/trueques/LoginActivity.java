@@ -99,7 +99,7 @@ public class LoginActivity extends Activity {
 			
 			try
 			{
-				auten = SDKFactory.getClientFacade().authenticate(context, email, password);
+				auten = SDKFactory.getClientFacade(context).authenticate(email, password);
 				
 				return auten.isOk();
 			}

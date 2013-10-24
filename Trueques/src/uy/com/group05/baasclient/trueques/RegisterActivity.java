@@ -75,7 +75,7 @@ public class RegisterActivity extends Activity {
 			ClientRegistrationDTO clientRegistration;
 			
 			try {
-				clientRegistration = SDKFactory.getClientFacade().register(context, email, password, name, lastname);
+				clientRegistration = SDKFactory.getClientFacade(context).register(email, password, name, lastname);
 				return clientRegistration.isOk();
 			}
 			catch (UnsupportedEncodingException e) {

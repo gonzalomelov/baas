@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
 			try
 			{
 				String entity = args[0];
-				String json = SDKFactory.getAPIFacade().get(context, entity);
+				String json = SDKFactory.getAPIFacade(context).get(entity);
 				return json;
 			}
 			catch (UnsupportedEncodingException e) {
@@ -104,12 +104,12 @@ public class MainActivity extends Activity {
 			
 			Gson gson = new Gson();
 			
-			Auto[] autosArray = gson.fromJson(result, Auto[].class);
+			Trueque[] autosArray = gson.fromJson(result, Trueque[].class);
 			
-			List<Auto> autos = autosArray != null && autosArray.length > 0 ? Arrays.asList(autosArray) : new ArrayList<Auto>();
+			List<Trueque> autos = autosArray != null && autosArray.length > 0 ? Arrays.asList(autosArray) : new ArrayList<Trueque>();
 			
 			if (!autos.isEmpty()) {
-				for (Auto auto : autos) {
+				for (Trueque auto : autos) {
 					TableRow tr = new TableRow(context);
 					tr.setLayoutParams(new TableRow.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 					

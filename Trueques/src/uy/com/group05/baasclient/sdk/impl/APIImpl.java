@@ -26,9 +26,17 @@ import android.content.SharedPreferences;
 
 public class APIImpl implements APIFacade {
 
+	private Context context;
+	
+	public APIImpl (Context context) {
+		this.context = context;
+	}
+	
 	@Override
-	public String get(Context context, String entity)
+	public String get(String entity)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
+		
+		
 		
 		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
 		
@@ -70,7 +78,7 @@ public class APIImpl implements APIFacade {
 	}
 
 	@Override
-	public boolean post(Context context, String entity, Object jsonObj, Type type )
+	public boolean post(String entity, Object jsonObj, Type type )
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
 		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
