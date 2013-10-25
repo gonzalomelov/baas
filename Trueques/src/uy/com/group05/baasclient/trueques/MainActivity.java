@@ -50,14 +50,7 @@ public class MainActivity extends Activity {
     public void get(View view) {
     	String entity = entityTextView.getText().toString();
     	
-    	ConnectivityManager connMgr = (ConnectivityManager) 
-    	        getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-	    if (networkInfo != null && networkInfo.isConnected()) {
-	    	new GetTask(this).execute(entity);
-	    } else {
-	    	resultView.setText("@string/main_unsuccessful");
-	    }
+    	new GetTask(this).execute(entity);
     }
     
     public void post(View view) {

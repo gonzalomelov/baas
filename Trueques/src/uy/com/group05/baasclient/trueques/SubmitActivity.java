@@ -43,15 +43,7 @@ public class SubmitActivity extends Activity {
 		String marca = ((EditText) findViewById(R.id.submit_marca)).getText().toString();
     	String anio = ((EditText) findViewById(R.id.submit_anio)).getText().toString();
 		
-		ConnectivityManager connMgr = (ConnectivityManager) 
-    	        getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-	    
-	    if (networkInfo != null && networkInfo.isConnected()) {
-	    	new PostTask(this).execute(entity, marca, anio);
-	    } else {
-	    	resultView.setText("@string/main_unsuccessful");
-	    }
+    	new PostTask(this).execute(entity, marca, anio);
     }
     
     private class PostTask extends AsyncTask<String, Void, Boolean> {

@@ -1,26 +1,13 @@
 package uy.com.group05.baasclient.sdk.impl;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import com.google.gson.Gson;
 
 import uy.com.group05.baasclient.sdk.APIFacade;
-import uy.com.group05.baasclient.sdk.utils.AssetsPropertyReader;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -48,7 +35,8 @@ public class APIImpl implements APIFacade {
 	    	json = restClient.get(entity);
 	    } else {
 	    	//Llamo a la base local
-	    	json = "";
+	    	APISQLiteClient sqliteClient = new APISQLiteClient(context);
+	    	json = sqliteClient.get(entity);
 	    }
 		
 		return json;
@@ -70,7 +58,8 @@ public class APIImpl implements APIFacade {
 	    	result = restClient.post(entity, jsonObj, type);
 	    } else {
 	    	//Llamo a la base local
-	    	result = false;
+	    	APISQLiteClient sqliteClient = new APISQLiteClient(context);
+	    	result = sqliteClient.post(entity, jsonObj, type);
 	    }
 		
 		return result;
