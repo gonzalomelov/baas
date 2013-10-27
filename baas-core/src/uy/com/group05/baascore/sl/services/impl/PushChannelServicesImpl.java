@@ -21,6 +21,7 @@ import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
 import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
 import uy.com.group05.baascore.sl.entitiesws.SimpleEntityDTO;
 import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelDTO;
+import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelEntityDTO;
 import uy.com.group05.baascore.sl.services.soap.PushChannelServices;
 
 @WebService(
@@ -100,6 +101,16 @@ public class PushChannelServicesImpl implements PushChannelServices{
 				EntityNotRegisteredException {
 		
 		return pushChannelManagementLocal.unassignEntityToPushChannel(idApp, idCanal, idEntity);
+	}
+	
+	@Override
+	public boolean savePushChannelEntities(long appId, long pushChannelId, List<SimplePushChannelEntityDTO> entities)
+		throws
+			AppNotRegisteredException,
+			PushChanNotRegisteredException,
+			EntityNotRegisteredException {
+		
+		return pushChannelManagementLocal.savePushChannelEntities(appId, pushChannelId, entities);
 	}
 	
 	@Override

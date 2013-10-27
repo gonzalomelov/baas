@@ -13,6 +13,7 @@ import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 import uy.com.group05.baascore.sl.entitiesws.SimpleEntityDTO;
+import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelEntityDTO;
 
 @Local
 public interface PushChannelManagementLocal {
@@ -49,6 +50,12 @@ public interface PushChannelManagementLocal {
 				AppNotRegisteredException,
 				PushChanNotRegisteredException,
 				EntityNotRegisteredException; 
+	
+	public boolean savePushChannelEntities(long appId, long pushChannelId, List<SimplePushChannelEntityDTO> entities)
+			throws
+				AppNotRegisteredException,
+				PushChanNotRegisteredException,
+				EntityNotRegisteredException;
 	
 	public List<Entity> getEntitiesAssociatedWithPushChannel(long idApp, long idCanal)
 			throws

@@ -23,6 +23,7 @@ import uy.com.group05.baascore.dal.dao.ClientDao;
 import uy.com.group05.baascore.dal.dao.EntityDao;
 import uy.com.group05.baascore.dal.dao.PushChannelDao;
 import uy.com.group05.baascore.sl.entitiesws.SimpleEntityDTO;
+import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelEntityDTO;
 
 @Stateless
 public class PushChannelManagement implements PushChannelManagementLocal{
@@ -179,6 +180,57 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		
 		return true;
 	} 
+	
+	@Override
+	public boolean savePushChannelEntities(long appId, long pushChannelId, List<SimplePushChannelEntityDTO> entities)
+			throws
+				AppNotRegisteredException,
+				PushChanNotRegisteredException,
+				EntityNotRegisteredException {
+		
+		Application app = appDao.readById(appId);
+		if (app == null) {
+			throw new AppNotRegisteredException("No existe la aplicación con id " + appId);
+		}
+			
+		if (!this.existsPushChannel(pushChannelId)) {
+			throw new PushChanNotRegisteredException("No existe el canal push con id " + pushChannelId);
+		}
+		
+		PushChannel pushChannel = pushDao.readById(pushChannelId);
+		
+		List<Entity> oldPushChannelEntities = pushChannel.getEntities();
+		List<Entity> newPushChannelEntities = new ArrayList<Entity>();
+		
+		for (SimplePushChannelEntityDTO pushChannelEntity : entities) {
+			Entity entity = null;
+			for (Entity e : oldPushChannelEntities) {
+				if (e.getId() == pushChannelEntity.getId()) {
+					entity = e;
+					break;
+				}
+			}
+			
+			if (entity == null) {
+				if (pushChannelEntity.isAssociated()) {
+					entity = new Entity();
+					entity.setId(pushChannelEntity.getId());
+					newPushChannelEntities.add(entity);
+				}	
+			} else {
+				if (pushChannelEntity.isAssociated()) {
+					entity = new Entity();
+					entity.setId(pushChannelEntity.getId());
+					newPushChannelEntities.add(entity);
+				}
+			}
+		}
+		
+		pushChannel.setEntities(newPushChannelEntities);
+		pushDao.update(pushChannel);
+		
+		return true;
+	}
 	
 	@Override
 	public List<Entity> getEntitiesAssociatedWithPushChannel(long idApp, long idCanal)
