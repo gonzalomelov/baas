@@ -6,6 +6,20 @@ import java.util.UUID;
 public class Application {
 	
 	private long Id;
+
+	private String Name;
+	
+	private List<Rol> roles;
+	
+	private List<Entity> entidades;
+	
+	private List<Cliente> clientes;
+	
+	private List<Operacion> operaciones;
+	
+	private List<PushChannel> pushChannels;
+	
+	private String Token;
 	
 	public List<Rol> getRoles() {
 		return roles;
@@ -22,21 +36,6 @@ public class Application {
 	public void setEntidades(List<Entity> entidades) {
 		this.entidades = entidades;
 	}
-
-	private String Name;
-	
-	private List<Rol> roles;
-	
-	private List<Entity> entidades;
-	
-	private List<Cliente> clientes;
-	
-	private List<Operacion> operaciones;
-	
-	private List<PushChannel> pushChannels;
-	
-	private String Token;
-	
 	
 	public String getToken() {
 		return Token;
