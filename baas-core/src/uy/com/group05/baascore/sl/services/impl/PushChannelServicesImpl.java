@@ -6,13 +6,16 @@ import javax.inject.Inject;
 import javax.jws.WebService;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.PushChannelManagementLocal;
+import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 import uy.com.group05.baascore.common.mapper.Mapper;
 import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
 import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
+import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelDTO;
 import uy.com.group05.baascore.sl.services.soap.PushChannelServices;
 
 @WebService(
@@ -67,7 +70,6 @@ public class PushChannelServicesImpl implements PushChannelServices{
 		return pushChannelManagementLocal.assignClientToPushChannel(idApp, idCanal, idCliente);
 	}
 
-
 	@Override
 	public boolean unassignClientFromPushChannel(long idApp,
 			long idCanal, long idCliente)
@@ -78,10 +80,22 @@ public class PushChannelServicesImpl implements PushChannelServices{
 	}
 
 	@Override
-	public List<PushChannelDTO> getPushChannelsOfApplication(long idApp)
+	public boolean assignEntityToPushChannel (long idApp, long idCanal, long idEntity)
+		throws AppNotRegisteredException, PushChanNotRegisteredException, EntityNotRegisteredException {
+		
+		return pushChannelManagementLocal.assignEntityToPushChannel(idApp, idCanal, idEntity);
+		
+	}
+	
+	@Override
+	public List<SimplePushChannelDTO> getPushChannelsOfApplication(long idApp)
 			throws AppNotRegisteredException {
 		
-		return mapper.getMapper().mapAsList(pushChannelManagementLocal.getPushChannelsOfApplication(idApp), PushChannelDTO.class);
+		List<PushChannel> pushChannels = pushChannelManagementLocal.getPushChannelsOfApplication(idApp);
+		
+		List<SimplePushChannelDTO> pushChannelsDto = mapper.getMapper().mapAsList(pushChannels, SimplePushChannelDTO.class); 
+		
+		return pushChannelsDto;
 	}
 
 	@Override

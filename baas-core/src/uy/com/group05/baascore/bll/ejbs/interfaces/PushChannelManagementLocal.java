@@ -8,6 +8,7 @@ import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 
@@ -37,6 +38,9 @@ public interface PushChannelManagementLocal {
 			long idCanal, long idCliente)
 			throws AppNotRegisteredException, PushChanNotRegisteredException,
 			ClientNotRegisteredException;
+
+	public boolean assignEntityToPushChannel (long idApp, long idCanal, long idEntity)
+			throws AppNotRegisteredException, PushChanNotRegisteredException, EntityNotRegisteredException;
 	
 	public List<PushChannel> getPushChannelsOfApplication(long idApp)
 			throws AppNotRegisteredException;

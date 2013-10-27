@@ -8,14 +8,18 @@ import javax.inject.Inject;
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.bll.ejbs.interfaces.ClientManagementLocal;
 import uy.com.group05.baascore.bll.ejbs.interfaces.PushChannelManagementLocal;
+import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Client;
+import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
 import uy.com.group05.baascore.dal.dao.ClientDao;
+import uy.com.group05.baascore.dal.dao.EntityDao;
 import uy.com.group05.baascore.dal.dao.PushChannelDao;
 
 @Stateless
@@ -27,6 +31,8 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 	ApplicationDao appDao;
 	@Inject
 	ClientDao clientDao;
+	@Inject
+	EntityDao entityDao;
 	@Inject
 	AppManagementLocal appMgmt;
 	@Inject
@@ -106,6 +112,36 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		// Si está suscripto, lo elimino
 		pushChannel.removeClient(client);
 		pushDao.update(pushChannel);
+		return true;
+	}
+	
+	@Override
+	public boolean assignEntityToPushChannel (long idApp, long idCanal, long idEntity)
+			throws AppNotRegisteredException, PushChanNotRegisteredException, EntityNotRegisteredException {
+		
+		Application app = appDao.readById(idApp);
+		if (app == null) {
+			throw new AppNotRegisteredException("No existe la aplicación con id " + idApp);
+		}
+			
+		if (!this.existsPushChannel(idCanal)) {
+			throw new PushChanNotRegisteredException("No existe el canal push con id " + idCanal);
+		}
+		
+		PushChannel pushChannel = pushDao.readById(idCanal);
+		
+		Entity entity = entityDao.readById(idEntity);
+		if (entity==null || !app.getEntities().contains(entity)){
+			throw new EntityNotRegisteredException ("No existe una entidad con id: " + idEntity);
+		}
+		
+		if (pushChannel.getEntities().contains(entity)) {
+			return false;
+		}
+		
+		pushChannel.getEntities().add(entity);
+		pushDao.update(pushChannel);
+		
 		return true;
 	}
 	

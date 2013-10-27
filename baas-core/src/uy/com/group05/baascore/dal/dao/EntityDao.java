@@ -10,5 +10,5 @@ public interface EntityDao extends GenericDao<Entity> {
 	Entity readByName(String name);
 	Entity readByName(long appId, String name);
 	List<Entity> readAll(long appId);
-	//Entity readById(long entityId);
+	Entity readById(long entityId);
 }

@@ -40,18 +40,14 @@ public class JpaEntityDao extends JpaGenericDao<Entity> implements EntityDao {
 		return query.getResultList();
 	}
 	
-//	public Entity readById(long entityId) {
-//		Entity e = em.find(Entity.class, entityId);
-//		/*TypedQuery<Entity> query = em.createQuery("SELECT c FROM Entity c WHERE c.id = :id", Entity.class);
-//		query.setParameter("id", entityId);
-//		
-//		Entity e = query.getSingleResult();
-//		*/
-//		if(e!=null){
-//			//e.getApplication();
-//			e.getPermission();
-//			logger.info("e!=null ..." + e.getPermission());
-//		}
-//		return e;
-//	}
+	public Entity readById(long entityId) {
+		Entity e = em.find(Entity.class, entityId);
+		
+		if(e!=null){
+			e.getPushChannels().size();
+			e.getPermission().size();
+		}
+		
+		return e;
+	}
 }

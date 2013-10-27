@@ -9,6 +9,7 @@ import uy.com.group05.baascore.common.entities.PushChannel;
 
 @Local
 public interface PushChannelDao extends GenericDao<PushChannel> {
+	PushChannel readById(long pushChannelId);
 	PushChannel readByName(long appId, String name);
     List<PushChannel> readAllFromApp(long appId);
     List<PushChannel> readAllFromClient(long appId, long clientId);

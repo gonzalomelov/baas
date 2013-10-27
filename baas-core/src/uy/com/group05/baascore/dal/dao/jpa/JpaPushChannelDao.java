@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
+import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.entities.Permission;
 import uy.com.group05.baascore.common.entities.PushChannel;
@@ -14,6 +15,18 @@ import uy.com.group05.baascore.dal.dao.PushChannelDao;
 @Stateless
 public class JpaPushChannelDao extends JpaGenericDao<PushChannel> implements PushChannelDao {
 
+	public PushChannel readById(long pushChannelId) {
+		
+		PushChannel a = em.find(PushChannel.class, pushChannelId);//applications.get(0);
+		
+		if(a !=null){
+			a.getClients().size();
+			a.getEntities().size();
+		}
+		
+		return a;
+	}
+	
 	@Override
 	public PushChannel readByName(long appId, String name) {
 		TypedQuery<PushChannel> query = em.createQuery("SELECT c FROM PushChannel c WHERE c.application.id = :appId AND c.name = :name", PushChannel.class);

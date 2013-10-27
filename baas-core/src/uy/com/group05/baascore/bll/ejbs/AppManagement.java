@@ -423,7 +423,9 @@ public class AppManagement implements AppManagementLocal{
 		if (app == null)
 			throw new AppNotRegisteredException("No existe la aplicación con id= "+ idApp);
 		
-		return app.getPushChannels();
+		List<PushChannel> pushChannels = app.getPushChannels(); 
+		
+		return pushChannels;
 		
 	}
 	

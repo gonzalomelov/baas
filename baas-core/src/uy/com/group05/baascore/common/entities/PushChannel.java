@@ -30,6 +30,10 @@ public class PushChannel {
 	@ManyToMany
 	private List<Client> clients = new ArrayList<Client>();
 
+	@JoinTable(name = "ENTITIES_PUSHCHANNELS")
+	@ManyToMany
+	private List<Entity> entities = new ArrayList<Entity>();
+	
 	public PushChannel() {}
 	
 	public PushChannel(String nombreCanal, Application app) {
@@ -83,6 +87,14 @@ public class PushChannel {
 		return this.clients.contains(client);
 	}
 	
+	public List<Entity> getEntities() {
+		return entities;
+	}
+
+	public void setEntities(List<Entity> entities) {
+		this.entities = entities;
+	}
+
 	@Override
 	public boolean equals(Object o){
 		if (o == null) return false;

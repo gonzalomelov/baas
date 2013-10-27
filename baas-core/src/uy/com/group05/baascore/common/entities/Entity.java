@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -31,6 +32,9 @@ public class Entity {
 	@JsonIgnore
 	private List<Permission> permission = new ArrayList<Permission>();
 
+	@ManyToMany(mappedBy = "entities")
+	private List<PushChannel> pushChannels = new ArrayList<PushChannel>();
+	
 	public Entity() {}
 	
 	public Entity(String nombre, Application app){
@@ -70,6 +74,14 @@ public class Entity {
 		this.permission = permission;
 	}
 	
+	public List<PushChannel> getPushChannels() {
+		return pushChannels;
+	}
+
+	public void setPushChannels(List<PushChannel> pushChannels) {
+		this.pushChannels = pushChannels;
+	}
+
 	//++++++++++++++++++++++++++++//
 	@Override
 	public boolean equals(Object o){
