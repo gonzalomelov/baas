@@ -1,11 +1,15 @@
 package uy.com.group05.baascore.sl.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.PushChannelManagementLocal;
+import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
@@ -15,6 +19,7 @@ import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 import uy.com.group05.baascore.common.mapper.Mapper;
 import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
 import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
+import uy.com.group05.baascore.sl.entitiesws.SimpleEntityDTO;
 import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelDTO;
 import uy.com.group05.baascore.sl.services.soap.PushChannelServices;
 
@@ -85,6 +90,29 @@ public class PushChannelServicesImpl implements PushChannelServices{
 		
 		return pushChannelManagementLocal.assignEntityToPushChannel(idApp, idCanal, idEntity);
 		
+	}
+
+	@Override
+	public boolean unassignEntityToPushChannel (long idApp, long idCanal, long idEntity)
+			throws
+				AppNotRegisteredException,
+				PushChanNotRegisteredException,
+				EntityNotRegisteredException {
+		
+		return pushChannelManagementLocal.unassignEntityToPushChannel(idApp, idCanal, idEntity);
+	}
+	
+	@Override
+	public List<SimpleEntityDTO> getEntitiesAssociatedWithPushChannel(long idApp, long idCanal)
+			throws
+				AppNotRegisteredException,
+				PushChanNotRegisteredException {
+		
+		List<Entity> entities = pushChannelManagementLocal.getEntitiesAssociatedWithPushChannel(idApp, idCanal);
+		
+		List<SimpleEntityDTO> entitiesDto = mapper.getMapper().mapAsList(entities, SimpleEntityDTO.class); 
+		
+		return entitiesDto;
 	}
 	
 	@Override

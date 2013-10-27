@@ -5,12 +5,14 @@ import java.util.List;
 import javax.ejb.Local;
 
 import uy.com.group05.baascore.common.entities.Client;
+import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
+import uy.com.group05.baascore.sl.entitiesws.SimpleEntityDTO;
 
 @Local
 public interface PushChannelManagementLocal {
@@ -41,6 +43,17 @@ public interface PushChannelManagementLocal {
 
 	public boolean assignEntityToPushChannel (long idApp, long idCanal, long idEntity)
 			throws AppNotRegisteredException, PushChanNotRegisteredException, EntityNotRegisteredException;
+	
+	public boolean unassignEntityToPushChannel (long idApp, long idCanal, long idEntity)
+			throws
+				AppNotRegisteredException,
+				PushChanNotRegisteredException,
+				EntityNotRegisteredException; 
+	
+	public List<Entity> getEntitiesAssociatedWithPushChannel(long idApp, long idCanal)
+			throws
+				AppNotRegisteredException,
+				PushChanNotRegisteredException;
 	
 	public List<PushChannel> getPushChannelsOfApplication(long idApp)
 			throws AppNotRegisteredException;

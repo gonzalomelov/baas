@@ -1,5 +1,6 @@
 package uy.com.group05.baascore.bll.ejbs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -21,6 +22,7 @@ import uy.com.group05.baascore.dal.dao.ApplicationDao;
 import uy.com.group05.baascore.dal.dao.ClientDao;
 import uy.com.group05.baascore.dal.dao.EntityDao;
 import uy.com.group05.baascore.dal.dao.PushChannelDao;
+import uy.com.group05.baascore.sl.entitiesws.SimpleEntityDTO;
 
 @Stateless
 public class PushChannelManagement implements PushChannelManagementLocal{
@@ -143,6 +145,59 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		pushDao.update(pushChannel);
 		
 		return true;
+	}
+	
+	@Override
+	public boolean unassignEntityToPushChannel(long idApp, long idCanal, long idEntity)
+			throws
+				AppNotRegisteredException,
+				PushChanNotRegisteredException,
+				EntityNotRegisteredException {
+
+		Application app = appDao.readById(idApp);
+		if (app == null) {
+			throw new AppNotRegisteredException("No existe la aplicación con id " + idApp);
+		}
+			
+		if (!this.existsPushChannel(idCanal)) {
+			throw new PushChanNotRegisteredException("No existe el canal push con id " + idCanal);
+		}
+		
+		PushChannel pushChannel = pushDao.readById(idCanal);
+		
+		Entity entity = entityDao.readById(idEntity);
+		if (entity==null || !app.getEntities().contains(entity)){
+			throw new EntityNotRegisteredException ("No existe una entidad con id: " + idEntity);
+		}
+		
+		if (!pushChannel.getEntities().contains(entity)) {
+			return false;
+		}
+		
+		pushChannel.getEntities().remove(entity);
+		pushDao.update(pushChannel);
+		
+		return true;
+	} 
+	
+	@Override
+	public List<Entity> getEntitiesAssociatedWithPushChannel(long idApp, long idCanal)
+			throws
+				AppNotRegisteredException,
+				PushChanNotRegisteredException {
+		
+		Application app = appDao.readById(idApp);
+		if (app == null) {
+			throw new AppNotRegisteredException("No existe la aplicación con id " + idApp);
+		}
+			
+		if (!this.existsPushChannel(idCanal)) {
+			throw new PushChanNotRegisteredException("No existe el canal push con id " + idCanal);
+		}
+		
+		PushChannel pushChannel = pushDao.readById(idCanal);
+		
+		return pushChannel.getEntities();
 	}
 	
 	@Override

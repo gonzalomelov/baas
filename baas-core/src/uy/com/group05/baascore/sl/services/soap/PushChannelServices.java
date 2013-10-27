@@ -13,6 +13,7 @@ import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredExcept
 import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
 import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
+import uy.com.group05.baascore.sl.entitiesws.SimpleEntityDTO;
 import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelDTO;
 
 @WebService
@@ -77,6 +78,24 @@ public interface PushChannelServices {
 				AppNotRegisteredException,
 				PushChanNotRegisteredException,
 				EntityNotRegisteredException;
+	
+	@WebMethod
+	public boolean unassignEntityToPushChannel (
+			@WebParam(name = "idApp") long idApp,
+			@WebParam(name = "idCanal") long idCanal,
+			@WebParam(name = "idEntity") long idEntity)
+			throws
+				AppNotRegisteredException,
+				PushChanNotRegisteredException,
+				EntityNotRegisteredException;
+	
+	@WebMethod
+	public List<SimpleEntityDTO> getEntitiesAssociatedWithPushChannel(
+			@WebParam(name = "idApp") long idApp,
+			@WebParam(name = "idCanal") long idCanal)
+			throws
+				AppNotRegisteredException,
+				PushChanNotRegisteredException;
 	
 	@WebMethod
 	public List<ClientDTO> getClientsFromPushChannel(

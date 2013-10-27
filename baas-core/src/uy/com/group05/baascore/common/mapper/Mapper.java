@@ -5,6 +5,7 @@ import javax.ejb.Singleton;
 
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Client;
+import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.Operation;
 import uy.com.group05.baascore.common.entities.Permission;
 import uy.com.group05.baascore.common.entities.Role;
@@ -17,6 +18,7 @@ import uy.com.group05.baascore.sl.entitiesws.OperationDTO;
 import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
 import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
 import uy.com.group05.baascore.sl.entitiesws.SimpleApplicationDTO;
+import uy.com.group05.baascore.sl.entitiesws.SimpleEntityDTO;
 import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelDTO;
 import uy.com.group05.baascore.sl.entitiesws.UserDTO;
 import uy.com.group05.baascore.sl.entitiesws.UserRegisterDTO;
@@ -64,7 +66,7 @@ public class Mapper {
 			.byDefault()
 			.register();
 		
-		//Application <> ApplicationDTO
+		//Application <> SimpleApplicationDTO
 		mapperFactory.classMap(Application.class, SimpleApplicationDTO.class)
 			.byDefault()
 			.register();
@@ -108,9 +110,14 @@ public class Mapper {
 			.byDefault()
 			.register();
 		
-		//Operation <> OperationDTO
+		//Client <> ClientDTO
 		mapperFactory.classMap(Client.class, ClientDTO.class)
 			.exclude("application")
+			.byDefault()
+			.register();
+		
+		//Entity <> SimpleEntityDTO
+		mapperFactory.classMap(Entity.class, SimpleEntityDTO.class)
 			.byDefault()
 			.register();
 		
