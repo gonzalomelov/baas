@@ -4,17 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 
+import uy.com.group05.baasadmin.common.exceptions.ClientRolException;
 import uy.com.group05.baasadmin.pl.controllers.ApplicationController;
 import uy.com.group05.baasadmin.pl.controllers.ClientController;
 import uy.com.group05.baasadmin.pl.models.Entity;
 import uy.com.group05.baasadmin.pl.models.PushChannel;
 import uy.com.group05.baasadmin.pl.models.PushChannelEntity;
-import uy.com.group05.baasadmin.pl.models.RoleCliente;
-import uy.com.group05.baascore.sl.services.soap.RoleDTO;
+import uy.com.group05.baascore.sl.services.soap.RolesClientDTO;
+import uy.com.group05.baascore.sl.services.soap.SimpleEntityDTO;
+import uy.com.group05.baascore.sl.services.soap.SimplePushChannelEntityDTO;
 
+@ManagedBean(name = "pushChannelBean")
+@ViewScoped
 public class PushChannelBean {
 	
 	@ManagedProperty(value="#{userSessionManagementBean}")
@@ -22,9 +29,11 @@ public class PushChannelBean {
 	
 	private long appId;	
 	
+	private long pushChannel;
+	
 	private String error = "";
 	
-	private PushChannel pushChannel;
+	private List<String> permisos;
 	
 	private List<Entity> entities;
 	
@@ -51,6 +60,14 @@ public class PushChannelBean {
 		this.appId = appId;
 	}
 
+	public long getPushChannel() {
+		return pushChannel;
+	}
+
+	public void setPushChannel(long pushChannel) {
+		this.pushChannel = pushChannel;
+	}
+	
 	public String getError() {
 		return error;
 	}
@@ -59,12 +76,12 @@ public class PushChannelBean {
 		this.error = error;
 	}
 
-	public PushChannel getPushChannel() {
-		return pushChannel;
+	public List<String> getPermisos() {
+		return permisos;
 	}
 
-	public void setPushChannel(PushChannel pushChannel) {
-		this.pushChannel = pushChannel;
+	public void setPermisos(List<String> permisos) {
+		this.permisos = permisos;
 	}
 
 	public List<Entity> getEntities() {
@@ -110,14 +127,16 @@ public class PushChannelBean {
 		if (paramAppId != null && paramPushChannelId != null) {
 			
 			try{
+				permisos = new ArrayList<String>();
+				permisos.add("");
 				
 				appId = Long.parseLong(paramAppId);
-				long pushChannelId = Long.parseLong(paramPushChannelId);
+				pushChannel = Long.parseLong(paramPushChannelId);
 	
 				ApplicationController appController = new ApplicationController();
 	
 				entities = appController.GetAplication(appId).getEntidades();
-				pushChannelEntities = appController.getEntitiesAssociatedWithPushChannel(appId, pushChannelId);
+				pushChannelEntities = appController.getEntitiesAssociatedWithPushChannel(appId, pushChannel);
 				
 				datos = new PushChannelEntity[entities.size()];
 				datosVista = new Boolean[entities.size()];
@@ -125,16 +144,16 @@ public class PushChannelBean {
 				for (int i = 0; i < entities.size(); i++) {
 					PushChannelEntity pushChannelEntity = new PushChannelEntity();
 					pushChannelEntity.setEntityId(entities.get(i).getId());
-					pushChannelEntity.setPushChannelId(pushChannelId);
+					pushChannelEntity.setPushChannelId(pushChannel);
 					
 					pushChannelEntity.setAssociated(false);
 					datosVista[i] = false;
 					
 					for (PushChannelEntity p: pushChannelEntities) {
 						if (p.getEntityId() == entities.get(i).getId() &&
-							p.getPushChannelId() == pushChannelId) {
+							p.getPushChannelId() == pushChannel) {
 							
-							pushChannelEntity.setAssociated(false);
+							pushChannelEntity.setAssociated(true);
 							datosVista[i] = true;
 							break;
 						} 
@@ -147,8 +166,60 @@ public class PushChannelBean {
 				error = e.getMessage();
 				return;
 			}
+		}
+	}
+	
+	public String changeEntityAsociationAjax(AjaxBehaviorEvent event) {
+		try {
+			// printArray();
 
+			int row = (Integer) event.getComponent().getAttributes().get("row");
+
+			datos[row].setAssociated(!datos[row].isAssociated());
+
+			cloneArray();
+
+		} catch (Exception e) {
+
+		}
+
+		return null;
+	}
+	
+	public String submit() {
+		try{
+			error = "";
 			
+			ApplicationController applicationController = new ApplicationController();
+			
+			List<SimplePushChannelEntityDTO> newEntities = new ArrayList<SimplePushChannelEntityDTO>();
+			
+			for (int i = 0; i < entities.size(); i++) {	
+				SimplePushChannelEntityDTO r = new SimplePushChannelEntityDTO();
+				r.setId(entities.get(i).getId());
+				r.setAssociated(datos[i].isAssociated());
+				
+				newEntities.add(r);
+			}
+			
+			applicationController.savePushChannelEntities(appId, pushChannel, newEntities);
+			
+		
+			return "/pages/App/Index.xhtml?faces-redirect=true&id=" + appId;
+		
+		
+		} catch (Exception e) {
+			error = e.getMessage();
+			return "";
+		}
+		
+		
+	}
+	
+	private void cloneArray() {
+		
+		for (int i = 0; i < entities.size(); i++) {
+			datosVista[i] = datos[i].isAssociated();
 		}
 	}
 }

@@ -38,14 +38,16 @@ public class ObjectFactory {
     private final static QName _UserDTO_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "userDTO");
     private final static QName _ExistsPushChannelApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsPushChannelApplication");
     private final static QName _UnassignClientFromPushChannelResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "unassignClientFromPushChannelResponse");
-    private final static QName _ExistsPushChannelResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsPushChannelResponse");
     private final static QName _UnassignEntityToPushChannel_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "unassignEntityToPushChannel");
+    private final static QName _ExistsPushChannelResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsPushChannelResponse");
     private final static QName _AssignClientToPushChannel_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "assignClientToPushChannel");
+    private final static QName _SavePushChannelEntities_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "savePushChannelEntities");
     private final static QName _AssignEntityToPushChannel_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "assignEntityToPushChannel");
     private final static QName _GetPushChannelsOfApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getPushChannelsOfApplication");
     private final static QName _GetEntitiesAssociatedWithPushChannelResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getEntitiesAssociatedWithPushChannelResponse");
     private final static QName _PushChanAlreadyRegisteredException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "PushChanAlreadyRegisteredException");
     private final static QName _GetClientsFromPushChannel_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getClientsFromPushChannel");
+    private final static QName _SavePushChannelEntitiesResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "savePushChannelEntitiesResponse");
     private final static QName _AppNotRegisteredException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "AppNotRegisteredException");
     private final static QName _AssignClientToPushChannelResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "assignClientToPushChannelResponse");
     private final static QName _AssignEntityToPushChannelResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "assignEntityToPushChannelResponse");
@@ -176,14 +178,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ExistsPushChannelResponse }
-     * 
-     */
-    public ExistsPushChannelResponse createExistsPushChannelResponse() {
-        return new ExistsPushChannelResponse();
-    }
-
-    /**
      * Create an instance of {@link UnassignEntityToPushChannel }
      * 
      */
@@ -192,11 +186,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ExistsPushChannelResponse }
+     * 
+     */
+    public ExistsPushChannelResponse createExistsPushChannelResponse() {
+        return new ExistsPushChannelResponse();
+    }
+
+    /**
      * Create an instance of {@link AssignClientToPushChannel }
      * 
      */
     public AssignClientToPushChannel createAssignClientToPushChannel() {
         return new AssignClientToPushChannel();
+    }
+
+    /**
+     * Create an instance of {@link SavePushChannelEntities }
+     * 
+     */
+    public SavePushChannelEntities createSavePushChannelEntities() {
+        return new SavePushChannelEntities();
     }
 
     /**
@@ -237,6 +247,14 @@ public class ObjectFactory {
      */
     public GetClientsFromPushChannel createGetClientsFromPushChannel() {
         return new GetClientsFromPushChannel();
+    }
+
+    /**
+     * Create an instance of {@link SavePushChannelEntitiesResponse }
+     * 
+     */
+    public SavePushChannelEntitiesResponse createSavePushChannelEntitiesResponse() {
+        return new SavePushChannelEntitiesResponse();
     }
 
     /**
@@ -325,6 +343,14 @@ public class ObjectFactory {
      */
     public SimplePushChannelDTO createSimplePushChannelDTO() {
         return new SimplePushChannelDTO();
+    }
+
+    /**
+     * Create an instance of {@link SimplePushChannelEntityDTO }
+     * 
+     */
+    public SimplePushChannelEntityDTO createSimplePushChannelEntityDTO() {
+        return new SimplePushChannelEntityDTO();
     }
 
     /**
@@ -502,15 +528,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ExistsPushChannelResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "existsPushChannelResponse")
-    public JAXBElement<ExistsPushChannelResponse> createExistsPushChannelResponse(ExistsPushChannelResponse value) {
-        return new JAXBElement<ExistsPushChannelResponse>(_ExistsPushChannelResponse_QNAME, ExistsPushChannelResponse.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link UnassignEntityToPushChannel }{@code >}}
      * 
      */
@@ -520,12 +537,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ExistsPushChannelResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "existsPushChannelResponse")
+    public JAXBElement<ExistsPushChannelResponse> createExistsPushChannelResponse(ExistsPushChannelResponse value) {
+        return new JAXBElement<ExistsPushChannelResponse>(_ExistsPushChannelResponse_QNAME, ExistsPushChannelResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link AssignClientToPushChannel }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "assignClientToPushChannel")
     public JAXBElement<AssignClientToPushChannel> createAssignClientToPushChannel(AssignClientToPushChannel value) {
         return new JAXBElement<AssignClientToPushChannel>(_AssignClientToPushChannel_QNAME, AssignClientToPushChannel.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link SavePushChannelEntities }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "savePushChannelEntities")
+    public JAXBElement<SavePushChannelEntities> createSavePushChannelEntities(SavePushChannelEntities value) {
+        return new JAXBElement<SavePushChannelEntities>(_SavePushChannelEntities_QNAME, SavePushChannelEntities.class, null, value);
     }
 
     /**
@@ -571,6 +606,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "getClientsFromPushChannel")
     public JAXBElement<GetClientsFromPushChannel> createGetClientsFromPushChannel(GetClientsFromPushChannel value) {
         return new JAXBElement<GetClientsFromPushChannel>(_GetClientsFromPushChannel_QNAME, GetClientsFromPushChannel.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link SavePushChannelEntitiesResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "savePushChannelEntitiesResponse")
+    public JAXBElement<SavePushChannelEntitiesResponse> createSavePushChannelEntitiesResponse(SavePushChannelEntitiesResponse value) {
+        return new JAXBElement<SavePushChannelEntitiesResponse>(_SavePushChannelEntitiesResponse_QNAME, SavePushChannelEntitiesResponse.class, null, value);
     }
 
     /**

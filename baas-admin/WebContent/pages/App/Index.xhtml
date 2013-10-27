@@ -178,12 +178,11 @@ body {
 
 						<f:facet name="header">Name</f:facet>
 
-<!-- 						<h:link value="#{e.name}" outcome="/pages/clients/Index"> -->
+						<h:link value="#{e.name}" outcome="/pages/pushChannels/index">
 
-<!-- 							<f:param name="appId" value="#{appViewBean.app.id}" /> -->
-<!-- 							<f:param name="clientId" value="#{e.id}" /> -->
-<!-- 						</h:link> -->
-						#{e.name}
+							<f:param name="appId" value="#{appViewBean.app.id}" />
+							<f:param name="pushChannelId" value="#{e.id}" />
+						</h:link>
 					</h:column>
 
 

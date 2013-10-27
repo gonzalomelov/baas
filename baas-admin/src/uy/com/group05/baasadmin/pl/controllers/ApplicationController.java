@@ -40,6 +40,7 @@ import uy.com.group05.baascore.sl.services.soap.RoleAlreadyRegisteredException_E
 import uy.com.group05.baascore.sl.services.soap.RoleDTO;
 import uy.com.group05.baascore.sl.services.soap.SimpleApplicationDTO;
 import uy.com.group05.baascore.sl.services.soap.SimpleEntityDTO;
+import uy.com.group05.baascore.sl.services.soap.SimplePushChannelEntityDTO;
 import uy.com.group05.baascore.sl.services.soap.UserCantAccessAppException_Exception;
 import uy.com.group05.baascore.sl.services.soap.UserNotRegisteredException_Exception;
 
@@ -391,6 +392,22 @@ public class ApplicationController {
 		
 		try {
 			port.unassignEntityToPushChannel(appId, pushChannelId, entityId);	
+		} catch (EntityNotRegisteredException_Exception e) {
+			throw new Exception(e.getMessage());
+		} catch (PushChanNotRegisteredException_Exception e) {
+			throw new Exception(e.getMessage());
+		} catch (AppNotRegisteredException_Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	public void savePushChannelEntities(long appId, long pushChannelId, List<SimplePushChannelEntityDTO> entities) throws Exception {
+		
+		PushServices service = new PushServices();
+		uy.com.group05.baascore.sl.services.soap.PushChannelServices port = service.getPushServicesPort();		
+		
+		try {
+			port.savePushChannelEntities(appId, pushChannelId, entities);	
 		} catch (EntityNotRegisteredException_Exception e) {
 			throw new Exception(e.getMessage());
 		} catch (PushChanNotRegisteredException_Exception e) {
