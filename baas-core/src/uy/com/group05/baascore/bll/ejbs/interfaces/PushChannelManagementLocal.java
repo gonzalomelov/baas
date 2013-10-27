@@ -70,6 +70,10 @@ public interface PushChannelManagementLocal {
 
 
 	public boolean sendNotificationToPushChannel(long idApp,
-			long idCanal, String mensaje) throws AppNotRegisteredException,
+			long idCanal, String msgKey, String msgValue) throws AppNotRegisteredException,
+			PushChanNotRegisteredException;
+	
+	public boolean sendNotificationToPushChannel(String appName,
+			String pushChanName, String msgKey, String msgValue) throws AppNotRegisteredException,
 			PushChanNotRegisteredException;
 }

@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.ejb.EJB;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.ClientManagementLocal;
+import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
 import uy.com.group05.baascore.common.mapper.Mapper;
 import uy.com.group05.baascore.sl.services.rest.ClientRest;
 import uy.com.group05.baascore.sl.entitiesws.ClientAuthenticationDTO;

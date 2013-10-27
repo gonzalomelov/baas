@@ -40,6 +40,8 @@ public class Client {
 	
 	private UUID refreshToken;
 	
+	private String gcm_regId;
+	
 	@ManyToOne
 	private Application application;
 	
@@ -138,6 +140,14 @@ public class Client {
 		this.pushChannels = pushChannels;
 	}
 	
+	public String getGcm_regId() {
+		return gcm_regId;
+	}
+
+	public void setGcm_regId(String gcm_regId) {
+		this.gcm_regId = gcm_regId;
+	}
+
 	//+++++++++++++++++++++++++++++++++++//
 	@Override
 	public boolean equals(Object o){ //Modificar con token de FB

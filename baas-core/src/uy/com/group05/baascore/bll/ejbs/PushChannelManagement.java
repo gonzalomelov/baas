@@ -1,10 +1,12 @@
 package uy.com.group05.baascore.bll.ejbs;
 
-import java.util.ArrayList;
+import java.io.IOException;import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+
+import com.google.android.gcm.server.*;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.bll.ejbs.interfaces.ClientManagementLocal;
@@ -277,11 +279,59 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 
 	@Override
 	public boolean sendNotificationToPushChannel(long idApp,
-			long idCanal, String mensaje)
+			long idCanal, String msgKey, String msgValue)
 			throws AppNotRegisteredException, PushChanNotRegisteredException {
+		
 		// TODO Auto-generated method stub
 		
-		return false;
+		List<Client> clientes = getClientsFromPushChannel(idApp, idCanal);
+		if (clientes.isEmpty())
+			System.out.println("------> No hay clientes asociados al canal push.");
+		
+		//for (Client c : clientes) {
+			//String regId = c.getGcm_regId();
+			String regId = "APA91bHDcO84iVqd0AXPlU1QptCM0ioLh9MKexkrfEIpz8khLS584yeXjYSb_RD_ggEEH0b008BZyQmkIu9XWzSnfCgl4hleH1yQ8N1mjbq25xyzemXiMFWDoOF-sWgb0GK1NFDfqWnzCjsomW5t-KTbucKfuh5iItKsA2gzdsQuLVtbesHu5cE";
+			
+			Sender sender = new Sender("AIzaSyByhp5CPEb74Vt034btzqy2iLkRaDQUTuM"); // API KEY, PARAMETRIZAR
+			Message message = new Message.Builder().timeToLive(600).addData(msgKey, msgValue).build();
+			
+			try {
+				Result result = sender.send(message, regId, 5);
+				if (result.getMessageId() != null) {
+					 String canonicalRegId = result.getCanonicalRegistrationId();
+					 if (canonicalRegId != null) {
+					   // same device has more than one registration ID: update database
+						 System.out.println("CAMBIÓ EL REGID... ACTUALIZAR EN LA BASE EL REGID DEL CLIENTE!!!!");
+						 return false;
+					 }
+				} else {
+					String error = result.getErrorCodeName();
+					if (error.equals(Constants.ERROR_NOT_REGISTERED)) {
+						// application has been removed from device - unregister database
+						System.out.println("NO EXISTE MÁS EL REGID... SE DESINSTALÓ LA APLICACIÓN.... BORRAR DE LA BASE EL REGID DEL CLIENTE!!!!");
+						return false;
+					}
+				}
+				return true;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+		//}
+		//return false;
+	}
+	
+	@Override
+	public boolean sendNotificationToPushChannel(String appName,
+			String pushChanName, String msgKey, String msgValue)
+			throws AppNotRegisteredException, PushChanNotRegisteredException {
+		
+		long appId = appDao.readByName(appName).getId();
+		long pushChanId = pushDao.readByName(appId, pushChanName).getId();
+		
+		return sendNotificationToPushChannel(appId, pushChanId, msgKey, msgValue);
+		
 	}
 	
 }

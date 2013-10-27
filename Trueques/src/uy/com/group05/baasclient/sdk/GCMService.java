@@ -1,114 +1,99 @@
-package uy.com.group05.baasclient.trueques;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.internal.aq;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.TextView;
+package uy.com.group05.baasclient.sdk;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.http.client.ClientProtocolException;
-import org.json.JSONObject;
 
-import uy.com.group05.baasclient.sdk.GCMService;
-import uy.com.group05.baasclient.sdk.SDKFactory;
+import uy.com.group05.baasclient.sdk.entities.ClientAuthenticationDTO;
+import uy.com.group05.baasclient.trueques.GcmIntentService;
+import uy.com.group05.baasclient.trueques.MainActivity;
+import uy.com.group05.baasclient.trueques.R;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.TextView;
 
-public class RegistrarGcmActivity extends Activity {
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-    public static final String PROPERTY_REG_ID = "registration_id";
+public class GCMService {
+	public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     String SENDER_ID = "892349087446"; // Project ID creado desde la consola de Google.
 
     // Para los logs
-    static final String TAG = "GCM Trueque";
+    static final String TAG = "GCM SDK";
 
-    TextView mDisplay;
-    CheckBox chk_gcm;
     GoogleCloudMessaging gcm;
     AtomicInteger msgId = new AtomicInteger();
-    Context context;
+    Activity activity;
+    Context appContext;
     boolean registrado = false;
-    GCMService gcms;
 
     String regid;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_registrargcm);
-        mDisplay = (TextView) findViewById(R.id.display_resGCM);
-        chk_gcm = (CheckBox) findViewById(R.id.chk_regGCM);
-
-        context = getApplicationContext();
-        
-        gcms = new GCMService(this);
-
-        // Verifico que esté instalado Google Play Services en el dispositivo (necesario para GCM).
-        /*if (checkPlayServices()) {
-            //gcm = GoogleCloudMessaging.getInstance(this);
-            regid = getRegistrationId(context);
-
+    
+    public GCMService(Activity act) {
+    	appContext = act.getApplicationContext();
+    	activity = act;
+    	if (checkPlayServices()) {
+    		//gcm = GoogleCloudMessaging.getInstance(appContext);
+            regid = getRegistrationId();
+            
             if (!regid.isEmpty()) {
             	registrado = true;
-            	chk_gcm.setChecked(true);
-            	mDisplay.setText("Ya esta registrado con el id: " + regid + "\n");
-            	
-            	
-            	
-            	
-            	
-            	
-            	registerInBackground();
-            	
-            	
-            	
-            	
-            	
-            	
-            	
             }
             else {
-            	mDisplay.setText("No está registrado.");
+            	registerInBackground();
             }
+            
+            
+            
+            
+            
+            
+            registerInBackground();
+        	new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... params) {
+                    String msg = "";
+                    try {
+						sendNotificationToPushChannel("ofertas", "testKey", "testValue");
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ClientProtocolException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    return msg;
+                }
+            }.execute(null, null, null);
+            
+            
+            
+            
+            
+            
+            
+            
         } else {
             Log.i(TAG, "No se encontró Google Play Services.");
-        }*/
-    }
-    
-    public void action_registrarDesregistrarGCM(View view) {
-    	if (registrado) {
-    		mDisplay.setText("");
-    		//unRegisterInBackground();
-    		removeRegistrationIdFromBackend();
     	}
-    	else {
-    		registerInBackground();
-    	}
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkPlayServices();
     }
 
     /**
@@ -116,15 +101,15 @@ public class RegistrarGcmActivity extends Activity {
      * Si no lo tiene instalado, muestra un mensaje para permitirle al
      * usuario bajarlo desde la Play Store o activarlo desde las opciones.
      */
-    private boolean checkPlayServices() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+    public boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                GooglePlayServicesUtil.getErrorDialog(resultCode, activity,
                         PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
                 Log.i(TAG, "El dispositivo no es soportado.");
-                finish();
+                activity.finish();
             }
             return false;
         }
@@ -134,12 +119,12 @@ public class RegistrarGcmActivity extends Activity {
     /**
      * Guarda en {@code SharedPreferences} el registration ID y la versión de la aplicación.
      *
-     * @param context contexto de la aplicación.
+     * @param activity contexto de la aplicación.
      * @param regId registration ID
      */
-    private void storeRegistrationId(Context context, String regId) {
-        final SharedPreferences prefs = getGcmPreferences(context);
-        int appVersion = getAppVersion(context);
+    private void storeRegistrationId(String regId) {
+        final SharedPreferences prefs = getGcmPreferences(appContext);
+        int appVersion = getAppVersion(appContext);
         Log.i(TAG, "Guardando el regId con appVersion: " + appVersion);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PROPERTY_REG_ID, regId);
@@ -151,7 +136,7 @@ public class RegistrarGcmActivity extends Activity {
      * Borra del {@code SharedPreferences} el registration ID y la versión de la aplicación.
      */
     private void removeRegistrationId() {
-        final SharedPreferences prefs = getGcmPreferences(context);
+        final SharedPreferences prefs = getGcmPreferences(appContext);
         Log.i(TAG, "Borrando regId y appVersion");
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(PROPERTY_REG_ID);
@@ -160,14 +145,14 @@ public class RegistrarGcmActivity extends Activity {
     }
 
     /**
-     * Devuelve el registration ID para la aplicación en GCM, si existe.
+     * Devuelve el registration ID de la aplicación en GCM, si existe.
      * <p>
      * Si el resultado es vacío, la aplicación se tiene que registrar.
      *
      * @return registration ID, o vacío si no existe.
      */
-    private String getRegistrationId(Context context) {
-        final SharedPreferences prefs = getGcmPreferences(context);
+    public String getRegistrationId() {
+        final SharedPreferences prefs = getGcmPreferences(appContext);
         String registrationId = prefs.getString(PROPERTY_REG_ID, "");
         if (registrationId.isEmpty()) {
             Log.i(TAG, "No se encontró regId.");
@@ -175,7 +160,7 @@ public class RegistrarGcmActivity extends Activity {
         }
         // Si la app cambió de versión, se tiene que registrar de nuevo
         int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
-        int currentVersion = getAppVersion(context);
+        int currentVersion = getAppVersion(appContext);
         if (registeredVersion != currentVersion) {
             Log.i(TAG, "Cambió la versión de la aplicación.");
             return "";
@@ -195,7 +180,7 @@ public class RegistrarGcmActivity extends Activity {
                 String msg = "";
                 try {
                     if (gcm == null) {
-                        gcm = GoogleCloudMessaging.getInstance(context);
+                        gcm = GoogleCloudMessaging.getInstance(activity);
                     }
                     regid = gcm.register(SENDER_ID);
                     msg = "Dispositivo registrado, registration ID = " + regid;
@@ -205,26 +190,19 @@ public class RegistrarGcmActivity extends Activity {
                     sendRegistrationIdToBackend();
 
                     // Guardo el regid
-                    storeRegistrationId(context, regid);
+                    storeRegistrationId(regid);
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
                 }
                 return msg;
-            }
-
-            @Override
-            protected void onPostExecute(String msg) {
-                mDisplay.setText(msg + "\n");
-                if (registrado) {
-                	chk_gcm.setChecked(true);
-                	Log.i(TAG, regid);
-                }
             }
         }.execute(null, null, null);
     }
     
     /**
      * Des-registra la aplicación de GCM.
+     * <p>
+     * Nota: No se debería usar, a no ser que se desinstale la aplicación. Usar {@code removeRegistrationIdFromBackend()}
      * <p>
      * Borra el regid y la versión de la app del {@code SharedPreferences} de la aplicación.
      */
@@ -235,7 +213,7 @@ public class RegistrarGcmActivity extends Activity {
                 String msg = "";
                 try {
                     if (gcm == null) {
-                        gcm = GoogleCloudMessaging.getInstance(context);
+                        gcm = GoogleCloudMessaging.getInstance(activity);
                     }
                     gcm.unregister();
                     
@@ -250,21 +228,7 @@ public class RegistrarGcmActivity extends Activity {
                 }
                 return msg;
             }
-
-            @Override
-            protected void onPostExecute(String msg) {
-            	mDisplay.setText(msg + "\n");
-                if (!registrado) {
-                	mDisplay.setText("Se borró el registro con GCM.");
-                	chk_gcm.setChecked(false);
-                }
-            }
         }.execute(null, null, null);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     /**
@@ -285,60 +249,72 @@ public class RegistrarGcmActivity extends Activity {
      * @return Application's {@code SharedPreferences}.
      */
     private SharedPreferences getGcmPreferences(Context context) {
-        return getSharedPreferences(RegistrarGcmActivity.class.getSimpleName(),
+        return context.getSharedPreferences(context.getClass().getSimpleName(),
                 Context.MODE_PRIVATE);
     }
     
     /**
      * Mandar al baas el regid almacenado.
+     * @throws IOException 
+     * @throws ClientProtocolException 
+     * @throws UnsupportedEncodingException 
      */
-    private void sendRegistrationIdToBackend() {
+    private boolean sendRegistrationIdToBackend() throws UnsupportedEncodingException, ClientProtocolException, IOException {
     	
-    	ConnectivityManager connMgr = (ConnectivityManager) 
-    	        getSystemService(Context.CONNECTIVITY_SERVICE);
-    	    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-    	    if (networkInfo != null && networkInfo.isConnected()) {
-    	    	new AsyncTask<String, Void, Boolean>() {
-    	            @Override
-    	            protected Boolean doInBackground(String... args) {
-    	            	String regId = args[0];
-    	    			
-    	    			boolean res;
-    	    			
-    	    			try
-    	    			{
-    	    				res = SDKFactory.getClientFacade(context).updateRegIdOfClient(context, regId);
-    	    				
-    	    				return res;
-    	    			}
-    	    			catch (UnsupportedEncodingException e) {
-    	    				return false;
-    	    			}
-    	    			catch (ClientProtocolException e) {
-    	    				return false;
-    	    			}
-    	    			catch (IOException e) {
-    	    				return false;
-    	    			}
-    	            }
-
-    	            @Override
-    	            protected void onPostExecute(Boolean res) {
-    	                Log.i(TAG, regid);
-    	            }
-    	        }.execute(regid);
-    	    } else {
-    	    	// TODO: Deberia volver a intentar
-    	    }
+    	ConnectivityManager connMgr = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+    	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+	    if (networkInfo != null && networkInfo.isConnected()) {
+	    	boolean res = SDKFactory.getClientFacade(appContext).updateRegIdOfClient(appContext, regid);
+	    	return res;
+	    }
+	    else {
+	    	return false;
+	    }
     }
     
     /**
      * Borrar del baas el regid almacenado.
      */
-    private void removeRegistrationIdFromBackend() {
+    public void removeRegistrationIdFromBackend() {
       // TODO
     }
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public boolean sendNotificationToPushChannel(String nombreCanalPush, String msgKey, String msgValue) throws UnsupportedEncodingException, ClientProtocolException, IOException {
+    	ConnectivityManager connMgr = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+    	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+	    if (networkInfo != null && networkInfo.isConnected()) {
+	    	boolean res = SDKFactory.getClientFacade(appContext).sendNotificationToPushChannel(appContext, nombreCanalPush, msgKey, msgValue);
+	    	return res;
+	    }
+	    else {
+	    	return false;
+	    }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
-

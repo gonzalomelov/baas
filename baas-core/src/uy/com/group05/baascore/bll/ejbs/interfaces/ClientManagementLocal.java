@@ -80,4 +80,6 @@ public interface ClientManagementLocal {
 	
 	public boolean assignRoleToClients(long idApp, long idUser, long idClient, List<RolesClientDTO> rolesClient) 
 			throws AppNotRegisteredException, UserCantAccessAppException, ClientNotRegisteredException;
+	
+	public void updateRegIdOfClient(UUID accessToken, String appName, String regId) throws ClientNotRegisteredException;
 }

@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.ClientManagementLocal;
+import uy.com.group05.baascore.bll.ejbs.interfaces.PushChannelManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.entities.Entity;
@@ -20,6 +21,7 @@ import uy.com.group05.baascore.common.entities.User;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.RoleNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
@@ -344,6 +346,16 @@ public class ClientManagement implements ClientManagementLocal {
 		return true;
 	}
 	
+	public void updateRegIdOfClient(UUID accessToken, String appName, String regId) throws ClientNotRegisteredException {
+		long appId = appDao.readByName(appName).getId();
+		Client c = clientDao.readByAccessToken(appId, accessToken);
+		if (c == null)
+			throw new ClientNotRegisteredException("No existe el cliente con accessToken " + accessToken);
+		
+		c.setGcm_regId(regId);
+		clientDao.update(c);
+	}
+
 	public List<Role> getRolesFromClient(long idApp, long idUser, long idClient) throws ClientNotRegisteredException, UserCantAccessAppException, AppNotRegisteredException{
 		
 		Application app = appDao.readById(idApp);

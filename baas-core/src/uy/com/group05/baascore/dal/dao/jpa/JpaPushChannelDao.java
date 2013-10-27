@@ -61,7 +61,7 @@ public class JpaPushChannelDao extends JpaGenericDao<PushChannel> implements Pus
 	@Override
 	public List<Client> readAllFromCanal(long appId, long canalId) {
 		TypedQuery<Client> query =
-				em.createQuery("select distinct r "
+				em.createQuery("select distinct c "
 						+ "from Client c inner join c.pushChannels p "
 						+ "where p.id = :canalId and "
 						+ "c.application.id = :appId", Client.class);

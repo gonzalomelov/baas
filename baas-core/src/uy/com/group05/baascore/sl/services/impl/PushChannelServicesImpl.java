@@ -146,9 +146,9 @@ public class PushChannelServicesImpl implements PushChannelServices{
 	
 	@Override
 	public boolean sendNotificationToPushChannel(long idApp,
-			long idCanal, String mensaje) throws AppNotRegisteredException,
+			long idCanal, String msgKey, String msgValue) throws AppNotRegisteredException,
 			PushChanNotRegisteredException {
 		
-		return pushChannelManagementLocal.sendNotificationToPushChannel(idApp, idCanal, mensaje);
+		return pushChannelManagementLocal.sendNotificationToPushChannel(idApp, idCanal, msgKey, msgValue);
 	}
 }

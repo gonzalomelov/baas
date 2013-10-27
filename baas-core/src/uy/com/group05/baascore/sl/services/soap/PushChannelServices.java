@@ -120,7 +120,8 @@ public interface PushChannelServices {
 	public boolean sendNotificationToPushChannel(
 			@WebParam(name = "idApp") long idApp,
 			@WebParam(name = "idCanal") long idCanal,
-			@WebParam(name = "mensaje") String mensaje)
+			@WebParam(name = "msgKey") String msgKey,
+			@WebParam(name = "msgValue") String msgValue)
 			throws
 				AppNotRegisteredException,
 				PushChanNotRegisteredException;
