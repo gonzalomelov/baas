@@ -68,6 +68,10 @@ public class SecurityInterceptor implements PreProcessInterceptor, AcceptedByMet
 			return true;
 		}
 		
+		if (declaring == PushRest.class) {
+			return true;
+		}
+		
 		return true;
 	}
 
