@@ -52,11 +52,9 @@ public interface PushChannelServices {
 	
 	@WebMethod
 	public boolean assignClientToPushChannel(
-			@WebParam(name = "idApp") long idApp,
 			@WebParam(name = "idCanal") long idCanal,
 			@WebParam(name = "idCliente") long idCliente)
 			throws
-				AppNotRegisteredException,
 				PushChanNotRegisteredException,
 				ClientNotRegisteredException;
 	

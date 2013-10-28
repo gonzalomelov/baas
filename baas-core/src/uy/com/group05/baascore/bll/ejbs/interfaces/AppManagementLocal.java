@@ -106,4 +106,6 @@ public interface AppManagementLocal {
 	
 	public Application getApplication(long appId) throws AppNotRegisteredException;
 	
+	public Application getApplication(String appName) throws AppNotRegisteredException;
+	
 }

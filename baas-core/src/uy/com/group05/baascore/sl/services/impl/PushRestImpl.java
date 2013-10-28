@@ -26,9 +26,13 @@ public class PushRestImpl implements PushRest {
 	@Override
 	public boolean updateRegId(UUID accessToken, String appName, String regId) {
 		try {
-			clientManagementLocal.updateRegIdOfClient(accessToken, appName, regId);
+			long appId = appManagementLocal.getApplication(appName).getId();
+			clientManagementLocal.updateRegIdOfClient(accessToken, appId, regId);
 			return true;
 		} catch (ClientNotRegisteredException e) {
+			e.printStackTrace();
+			return false;
+		} catch (AppNotRegisteredException e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -43,6 +47,28 @@ public class PushRestImpl implements PushRest {
 			e.printStackTrace();
 			return false;
 		} catch (PushChanNotRegisteredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean subscribeToPushChannel(UUID accessToken, String appName, String pushChanName) {
+		try {
+			long appId = appManagementLocal.getApplication(appName).getId();
+			long clientId = clientManagementLocal.getClientWithAccessToken(accessToken, appId).getId();
+			long pushChanId = pushChannelManagementLocal.getPushChannel(appId, pushChanName).getId();
+			return pushChannelManagementLocal.assignClientToPushChannel(pushChanId, clientId);
+		} catch (AppNotRegisteredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (PushChanNotRegisteredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (ClientNotRegisteredException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;

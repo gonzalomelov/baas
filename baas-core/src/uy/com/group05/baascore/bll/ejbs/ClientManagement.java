@@ -346,8 +346,12 @@ public class ClientManagement implements ClientManagementLocal {
 		return true;
 	}
 	
-	public void updateRegIdOfClient(UUID accessToken, String appName, String regId) throws ClientNotRegisteredException {
-		long appId = appDao.readByName(appName).getId();
+	public void updateRegIdOfClient(UUID accessToken, long appId, String regId) throws ClientNotRegisteredException, AppNotRegisteredException {
+		Application app = appDao.read(appId);
+		if (app == null) {
+			throw new AppNotRegisteredException("No existe la aplicación con id " + appId);
+		}
+		
 		Client c = clientDao.readByAccessToken(appId, accessToken);
 		if (c == null)
 			throw new ClientNotRegisteredException("No existe el cliente con accessToken " + accessToken);
@@ -418,6 +422,25 @@ public class ClientManagement implements ClientManagementLocal {
 		return true;
 	}
 	
-	
+	public Client getClientWithAccessToken(UUID accessToken, long appId)
+			throws	ClientNotRegisteredException {
+		
+		Client c = clientDao.readByAccessToken(appId, accessToken);
+		if (c == null) {
+			throw new ClientNotRegisteredException("No existe el cliente con access token " + accessToken);
+		}
+		
+		return c;		
+	}
+
+	@Override
+	public boolean existsClient(long clientId) {
+		if (clientDao.read(clientId) != null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }
 

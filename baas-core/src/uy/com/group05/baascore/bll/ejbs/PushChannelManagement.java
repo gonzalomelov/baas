@@ -71,13 +71,9 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 	}
 
 	@Override
-	public boolean assignClientToPushChannel(long idApp,
-			long idCanal, long idCliente)
-			throws AppNotRegisteredException, PushChanNotRegisteredException,
-			ClientNotRegisteredException {
-		
-		if (!appMgmt.existsApplication(idApp))
-			throw new AppNotRegisteredException("No existe la aplicación con id " + idApp);
+	public boolean assignClientToPushChannel(long idCanal, long idCliente)
+			throws	PushChanNotRegisteredException,
+					ClientNotRegisteredException {
 		
 		if (!this.existsPushChannel(idCanal))
 			throw new PushChanNotRegisteredException("No existe el canal push con id " + idCanal);
@@ -334,9 +330,9 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		if (clientes.isEmpty())
 			System.out.println("------> No hay clientes asociados al canal push.");
 		
-		//for (Client c : clientes) {
-			//String regId = c.getGcm_regId();
-			String regId = "APA91bHDcO84iVqd0AXPlU1QptCM0ioLh9MKexkrfEIpz8khLS584yeXjYSb_RD_ggEEH0b008BZyQmkIu9XWzSnfCgl4hleH1yQ8N1mjbq25xyzemXiMFWDoOF-sWgb0GK1NFDfqWnzCjsomW5t-KTbucKfuh5iItKsA2gzdsQuLVtbesHu5cE";
+		for (Client c : clientes) {
+			String regId = c.getGcm_regId();
+			//String regId = "APA91bHDcO84iVqd0AXPlU1QptCM0ioLh9MKexkrfEIpz8khLS584yeXjYSb_RD_ggEEH0b008BZyQmkIu9XWzSnfCgl4hleH1yQ8N1mjbq25xyzemXiMFWDoOF-sWgb0GK1NFDfqWnzCjsomW5t-KTbucKfuh5iItKsA2gzdsQuLVtbesHu5cE";
 			
 			Sender sender = new Sender("AIzaSyByhp5CPEb74Vt034btzqy2iLkRaDQUTuM"); // API KEY, PARAMETRIZAR
 			Message message = new Message.Builder().timeToLive(600).addData(msgKey, msgValue).build();
@@ -364,8 +360,8 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 				e.printStackTrace();
 				return false;
 			}
-		//}
-		//return false;
+		}
+		return false;
 	}
 	
 	@Override
@@ -373,11 +369,23 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 			String pushChanName, String msgKey, String msgValue)
 			throws AppNotRegisteredException, PushChanNotRegisteredException {
 		
-		long appId = appDao.readByName(appName).getId();
-		long pushChanId = pushDao.readByName(appId, pushChanName).getId();
+		long appId = appMgmt.getApplication(appName).getId();
+		long pushChanId = getPushChannel(appId, pushChanName).getId();
 		
 		return sendNotificationToPushChannel(appId, pushChanId, msgKey, msgValue);
 		
+	}
+	
+	@Override
+	public PushChannel getPushChannel(long appId, String pushChanName)
+		throws PushChanNotRegisteredException {
+		
+		PushChannel pc = pushDao.readByName(appId, pushChanName);
+		if (pc == null) {
+			throw new PushChanNotRegisteredException("No existe el canal push con nombre " + pushChanName + " para la aplicación con id " + appId);
+		}
+		
+		return pc;
 	}
 	
 }

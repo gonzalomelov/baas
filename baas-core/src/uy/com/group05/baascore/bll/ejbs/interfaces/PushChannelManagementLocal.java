@@ -31,10 +31,9 @@ public interface PushChannelManagementLocal {
 	
 	public boolean existsPushChannel(long idCanal);
 
-	public boolean assignClientToPushChannel(long idApp,
-			long idCanal, long idCliente)
-			throws AppNotRegisteredException, PushChanNotRegisteredException,
-			ClientNotRegisteredException;
+	public boolean assignClientToPushChannel(long idCanal, long idCliente)
+			throws	PushChanNotRegisteredException,
+					ClientNotRegisteredException;
 
 
 	public boolean unassignClientFromPushChannel(long idApp,
@@ -84,4 +83,7 @@ public interface PushChannelManagementLocal {
 	public boolean sendNotificationToPushChannel(String appName,
 			String pushChanName, String msgKey, String msgValue) throws AppNotRegisteredException,
 			PushChanNotRegisteredException;
+	
+	public PushChannel getPushChannel(long appId, String pushChanName)
+			throws PushChanNotRegisteredException;
 }

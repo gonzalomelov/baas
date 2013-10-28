@@ -68,12 +68,11 @@ public class PushChannelServicesImpl implements PushChannelServices{
 
 
 	@Override
-	public boolean assignClientToPushChannel(long idApp,
-			long idCanal, long idCliente)
-			throws AppNotRegisteredException, PushChanNotRegisteredException,
-			ClientNotRegisteredException {
+	public boolean assignClientToPushChannel(long idCanal, long idCliente)
+			throws	PushChanNotRegisteredException,
+					ClientNotRegisteredException {
 		
-		return pushChannelManagementLocal.assignClientToPushChannel(idApp, idCanal, idCliente);
+		return pushChannelManagementLocal.assignClientToPushChannel(idCanal, idCliente);
 	}
 
 	@Override

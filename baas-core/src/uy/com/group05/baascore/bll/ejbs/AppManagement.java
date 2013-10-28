@@ -459,4 +459,13 @@ public class AppManagement implements AppManagementLocal{
 	public boolean existsApplication(long idApp) {
 		return (appDao.read(idApp) != null);
 	}
+	
+	public Application getApplication(String appName) throws AppNotRegisteredException {
+		Application app = appDao.readByName(appName);
+		
+		if (app == null)
+			throw new AppNotRegisteredException("No existe la aplicación con nombre " + appName);
+		
+		return app;
+	}
 }
