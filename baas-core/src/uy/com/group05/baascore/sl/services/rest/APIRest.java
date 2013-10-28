@@ -12,12 +12,13 @@ import javax.ws.rs.core.MediaType;
 public interface APIRest {
 	
 	@GET	
-	@Path("/entities/{appName}/{entity}")
+	@Path("/entities/{appName}/{entity}/{query}")
 	@Produces(MediaType.APPLICATION_JSON)	
 	public String get(
 			//@HeaderParam("accessToken") UUID accessToken,
 			@PathParam("appName") String appName,
-			@PathParam("entity") String entity);
+			@PathParam("entity") String entity,
+			@PathParam("query") String query);
 	
 	@POST
 	@Path("/entities/{appName}/{entity}")

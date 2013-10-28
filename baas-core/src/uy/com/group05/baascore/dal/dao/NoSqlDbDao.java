@@ -21,7 +21,7 @@ public interface NoSqlDbDao {
 	void addEntity(String application, String entity, String jsonEntity)
 			throws JSONParseException;
 	
-	String getEntities(String application, String entity);
+	String getEntities(String application, String entity, String query);
 	
 //	List<ObjectNode> getEntities(String entity);
 //	List<ObjectNode> getEntities(String entity, String filter);

@@ -1,7 +1,5 @@
 package uy.com.group05.baascore.bll.ejbs;
 
-import java.util.List;
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -39,7 +37,7 @@ public class APIManagement implements APIManagementLocal {
 			return null;			
 		}
 		
-		return noSqlDbDao.getEntities(appName, entity); 
+		return noSqlDbDao.getEntities(appName, entity, query); 
  
 	}
 	

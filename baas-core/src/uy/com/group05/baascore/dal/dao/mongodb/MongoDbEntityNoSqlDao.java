@@ -73,11 +73,16 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 	}
 
 	@Override
-	public String getEntities(String application, String entity) {
+	public String getEntities(String application, String entity, String query ) {
 		DB mongoDb = mongo.getDB(application);
 		DBCollection dbCollection = mongoDb.getCollection(entity);
+		String jsonResult;
 		
-		String jsonResult = com.mongodb.util.JSON.serialize(dbCollection.find());
+		
+			Object object = JSON.parse(query);
+			DBObject dbObject = (DBObject) object;
+		
+			jsonResult = com.mongodb.util.JSON.serialize(dbCollection.find(dbObject));
 		
 		return jsonResult;
 	}

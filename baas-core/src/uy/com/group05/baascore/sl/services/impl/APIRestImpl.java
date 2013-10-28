@@ -14,9 +14,9 @@ public class APIRestImpl implements APIRest {
 	@Inject
 	private APIManagementLocal apiManagementLocal;
 	
-	public String get(String appName, String entity) {
+	public String get(String appName, String entity, String query) {
 
-	    return apiManagementLocal.get(appName, entity, "");
+	    return apiManagementLocal.get(appName, entity, query);
 	}
 	
 	public boolean post(String appName, String entity, String jsonObj) {
