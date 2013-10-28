@@ -5,6 +5,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.APIManagementLocal;
+import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
+import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
 import uy.com.group05.baascore.sl.services.rest.APIRest;
 
 public class APIRestImpl implements APIRest {
@@ -19,6 +21,16 @@ public class APIRestImpl implements APIRest {
 	
 	public boolean post(String appName, String entity, String jsonObj) {
 
-		return apiManagementLocal.post(appName, entity, jsonObj);
+		try {
+			return apiManagementLocal.post(appName, entity, jsonObj);
+		} catch (AppNotRegisteredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (EntityNotRegisteredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

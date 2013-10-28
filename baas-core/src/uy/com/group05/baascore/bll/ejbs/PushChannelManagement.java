@@ -150,6 +150,33 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		return true;
 	}
 	
+	public void sendNotificationsOnEntityPostPutDelete(long appId, long entityId)
+			throws
+				AppNotRegisteredException,
+				EntityNotRegisteredException {
+		
+		Application app = appDao.readById(appId);
+		if (app == null) {
+			throw new AppNotRegisteredException("No existe la aplicación con id " + appId);
+		}
+		
+		Entity entity = entityDao.readById(entityId);
+		if (entity == null) {
+			throw new EntityNotRegisteredException("No existe la entidad con id " + entityId);
+		}
+		
+		List<PushChannel> canales = getPushChannelsAssociatedWithEntity(appId, entityId);
+		
+		for (PushChannel canal : canales) {
+			try {
+				sendNotificationToPushChannel(appId, canal.getId(), "post", entity.getName());
+			} catch (PushChanNotRegisteredException e) {
+				// No debería pasar
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	@Override
 	public boolean unassignEntityToPushChannel(long idApp, long idCanal, long idEntity)
 			throws
@@ -252,6 +279,25 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		PushChannel pushChannel = pushDao.readById(idCanal);
 		
 		return pushChannel.getEntities();
+	}
+	
+	@Override
+	public List<PushChannel> getPushChannelsAssociatedWithEntity(long idApp, long idEntity)
+			throws
+				AppNotRegisteredException,
+				EntityNotRegisteredException {
+		
+		Application app = appDao.readById(idApp);
+		if (app == null) {
+			throw new AppNotRegisteredException("No existe la aplicación con id " + idApp);
+		}
+			
+		Entity entity = entityDao.read(idEntity);
+		if (entity == null) {
+			throw new EntityNotRegisteredException("No existe la entidad con id " + idEntity);
+		}
+		
+		return entity.getPushChannels();
 	}
 	
 	@Override

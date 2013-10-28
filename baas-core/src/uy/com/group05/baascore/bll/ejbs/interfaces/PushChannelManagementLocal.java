@@ -45,6 +45,9 @@ public interface PushChannelManagementLocal {
 	public boolean assignEntityToPushChannel (long idApp, long idCanal, long idEntity)
 			throws AppNotRegisteredException, PushChanNotRegisteredException, EntityNotRegisteredException;
 	
+	public void sendNotificationsOnEntityPostPutDelete(long appId, long entityId)
+			throws AppNotRegisteredException, EntityNotRegisteredException;
+	
 	public boolean unassignEntityToPushChannel (long idApp, long idCanal, long idEntity)
 			throws
 				AppNotRegisteredException,
@@ -61,6 +64,11 @@ public interface PushChannelManagementLocal {
 			throws
 				AppNotRegisteredException,
 				PushChanNotRegisteredException;
+	
+	public List<PushChannel> getPushChannelsAssociatedWithEntity(long idApp, long idEntity)
+			throws
+				AppNotRegisteredException,
+				EntityNotRegisteredException;
 	
 	public List<PushChannel> getPushChannelsOfApplication(long idApp)
 			throws AppNotRegisteredException;
