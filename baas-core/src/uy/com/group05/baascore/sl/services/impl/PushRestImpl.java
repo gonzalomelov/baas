@@ -1,15 +1,20 @@
 package uy.com.group05.baascore.sl.services.impl;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.bll.ejbs.interfaces.ClientManagementLocal;
 import uy.com.group05.baascore.bll.ejbs.interfaces.PushChannelManagementLocal;
+import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
+import uy.com.group05.baascore.common.mapper.Mapper;
+import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelDTO;
 import uy.com.group05.baascore.sl.services.rest.PushRest;
 
 public class PushRestImpl implements PushRest {
@@ -22,6 +27,9 @@ public class PushRestImpl implements PushRest {
 	
 	@EJB
 	private AppManagementLocal appManagementLocal;
+	
+	@Inject
+	Mapper mapper;
 	
 	@Override
 	public boolean updateRegId(UUID accessToken, String appName, String regId) {
@@ -43,11 +51,9 @@ public class PushRestImpl implements PushRest {
 		try {
 			return pushChannelManagementLocal.sendNotificationToPushChannel(appName, pushChanName, msgKey, msgValue);
 		} catch (AppNotRegisteredException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		} catch (PushChanNotRegisteredException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -61,17 +67,27 @@ public class PushRestImpl implements PushRest {
 			long pushChanId = pushChannelManagementLocal.getPushChannel(appId, pushChanName).getId();
 			return pushChannelManagementLocal.assignClientToPushChannel(pushChanId, clientId);
 		} catch (AppNotRegisteredException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		} catch (PushChanNotRegisteredException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		} catch (ClientNotRegisteredException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
+		}
+	}
+
+	@Override
+	public List<SimplePushChannelDTO> getPushChannelsOfApplication(String appName) {
+		try {
+			long appId = appManagementLocal.getApplication(appName).getId();
+			List<PushChannel> pushChannels = appManagementLocal.getPushChannelsApplication(appId);			
+			List<SimplePushChannelDTO> pushChannelsDTO = mapper.getMapper().mapAsList(pushChannels, SimplePushChannelDTO.class);
+			return pushChannelsDTO;
+		} catch (AppNotRegisteredException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

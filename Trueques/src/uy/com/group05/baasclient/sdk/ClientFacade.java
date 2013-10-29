@@ -19,30 +19,4 @@ public interface ClientFacade {
 	
 	boolean updateRegIdOfClient(Context context, String regId)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException;
-	
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	boolean sendNotificationToPushChannel(Context context, String nombreCanal, String msgKey, String msgValue)
-			throws UnsupportedEncodingException, ClientProtocolException, IOException;
-
-
-
-
-
-
-
-
-
-
-
 }

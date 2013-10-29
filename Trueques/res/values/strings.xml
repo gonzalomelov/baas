@@ -35,9 +35,10 @@
     <string name="button_send">Login</string>
     <string name="action_new">New</string>
     <string name="action_search">Search</string>
-    <string name="login_registro_con_GCM">Registro con GCM</string>
-    <string name="title_activity_registrargcm">Registrar con GCM</string>
-    <string name="registrarGCM_recibir_notificaciones">Recibir notificaciones</string>
+    <string name="login_suscribir_canales_push">Suscribirse a Canales Push</string>
+    <string name="title_activity_suscribir_canales_push">Canales Push</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="login_enviar_mensaje_push">Enviar Mensaje Push</string>
     
     
 

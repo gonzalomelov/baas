@@ -9,7 +9,6 @@ import java.util.List;
 import org.apache.http.client.ClientProtocolException;
 
 import uy.com.group05.baasclient.sdk.SDKFactory;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -61,6 +60,17 @@ public class MainActivity extends Activity {
     	
     	startActivity(intent);
     }
+    
+
+	public void suscribirCanalesPush(View view) {
+		Intent intent = new Intent(this, SuscribirCanalPushActivity.class);
+		startActivity(intent);
+	}
+	
+	public void enviarMensajePush(View view) {
+		Intent intent = new Intent(this, EnviarMensajeCanalPushActivity.class);
+		startActivity(intent);
+	}
     
     private class GetTask extends AsyncTask<String, Void, String> {
 

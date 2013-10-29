@@ -35,5 +35,19 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </TableRow>
+    
+    <Button
+        android:id="@+id/suscripcionCanales"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_suscribir_canales_push"
+        android:onClick="suscribirCanalesPush" />
+    
+    <Button
+        android:id="@+id/enviarPush"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_enviar_mensaje_push"
+        android:onClick="enviarMensajePush" />
 
 </TableLayout>

@@ -1,12 +1,29 @@
 package uy.com.group05.baasclient.sdk;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import uy.com.group05.baasclient.sdk.entities.ClientAuthenticationDTO;
+import uy.com.group05.baasclient.sdk.entities.SimplePushChannelDTO;
+import uy.com.group05.baasclient.sdk.utils.AssetsPropertyReader;
 import uy.com.group05.baasclient.trueques.GcmIntentService;
 import uy.com.group05.baasclient.trueques.MainActivity;
 import uy.com.group05.baasclient.trueques.R;
@@ -25,6 +42,8 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.gson.Gson;
+import com.google.gson.reflect.*;
 
 public class GCMService {
 	public static final String PROPERTY_REG_ID = "registration_id";
@@ -64,7 +83,7 @@ public class GCMService {
             
             
             registerInBackground();
-        	new AsyncTask<Void, Void, String>() {
+        	/*new AsyncTask<Void, Void, String>() {
                 @Override
                 protected String doInBackground(Void... params) {
                     String msg = "";
@@ -82,7 +101,7 @@ public class GCMService {
 					}
                     return msg;
                 }
-            }.execute(null, null, null);
+            }.execute(null, null, null);*/
             
             
             
@@ -279,22 +298,58 @@ public class GCMService {
       // TODO
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    private boolean sendNotificationToPushChannel(Context context, String nombreCanal, String msgKey, String msgValue)
+			throws UnsupportedEncodingException, ClientProtocolException,
+			IOException {
+		
+		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
+		
+		String url = serviceUrl + "/push/sendNotificationToPushChannel";
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(url);
+		
+		SharedPreferences prefs =
+			     context.getSharedPreferences("uy.com.group05.baasclient.sdk",Context.MODE_PRIVATE);
+		
+		String accessToken = prefs.getString("accessToken", "");
+		String appName = AssetsPropertyReader.getProperties(context, "appName");
+		
+		httpPost.setHeader("accessToken", accessToken);
+		
+		List<NameValuePair> formParameters = new ArrayList<NameValuePair>();
+		formParameters.add(new BasicNameValuePair("appName", appName));
+		formParameters.add(new BasicNameValuePair("pushChanName", nombreCanal));
+		formParameters.add(new BasicNameValuePair("msgKey", msgKey));
+		formParameters.add(new BasicNameValuePair("msgValue", msgValue));
+		
+		httpPost.setEntity(new UrlEncodedFormEntity(formParameters));
+		
+		android.util.Log.i("GCM SDK", "accessToken: " + accessToken);
+		android.util.Log.i("GCM SDK", "appName: " + appName);
+		android.util.Log.i("GCM SDK", "pushChanName: " + nombreCanal);
+		android.util.Log.i("GCM SDK", "msgKey: " + msgKey);
+		android.util.Log.i("GCM SDK", "msgValue: " + msgValue);
+		
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+		
+		int statusCode = httpResponse.getStatusLine().getStatusCode();
+		
+		android.util.Log.i("GCM SDK", "statusCode: " + statusCode);
+		
+		if (statusCode == HttpStatus.SC_OK) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
     
     public boolean sendNotificationToPushChannel(String nombreCanalPush, String msgKey, String msgValue) throws UnsupportedEncodingException, ClientProtocolException, IOException {
     	ConnectivityManager connMgr = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
     	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 	    if (networkInfo != null && networkInfo.isConnected()) {
-	    	boolean res = SDKFactory.getClientFacade(appContext).sendNotificationToPushChannel(appContext, nombreCanalPush, msgKey, msgValue);
+	    	boolean res = sendNotificationToPushChannel(appContext, nombreCanalPush, msgKey, msgValue);
 	    	return res;
 	    }
 	    else {
@@ -302,19 +357,112 @@ public class GCMService {
 	    }
     }
     
+    private List<SimplePushChannelDTO> getPushChannels(Context context)
+			throws UnsupportedEncodingException, ClientProtocolException,
+			IOException {    	
+    	String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
+		
+		String appName = AssetsPropertyReader.getProperties(context, "appName");
+		
+		String url = serviceUrl + "/push/getPushChannels";
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(url);
+		
+		SharedPreferences prefs =
+				context.getSharedPreferences("uy.com.group05.baasclient.sdk",Context.MODE_PRIVATE);
+		
+		httpGet.setHeader("appName", appName);
+		httpGet.setHeader("Content-Type", "application/x-www-form-urlencoded");
+		
+		HttpResponse httpResponse = httpClient.execute(httpGet);
+		
+		int statusCode = httpResponse.getStatusLine().getStatusCode();
+		
+		Log.i("TAG", "statusCode: " + statusCode);
+		
+		if (statusCode != HttpStatus.SC_OK) {
+			return new ArrayList<SimplePushChannelDTO>();
+		}
+		
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader(httpResponse.getEntity().getContent()));
+			
+		Gson gson = new Gson();
+		
+		//listaCanalesDTO = (List<SimplePushChannelDTO>) gson.fromJson(br, new TypeToken<ArrayList<SimplePushChannelDTO>>() {}.getType());
+		SimplePushChannelDTO[] arrayCanalesDTO = gson.fromJson(br, SimplePushChannelDTO[].class);
+		List<SimplePushChannelDTO> listaCanalesDTO = arrayCanalesDTO != null && arrayCanalesDTO.length > 0 ? Arrays.asList(arrayCanalesDTO) : new ArrayList<SimplePushChannelDTO>();
+		Log.i("TAG", "Cantidad de canales: " + listaCanalesDTO.size());
+		
+		return listaCanalesDTO;
+	}
     
+    public List<SimplePushChannelDTO> getPushChannels() throws UnsupportedEncodingException, ClientProtocolException, IOException {
+    	ConnectivityManager connMgr = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+    	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+	    if (networkInfo != null && networkInfo.isConnected()) {
+	    	List<SimplePushChannelDTO> res = getPushChannels(appContext);
+	    	return res;
+	    }
+	    else {
+	    	return new ArrayList<SimplePushChannelDTO>();
+	    }
+    }
     
+    private boolean subscribeToPushChannel(Context context, String nombreCanal)
+			throws UnsupportedEncodingException, ClientProtocolException,
+			IOException {
+		
+		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
+		
+		String url = serviceUrl + "/push/subscribe";
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(url);
+		
+		SharedPreferences prefs =
+			     context.getSharedPreferences("uy.com.group05.baasclient.sdk",Context.MODE_PRIVATE);
+		
+		String accessToken = prefs.getString("accessToken", "");
+		String appName = AssetsPropertyReader.getProperties(context, "appName");
+		
+		httpPost.setHeader("accessToken", accessToken);
+		
+		List<NameValuePair> formParameters = new ArrayList<NameValuePair>();
+		formParameters.add(new BasicNameValuePair("appName", appName));
+		formParameters.add(new BasicNameValuePair("pushChanName", nombreCanal));
+		
+		httpPost.setEntity(new UrlEncodedFormEntity(formParameters));
+		
+		android.util.Log.i("GCM SDK", "accessToken: " + accessToken);
+		android.util.Log.i("GCM SDK", "appName: " + appName);
+		android.util.Log.i("GCM SDK", "pushChanName: " + nombreCanal);
+		
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+		
+		int statusCode = httpResponse.getStatusLine().getStatusCode();
+		
+		android.util.Log.i("GCM SDK", "statusCode: " + statusCode);
+		
+		if (statusCode == HttpStatus.SC_OK) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    public boolean subscribeToPushChannel(String nombreCanalPush) throws UnsupportedEncodingException, ClientProtocolException, IOException {
+    	ConnectivityManager connMgr = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+    	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+	    if (networkInfo != null && networkInfo.isConnected()) {
+	    	boolean res = subscribeToPushChannel(appContext, nombreCanalPush);
+	    	return res;
+	    }
+	    else {
+	    	return false;
+	    }
+    }
     
 }

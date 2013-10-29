@@ -190,16 +190,18 @@ containing a value of this type.
         public static final int ic_stat_gcm=0x7f020020;
     }
     public static final class id {
-        public static final int action_new=0x7f05001f;
-        public static final int action_search=0x7f05001e;
-        public static final int action_settings=0x7f05001d;
-        public static final int button1=0x7f050009;
-        public static final int chk_regGCM=0x7f050017;
-        public static final int display_resGCM=0x7f050018;
+        public static final int action_new=0x7f050023;
+        public static final int action_search=0x7f050022;
+        public static final int action_settings=0x7f050021;
+        public static final int button1=0x7f05000a;
+        public static final int cbBox=0x7f05001d;
+        public static final int enviarPush=0x7f050012;
         public static final int hybrid=0x7f050004;
-        public static final int login_email=0x7f050005;
-        public static final int login_password=0x7f050006;
-        public static final int login_state=0x7f050007;
+        public static final int linearLayout1=0x7f05001e;
+        public static final int login_email=0x7f050006;
+        public static final int login_password=0x7f050007;
+        public static final int login_state=0x7f050008;
+        public static final int lvMain=0x7f050005;
         public static final int main_entity=0x7f05000d;
         public static final int main_getButton=0x7f05000f;
         public static final int main_postButton=0x7f05000e;
@@ -207,28 +209,32 @@ containing a value of this type.
         public static final int main_waiting=0x7f050010;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int regGCM=0x7f05000a;
-        public static final int register_email=0x7f050011;
-        public static final int register_lastname=0x7f050014;
-        public static final int register_name=0x7f050013;
-        public static final int register_ok=0x7f050015;
-        public static final int register_password=0x7f050012;
-        public static final int register_waiting=0x7f050016;
+        public static final int register_email=0x7f050013;
+        public static final int register_lastname=0x7f050016;
+        public static final int register_name=0x7f050015;
+        public static final int register_ok=0x7f050017;
+        public static final int register_password=0x7f050014;
+        public static final int register_waiting=0x7f050018;
         public static final int satellite=0x7f050002;
         public static final int submit_anio=0x7f05001a;
         public static final int submit_marca=0x7f050019;
         public static final int submit_post=0x7f05001b;
         public static final int submit_waiting=0x7f05001c;
+        public static final int suscripcionCanales=0x7f050011;
         public static final int tableRow1=0x7f05000c;
         public static final int terrain=0x7f050003;
-        public static final int textView1=0x7f050008;
+        public static final int textView1=0x7f050009;
+        public static final int tvDescr=0x7f05001f;
+        public static final int tvPrice=0x7f050020;
     }
     public static final class layout {
-        public static final int activity_login=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int activity_register=0x7f030002;
-        public static final int activity_registrargcm=0x7f030003;
+        public static final int activity_enviarmensajecanalpush=0x7f030000;
+        public static final int activity_login=0x7f030001;
+        public static final int activity_main=0x7f030002;
+        public static final int activity_register=0x7f030003;
         public static final int activity_submit=0x7f030004;
+        public static final int activity_suscribircanalpush=0x7f030005;
+        public static final int item=0x7f030006;
     }
     public static final class menu {
         public static final int login=0x7f090000;
@@ -236,6 +242,7 @@ containing a value of this type.
         public static final int register=0x7f090002;
     }
     public static final class string {
+        public static final int aceptar=0x7f060034;
         public static final int action_new=0x7f060030;
         public static final int action_search=0x7f060031;
         public static final int action_settings=0x7f06002e;
@@ -332,10 +339,11 @@ containing a value of this type.
          */
         public static final int common_signin_button_text_long=0x7f060012;
         public static final int login_email=0x7f06001c;
+        public static final int login_enviar_mensaje_push=0x7f060035;
         public static final int login_notRegistered=0x7f06001e;
         public static final int login_password=0x7f06001d;
         public static final int login_register=0x7f06001f;
-        public static final int login_registro_con_GCM=0x7f060032;
+        public static final int login_suscribir_canales_push=0x7f060032;
         public static final int main_getButton=0x7f060029;
         public static final int main_postButton=0x7f06002a;
         public static final int main_unsuccessful=0x7f06002c;
@@ -347,7 +355,6 @@ containing a value of this type.
         public static final int register_password=0x7f060022;
         public static final int register_unsuccessful=0x7f060027;
         public static final int register_waiting=0x7f060026;
-        public static final int registrarGCM_recibir_notificaciones=0x7f060034;
         /**  Home 
          */
         public static final int title_activity_home=0x7f06001a;
@@ -360,10 +367,10 @@ containing a value of this type.
         /**  Register 
          */
         public static final int title_activity_register=0x7f060020;
-        public static final int title_activity_registrargcm=0x7f060033;
         /**  Submit 
          */
         public static final int title_activity_submit=0x7f06002d;
+        public static final int title_activity_suscribir_canales_push=0x7f060033;
     }
     public static final class style {
         /** 

@@ -17,10 +17,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.http.client.ClientProtocolException;
@@ -28,8 +32,9 @@ import org.json.JSONObject;
 
 import uy.com.group05.baasclient.sdk.GCMService;
 import uy.com.group05.baasclient.sdk.SDKFactory;
+import uy.com.group05.baasclient.sdk.entities.SimplePushChannelDTO;
 
-public class RegistrarGcmActivity extends Activity {
+public class SuscribirCanalPushActivity extends Activity {
 
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
@@ -49,60 +54,109 @@ public class RegistrarGcmActivity extends Activity {
     GCMService gcms;
 
     String regid;
+    
+    ArrayList<SimplePushChannelDTO> canales = new ArrayList<SimplePushChannelDTO>();
+	ListAdapter boxAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_registrargcm);
-        mDisplay = (TextView) findViewById(R.id.display_resGCM);
-        chk_gcm = (CheckBox) findViewById(R.id.chk_regGCM);
-
-        context = getApplicationContext();
+        setContentView(R.layout.activity_suscribircanalpush);
         
         gcms = new GCMService(this);
-
-        // Verifico que esté instalado Google Play Services en el dispositivo (necesario para GCM).
-        /*if (checkPlayServices()) {
-            //gcm = GoogleCloudMessaging.getInstance(this);
-            regid = getRegistrationId(context);
-
-            if (!regid.isEmpty()) {
-            	registrado = true;
-            	chk_gcm.setChecked(true);
-            	mDisplay.setText("Ya esta registrado con el id: " + regid + "\n");
-            	
-            	
-            	
-            	
-            	
-            	
-            	registerInBackground();
-            	
-            	
-            	
-            	
-            	
-            	
-            	
-            }
-            else {
-            	mDisplay.setText("No está registrado.");
-            }
-        } else {
-            Log.i(TAG, "No se encontró Google Play Services.");
-        }*/
+        
+        fillData(this);
+	    
+	    // Lo de antes
+        context = getApplicationContext();
     }
     
-    public void action_registrarDesregistrarGCM(View view) {
-    	if (registrado) {
+    void fillData(final Activity act) {
+	    new AsyncTask<Void, Void, Boolean>() {
+		    @Override
+		    protected Boolean doInBackground(Void... params) {
+				try {
+					List<SimplePushChannelDTO> listaCanales = gcms.getPushChannels();
+					for (SimplePushChannelDTO canal : listaCanales) {
+						Log.i("TAG", "Agregando canal: " + canal.getName());
+			    		canales.add(canal);
+			    	}
+					return true;
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return false;
+				} catch (ClientProtocolException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return false;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return false;
+				}
+		    }
+		    
+		    @Override
+            protected void onPostExecute(Boolean ok) {
+		    	boxAdapter = new ListAdapter(act, canales);
+
+			    ListView lvMain = (ListView) findViewById(R.id.lvMain);
+			    lvMain.setAdapter(boxAdapter);
+            }
+		}.execute(null, null, null);
+    	
+    	/*for (int i = 1; i <= 20; i++) {
+    		SimplePushChannelDTO chan = new SimplePushChannelDTO();
+    		chan.setId(i);
+    		chan.setName("Canal " + i);
+    		canales.add(chan);
+    	}*/
+	  }
+    
+    public void actualizarSuscripciones(View view) {
+    	final Activity act = (Activity) view.getContext();
+    	String result = "Canales seleccionados:";
+	    for (SimplePushChannelDTO canal : boxAdapter.getBox()) {
+	    	new AsyncTask<SimplePushChannelDTO, Void, Boolean>() {
+			    @Override
+			    protected Boolean doInBackground(SimplePushChannelDTO... params) {
+					try {
+						gcms.subscribeToPushChannel(params[0].getName());
+						return true;
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return false;
+					} catch (ClientProtocolException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return false;
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return false;
+					}
+			    }
+			    
+			    @Override
+	            protected void onPostExecute(Boolean ok) {
+			    	Toast.makeText(act, "Suscripciones realizadas", Toast.LENGTH_LONG).show();
+			    	act.finish();
+	            }
+			}.execute(canal, null, null);
+	    	result += "\n" + canal.getName();
+	    }
+	    Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+	    
+    	/*if (registrado) {
     		mDisplay.setText("");
     		//unRegisterInBackground();
     		removeRegistrationIdFromBackend();
     	}
     	else {
     		registerInBackground();
-    	}
+    	}*/
     }
 
     @Override
@@ -165,7 +219,44 @@ public class RegistrarGcmActivity extends Activity {
      * Si el resultado es vacío, la aplicación se tiene que registrar.
      *
      * @return registration ID, o vacío si no existe.
+     *//**
+     * Des-registra la aplicación de GCM.
+     * <p>
+     * Borra el regid y la versión de la app del {@code SharedPreferences} de la aplicación.
      */
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    /**
+     * @return Application's version code from the {@code PackageManager}.
+     */
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (NameNotFoundException e) {
+            // should never happen
+            throw new RuntimeException("Could not get package name: " + e);
+        }
+    }
+
+    /**
+     * @return Application's {@code SharedPreferences}.
+     */
+    private SharedPreferences getGcmPreferences(Context context) {
+        return getSharedPreferences(SuscribirCanalPushActivity.class.getSimpleName(),
+                Context.MODE_PRIVATE);
+    }
+    
+    /**
+     * Mandar al baas el regid almacenado.
+     */
+    
+    /*
     private String getRegistrationId(Context context) {
         final SharedPreferences prefs = getGcmPreferences(context);
         String registrationId = prefs.getString(PROPERTY_REG_ID, "");
@@ -183,11 +274,11 @@ public class RegistrarGcmActivity extends Activity {
         return registrationId;
     }
 
-    /**
+    *//**
      * Registra la aplicación con GCM.
      * <p>
      * Guarda el regid y la versión de la app en {@code SharedPreferences} de la aplicación.
-     */
+     *//*
     private void registerInBackground() {
         new AsyncTask<Void, Void, String>() {
             @Override
@@ -223,11 +314,9 @@ public class RegistrarGcmActivity extends Activity {
         }.execute(null, null, null);
     }
     
-    /**
-     * Des-registra la aplicación de GCM.
-     * <p>
-     * Borra el regid y la versión de la app del {@code SharedPreferences} de la aplicación.
-     */
+    */
+    
+    /*
     private void unRegisterInBackground() {
         new AsyncTask<Void, Void, String>() {
             @Override
@@ -260,39 +349,9 @@ public class RegistrarGcmActivity extends Activity {
                 }
             }
         }.execute(null, null, null);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    /**
-     * @return Application's version code from the {@code PackageManager}.
-     */
-    private static int getAppVersion(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionCode;
-        } catch (NameNotFoundException e) {
-            // should never happen
-            throw new RuntimeException("Could not get package name: " + e);
-        }
-    }
-
-    /**
-     * @return Application's {@code SharedPreferences}.
-     */
-    private SharedPreferences getGcmPreferences(Context context) {
-        return getSharedPreferences(RegistrarGcmActivity.class.getSimpleName(),
-                Context.MODE_PRIVATE);
-    }
+    }*/
     
-    /**
-     * Mandar al baas el regid almacenado.
-     */
-    private void sendRegistrationIdToBackend() {
+    /*private void sendRegistrationIdToBackend() {
     	
     	ConnectivityManager connMgr = (ConnectivityManager) 
     	        getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -332,12 +391,12 @@ public class RegistrarGcmActivity extends Activity {
     	    }
     }
     
-    /**
+    *//**
      * Borrar del baas el regid almacenado.
-     */
+     *//*
     private void removeRegistrationIdFromBackend() {
       // TODO
-    }
+    }*/
     
     
 }

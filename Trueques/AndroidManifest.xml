@@ -73,9 +73,19 @@
 
         </activity>
         <activity
-            android:name="uy.com.group05.baasclient.trueques.RegistrarGcmActivity"
-            android:label="@string/title_activity_registrargcm"
-            android:parentActivityName="uy.com.group05.baasclient.trueques.RegistrarGcmActivity">
+            android:name="uy.com.group05.baasclient.trueques.SuscribirCanalPushActivity"
+            android:label="@string/title_activity_suscribir_canales_push"
+            android:parentActivityName="uy.com.group05.baasclient.trueques.SuscribirCanalPushActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uy.com.group05.baasclient.trueques.LoginActivity" />
+
+        </activity>
+        <activity
+            android:name="uy.com.group05.baasclient.trueques.EnviarMensajeCanalPushActivity"
+            android:label="@string/title_activity_suscribir_canales_push"
+            android:parentActivityName="uy.com.group05.baasclient.trueques.EnviarMensajeCanalPushActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

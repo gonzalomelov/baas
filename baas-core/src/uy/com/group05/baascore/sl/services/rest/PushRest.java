@@ -1,5 +1,6 @@
 package uy.com.group05.baascore.sl.services.rest;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -10,6 +11,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelDTO;
 
 @Path("/push")
 public interface PushRest {
@@ -40,5 +43,11 @@ public interface PushRest {
 	public boolean subscribeToPushChannel(
 			@HeaderParam("accessToken") UUID accessToken,
 			@FormParam("appName") String appName,
-			@FormParam("pushChanName") String pushChanName);	
+			@FormParam("pushChanName") String pushChanName);
+	
+	@GET
+	@Path("/getPushChannels")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<SimplePushChannelDTO> getPushChannelsOfApplication(
+			@HeaderParam("appName") String appName);
 }
