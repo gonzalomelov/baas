@@ -6,6 +6,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.internal.aq;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -73,6 +74,15 @@ public class EnviarMensajeCanalPushActivity extends Activity {
     
     void fillData(final Activity act) {
 	    new AsyncTask<Void, Void, Boolean>() {
+	    	private final ProgressDialog dialog = new ProgressDialog(act);
+    		@Override
+    		protected void onPreExecute() {
+    			this.dialog.setMessage("Cargando canales...");
+    			this.dialog.setIndeterminate(true);
+    			this.dialog.setCancelable(false);
+    			this.dialog.show();
+    		}
+    		
 		    @Override
 		    protected Boolean doInBackground(Void... params) {
 				try {
@@ -99,6 +109,10 @@ public class EnviarMensajeCanalPushActivity extends Activity {
 		    
 		    @Override
             protected void onPostExecute(Boolean ok) {
+		    	if (this.dialog.isShowing()) {
+		    		this.dialog.dismiss();
+		    	}
+		    	
 		    	boxAdapter = new ListAdapter(act, canales);
 
 			    ListView lvMain = (ListView) findViewById(R.id.lvMain);
@@ -116,14 +130,21 @@ public class EnviarMensajeCanalPushActivity extends Activity {
     
     public void enviarMensajeCanalPush(View view) {
     	final Activity act = (Activity) view.getContext();
-    	String result = "Enviando mensaje al canal ";
-	    for (SimplePushChannelDTO canal : boxAdapter.getBox()) {
-	    	new AsyncTask<SimplePushChannelDTO, Void, Boolean>() {
-			    @Override
-			    protected Boolean doInBackground(SimplePushChannelDTO... params) {
+    	new AsyncTask<Void, Void, Boolean>() {
+    		private final ProgressDialog dialog = new ProgressDialog(act);
+    		@Override
+    		protected void onPreExecute() {
+    			this.dialog.setMessage("Enviando mensaje a los canales...");
+    			this.dialog.setIndeterminate(true);
+    			this.dialog.setCancelable(false);
+    			this.dialog.show();
+    		}
+    		
+		    @Override
+		    protected Boolean doInBackground(Void... params) {
+		    	for (SimplePushChannelDTO canal : boxAdapter.getBox()) {
 					try {
-						gcms.sendNotificationToPushChannel(params[0].getName(), "testKey", "testValue");
-						return true;
+						gcms.sendNotificationToPushChannel(canal.getName(), "testKey", "testValue");
 					} catch (UnsupportedEncodingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -137,17 +158,19 @@ public class EnviarMensajeCanalPushActivity extends Activity {
 						e.printStackTrace();
 						return false;
 					}
-			    }
-			    
-			    @Override
-	            protected void onPostExecute(Boolean ok) {
-			    	Toast.makeText(act, "Mensaje enviado", Toast.LENGTH_LONG).show();
-			    	act.finish();
-	            }
-			}.execute(canal, null, null);
-	    	result += canal.getName();
-	    }
-	    Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+		    	}
+		    	return true;
+		    }
+		    
+		    @Override
+            protected void onPostExecute(Boolean ok) {
+		    	if (this.dialog.isShowing()) {
+		    		this.dialog.dismiss();
+		    	}
+		    	Toast.makeText(act, "Mensaje enviado", Toast.LENGTH_LONG).show();
+		    	act.finish();
+            }
+		}.execute(null, null, null);
 	    
     	/*if (registrado) {
     		mDisplay.setText("");
