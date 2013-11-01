@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,15 +20,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import uy.com.group05.baasclient.sdk.entities.ClientAuthenticationDTO;
 import uy.com.group05.baasclient.sdk.entities.SimplePushChannelDTO;
 import uy.com.group05.baasclient.sdk.utils.AssetsPropertyReader;
-import uy.com.group05.baasclient.trueques.GcmIntentService;
-import uy.com.group05.baasclient.trueques.MainActivity;
-import uy.com.group05.baasclient.trueques.R;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -37,20 +31,17 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
-import com.google.gson.reflect.*;
 
 public class GCMService {
 	public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
-    String SENDER_ID = "892349087446"; // Project ID creado desde la consola de Google.
+    String SENDER_ID;
 
     // Para los logs
     static final String TAG = "GCM SDK";
@@ -66,6 +57,8 @@ public class GCMService {
     public GCMService(Activity act) {
     	appContext = act.getApplicationContext();
     	activity = act;
+    	SENDER_ID = AssetsPropertyReader.getProperties(appContext, "project_id");
+    	Log.i("TAG", appContext.toString());
     	if (checkPlayServices()) {
     		//gcm = GoogleCloudMessaging.getInstance(appContext);
             regid = getRegistrationId();
@@ -368,9 +361,6 @@ public class GCMService {
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(url);
-		
-		SharedPreferences prefs =
-				context.getSharedPreferences("uy.com.group05.baasclient.sdk",Context.MODE_PRIVATE);
 		
 		httpGet.setHeader("appName", appName);
 		httpGet.setHeader("Content-Type", "application/x-www-form-urlencoded");

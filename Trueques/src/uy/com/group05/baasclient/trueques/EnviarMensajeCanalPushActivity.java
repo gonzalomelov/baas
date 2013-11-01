@@ -136,7 +136,6 @@ public class EnviarMensajeCanalPushActivity extends Activity {
     		protected void onPreExecute() {
     			this.dialog.setMessage("Enviando mensaje a los canales...");
     			this.dialog.setIndeterminate(true);
-    			this.dialog.setCancelable(false);
     			this.dialog.show();
     		}
     		
