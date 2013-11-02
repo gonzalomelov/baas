@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Trueques-beta</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_registrar">Registrar</string>
+    <string name="title_activity_home">Home</string>
+    <string name="title_activity_crear_objeto">CrearObjeto</string>
+    <string name="title_activity_perfil">Perfil</string>
+    <string name="title_activity_crear_trueque">CrearTrueque</string>
+    <string name="title_activity_ver_ofertas_pendientes">VerOfertasPendientes</string>
+    <string name="title_activity_ver_trueques">VerTrueques</string>
+    <string name="title_activity_vista_trueque">VistaTrueque</string>
+    <string name="title_activity_ofertar">Ofertar</string>
+    <string name="title_activity_ver_ofertas_pend">VerOfertasPend</string>
+    <string name="title_activity_vista_oferta_pend">VistaOfertaPend</string>
+
+</resources>
