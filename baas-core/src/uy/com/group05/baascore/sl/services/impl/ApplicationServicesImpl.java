@@ -15,6 +15,7 @@ import javax.jws.WebService;
 
 
 
+
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Client;
@@ -36,6 +37,7 @@ import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.common.mapper.Mapper;
 import uy.com.group05.baascore.sl.entitiesws.ApplicationDTO;
+import uy.com.group05.baascore.sl.entitiesws.ChartDto;
 import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
 import uy.com.group05.baascore.sl.entitiesws.EntityDTO;
 import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
@@ -218,5 +220,13 @@ public class ApplicationServicesImpl implements ApplicationServices{
 		List<SimplePushChannelDTO> pushChannelsDTO = mapper.getMapper().mapAsList(pushChannels, SimplePushChannelDTO.class); 
 		
 		return pushChannelsDTO;
+	}
+
+
+	@Override
+	public ChartDto getChartsValues(long idApp)
+			throws AppNotRegisteredException {
+		
+		return appManagementLocal.getChartValues(idApp);
 	}
 }

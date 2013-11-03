@@ -22,6 +22,7 @@ import uy.com.group05.baascore.common.exceptions.PushChanAlreadyRegisteredExcept
 import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
+import uy.com.group05.baascore.sl.entitiesws.ChartDto;
 
 @Local
 public interface AppManagementLocal {
@@ -107,5 +108,7 @@ public interface AppManagementLocal {
 	public Application getApplication(long appId) throws AppNotRegisteredException;
 	
 	public Application getApplication(String appName) throws AppNotRegisteredException;
+	
+	public ChartDto getChartValues(long appId) throws AppNotRegisteredException;
 	
 }

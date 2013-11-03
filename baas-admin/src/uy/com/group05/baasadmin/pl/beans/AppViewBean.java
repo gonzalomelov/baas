@@ -3,11 +3,15 @@ package uy.com.group05.baasadmin.pl.beans;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
+import org.primefaces.model.chart.CartesianChartModel;
+import org.primefaces.model.chart.ChartSeries;
 
 import uy.com.group05.baasadmin.common.exceptions.ApplicationException;
 import uy.com.group05.baasadmin.common.exceptions.EntityException;
@@ -17,6 +21,7 @@ import uy.com.group05.baasadmin.pl.models.Application;
 import uy.com.group05.baasadmin.pl.models.Entity;
 import uy.com.group05.baasadmin.pl.models.PushChannel;
 import uy.com.group05.baasadmin.pl.models.Rol;
+import uy.com.group05.baascore.sl.services.soap.ChartDto;
 
 @ManagedBean(name = "appViewBean")
 @ViewScoped
@@ -37,6 +42,14 @@ public class AppViewBean {
 	private String pushChannelsError;
 	
 	private String pushChannelName;
+	
+	private List<Integer> pedidosHttp;
+	
+	private List<Integer> dispRegistrados;
+	
+	private List<Integer> mensajesPushEnviados;
+	
+	private CartesianChartModel linearModel;  
 	
 	public String getRolName() {
 		return rolName;
@@ -76,7 +89,15 @@ public class AppViewBean {
 			} catch (ApplicationException e) {
 				error = e.getMessage();
 			}
+			
+			pedidosHttp = new ArrayList<Integer>();
+			
+			dispRegistrados = new ArrayList<Integer>();
+			
+			mensajesPushEnviados = new ArrayList<Integer>();
 
+			createLinearModel();
+			
 		}
 
 	}
@@ -303,6 +324,121 @@ public class AppViewBean {
 
 	public void setPushChannelName(String pushChannelName) {
 		this.pushChannelName = pushChannelName;
+	}
+
+	public CartesianChartModel getLinearModel() {
+		return linearModel;
+	}
+
+	public void setLinearModel(CartesianChartModel linearModel) {
+		this.linearModel = linearModel;
+	}
+	
+	private void createLinearModel() {  
+        
+        
+        try{
+        	
+        	linearModel = new CartesianChartModel();  
+        	
+			ApplicationController appController = new ApplicationController();
+			ChartDto datosChart = appController.getChartValues(app.getId());
+					
+			pedidosHttp.add(0, datosChart.getPedidosHttp());
+			
+			if(pedidosHttp.size() > 10){
+				for(int i = 10; i < pedidosHttp.size();i++){
+					pedidosHttp.remove(i);
+				}
+			}
+			
+			dispRegistrados.add(0, datosChart.getDispRegistrados());
+			
+			if(dispRegistrados.size() > 10){
+				for(int i = 10; i < dispRegistrados.size();i++){
+					dispRegistrados.remove(i);
+				}
+			}
+			
+			
+			mensajesPushEnviados.add(0, datosChart.getMensajesPushEnviados());
+			
+			if(mensajesPushEnviados.size() > 10){
+				for(int i = 10; i < mensajesPushEnviados.size();i++){
+					mensajesPushEnviados.remove(i);
+				}
+			}
+			
+			ChartSeries pedidosHttpChart = new ChartSeries();  
+			pedidosHttpChart.setLabel("Pedidos HTTP");  
+	        
+	        ChartSeries dispRegistradosChart = new ChartSeries();  
+	        dispRegistradosChart.setLabel("Cant dispositivos registrados");
+	          
+	        
+	        
+	        ChartSeries mensajesPushEnviadosChart = new ChartSeries();  
+	        mensajesPushEnviadosChart.setLabel("Mensajes push enviados");
+	        
+	  
+	        for(int i = 0; i < pedidosHttp.size(); i++){
+	        	
+	        	pedidosHttpChart.set(i + 1, pedidosHttp.get(i));
+	        	dispRegistradosChart.set(i+1, dispRegistrados.get(i));
+	        	mensajesPushEnviadosChart.set(i+1, mensajesPushEnviados.get(i));
+	        }
+	       
+	  
+
+	        linearModel.addSeries(pedidosHttpChart);  
+	        linearModel.addSeries(dispRegistradosChart);
+	        linearModel.addSeries(mensajesPushEnviadosChart); 
+			
+		
+			
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+		  
+          
+  
+        
+    }
+	
+	public String cargarChart() {
+		
+		createLinearModel();
+		
+		return null;
+	
+	}
+
+	public List<Integer> getPedidosHttp() {
+		return pedidosHttp;
+	}
+
+	public void setPedidosHttp(List<Integer> pedidosHttp) {
+		this.pedidosHttp = pedidosHttp;
+	}
+
+	public List<Integer> getDispRegistrados() {
+		return dispRegistrados;
+	}
+
+	public void setDispRegistrados(List<Integer> dispRegistrados) {
+		this.dispRegistrados = dispRegistrados;
+	}
+
+	public List<Integer> getMensajesPushEnviados() {
+		return mensajesPushEnviados;
+	}
+
+	public void setMensajesPushEnviados(List<Integer> mensajesPushEnviados) {
+		this.mensajesPushEnviados = mensajesPushEnviados;
 	}
 
 }

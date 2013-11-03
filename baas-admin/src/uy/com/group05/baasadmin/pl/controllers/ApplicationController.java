@@ -22,6 +22,7 @@ import uy.com.group05.baascore.sl.services.impl.PermissionServices;
 import uy.com.group05.baascore.sl.services.impl.PushServices;
 import uy.com.group05.baascore.sl.services.soap.AppNotRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.ApplicationDTO;
+import uy.com.group05.baascore.sl.services.soap.ChartDto;
 import uy.com.group05.baascore.sl.services.soap.ClientDTO;
 import uy.com.group05.baascore.sl.services.soap.EntityAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.EntityCollectionAlreadyExistsException_Exception;
@@ -40,6 +41,7 @@ import uy.com.group05.baascore.sl.services.soap.RoleAlreadyRegisteredException_E
 import uy.com.group05.baascore.sl.services.soap.RoleDTO;
 import uy.com.group05.baascore.sl.services.soap.SimpleApplicationDTO;
 import uy.com.group05.baascore.sl.services.soap.SimpleEntityDTO;
+import uy.com.group05.baascore.sl.services.soap.SimplePushChannelDTO;
 import uy.com.group05.baascore.sl.services.soap.SimplePushChannelEntityDTO;
 import uy.com.group05.baascore.sl.services.soap.UserCantAccessAppException_Exception;
 import uy.com.group05.baascore.sl.services.soap.UserNotRegisteredException_Exception;
@@ -149,8 +151,8 @@ public class ApplicationController {
 			
 			List<PushChannel> canalesPush = new ArrayList<PushChannel>();
 			
-			List<PushChannelDTO> pushChannelDTOList = port.getPushChannelsApplication(id);
-			for (PushChannelDTO dto : pushChannelDTOList) {
+			List<SimplePushChannelDTO> pushChannelDTOList = port.getPushChannelsApplication(id);
+			for (SimplePushChannelDTO dto : pushChannelDTOList) {
 				PushChannel p = new PushChannel();
 				p.setId(dto.getId());
 				p.setName(dto.getName());
@@ -415,5 +417,19 @@ public class ApplicationController {
 		} catch (AppNotRegisteredException_Exception e) {
 			throw new Exception(e.getMessage());
 		}
+	}
+	
+	public ChartDto getChartValues(long appId) throws Exception{
+		
+		ApplicationServices service = new ApplicationServices();
+		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
+		
+		try {
+			return port.getChartsValues(appId);
+		} catch (AppNotRegisteredException_Exception e) {
+			throw new Exception(e.getMessage());
+		}
+		
+		
 	}
 }

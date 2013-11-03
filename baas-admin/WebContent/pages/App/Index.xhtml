@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
@@ -35,6 +36,7 @@ body {
 	<link href='../../css/opa-icons.css' rel='stylesheet' />
 	<link href='../../css/uploadify.css' rel='stylesheet' />
 	<link href="../../css/appIndex.css" rel="stylesheet" />
+	<script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
 </h:head>
 <body>
 
@@ -123,6 +125,20 @@ body {
 			
 			
 		</div>
+		
+		<div class="chartsBox">
+			<h:form>
+				<p:lineChart id="linear" value="#{appViewBean.linearModel}" legendPosition="e"  
+     				title="Estadisticas" style="height:300px"/>
+     			
+     			<h:commandButton value="Reload" styleClass="buttonAdd btn btn-large btn-success hidden btnChart">
+					<f:ajax execute="@form" render="@form"
+						listener="#{appViewBean.cargarChart}" />
+				</h:commandButton>
+     			
+     	 	</h:form>
+		</div>
+		
 		<div class="clientsBox">
 
 
@@ -329,12 +345,12 @@ body {
 	</div>
 
 	</h:panelGroup>
+	
 	<!-- external javascript
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 
-	<!-- jQuery -->
-	<script src="../../js/jquery-1.7.2.min.js"></script>
+
 	<!-- jQuery UI -->
 	<script src="../../js/jquery-ui-1.8.21.custom.min.js"></script>
 	<!-- transition / effect library -->
@@ -395,6 +411,8 @@ body {
 	<script src="../../js/jquery.history.js"></script>
 	<!-- application script for Charisma demo -->
 	<script src="../../js/charisma.js"></script>
+	
+	<script src="../../js/LoadChart.js"></script>
 
 
 </body>

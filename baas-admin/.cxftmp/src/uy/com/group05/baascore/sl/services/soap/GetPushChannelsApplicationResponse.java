@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="return" type="{http://soap.services.sl.baascore.group05.com.uy/}pushChannelDTO" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="return" type="{http://soap.services.sl.baascore.group05.com.uy/}simplePushChannelDTO" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 public class GetPushChannelsApplicationResponse {
 
     @XmlElement(name = "return")
-    protected List<PushChannelDTO> _return;
+    protected List<SimplePushChannelDTO> _return;
 
     /**
      * Gets the value of the return property.
@@ -55,13 +55,13 @@ public class GetPushChannelsApplicationResponse {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link PushChannelDTO }
+     * {@link SimplePushChannelDTO }
      * 
      * 
      */
-    public List<PushChannelDTO> getReturn() {
+    public List<SimplePushChannelDTO> getReturn() {
         if (_return == null) {
-            _return = new ArrayList<PushChannelDTO>();
+            _return = new ArrayList<SimplePushChannelDTO>();
         }
         return this._return;
     }
