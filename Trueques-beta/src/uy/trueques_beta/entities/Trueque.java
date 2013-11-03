@@ -16,8 +16,9 @@ public class Trueque {
 	//++++
 	private String buscado;
 	private float minVal;
+	private String ubicacion;
 	
-	public Trueque (int id, Objeto obj, String busca, float minVal){
+	public Trueque (int id, Objeto obj, String busca, float minVal, String ubicacion){
 		this.idTrueque =id;
 		this.objeto=obj;
 		this.activa=true;
@@ -25,6 +26,7 @@ public class Trueque {
 		this.ganadora =null;
 		this.buscado=busca;
 		this.setMinVal(minVal);
+		this.ubicacion=ubicacion;
 	}
 
 	public int getIdTrueque() {
@@ -97,7 +99,13 @@ public class Trueque {
 	public void setMinVal(float minVal) {
 		this.minVal = minVal;
 	}
-	
+	public String getUbicacion() {
+		return ubicacion;
+	}
+
+	public void setUbicacion(String ubicacion) {
+		this.ubicacion = ubicacion;
+	}
 
 	//+++++++++++++
 	public Usuario getUsuario(){
@@ -137,7 +145,7 @@ public class Trueque {
 	public List<Oferta> getOfertasPendientes(){
 		List<Oferta> pends = new ArrayList<Oferta>();
 		
-		if(this.ofertas==null || this.ofertas.isEmpty())
+		if(this.ofertas==null || this.ofertas.isEmpty() || !this.activa)
 			return pends;
 		
 		for(Oferta ofer: this.ofertas){
@@ -146,6 +154,8 @@ public class Trueque {
 		}
 		return pends;
 	}
+
+	
 
 	
 

@@ -11,7 +11,9 @@ import uy.trueques_beta.negocio.Factory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
@@ -28,19 +30,21 @@ public class Ofertar extends Activity {
 	private String nombre;
 	private String desc;
 	private float valor;
+	private String ubicacion;
 	
 	private TextView tituloView;
 	private EditText nombreView;
 	private EditText descView;
 	private EditText valorView;
+	private EditText ubicacionView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ofertar);
 
-		Bundle bundle = this.getIntent().getExtras();
-		this.mail = bundle.getString("mail");
+		SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
+		this.mail = prefs.getString("mail", "");
 		this.idTrueque = this.getIntent().getIntExtra("idTrueque", -1);
 		
 		this.t = Factory.getTruequeCtrl().getTrueque(idTrueque);
@@ -53,7 +57,7 @@ public class Ofertar extends Activity {
 		nombreView = (EditText) findViewById(R.id.nom_obj);
 		descView = (EditText) findViewById(R.id.desc_obj);
 		valorView = (EditText) findViewById(R.id.valor_obj);
-
+		ubicacionView = (EditText) findViewById(R.id.ubicacion);
 		 
 		findViewById(R.id.BtnOfertar).setOnClickListener(
 				new View.OnClickListener() {
@@ -83,11 +87,13 @@ public class Ofertar extends Activity {
 			nombreView.setError(null);
 			descView.setError(null);
 			valorView.setError(null);
+			ubicacionView.setError(null);
 
 			// Store values at the time of the login attempt.
 			nombre = nombreView.getText().toString();
 			desc = descView.getText().toString();
 			valor = 0;
+			ubicacion = ubicacionView.getText().toString();
 			
 			boolean cancel = false;
 			View focusView = null;
@@ -111,6 +117,12 @@ public class Ofertar extends Activity {
 			if (TextUtils.isEmpty(desc)) {
 				descView.setError(getString(R.string.error_field_required));
 				focusView = descView;
+				cancel = true;
+			} 
+			// Check for a valid DESCRIPCION.
+			if (TextUtils.isEmpty(ubicacion)) {
+				ubicacionView.setError(getString(R.string.error_field_required));
+				focusView = ubicacionView;
 				cancel = true;
 			} 
 
@@ -139,7 +151,7 @@ public class Ofertar extends Activity {
 			@Override
 			protected Boolean doInBackground(Void... params) {
 				if (t!=null)
-					return Factory.getTruequeCtrl().crearOferta(t.getIdTrueque(), mail, nombre, desc, valor);
+					return Factory.getTruequeCtrl().crearOferta(t.getIdTrueque(), mail, nombre, desc, valor, ubicacion);
 				else
 					return false;
 			}

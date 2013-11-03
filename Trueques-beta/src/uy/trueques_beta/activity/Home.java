@@ -7,6 +7,7 @@ import uy.trueques_beta.R.menu;
 import uy.trueques_beta.activity.CrearTrueque.CrearTruequeListener;
 import uy.trueques_beta.activity.VerOfertasPendientes.VerOfertasPendientesListener;
 import uy.trueques_beta.activity.VerTrueques.VerTruequesListener;
+import uy.trueques_beta.activity.VerTruequesHechos.VerTruequesHechosListener;
 import uy.trueques_beta.entities.Oferta;
 import uy.trueques_beta.fragment.Fragment1;
 import uy.trueques_beta.negocio.Factory;
@@ -21,6 +22,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -30,7 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
 
-public class Home extends Activity implements VerTruequesListener, CrearTruequeListener, VerOfertasPendientesListener{
+public class Home extends Activity implements VerTruequesListener, CrearTruequeListener, VerOfertasPendientesListener, VerTruequesHechosListener{
 
 	private String[] opcionesMenu;
 	private DrawerLayout drawerLayout;
@@ -41,10 +43,12 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+//		//hide keyboard :
+//		 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		
 		//+++ DRAWER
-		opcionesMenu = new String[] {"Perfil", "Publicar Trueque", "Ver Trueques", "Ofertas Pendientes", "Cerrar Sesión"};
-		imagenesMenu= new int[] {R.drawable.ic_perfil, R.drawable.ic_crear_trueque, R.drawable.ic_ver_trueques,R.drawable.ic_ver_ofertas, R.drawable.ic_cerrar};
+		opcionesMenu = new String[] {"Perfil", "Publicar Trueque", "Ver Trueques", "Ofertas Pendientes", "Trueques Realizados","Cerrar Sesión"};
+		imagenesMenu= new int[] {R.drawable.ic_perfil, R.drawable.ic_crear_trueque, R.drawable.ic_ver_trueques,R.drawable.ic_ver_ofertas,R.drawable.ic_trueques_ok, R.drawable.ic_cerrar};
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
  
@@ -87,6 +91,10 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 	                    ((VerOfertasPendientes)fragment).setVerOfertasPendientesListener(Home.this);
 	                    break;
 	                case 4:
+	                    fragment = new VerTruequesHechos();
+	                    ((VerTruequesHechos)fragment).setVerTruequesHechosListener(Home.this);
+	                    break;
+	                case 5:
 	                    cerrar = true;
 	                    break;
 	            }
@@ -176,6 +184,13 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 		startActivity(intent);
 	}
 
+	@Override
+	public void onTruequeHechoSeleccionado(int idTrueque) {
+		//IR a VistaTrueque con IdTrueque
+		Intent intent = new Intent(Home.this, VistaTruequeHecho.class);
+		intent.putExtra("idTrueque", (int)idTrueque);
+		startActivity(intent);
+	}
 	
 	//Creo la clase para el adaptador
 	class HomeAdapter extends ArrayAdapter {

@@ -30,6 +30,7 @@ public class CrearTrueque extends Fragment{//Activity {
 	private String desc;
 	private float valor;
 	private String descBusca;
+	private String ubicacion;
 	private float minVal;
 	
 	private EditText nombreView;
@@ -37,6 +38,7 @@ public class CrearTrueque extends Fragment{//Activity {
 	private EditText valorView;
 	private EditText descBuscaView;
 	private EditText minValView;
+	private EditText ubicacionView;
 	private CrearTruequeListener listener;
 	
 
@@ -58,6 +60,7 @@ public class CrearTrueque extends Fragment{//Activity {
 		valorView = (EditText) getView().findViewById(R.id.valor_obj);
 		descBuscaView = (EditText) getView().findViewById(R.id.desc_deseado);
 		minValView = (EditText) getView().findViewById(R.id.minValor_deseado);
+		ubicacionView = (EditText) getView().findViewById(R.id.ubicacion);
 		
 		SharedPreferences prefs = this.getActivity().getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
@@ -101,6 +104,7 @@ public class CrearTrueque extends Fragment{//Activity {
 		valorView.setError(null);
 		descBuscaView.setError(null);
 		minValView.setError(null);
+		ubicacionView.setError(null);
 
 		// Store values at the time of the login attempt.
 		nombre = nombreView.getText().toString();
@@ -108,6 +112,7 @@ public class CrearTrueque extends Fragment{//Activity {
 		valor = 0;
 		descBusca = descBuscaView.getText().toString();
 		minVal = 0;
+		ubicacion = ubicacionView.getText().toString();
 		
 		boolean cancel = false;
 		View focusView = null;
@@ -147,7 +152,13 @@ public class CrearTrueque extends Fragment{//Activity {
 			descBuscaView.setError(getString(R.string.error_field_required));
 			focusView = descBuscaView;
 			cancel = true;
-		} 
+		}
+		// Check for a valid DESCRIPCION.
+		if (TextUtils.isEmpty(ubicacion)) {
+			ubicacionView.setError(getString(R.string.error_field_required));
+			focusView = ubicacionView;
+			cancel = true;
+		}
 
 		// Check for a valid VALOR.
 		if (!(valor>0)) {
@@ -183,7 +194,7 @@ public class CrearTrueque extends Fragment{//Activity {
 			int idObj= Factory.getObjetoCtrl().crearObjeto(mail, nombre, desc, valor);
 			Objeto obj = Factory.getObjetoCtrl().getObjeto(idObj);
 			if (obj!=null){
-				this.idTrueque = Factory.getTruequeCtrl().crearTrueque(obj, descBusca, minVal);
+				this.idTrueque = Factory.getTruequeCtrl().crearTrueque(obj, descBusca, minVal, ubicacion);
 				return idTrueque>0;
 			}
 			else

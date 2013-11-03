@@ -35,10 +35,12 @@
             android:name="uy.trueques_beta.activity.CrearObjeto"
             android:label="@string/title_activity_crear_objeto" >
         </activity>
-        <!-- <activity
+        <!--
+        <activity
             android:name="uy.trueques_beta.activity.Perfil"
             android:label="@string/title_activity_perfil" >
-        </activity>-->
+        </activity>
+        -->
         <activity
             android:name="uy.trueques_beta.activity.CrearTrueque"
             android:label="@string/title_activity_crear_trueque" >
@@ -70,6 +72,10 @@
         <activity
             android:name="uy.trueques_beta.activity.Home"
             android:label="@string/title_activity_home" >
+        </activity>
+        <activity
+            android:name="uy.trueques_beta.activity.VistaTruequeHecho"
+            android:label="@string/title_activity_vista_trueque_hecho" >
         </activity>
     </application>
 

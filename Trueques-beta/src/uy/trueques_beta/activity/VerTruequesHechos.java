@@ -1,44 +1,36 @@
 package uy.trueques_beta.activity;
 
-import java.util.ArrayList;
-
 import uy.trueques_beta.R;
-import uy.trueques_beta.R.layout;
-import uy.trueques_beta.R.menu;
-//import uy.trueques_beta.activity.Home.AdaptadorObjetos;
-import uy.trueques_beta.entities.Objeto;
+import uy.trueques_beta.activity.VerTrueques.AdaptadorTrueque;
+import uy.trueques_beta.activity.VerTrueques.VerTruequesListener;
 import uy.trueques_beta.entities.Trueque;
 import uy.trueques_beta.negocio.Factory;
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView;
 
-
-public class VerTrueques extends Fragment implements AdapterView.OnItemClickListener{//extends Activity implements AdapterView.OnItemClickListener {
+public class VerTruequesHechos extends Fragment implements AdapterView.OnItemClickListener{
 
 	private AdaptadorTrueque adaptador;
 	private String mail;
 	private ListView lstTrueques;
 	private TextView lblVerTrueques;
 	private Object[] trueques;
-	private VerTruequesListener listener;
+	private VerTruequesHechosListener listener;
 			
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
  
-        return inflater.inflate(R.layout.fragment_ver_trueques, container, false);
+        return inflater.inflate(R.layout.fragment_ver_trueques_hechos, container, false);
     }
 	 
 	@Override
@@ -55,12 +47,13 @@ public class VerTrueques extends Fragment implements AdapterView.OnItemClickList
 //		Bundle bundle = this.getIntent().getExtras();
 //		this.mail = bundle.getString("mail");
 		//***Pruba
-		int size=Factory.getTruequeCtrl().getTrueques().size();
+		trueques = Factory.getTruequeCtrl().getTruequesUsuario(this.mail).toArray();
+		int size=this.trueques.length;
 		
 		lblVerTrueques = (TextView)getView().findViewById(R.id.LblVerTrueques);
-		lblVerTrueques.setText(lblVerTrueques.getText().toString() +" ("+ size +")");
+		lblVerTrueques.setText("Trueques realizados: " + size);
 		 
-		trueques = Factory.getTruequeCtrl().getTruequesActivos().toArray();
+		
 		this.adaptador = new AdaptadorTrueque(this, R.layout.list_item_trueques, trueques);
 		lstTrueques = (ListView)getView().findViewById(R.id.LstTrueques);
 		lstTrueques.setAdapter(adaptador);
@@ -69,39 +62,21 @@ public class VerTrueques extends Fragment implements AdapterView.OnItemClickList
 		
 	}
 
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.ver_trueques, menu);
-//		return true;
-//	}
-	
-//	@Override
-//	public void onBackPressed() {
-//		// TODO Auto-generated method stub
-//		super.onBackPressed();
-//	}
-
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-		// TODO Auto-generated method stub
-		Trueque t =((Trueque)adapterView.getItemAtPosition(position));//.getAdapter().getItem(position));
-//		Intent intent = new Intent(VerTrueques.this, VistaTrueque.class);
-//        intent.putExtra("idTrueque", (int)t.getIdTrueque());
-//        intent.putExtra("mail", mail);
-//		startActivity(intent);
-		
+
+		Trueque t =((Trueque)adapterView.getItemAtPosition(position));
 		//AVISO AL ACTIVITY
 		if (listener!=null) {
-            listener.onTruequeSeleccionado(t.getIdTrueque());
+            listener.onTruequeHechoSeleccionado(t.getIdTrueque());
         }
 	}
 	
-	public interface VerTruequesListener {
-        void onTruequeSeleccionado(int idTrueque);
+	public interface VerTruequesHechosListener {
+        void onTruequeHechoSeleccionado(int idTrueque);
     }
  
-    public void setVerTruequesListener(VerTruequesListener listener) {
+    public void setVerTruequesHechosListener(VerTruequesHechosListener listener) {
         this.listener=listener;
     }
 	
@@ -118,11 +93,6 @@ public class VerTrueques extends Fragment implements AdapterView.OnItemClickList
 			//this.trueques = objects;
 			this.context = context.getActivity();
 	    }
-//	    AdaptadorTrueque(Activity context, int resource, Trueque[] objects) {
-//            super(context, R.layout.list_item_trueques, trueques);
-//            //this.trueques = Factory.getTruequeCtrl().getTrueques().toArray();
-//            this.context = context;
-//        }
  
         public View getView(int position, View convertView, ViewGroup parent) {
 	        LayoutInflater inflater = context.getLayoutInflater();//getSystemService(Context.LAYOUT_INFLATER_SERVICE);//
@@ -138,6 +108,6 @@ public class VerTrueques extends Fragment implements AdapterView.OnItemClickList
 	        return(item);
         }
 	}
-
-
 }
+
+

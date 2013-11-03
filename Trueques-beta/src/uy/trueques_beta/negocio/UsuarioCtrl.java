@@ -2,10 +2,12 @@ package uy.trueques_beta.negocio;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import uy.trueques_beta.entities.Objeto;
 import uy.trueques_beta.entities.Usuario;
+import uy.trueques_beta.entities.Trueque;
 
 public class UsuarioCtrl {
 
@@ -43,6 +45,7 @@ public class UsuarioCtrl {
 		else 
 			return false;
 	}
+	
 	
 	//++++++++
 

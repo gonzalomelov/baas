@@ -18,12 +18,12 @@ public class OfertaCtrl {
 	}
 	
 
-	public int crearOferta(String mail, Objeto obj) {
+	public int crearOferta(String mail, Objeto obj, int idTrueque, String ubicacion) {
 		Usuario u = Factory.getUsuarioCtrl().getUsuario(mail);
 		if (u==null){
 			return -1;
 		}
-		Oferta ofer = new Oferta(idCont, obj);
+		Oferta ofer = new Oferta(idCont, obj, idTrueque, ubicacion);
 		this.ofertas.put(idCont, ofer);
 		idCont++;
 		return ofer.getIdOferta();

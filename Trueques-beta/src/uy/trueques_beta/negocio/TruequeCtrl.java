@@ -21,12 +21,12 @@ public class TruequeCtrl {
 		return trueques.get(id);
 	}
 
-	public int crearTrueque(Objeto obj, String busca, float minVal) {
+	public int crearTrueque(Objeto obj, String busca, float minVal, String ubicacion) {
 		if (obj==null || !Factory.getObjetoCtrl().existObjeto((obj.getId()))){
 			return -1;
 		}
 		
-		Trueque t = new Trueque(idCont, obj, busca, minVal);
+		Trueque t = new Trueque(idCont, obj, busca, minVal, ubicacion);
 		t.getUsuario().setPublicados(t.getUsuario().getPublicados()+1);
 		this.trueques.put(idCont, t);
 		idCont++;
@@ -45,8 +45,14 @@ public class TruequeCtrl {
 				t.setGanadora(ofer);
 				t.setActiva(false);
 				t.setFechaFin(new Date());
-				t.getUsuario().setAceptados(t.getUsuario().getAceptados()+1);
+				t.getUsuario().setRealizados(t.getUsuario().getRealizados()+1);
+				ofer.getUsuario().setAceptados(t.getUsuario().getAceptados()+1);
 				ofer.getUsuario().setRealizados(ofer.getUsuario().getRealizados()+1);
+				//Marco las demas ofertas como rechazadas
+				for(Oferta o: t.getOfertas()){
+					if(!o.equals(ofer))
+						o.setRechazada(true);
+				}
 			}
 		}
 		return true;
@@ -60,11 +66,33 @@ public class TruequeCtrl {
 		return this.trueques.get(idTrueque).rechazarOferta(idOferta);
 	}
 	
+	public List<Trueque> getTruequesActivos(){
+		
+		List<Trueque> trueques = new ArrayList<Trueque>();
+		for(Trueque t: this.trueques.values()){
+			if (t.isActiva())
+				trueques.add(t);
+		}
+		
+		return trueques;
+	}
+	
+	public List<Trueque> getTruequesUsuario(String mail){
+		
+		List<Trueque> trueques = new ArrayList<Trueque>();
+		for(Trueque t: this.trueques.values()){
+			if (t.getUsuario().getMail().equals(mail) && !t.isActiva())
+				trueques.add(t);
+		}
+		
+		return trueques;
+	}
+	
 	public List<Trueque> getTrueques(){
 		return new ArrayList<Trueque>(this.trueques.values());
 	}
 	
-	public boolean crearOferta(int idTrueque, String mail, String nomObj, String desc, float valor){
+	public boolean crearOferta(int idTrueque, String mail, String nomObj, String desc, float valor, String ubicacion){
 		Trueque t = this.trueques.get(idTrueque);
 		if (t==null)
 			return false;
@@ -73,7 +101,7 @@ public class TruequeCtrl {
 		Objeto obj = Factory.getObjetoCtrl().getObjeto(idObj);
 		if (obj==null)
 			return false;
-		int idOfer = Factory.getOfertaCtrl().crearOferta(mail, obj);
+		int idOfer = Factory.getOfertaCtrl().crearOferta(mail, obj, idTrueque, ubicacion);
 		Oferta ofer = Factory.getOfertaCtrl().getOferta(idOfer);
 		if (ofer==null)
 			return false;
@@ -83,10 +111,9 @@ public class TruequeCtrl {
 	
 	public List<Oferta> getOfertasPendientes(String mail){
 		if (mail == null || mail.isEmpty()){
-			System.out.println("MAIL VACIO");
 			return new ArrayList<Oferta>();
 		}
-		System.out.println("MAIL ="+mail);
+		
 		List<Oferta> ofers = new ArrayList<Oferta>();
 		for(Trueque t: this.trueques.values()){
 			if (t.getUsuario().getMail().equals(mail))

@@ -15,5 +15,6 @@
     <string name="title_activity_ofertar">Ofertar</string>
     <string name="title_activity_ver_ofertas_pend">VerOfertasPend</string>
     <string name="title_activity_vista_oferta_pend">VistaOfertaPend</string>
+    <string name="title_activity_vista_trueque_hecho">VistaTruequeHecho</string>
 
 </resources>

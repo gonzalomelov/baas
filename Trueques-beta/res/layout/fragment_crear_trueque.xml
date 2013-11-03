@@ -41,7 +41,6 @@
             android:inputType="text"
             android:maxLines="1"
             android:singleLine="true" >
-
             <requestFocus />
         </EditText>
         
@@ -52,9 +51,7 @@
             android:hint="Descripcion del objeto"
             android:inputType="text"
             android:maxLines="1"
-            android:singleLine="true" >
-
-            <requestFocus />
+            android:singleLine="true" >            
         </EditText>
 
         <EditText
@@ -67,6 +64,16 @@
             android:singleLine="true" />
         
         <EditText
+            android:id="@+id/ubicacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ubicacion"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true" >            
+        </EditText>
+        
+        <EditText
             android:id="@+id/desc_deseado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -75,7 +82,7 @@
             android:singleLine="true"
             android:paddingTop="50dp">
 
-            <requestFocus />
+            
         </EditText>
         
         <EditText
