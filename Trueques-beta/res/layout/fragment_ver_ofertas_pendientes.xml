@@ -15,7 +15,14 @@
         android:layout_height="wrap_content" 
         android:textSize="25dp"
         android:text="Ofertas pendientes"
-        android:paddingBottom="10dp"/>
+        android:paddingBottom="1dp"/>
+    
+    <TableLayout 
+        android:background="#111111"
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:paddingBottom="10dp">
+    </TableLayout>
     
     <ListView
         android:id="@+id/LstOfertas"

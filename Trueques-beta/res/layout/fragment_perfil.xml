@@ -2,7 +2,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="#0099cc"
+     >
 
 <!-- <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -23,17 +25,31 @@
         android:paddingBottom="20dp" >
 
         <TableRow
-            android:paddingBottom="3dp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="3dp"
+            android:background="@color/black_overlay" >
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Datos del Usuario:"
-                android:textSize="20dp" />
+                android:textSize="20dp" 
+                android:textColor="#33b5e5"
+                android:textStyle="bold"/>
+
         </TableRow>
 
         <TableRow
-            android:paddingBottom="3dp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="3dp" 
+            >
 
-            <TextView android:text="Nombre:"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre:"
                 android:textSize="16dp" />
 
             <TextView
@@ -54,10 +70,14 @@
                 android:textSize="16dp" />
         </TableRow>
         
-        <TableRow >
+        <TableRow 
+                android:background="@color/black_overlay">
         <TextView
                 android:text="Estadisticas del Usuario:"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textColor="#33b5e5"
+                android:textStyle="bold"
+                 />
         </TableRow>
         
         <TableRow
@@ -93,44 +113,37 @@
                 android:text="0"
                 android:textSize="16dp" />
         </TableRow>
-        
-   	<!--<TableRow>
-			<Button
-		        android:id="@+id/BtnCrearTrueque"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_span="2"
-		        android:text="Crear Trueque"
-	    	 />
+    </TableLayout>
+    
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="30dp"
+        android:layout_gravity="center_horizontal">    
+   		<TableRow 
+                android:background="@color/black_overlay">
+            <TextView android:text="Tu puntaje:"
+                android:layout_gravity="center_horizontal"
+                android:textSize="30sp" 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#33b5e5"
+                android:textStyle="bold"/>
+		</TableRow>
+		<TableRow>
+            <ImageView
+                android:id="@+id/imagePuntaje"
+                android:src="@drawable/ic_pts0"
+                android:layout_height="50sp"
+                android:layout_width="wrap_content" />
         </TableRow>
         <TableRow>
-			<Button
-		        android:id="@+id/BtnVerTrueques"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_span="2"
-		        android:text="Ver Trueques"
-	    	 />
-        </TableRow>
-        <TableRow>
-			<Button
-		        android:id="@+id/BtnVerOferPend"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_span="2"
-		        android:text="Ver Ofertas pendientes"
-	    	 />
-        </TableRow>
-        
-        <TableRow>
-			<Button
-		        android:id="@+id/BtnCerrarSesion"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_span="2"
-		        android:text="Cerrar Sesion"
-	    	 />
-        </TableRow>-->
+            <TextView 
+                android:layout_gravity="center_horizontal"
+                android:textSize="12sp"
+                android:id="@+id/LblImgText"
+                android:text="Tu promedio es de 0 PTS" />
+		</TableRow>
     </TableLayout>
     
 

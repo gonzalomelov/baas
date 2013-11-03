@@ -39,7 +39,7 @@
         <activity
             android:name="uy.trueques_beta.activity.Perfil"
             android:label="@string/title_activity_perfil" >
-        </activity>
+        </activity>
         -->
         <activity
             android:name="uy.trueques_beta.activity.CrearTrueque"
@@ -76,6 +76,16 @@
         <activity
             android:name="uy.trueques_beta.activity.VistaTruequeHecho"
             android:label="@string/title_activity_vista_trueque_hecho" >
+        </activity>
+        <activity
+            android:name="uy.trueques_beta.activity.Configuracion1"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_configuracion"
+            android:theme="@style/FullscreenTheme" >
+        </activity>
+        <activity
+            android:name="uy.trueques_beta.activity.Configuracion"
+            android:label="@string/title_activity_configuracion" >
         </activity>
     </application>
 

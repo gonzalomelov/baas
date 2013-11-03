@@ -48,9 +48,9 @@
         android:id="@+id/tableDatosTrueque"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp" >
+        android:paddingBottom="0dp" >
 
-       <TableRow android:paddingBottom="3dp" >
+       <TableRow android:paddingBottom="0dp" >
 
             <TextView
                 android:text="Cambiaste tu:"
@@ -78,7 +78,7 @@
                  />
         </TableRow>
         
-        <TableLayout android:paddingBottom="10dp">
+        <TableLayout android:paddingBottom="3dp">
             <TextView android:id="@+id/LblDesc" />
         </TableLayout>
         
@@ -88,9 +88,9 @@
         android:id="@+id/tableDatosOferta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="20dp" >
+        android:paddingBottom="0dp" >
 
-       <TableRow android:paddingBottom="3dp" >
+       <TableRow android:paddingBottom="0dp" >
 
             <TextView
                 android:text="Por:"
@@ -125,18 +125,32 @@
             <TextView android:text="Descripcion:"
                  />
         </TableRow>
-        <TableLayout android:paddingBottom="10dp">
+        <TableLayout android:paddingBottom="0dp">
             <TextView android:id="@+id/LblDescOferta" />
         </TableLayout>
         
         <TableRow android:paddingBottom="0dp"
              >
-            <TextView android:text="El objeto se encuentra en:"
-                android:layout_span="2"/>
+            <TextView android:text="El objeto se encuentra en:"/>
         </TableRow>
-        <TableLayout android:paddingBottom="5dp">
+        <TableLayout android:paddingBottom="3dp">
             <TextView android:id="@+id/LblUbicacion" />
         </TableLayout>
+        <TableRow android:paddingTop="1sp"
+            android:background="#111111">
+        </TableRow>
+        <TableRow android:paddingTop="5sp"
+            android:background="#eeeeee">
+            <TextView 
+                android:id="@+id/LblPuntaje"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical"
+                android:text="Puntúa tu trueque: "/>
+            <Spinner
+		        android:id="@+id/puntos_spinner"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" />
+        </TableRow>
     </TableLayout>
 
 </LinearLayout>
