@@ -55,12 +55,12 @@ public class VerTrueques extends Fragment implements AdapterView.OnItemClickList
 //		Bundle bundle = this.getIntent().getExtras();
 //		this.mail = bundle.getString("mail");
 		//***Pruba
-		int size=Factory.getTruequeCtrl().getTrueques().size();
+		trueques = Factory.getTruequeCtrl().getTruequesActivos().toArray();
+		int size=trueques.length;
 		
 		lblVerTrueques = (TextView)getView().findViewById(R.id.LblVerTrueques);
 		lblVerTrueques.setText(lblVerTrueques.getText().toString() +" ("+ size +")");
 		 
-		trueques = Factory.getTruequeCtrl().getTruequesActivos().toArray();
 		this.adaptador = new AdaptadorTrueque(this, R.layout.list_item_trueques, trueques);
 		lstTrueques = (ListView)getView().findViewById(R.id.LstTrueques);
 		lstTrueques.setAdapter(adaptador);
