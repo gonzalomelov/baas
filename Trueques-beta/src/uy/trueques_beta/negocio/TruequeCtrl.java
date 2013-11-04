@@ -81,7 +81,7 @@ public class TruequeCtrl {
 		
 		List<Trueque> trueques = new ArrayList<Trueque>();
 		for(Trueque t: this.trueques.values()){
-			if (t.getUsuario().getMail().equals(mail) && !t.isActiva())
+			if ((t.getUsuario().getMail().equals(mail) && !t.isActiva()) || (t.getGanadora()!=null && t.getGanadora().getUsuario().getMail().equals(mail)))
 				trueques.add(t);
 		}
 		
