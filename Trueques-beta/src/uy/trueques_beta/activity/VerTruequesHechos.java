@@ -102,8 +102,8 @@ public class VerTruequesHechos extends Fragment implements AdapterView.OnItemCli
 	        Trueque t = (Trueque) trueques[position];
 	        itemTrueque.setText("Cambiaste " + t.getObjeto().getNombre() +" por " 
 	        		+ t.getGanadora().getObjeto().getNombre()+ "\n"
-	        		+ "El día " + t.getFechaFin().toGMTString());
-	 
+	        		/*+ "El día " + t.getFechaFin().toGMTString());*/
+	        		+ "El día "+t.getFechaFin().getDate()+"-"+(t.getFechaFin().getMonth()+1)+"-"+(t.getFechaFin().getYear()+1900));
 //	        TextView lblDescObj = (TextView)item.findViewById(R.id.LblDescObj);
 //	        lblDescObj.setText(((Objeto) objs[position]).getDescripcion());
 	 

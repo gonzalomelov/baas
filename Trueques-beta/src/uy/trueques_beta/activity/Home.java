@@ -13,6 +13,7 @@ import uy.trueques_beta.fragment.Fragment1;
 import uy.trueques_beta.negocio.Factory;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.app.*;
 import android.content.Context;
@@ -21,6 +22,7 @@ import android.content.SharedPreferences;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -38,13 +40,12 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 	private DrawerLayout drawerLayout;
 	private ListView drawerList;
 	public int[] imagenesMenu;
+	private ActionBarDrawerToggle conmutador;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-//		//hide keyboard :
-//		 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		
 		//+++ DRAWER
 		opcionesMenu = new String[] {"Perfil", "Publicar Trueque", "Ver Trueques", "Ofertas Pendientes", "Trueques Realizados","Cerrar Sesión"};
@@ -52,16 +53,16 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
  
+        //+++Conmutador
+        conmutador = new ActionBarDrawerToggle(this, this.drawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name){
+        	
+        };
+        //+++
         drawerList.setAdapter(new /*ArrayAdapter<String>*/HomeAdapter(getActionBar().getThemedContext(),
         	    (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) ?
         	    		R.layout.list_item_home
         	    /*android.R.layout.simple_list_item_activated_1*/ :
         	    android.R.layout.simple_list_item_1, opcionesMenu));
-        
-//		        drawerList.setAdapter(new ArrayAdapter<String>(
-//		                getActionBar().getThemedContext(),
-//		            android.R.layout.simple_list_item_1, opcionesMenu));
-        //+++++
 		//++++
 		drawerList.setOnItemClickListener(new OnItemClickListener() {
 	        private String tituloSeccion;
@@ -133,8 +134,20 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
         fragmentManager.beginTransaction().replace(R.id.content_frame, new Perfil()).commit();
         drawerList.setItemChecked(0, true);
         getActionBar().setTitle(opcionesMenu[0]);
-		//Inicio con Drawer abierto
-		drawerLayout.openDrawer(drawerList);
+		
+        SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
+        if(prefs.getBoolean("PrimeraVez", true)){
+	        //Inicio con Drawer abierto
+			drawerLayout.openDrawer(drawerList);
+	        
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putBoolean("PrimeraVez", false);
+			editor.commit();
+        }
+		
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
+		drawerLayout.setDrawerListener(conmutador);
 	}
 	
 	
@@ -226,5 +239,29 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 	 
 	        return(item);
         }
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (conmutador.onOptionsItemSelected(item)){
+			return true;
+		}
+		switch (item.getItemId()) {
+        case R.id.action_settings:
+            startActivity(new Intent(Home.this, Configuracion.class));
+//        	getFragmentManager().beginTransaction()
+//            .replace(android.R.id.content, new Opciones())
+//            .commit();
+        	return true;
+        default:
+            return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onPostCreate(savedInstanceState);
+		conmutador.syncState();
 	}
 }

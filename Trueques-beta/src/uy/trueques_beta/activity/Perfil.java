@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,8 @@ public class Perfil extends Fragment {//Activity {
 	private TextView lblRealizados;
 	private TextView lblPublicados;
 	private TextView lblAceptados;
+	private ImageView imgPts;
+	private TextView imgText;
 //	private String[] opcionesMenu;
 //	private DrawerLayout drawerLayout;
 //	private ListView drawerList;
@@ -46,13 +49,6 @@ public class Perfil extends Fragment {//Activity {
 	@Override
 	public void onActivityCreated(Bundle state) {
         super.onActivityCreated(state);
-//	protected void onCreate(Bundle savedInstanceState) {
-//		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.activity_perfil);
-		
-		//Obtengo el mail del usuario
-//		Bundle bundle = this.getIntent().getExtras();
-//		this.mail = bundle.getString("mail");
 		SharedPreferences prefs = this.getActivity().getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
 		
@@ -74,39 +70,32 @@ public class Perfil extends Fragment {//Activity {
 		lblAceptados.setText(String.valueOf(u.getAceptados()));
 		lblPublicados = (TextView)getView().findViewById(R.id.LblPublicados);
 		lblPublicados.setText(String.valueOf(u.getPublicados()));
+		//Puntaje
+		imgText = (TextView)getView().findViewById(R.id.LblImgText);
+		imgText.setText("Tu promedio es "+u.getPuntaje()+"! Pts.");
+		imgPts = (ImageView)getView().findViewById(R.id.imagePuntaje);
 		
-//		//Envio a CrearObjeto
-//		getView().findViewById(R.id.BtnCrearTrueque).setOnClickListener(
-//				new View.OnClickListener() {
-//					@Override
-//					public void onClick(View view) {
-//						crearTrueque();
-//					}
-//				});
-//		//Envio a CrearObjeto
-//		getView().findViewById(R.id.BtnVerTrueques).setOnClickListener(
-//				new View.OnClickListener() {
-//					@Override
-//					public void onClick(View view) {
-//						verTrueques();
-//					}
-//				});
-//		//Envio a CrearObjeto
-//		getView().findViewById(R.id.BtnVerOferPend).setOnClickListener(
-//				new View.OnClickListener() {
-//					@Override
-//					public void onClick(View view) {
-//						verOferPend();
-//					}
-//				});
-//		//CERRAR SESION E ENVIAR AL INICIO
-//		getView().findViewById(R.id.BtnCerrarSesion).setOnClickListener(
-//				new View.OnClickListener() {
-//					@Override
-//					public void onClick(View view) {
-//						cerrarSesion();
-//					}
-//				});
+		switch(Math.round(u.getPuntaje())){
+			case 0:
+				imgPts.setImageResource(R.drawable.ic_pts0);
+				break;
+			case 1:
+				imgPts.setImageResource(R.drawable.ic_pts1);
+				break;
+			case 2:
+				imgPts.setImageResource(R.drawable.ic_pts2);
+				break;
+			case 3:
+				imgPts.setImageResource(R.drawable.ic_pts3);
+				break;
+			case 4:
+				imgPts.setImageResource(R.drawable.ic_pts4);
+				break;
+			case 5:
+				imgPts.setImageResource(R.drawable.ic_pts5);
+				break;
+		}
+		
 	}
 	
 	public interface PerfilListener {
@@ -116,57 +105,5 @@ public class Perfil extends Fragment {//Activity {
     public void setPerfilListener(PerfilListener listener) {
         this.listener=listener;
     }
-
-//	public void crearTrueque(){
-//		// Voy a crear un Trueque
-//		Intent intent = new Intent(Perfil.this, CrearTrueque.class);
-//		intent.putExtra("mail", mail);
-//		//intent.putExtra("idUsuario", );
-//		startActivity(intent);
-//	}
-//	public void verTrueques(){
-//		// Voy a verTrueques
-//		Intent intent = new Intent(Perfil.this, VerTrueques.class);
-//		intent.putExtra("mail", mail);
-//		startActivity(intent);
-//	}
-//	public void verOferPend(){
-//		// Voy a verOfertasPendientes
-//		Intent intent = new Intent(Perfil.this, VerOfertasPendientes.class);
-//		intent.putExtra("mail", mail);
-//		startActivity(intent);
-//	}
-//	public void cerrarSesion(){
-//		//BORRO USUARIO
-//		SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
-//		SharedPreferences.Editor editor = prefs.edit();
-//		editor.remove("mail");
-//		editor.commit();
-////		// Voy al inicio (Main)
-////		Intent intent = new Intent(Perfil.this, Main.class);
-////		//intent.putExtra("mail", mail);
-////		startActivity(intent);
-//		finish();
-//	}
-	
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.perfil, menu);
-//		return true;
-//	}
-	
-//	@Override
-//	public void onBackPressed()
-//	{
-////	        if (back_pressed + 2000 > System.currentTimeMillis()){ 
-////	        	super.onBackPressed();
-////	        	finish();
-////	        	//System.exit(0);
-////			}
-////	        else 
-////	        	Toast.makeText(getBaseContext(), "Presiona de nuevo para salir", Toast.LENGTH_SHORT).show();
-////	        back_pressed = System.currentTimeMillis();
-//	}
 
 }
