@@ -17,6 +17,8 @@ public class Trueque {
 	private String buscado;
 	private float minVal;
 	private String ubicacion;
+	private int puntosTrueque;
+	private int puntosGanadora;
 	
 	public Trueque (int id, Objeto obj, String busca, float minVal, String ubicacion){
 		this.idTrueque =id;
@@ -27,6 +29,8 @@ public class Trueque {
 		this.buscado=busca;
 		this.setMinVal(minVal);
 		this.ubicacion=ubicacion;
+		this.puntosGanadora=0;
+		this.puntosTrueque=0;
 	}
 
 	public int getIdTrueque() {
@@ -106,7 +110,21 @@ public class Trueque {
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
 	}
+	public int getPuntosGanadora() {
+		return puntosGanadora;
+	}
 
+	public void setPuntosGanadora(int puntosGanadora) {
+		this.puntosGanadora = puntosGanadora;
+	}
+
+	public int getPuntosTrueque() {
+		return puntosTrueque;
+	}
+
+	public void setPuntosTrueque(int puntosTrueque) {
+		this.puntosTrueque = puntosTrueque;
+	}
 	//+++++++++++++
 	public Usuario getUsuario(){
 		return this.objeto.getDuenio();
@@ -153,6 +171,15 @@ public class Trueque {
 				pends.add(ofer);
 		}
 		return pends;
+	}
+
+	public void puntuarTrueque(int pts){
+		this.puntosTrueque=pts;
+		this.objeto.getDuenio().puntuar(pts);
+	}
+	public void puntuarGanadora(int pts){
+		this.puntosGanadora=pts;
+		this.ganadora.getUsuario().puntuar(pts);
 	}
 
 	

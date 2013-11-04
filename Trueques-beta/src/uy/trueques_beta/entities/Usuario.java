@@ -16,6 +16,8 @@ public class Usuario {
 	private int publicados; //trueques
 	private int aceptados; //trueques aceptados
 	private int realizados; //trueques propuestos y aceptados
+	private int puntos;
+	private int total;
 	
 	public Usuario(String nombre, String mail, String pass, List<Objeto> objetos) {
 		super();
@@ -28,6 +30,8 @@ public class Usuario {
 		this.publicados =0;
 		this.aceptados =0;
 		this.realizados =0;
+		this.setPuntos(0);
+		this.total= 0;
 	}
 	
 //	public int getId() {
@@ -91,6 +95,20 @@ public class Usuario {
 	public void setOfertas(List<Oferta> ofertas) {
 		this.ofertas = ofertas;
 	}
+	public int getPuntos() {
+		return puntos;
+	}
+
+	public void setPuntos(int puntos) {
+		this.puntos = puntos;
+	}
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
 	
 	//+++++++
 
@@ -112,6 +130,16 @@ public class Usuario {
 		this.trueques.add(t);
 	}
 
+	public void puntuar(int puntos){
+		this.total++;
+		this.puntos+=puntos;
+	}
+	public float getPuntaje(){
+		if (this.total==0)
+			return 0;
+		else
+			return this.puntos/this.total;
+	}
 	
 	
 }
