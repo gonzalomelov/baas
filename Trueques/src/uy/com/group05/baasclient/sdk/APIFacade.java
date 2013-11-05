@@ -9,7 +9,7 @@ import org.apache.http.client.ClientProtocolException;
 import android.content.Context;
 
 public interface APIFacade {
-	String get(String entity)
+	String get(String entity, String query)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException;
 	
 	boolean post(String entity, String json)

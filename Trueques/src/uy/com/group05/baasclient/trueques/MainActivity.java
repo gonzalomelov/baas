@@ -86,7 +86,10 @@ public class MainActivity extends Activity {
 			try
 			{
 				String entity = args[0];
-				String json = SDKFactory.getAPIFacade(context).get(entity);
+				String query = "";
+				
+				String json = SDKFactory.getAPIFacade(context).get(entity, query);
+				
 				return json;
 			}
 			catch (UnsupportedEncodingException e) {

@@ -20,7 +20,7 @@ public class APIImpl implements APIFacade {
 	}
 	
 	@Override
-	public String get(String entity)
+	public String get(String entity, String query)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
 		ConnectivityManager connMgr = (ConnectivityManager) 
@@ -32,7 +32,7 @@ public class APIImpl implements APIFacade {
 	    if (networkInfo != null && networkInfo.isConnected()) {
 	    	//Llamo al servicio
 	    	APIRestClient restClient = new APIRestClient(context);
-	    	json = restClient.get(entity);
+	    	json = restClient.get(entity, query);
 	    } else {
 	    	//Llamo a la base local
 	    	APISQLiteClient sqliteClient = new APISQLiteClient(context);

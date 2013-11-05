@@ -29,14 +29,14 @@ public class APIRestClient {
 		this.context = context;
 	}
 	
-	public String get(String entity)
+	public String get(String entity, String query)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
 		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
 		
 		String appName = AssetsPropertyReader.getProperties(context, "appName");
 		
-		String url = serviceUrl + "/api/entities" + "/" + appName + "/" + entity;
+		String url = serviceUrl + "/api/entities" + "/" + appName + "/" + entity + "/" + query;
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(url);
