@@ -68,41 +68,7 @@ public class GCMService {
             }
             else {
             	registerInBackground();
-            }
-            
-            
-            
-            
-            
-            
-            registerInBackground();
-        	/*new AsyncTask<Void, Void, String>() {
-                @Override
-                protected String doInBackground(Void... params) {
-                    String msg = "";
-                    try {
-						sendNotificationToPushChannel("ofertas", "testKey", "testValue");
-					} catch (UnsupportedEncodingException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ClientProtocolException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-                    return msg;
-                }
-            }.execute(null, null, null);*/
-            
-            
-            
-            
-            
-            
-            
-            
+            }            
         } else {
             Log.i(TAG, "No se encontró Google Play Services.");
     	}
@@ -199,10 +165,10 @@ public class GCMService {
                     
                     registrado = true;
 
-                    sendRegistrationIdToBackend();
-
-                    // Guardo el regid
-                    storeRegistrationId(regid);
+                    if (sendRegistrationIdToBackend()) {
+                    	// Guardo el regid
+                        storeRegistrationId(regid);
+                    }
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
                 }

@@ -324,8 +324,6 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 			long idCanal, String msgKey, String msgValue)
 			throws AppNotRegisteredException, PushChanNotRegisteredException {
 		
-		// TODO Auto-generated method stub
-		
 		List<Client> clientes = getClientsFromPushChannel(idApp, idCanal);
 		if (clientes.isEmpty())
 			System.out.println("------> No hay clientes asociados al canal push.");
