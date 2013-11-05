@@ -70,7 +70,16 @@
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
                 android:text="@string/action_sign_in_register" />
+            
+            <CheckBox
+		        android:id="@+id/chkAdmin"
+		        android:layout_width="wrap_content"
+		        android:layout_height="50sp"
+		        android:text="Ingresar como Administrador"
+		        android:checked="false" />
         </LinearLayout>
     </ScrollView>
+    
+    
 
 </merge>

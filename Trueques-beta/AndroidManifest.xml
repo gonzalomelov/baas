@@ -39,7 +39,7 @@
         <activity
             android:name="uy.trueques_beta.activity.Perfil"
             android:label="@string/title_activity_perfil" >
-        </activity>
+        </activity>
         -->
         <activity
             android:name="uy.trueques_beta.activity.CrearTrueque"
@@ -86,6 +86,14 @@
         <activity
             android:name="uy.trueques_beta.activity.Configuracion"
             android:label="@string/title_activity_configuracion" >
+        </activity>
+        <activity
+            android:name="uy.trueques_beta.activity.VerUsuarios"
+            android:label="@string/title_activity_ver_usuarios" >
+        </activity>
+        <activity
+            android:name="uy.trueques_beta.activity.VistaUsuario"
+            android:label="@string/title_activity_vista_usuario" >
         </activity>
     </application>
 

@@ -2,9 +2,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#0099cc"
-     >
+    android:orientation="vertical">
+    <!--android:background="#0099cc" 
+     >-->
 
 <!-- <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -34,9 +34,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Datos del Usuario:"
-                android:textSize="20dp" 
-                android:textColor="#33b5e5"
-                android:textStyle="bold"/>
+                android:textSize="20dp" />
+                <!--android:textColor="#33b5e5"
+                android:textStyle="bold"/>-->
 
         </TableRow>
 
@@ -55,70 +55,69 @@
             <TextView
                 android:id="@+id/LblNombre"
                 android:text="Nombre"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
-            android:paddingBottom="15dp" >
+            android:paddingBottom="15sp" >
 
             <TextView android:text="Email:"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/LblEmail"
                 android:text="Mail"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
         </TableRow>
         
         <TableRow 
                 android:background="@color/black_overlay">
         <TextView
                 android:text="Estadisticas del Usuario:"
-                android:textSize="20dp"
-                android:textColor="#33b5e5"
-                android:textStyle="bold"
-                 />
+                android:textSize="20sp"/>
+                <!--android:textColor="#33b5e5"
+                android:textStyle="bold"/>-->
         </TableRow>
         
         <TableRow
-            android:paddingBottom="3dp" >
+            android:paddingBottom="3sp" >
 
             <TextView android:text="Trueques Publicados:"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/LblPublicados"
                 android:text="0"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
         </TableRow>
         <TableRow
-            android:paddingBottom="3dp" >
+            android:paddingBottom="3sp" >
 
             <TextView android:text="Ofertas Aceptadas:"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/LblAceptados"
                 android:text="0"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
         </TableRow>
         <TableRow
-            android:paddingBottom="3dp" >
+            android:paddingBottom="3sp" >
 
             <TextView android:text="Trueques Realizados:"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/LblRealizados"
                 android:text="0"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
         </TableRow>
     </TableLayout>
     
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="30dp"
+        android:paddingTop="30sp"
         android:layout_gravity="center_horizontal">    
    		<TableRow 
                 android:background="@color/black_overlay">
@@ -126,9 +125,9 @@
                 android:layout_gravity="center_horizontal"
                 android:textSize="30sp" 
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#33b5e5"
-                android:textStyle="bold"/>
+                android:layout_height="wrap_content"/>
+                <!--android:textColor="#33b5e5"
+                android:textStyle="bold"/>-->
 		</TableRow>
 		<TableRow>
             <ImageView
