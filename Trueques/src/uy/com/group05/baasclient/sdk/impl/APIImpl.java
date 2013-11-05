@@ -43,7 +43,7 @@ public class APIImpl implements APIFacade {
 	}
 
 	@Override
-	public boolean post(String entity, Object jsonObj, Type type )
+	public boolean post(String entity, String json)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
 		ConnectivityManager connMgr = (ConnectivityManager) 
@@ -55,11 +55,11 @@ public class APIImpl implements APIFacade {
 	    if (networkInfo != null && networkInfo.isConnected()) {
 	    	//Llamo al servicio
 	    	APIRestClient restClient = new APIRestClient(context);
-	    	result = restClient.post(entity, jsonObj, type);
+	    	result = restClient.post(entity, json);
 	    } else {
 	    	//Llamo a la base local
 	    	APISQLiteClient sqliteClient = new APISQLiteClient(context);
-	    	result = sqliteClient.post(entity, jsonObj, type);
+	    	result = sqliteClient.post(entity, json);
 	    }
 		
 		return result;

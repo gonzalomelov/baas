@@ -71,7 +71,7 @@ public class APIRestClient {
 		return json;
 	}
 	
-	public boolean post(String entity, Object jsonObj, Type type)
+	public boolean post(String entity, String json)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
 		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
@@ -90,9 +90,7 @@ public class APIRestClient {
 		
 		httpPost.setHeader("accessToken", accessToken);
 		
-		Gson gson = new Gson();
-		
-		StringEntity strEntity = new StringEntity(gson.toJson(jsonObj, type));
+		StringEntity strEntity = new StringEntity(json);
 		strEntity.setContentType("application/json");
 		
 		httpPost.setEntity(strEntity);
@@ -110,6 +108,7 @@ public class APIRestClient {
 		BufferedReader br = new BufferedReader(
 				new InputStreamReader(httpResponse.getEntity().getContent()));
 		
+		Gson gson = new Gson();
 		ret = gson.fromJson(br, Boolean.class);
 		
 		return ret;

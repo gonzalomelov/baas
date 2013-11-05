@@ -25,6 +25,7 @@ import uy.com.group05.baasclient.sdk.entities.ClientRegistrationDTO;
 import uy.com.group05.baasclient.sdk.utils.AssetsPropertyReader;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -132,6 +133,8 @@ public class ClientImpl implements ClientFacade {
 		
 		prefs.edit().putString("accessToken", authenticationDTO.getAccessToken()).commit();
 		prefs.edit().putString("refreshToken", authenticationDTO.getRefreshToken()).commit();
+		
+		Log.i("TAG", authenticationDTO.getAccessToken());
 		
 		return authenticationDTO;
 	}

@@ -65,7 +65,10 @@ public class SubmitActivity extends Activity {
 				auto.setMarca(args[0]);
 				auto.setAnio(args[1]);
 				
-				boolean ok = SDKFactory.getAPIFacade(context).post(entity, auto, Trueque.class);
+				Gson gson = new Gson();
+				String json = gson.toJson(auto, Trueque.class);
+				
+				boolean ok = SDKFactory.getAPIFacade(context).post(entity, json);
 				
 				return ok;
 			}

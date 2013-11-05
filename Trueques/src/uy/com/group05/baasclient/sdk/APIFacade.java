@@ -12,6 +12,6 @@ public interface APIFacade {
 	String get(String entity)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException;
 	
-	boolean post(String entity, Object jsonObj, Type type)
+	boolean post(String entity, String json)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException;
 }

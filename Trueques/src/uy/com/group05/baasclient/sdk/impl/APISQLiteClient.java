@@ -70,15 +70,12 @@ public class APISQLiteClient {
 		return ret;
 	}
 	
-	public boolean post(String entity, Object jsonObj, Type type) {
+	public boolean post(String entity, String json) {
 		SdkDbHelper dbHelper = new SdkDbHelper(context);
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		
-		Trueque t = (Trueque)jsonObj;
-		
 		ContentValues values = new ContentValues();
-		values.put("a", t.getAnio());
-		values.put("b", t.getMarca());
+		values.put("a", json);
 		
 		long newRowId = db.insert("Trueque", "", values);
 		
