@@ -1,0 +1,156 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".VistaTruequeHecho"
+    android:orientation="vertical">
+
+   	<TextView
+        android:id="@+id/LblNomTrueque"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:textSize="25sp"
+        android:text="Trueque realizado"/>
+   	
+   	<TextView
+   	    android:id="@+id/LblFecha"
+        android:text="El día 12/10/1990"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+<TableLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal" >
+
+    <TableRow >
+		<ImageView
+        android:id="@+id/imageTrueque"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_launcher" 
+        android:layout_marginRight="40sp"/>
+    <ImageView
+        android:id="@+id/imageOferta"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_launcher" />
+            
+    </TableRow>
+</TableLayout>
+    
+    
+    <TableLayout
+        android:id="@+id/tableDatosTrueque"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="0dp" >
+
+       <TableRow android:paddingBottom="0dp" >
+
+            <TextView
+                android:text="Cambiaste tu:"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/LblObjetoTrueque"
+                android:text="Nombre"
+                android:textSize="16sp"
+                android:layout_marginLeft="10sp" />
+        </TableRow>
+
+        <TableRow android:paddingBottom="0dp" >
+
+            <TextView android:text="Valorado en:" />
+            <TextView
+                android:id="@+id/LblValor"
+                android:text="$0"
+                android:layout_marginLeft="10sp" />
+        </TableRow>
+        
+        <TableRow android:paddingBottom="0dp" >
+            <TextView android:text="Descripcion:"
+                 />
+        </TableRow>
+        
+        <TableLayout android:paddingBottom="3dp">
+            <TextView android:id="@+id/LblDesc" />
+        </TableLayout>
+        
+    </TableLayout>
+    
+    <TableLayout
+        android:id="@+id/tableDatosOferta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="0dp" >
+
+       <TableRow android:paddingBottom="0dp" >
+
+            <TextView
+                android:text="Por:"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/LblObjetoOferta"
+                android:text="Nombre"
+                android:textSize="16sp"
+                android:layout_marginLeft="10sp" />
+        </TableRow>
+		<TableRow android:paddingBottom="0dp" >
+
+            <TextView android:text="De:" />
+            <TextView
+                android:id="@+id/LblDuenioOferta"
+                android:text="dueño (dueño@mail.com)"
+                android:layout_marginLeft="10sp" />
+        </TableRow>
+       
+        <TableRow android:paddingBottom="0dp" >
+
+            <TextView android:text="Valorado en:" />
+            <TextView
+                android:id="@+id/LblValorOferta"
+                android:text="$0"
+                android:layout_marginLeft="10sp" />
+        </TableRow>
+        
+        <TableRow android:paddingBottom="0dp" >
+            <TextView android:text="Descripcion:"
+                 />
+        </TableRow>
+        <TableLayout android:paddingBottom="0dp">
+            <TextView android:id="@+id/LblDescOferta" />
+        </TableLayout>
+        
+        <TableRow android:paddingBottom="0dp"
+             >
+            <TextView android:text="El objeto se encuentra en:"/>
+        </TableRow>
+        <TableLayout android:paddingBottom="3dp">
+            <TextView android:id="@+id/LblUbicacion" />
+        </TableLayout>
+        <TableRow android:paddingTop="1sp"
+            android:background="#111111">
+        </TableRow>
+        <TableRow android:paddingTop="5sp"
+            android:background="#eeeeee">
+            <TextView 
+                android:id="@+id/LblPuntaje"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical"
+                android:text="Puntúa tu trueque: "/>
+            <Spinner
+		        android:id="@+id/puntos_spinner"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
