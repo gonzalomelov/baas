@@ -12,9 +12,17 @@ import javax.ws.rs.core.MediaType;
 public interface APIRest {
 	
 	@GET	
-	@Path("/entities/{appName}/{entity}/{query}")
+	@Path("/entities/{appName}/{entity}")
 	@Produces(MediaType.APPLICATION_JSON)	
 	public String get(
+			//@HeaderParam("accessToken") UUID accessToken,
+			@PathParam("appName") String appName,
+			@PathParam("entity") String entity);
+	
+	@GET	
+	@Path("/entities/{appName}/{entity}/{query}")
+	@Produces(MediaType.APPLICATION_JSON)	
+	public String getQuery(
 			//@HeaderParam("accessToken") UUID accessToken,
 			@PathParam("appName") String appName,
 			@PathParam("entity") String entity,
@@ -29,5 +37,15 @@ public interface APIRest {
 			@PathParam("appName") String appName,
 			@PathParam("entity") String entity,
 			String jsonObj);
+	
+	@POST
+	@Path("/sync/{appName}/{entity}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)	
+	public String sync(
+			//@HeaderParam("accessToken") UUID accessToken,
+			@PathParam("appName") String appName,
+			@PathParam("entity") String entity,
+			String jsonObjs);
 	
 }

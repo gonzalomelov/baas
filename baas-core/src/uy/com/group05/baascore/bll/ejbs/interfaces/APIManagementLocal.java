@@ -8,4 +8,5 @@ import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
 public interface APIManagementLocal {
 	String get(String appName, String entity, String query);
 	boolean post(String appName, String entity, String jsonObj) throws AppNotRegisteredException, EntityNotRegisteredException;
+	String sync(String appName, String entity, String jsonObjs) throws AppNotRegisteredException, EntityNotRegisteredException;
 }

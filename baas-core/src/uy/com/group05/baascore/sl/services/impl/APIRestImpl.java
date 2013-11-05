@@ -14,7 +14,14 @@ public class APIRestImpl implements APIRest {
 	@Inject
 	private APIManagementLocal apiManagementLocal;
 	
-	public String get(String appName, String entity, String query) {
+	public String get(String appName, String entity) {
+
+		String query = "";
+		
+	    return apiManagementLocal.get(appName, entity, query);
+	}
+	
+	public String getQuery(String appName, String entity, String query) {
 
 	    return apiManagementLocal.get(appName, entity, query);
 	}
@@ -31,6 +38,21 @@ public class APIRestImpl implements APIRest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
+		}
+	}
+	
+	public String sync(String appName, String entity, String jsonObjs) {
+
+		try {
+			return apiManagementLocal.sync(appName, entity, jsonObjs);
+		} catch (AppNotRegisteredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
+		} catch (EntityNotRegisteredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
 		}
 	}
 }
