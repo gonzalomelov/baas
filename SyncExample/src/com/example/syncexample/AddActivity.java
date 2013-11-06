@@ -1,6 +1,7 @@
 package com.example.syncexample;
 
-import com.example.syncexample.sync.ClientesProviderContract;
+import com.example.syncexample.sync.BaasProviderContract;
+import com.google.gson.Gson;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -39,11 +40,16 @@ public class AddActivity extends Activity {
 			String telefono = telefonoEditText.getText().toString();
 			String email = emailEditText.getText().toString();
 			
-			values.put("nombre", nombre);
-			values.put("telefono", telefono);
-			values.put("email", email);
+			Cliente cliente = new Cliente();
+			cliente.setEmail(email);
+			cliente.setNombre(nombre);
+			cliente.setTelefono(telefono);
 			
-			Uri result = getContentResolver().insert(ClientesProviderContract.CLIENTES_URI, values);
+			Gson gson = new Gson();
+			
+			values.put("entity", gson.toJson(cliente, Cliente.class));
+			
+			Uri result = getContentResolver().insert(Uri.parse("content://com.example.syncexample.sync.provider/" + "cliente"), values);
 			
 		} else {
 			

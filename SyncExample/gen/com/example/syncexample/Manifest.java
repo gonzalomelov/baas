@@ -9,8 +9,11 @@ package com.example.syncexample;
 
 public final class Manifest {
     public static final class permission {
+        /**  GCM 
+         */
+        public static final String C2D_MESSAGE="com.example.syncexample.sync.permission.C2D_MESSAGE";
         /**  BaaS 
          */
-        public static final String permission="com.example.syncexample.provider.permission";
+        public static final String permission="com.example.syncexample.sync.provider.permission";
     }
 }

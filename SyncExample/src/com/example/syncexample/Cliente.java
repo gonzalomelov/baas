@@ -1,9 +1,10 @@
-package com.example.syncexample.sync;
+package com.example.syncexample;
  
 public class Cliente {
 	private String nombre;
 	private String telefono;
 	private String email;
+	
 	public String getNombre() {
 		return nombre;
 	}

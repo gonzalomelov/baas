@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -28,14 +27,14 @@ public class APIRestClient {
 		this.context = context;
 	}
 	
-	public String get(String entity)
+	public String get(String entity, String query)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
 		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
 		
 		String appName = AssetsPropertyReader.getProperties(context, "appName");
 		
-		String url = serviceUrl + "/api/entities" + "/" + appName + "/" + entity;
+		String url = serviceUrl + "/api/entities" + "/" + appName + "/" + entity + "/" + query;
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(url);
@@ -43,7 +42,8 @@ public class APIRestClient {
 		SharedPreferences prefs =
 				context.getSharedPreferences("uy.com.group05.baasclient.sdk",Context.MODE_PRIVATE);
 		
-		String accessToken = prefs.getString("accessToken", "40276e35-f40e-45ae-8cf6-07a5b8de9558");
+		//String accessToken = prefs.getString("accessToken", "Invalid");
+		String accessToken = "40250661-0cc4-4a2d-9bee-1b338ec72c3e";
 		
 		httpGet.setHeader("accessToken", accessToken);
 		
@@ -70,7 +70,7 @@ public class APIRestClient {
 		return json;
 	}
 	
-	public boolean post(String entity, Object jsonObj, Type type)
+	public boolean post(String entity, String json)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
 		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
@@ -85,13 +85,13 @@ public class APIRestClient {
 		SharedPreferences prefs =
 				context.getSharedPreferences("uy.com.group05.baasclient.sdk",Context.MODE_PRIVATE);
 		
-		String accessToken = prefs.getString("accessToken", "Invalid");
+		//String accessToken = prefs.getString("accessToken", "Invalid");
+		
+		String accessToken = "40250661-0cc4-4a2d-9bee-1b338ec72c3e";
 		
 		httpPost.setHeader("accessToken", accessToken);
 		
-		Gson gson = new Gson();
-		
-		StringEntity strEntity = new StringEntity(gson.toJson(jsonObj, type));
+		StringEntity strEntity = new StringEntity(json);
 		strEntity.setContentType("application/json");
 		
 		httpPost.setEntity(strEntity);
@@ -109,8 +109,57 @@ public class APIRestClient {
 		BufferedReader br = new BufferedReader(
 				new InputStreamReader(httpResponse.getEntity().getContent()));
 		
+		Gson gson = new Gson();
 		ret = gson.fromJson(br, Boolean.class);
 		
 		return ret;
+	}
+	
+	public String sync(String entity, String jsonEntities)
+			throws UnsupportedEncodingException, ClientProtocolException, IOException {
+		
+		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
+		
+		String appName = AssetsPropertyReader.getProperties(context, "appName");
+		
+		String url = serviceUrl + "/api/sync" + "/" + appName + "/" + entity;
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(url);
+		
+		SharedPreferences prefs =
+				context.getSharedPreferences("uy.com.group05.baasclient.sdk", Context.MODE_PRIVATE);
+		
+		//String accessToken = prefs.getString("accessToken", "Invalid");
+		String accessToken = "40250661-0cc4-4a2d-9bee-1b338ec72c3e";
+		
+		httpPost.setHeader("accessToken", accessToken);
+		
+		StringEntity strEntity = new StringEntity(jsonEntities);
+		strEntity.setContentType("application/json");
+		
+		httpPost.setEntity(strEntity);
+		
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+		
+		int statusCode = httpResponse.getStatusLine().getStatusCode();
+		
+		if (statusCode != HttpStatus.SC_OK) {
+			return "";	
+		}
+		
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader(httpResponse.getEntity().getContent()));
+		
+		StringBuilder builder = new StringBuilder();
+		String aux = "";
+
+		while ((aux = br.readLine()) != null) {
+		    builder.append(aux);
+		}
+
+		String json = builder.toString();
+		
+		return json;
 	}
 }

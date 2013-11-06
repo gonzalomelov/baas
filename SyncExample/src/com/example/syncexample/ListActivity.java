@@ -5,13 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.example.syncexample.sync.APIRestClient;
-import com.example.syncexample.sync.Cliente;
-import com.example.syncexample.sync.ClientesProviderContract;
+import com.example.syncexample.sync.BaasProviderContract;
 import com.google.gson.Gson;
 
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -31,16 +31,13 @@ public class ListActivity extends Activity {
 		boolean local = getIntent().getExtras().getBoolean("local");
 		
 		if (local) {
-			Cursor clientes = getContentResolver().query(ClientesProviderContract.CLIENTES_URI, null, null, null, null);
+			Cursor clientes = getContentResolver().query(Uri.parse("content://com.example.syncexample.sync.provider/" + "cliente"), null, null, null, null);
 			
 			List<String> clientesStr = new ArrayList<String>();
 			
 			while (clientes.moveToNext()) {
-				String nombre = clientes.getString(1);
-				String telefono = clientes.getString(2);
-				String email = clientes.getString(3);
-				
-				clientesStr.add(nombre + " - " + telefono + " - " + email);
+				String entity = clientes.getString(1);
+				clientesStr.add(entity);
 			}
 			
 			mListView.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, clientesStr));			
@@ -71,7 +68,7 @@ public class ListActivity extends Activity {
 			APIRestClient apiRestClient  = new APIRestClient(getApplicationContext());
 			
 			try {
-				String json = apiRestClient.get("Cliente");
+				String json = apiRestClient.get("Cliente", "");
 				Gson gson = new Gson();
 				Cliente[] clientsArray = gson.fromJson(json, Cliente[].class);
 				return clientsArray.length == 0 ? new ArrayList<Cliente>() : Arrays.asList(clientsArray);  
