@@ -84,12 +84,12 @@ public class APIManagement implements APIManagementLocal {
 		pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, entityId);
 
 		//######### Llamo a GCM para que todos los clientes actualicen
-//		try {
-//			startDataSynchronization();
-//		}
-//		catch (Exception e) {
-//		
-//		}
+		try {
+			startDataSynchronization(entity);
+		}
+		catch (Exception e) {
+		
+		}
 		
 		return true;
 	}
@@ -111,7 +111,7 @@ public class APIManagement implements APIManagementLocal {
 		return noSqlDbDao.sync(appName, entity, jsonObjs);
 	}
 	
-	private void startDataSynchronization() throws Exception {
+	private void startDataSynchronization(String entity) throws Exception {
 		String url = "https://android.googleapis.com/gcm/send";
 		
 		HttpClient httpClient = new DefaultHttpClient();
@@ -122,7 +122,8 @@ public class APIManagement implements APIManagementLocal {
 		
 		String registrationIds =
 				"{"
-				+ "\"registration_ids\":[\"APA91bEmVgFtIagMeGLXiehdXTXRDIfbX4vCpULU5A0US9cnnWEFn1tM2xY1vpHi8eW9CVfU6OhZtL86f8EhSU7LcWJZgNRYd6XXhSKrl7pa2yzVUQXtssvGC5IlMtkQtSbd8hVeTVu4RMyOsxlLNVlCsHfKs16GPVnuWu-8NEhknuHGednc2Ms\"]"
+				+ "\"registration_ids\":[\"APA91bEmVgFtIagMeGLXiehdXTXRDIfbX4vCpULU5A0US9cnnWEFn1tM2xY1vpHi8eW9CVfU6OhZtL86f8EhSU7LcWJZgNRYd6XXhSKrl7pa2yzVUQXtssvGC5IlMtkQtSbd8hVeTVu4RMyOsxlLNVlCsHfKs16GPVnuWu-8NEhknuHGednc2Ms\"],"
+				+ "data: { \"entity\": \"" + entity + "\"}"
 				+ "}";
 		
 		StringEntity strEntity = new StringEntity(registrationIds);

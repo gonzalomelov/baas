@@ -199,7 +199,7 @@ public class AppManagement implements AppManagementLocal{
 			 	UserCantAccessAppException, 
 			 	EntityCollectionAlreadyExistsException, InvalidNameException {
 		
-		Application app = appDao.read(idApp);
+		Application app = appDao.readById(idApp);
 		if (app == null)//No existe la app
 			throw new AppNotRegisteredException("No existe una aplicacion con ese nombre");
 		if (!app.getUsers().contains(userDao.read(idUser))) {
