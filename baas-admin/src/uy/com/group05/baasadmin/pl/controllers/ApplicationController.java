@@ -239,7 +239,7 @@ public class ApplicationController {
 	}
 	
 	
-	public long addEntity(long userId, long appId, String entityName) throws EntityException{
+	public long addEntity(long appId, long userId, String entityName) throws EntityException{
 		ApplicationServices service = new ApplicationServices();
 		
 		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
