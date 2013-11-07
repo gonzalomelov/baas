@@ -1,8 +1,8 @@
 
-INSERT INTO operations(name) values ('GET')
-INSERT INTO operations(name) values ('POST')
-INSERT INTO operations(name) values ('PUT')
-INSERT INTO operations(name) values ('DELETE')
+INSERT INTO operations(name) values ('GET');
+INSERT INTO operations(name) values ('POST');
+INSERT INTO operations(name) values ('PUT');
+INSERT INTO operations(name) values ('DELETE');
 
 INSERT INTO users(email, lastname, loggedin, name, password)VALUES ('aemail', 'alastname', false, 'aname', 'apassword');
 

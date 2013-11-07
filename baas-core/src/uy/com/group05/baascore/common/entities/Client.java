@@ -45,7 +45,7 @@ public class Client {
 	@ManyToOne
 	private Application application;
 	
-	@OneToMany
+	@ManyToMany
 	@JsonIgnore
 	private List<Role> roles = new ArrayList<Role>();
 
