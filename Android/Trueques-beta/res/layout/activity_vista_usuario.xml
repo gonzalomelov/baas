@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".VistaUsuario" 
+    android:orientation="vertical">
+
+    
+    <TableLayout
+        android:id="@+id/tableDatosUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8sp" >
+
+       <TableRow android:paddingBottom="3dp" >
+
+            <TextView
+                android:text="Datos del usuario:"
+                android:textSize="25sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow android:paddingBottom="0dp" >
+            <TextView 
+                android:text="Nombre:"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/LblNombre"
+                android:text="Nombre" />
+        </TableRow>
+
+        <TableRow android:paddingBottom="0dp" >
+
+            <TextView android:text="Email:"
+                android:textStyle="bold"  />
+            <TextView
+                android:id="@+id/LblMail"
+                android:text="xx@mail.com" />
+        </TableRow>
+        <TableRow android:paddingBottom="0dp" >
+
+            <TextView android:text="Trueques realizados:"
+                android:textStyle="bold"  />
+            <TextView
+                android:id="@+id/LblTrueques"
+                android:text="53" />
+        </TableRow>
+        <TableRow android:paddingBottom="0dp" >
+
+            <TextView android:text="Reputación:"
+                android:textStyle="bold"  />
+            <TextView
+                android:id="@+id/LblReputacion"
+                android:text="4.2" />
+        </TableRow>
+	</TableLayout>
+
+
+     <ImageView
+         android:layout_marginTop="15sp"
+        android:layout_gravity="center_horizontal"
+	    android:id="@+id/ImgReputacion"
+	    android:layout_width="80sp"
+	    android:layout_height="80sp"
+	    android:src="@drawable/ic_pts3" />
+ 
+    
+    <Button
+        android:layout_marginTop="50sp"
+        android:id="@+id/BtnBloquear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bloquear"
+   	 />
+
+</LinearLayout>
