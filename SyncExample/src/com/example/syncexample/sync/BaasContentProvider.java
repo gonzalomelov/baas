@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.example.syncexample.MyApplication;
+
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -12,38 +14,26 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.BaseColumns;
  
 public class BaasContentProvider extends ContentProvider {
  
 	private BaasSqlHelper mBaasSqlHelper;
 	
-	private static final UriMatcher sUriMatcher;
+	private UriMatcher mUriMatcher;
 	
-	private static List<String> mTablesDB;
-	
-	static {
-		sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		
-		//Llamar a servicio
-		
-		//Prueba
-		mTablesDB = new ArrayList<String>();
-		mTablesDB.add("Cliente");
-		//Fin Prueba
-		
-		for (int i = 0; i < mTablesDB.size(); i++) {
-			String entityDB = mTablesDB.get(i);
-			sUriMatcher.addURI(BaasProviderContract.AUTHORITY, entityDB, i*2);
-			sUriMatcher.addURI(BaasProviderContract.AUTHORITY, entityDB + "/#", i*2+1);
-		}
-		
-	}
+	private List<String> mTablesDB = new ArrayList<String>();
 	
 	@Override
 	public boolean onCreate() {
 		
 		mBaasSqlHelper = new BaasSqlHelper(getContext(), BaasProviderContract.BD_NAME, null, BaasProviderContract.BD_VERSION);
+		
+		MyApplication myApplication = (MyApplication)(getContext().getApplicationContext());
+		
+		mUriMatcher = myApplication.getmUriMatcher();
+		mTablesDB = myApplication.getmTablesDB();
 		
 		return true;
 	}
@@ -52,7 +42,7 @@ public class BaasContentProvider extends ContentProvider {
 	public Cursor query(Uri uri, String[] columns, String selection,
 			String[] selectionArgs, String orderBy) {
 		
-		int matchUri = sUriMatcher.match(uri);
+		int matchUri = mUriMatcher.match(uri);
 		
 		if (matchUri == -1) {
 			throw new IllegalArgumentException("QueryNotSupportedException: " + uri);
@@ -85,7 +75,7 @@ public class BaasContentProvider extends ContentProvider {
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		
-		int matchUri = sUriMatcher.match(uri);
+		int matchUri = mUriMatcher.match(uri);
 		
 		if (matchUri == -1) {
 			throw new IllegalArgumentException("InsertNotSupportedException: " + uri);
@@ -113,7 +103,7 @@ public class BaasContentProvider extends ContentProvider {
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		
-		int matchUri = sUriMatcher.match(uri);
+		int matchUri = mUriMatcher.match(uri);
 		
 		if (matchUri == -1) {
 			throw new IllegalArgumentException("InsertNotSupportedException: " + uri);
@@ -131,7 +121,7 @@ public class BaasContentProvider extends ContentProvider {
 		
 		String type;
 		
-		int matchUri = sUriMatcher.match(uri);
+		int matchUri = mUriMatcher.match(uri);
 		
 		if (matchUri == -1) {
 			throw new IllegalArgumentException("GetTypeNotSupportedException: " + uri);
@@ -147,14 +137,5 @@ public class BaasContentProvider extends ContentProvider {
 		
 		return type;
 	}
-
-//	public static final class GenericTable implements BaseColumns {
-//		private GenericTable() {}
-//		
-//		public static final String COL_ENTIDAD = "entity";
-//		public static final String COL_SYNCID = "syncid";
-//		public static final String COL_MODIFIEDAT = "modifiedat";
-//		
-//	}
 
 }

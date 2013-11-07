@@ -32,27 +32,32 @@ public class SecurityInterceptor implements PreProcessInterceptor, AcceptedByMet
 		HttpHeaders httpHeaders = request.getHttpHeaders();
 		
 		MultivaluedMap<String, String> requestHeaders = httpHeaders.getRequestHeaders();
-		
-		UUID accessToken;
-		
-		try {
-			accessToken = UUID.fromString(requestHeaders.getFirst("accessToken"));
-		}
-		catch (IllegalArgumentException e) {
-			return new ServerResponse("Access denied for these resource", 403, new Headers<Object>());
-		}
 	
-		String operation = request.getHttpMethod();
-		
 		String url = request.getUri().getPath();
 		String[] urlParams = url.split("/");
+	
+		String methodGroup = urlParams[2];
 		
-		String appName = urlParams[3];
-		String entity = urlParams[4];
-		
-		if (!clientManagementLocal.validate(appName, operation, entity, accessToken))
-		{
-			return new ServerResponse("Access denied for these resource", 403, new Headers<Object>());
+		if (methodGroup.equals("entities")) {
+			UUID accessToken;
+			
+			try {
+				accessToken = UUID.fromString(requestHeaders.getFirst("accessToken"));
+			}
+			catch (IllegalArgumentException e) {
+				return new ServerResponse("Access denied for these resource", 403, new Headers<Object>());
+			}
+			
+			String appName = urlParams[3];
+			String entity = urlParams[4];
+			String query = urlParams.length == 6 ? urlParams[5] : "";
+			
+			String operation = request.getHttpMethod();
+			
+			if (!clientManagementLocal.validate(appName, operation, entity, accessToken))
+			{
+				return new ServerResponse("Access denied for these resource", 403, new Headers<Object>());
+			}	
 		}
 		
 		return null;

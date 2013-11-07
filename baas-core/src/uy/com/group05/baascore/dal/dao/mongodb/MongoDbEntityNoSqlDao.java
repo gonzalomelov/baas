@@ -107,10 +107,12 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 		BasicDBList remoteList = (BasicDBList) remoteObjects;
 		
 		for (int i = 0; i<remoteList.size(); i++) {
-			BasicDBObject remoteObj = (BasicDBObject) remoteList.get(i);
+			String remoteJson = (String) remoteList.get(i);
+			BasicDBObject remoteObj = (BasicDBObject) JSON.parse(remoteJson);
 			
 			if (!remoteObj.containsField("syncid")) {
-				//Si no se encuentra el elemento por id
+				//Si no se encuentra el elemento por id, lo agrego seteandole el updatedat
+				remoteObj.put("updatedat", (new Timestamp(System.currentTimeMillis())).toString());
 				dbCollection.insert(remoteObj);
 				
 			} else {

@@ -1,5 +1,6 @@
 package uy.com.group05.baascore.sl.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -53,6 +54,17 @@ public class APIRestImpl implements APIRest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return "";
+		}
+	}
+	
+	public List<String> getEntities(String appName) {
+
+		try {
+			return apiManagementLocal.getEntitiesNames(appName);
+		} catch (AppNotRegisteredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ArrayList<String>();
 		}
 	}
 }

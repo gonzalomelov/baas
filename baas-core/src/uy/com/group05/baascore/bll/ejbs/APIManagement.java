@@ -2,6 +2,8 @@ package uy.com.group05.baascore.bll.ejbs;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -111,6 +113,22 @@ public class APIManagement implements APIManagementLocal {
 		return noSqlDbDao.sync(appName, entity, jsonObjs);
 	}
 	
+	public List<String> getEntitiesNames(String appName) throws AppNotRegisteredException {
+		Application app = appDao.readByName(appName);
+		if (app == null) {
+			throw new AppNotRegisteredException("No existe la aplicación con nombre " + appName);
+		}
+		
+		List<Entity> entities = entityDao.readAll(app.getId());
+		List<String> entitiesNames = new ArrayList<String>();
+		
+		for (Entity entity : entities) {
+			entitiesNames.add(entity.getName());
+		}
+		
+		return entitiesNames;
+	}
+	
 	private void startDataSynchronization(String entity) throws Exception {
 		String url = "https://android.googleapis.com/gcm/send";
 		
@@ -122,8 +140,8 @@ public class APIManagement implements APIManagementLocal {
 		
 		String registrationIds =
 				"{"
-				+ "\"registration_ids\":[\"APA91bEmVgFtIagMeGLXiehdXTXRDIfbX4vCpULU5A0US9cnnWEFn1tM2xY1vpHi8eW9CVfU6OhZtL86f8EhSU7LcWJZgNRYd6XXhSKrl7pa2yzVUQXtssvGC5IlMtkQtSbd8hVeTVu4RMyOsxlLNVlCsHfKs16GPVnuWu-8NEhknuHGednc2Ms\"],"
-				+ "data: { \"entity\": \"" + entity + "\"}"
+				+ "\"registration_ids\":[\"APA91bEmVgFtIagMeGLXiehdXTXRDIfbX4vCpULU5A0US9cnnWEFn1tM2xY1vpHi8eW9CVfU6OhZtL86f8EhSU7LcWJZgNRYd6XXhSKrl7pa2yzVUQXtssvGC5IlMtkQtSbd8hVeTVu4RMyOsxlLNVlCsHfKs16GPVnuWu-8NEhknuHGednc2Ms\"], "
+				+ "\"data\":{ \"entity\":\"" + entity + "\"}"
 				+ "}";
 		
 		StringEntity strEntity = new StringEntity(registrationIds);
