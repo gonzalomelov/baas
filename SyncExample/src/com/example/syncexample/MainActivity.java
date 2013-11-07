@@ -52,6 +52,8 @@ public class MainActivity extends Activity {
 		
 		context = getApplicationContext();
 		
+		MyApplication myApplication = (MyApplication)(context.getApplicationContext());
+		
 		if (checkPlayServices()) {
 			
 			gcm = GoogleCloudMessaging.getInstance(this);
@@ -74,13 +76,8 @@ public class MainActivity extends Activity {
 	        //Register content observers for all tables
 			mResolver = getContentResolver();
 	        
-	        //Prueba
-	        List<String> mTablesDB = new ArrayList<String>();
-			mTablesDB.add("Cliente");
-			//Fin Prueba
-			
-			for (int i = 0; i < mTablesDB.size(); i++) {
-				String entityDB = mTablesDB.get(i);
+			for (int i = 0; i < myApplication.getmTablesDB().size(); i++) {
+				String entityDB = myApplication.getmTablesDB().get(i);
 				
 				BaasProviderObserver observer = new BaasProviderObserver(null);
 		        mResolver.registerContentObserver(Uri.parse("content://com.example.syncexample.sync.provider/" + entityDB), true, observer);
@@ -96,8 +93,6 @@ public class MainActivity extends Activity {
 		for (BaasProviderObserver observer : mObservers) {
 			mResolver.unregisterContentObserver(observer);
 		}
-		
-		
 	}
 
 	@Override

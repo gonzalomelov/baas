@@ -22,7 +22,7 @@ public class BaasProviderObserver extends ContentObserver {
 		Bundle extras = new Bundle();
 		extras.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
 		extras.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-		extras.putString("entity", "Cliente");
+		extras.putString("entity", uri.getPath().substring(1));
 		
 		ContentResolver.requestSync(mAccount, BaasProviderContract.AUTHORITY, extras);
 	}

@@ -9,6 +9,7 @@ import com.example.syncexample.sync.APIRestClient;
 import com.example.syncexample.sync.BaasProviderContract;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -47,13 +48,19 @@ public class ListActivity extends Activity {
 			}
 			
 			JsonParser jsonParser = new JsonParser();
-			JsonArray clientesJsonArray = (JsonArray) jsonParser.parse(clientesJson); 
+			JsonElement clientesJsonArray = jsonParser.parse(clientesJson); 
 			
 			List<String> list = new ArrayList<String>();
-			for (int i=0; i<clientesJsonArray.size(); i++) {
-			    JsonObject jsonObject = (JsonObject) clientesJsonArray.get(i);
-				list.add(jsonObject.toString());
+			
+			if (clientesJsonArray instanceof JsonArray) {
+				JsonArray jsonArray = (JsonArray) clientesJsonArray;
+				for (int i=0; i < jsonArray.size(); i++) {
+				    JsonObject jsonObject = (JsonObject) jsonArray.get(i);
+					list.add(jsonObject.toString());
+				}	
 			}
+			
+			
 			
 			mListView.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, list));			
 	        

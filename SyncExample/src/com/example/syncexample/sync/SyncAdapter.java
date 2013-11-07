@@ -62,6 +62,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 			
 			String entity = extras.getString("entity");
 			
+			Log.e("TAG", entity);
+			
 			//Obtengo entidades modificados desde base local
 			Cursor cursor = provider.query(Uri.parse("content://com.example.syncexample.sync.provider" + "/" + entity), null, null, null, null);
 			

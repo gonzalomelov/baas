@@ -13,6 +13,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class MyApplication extends Application {
 
@@ -49,46 +50,6 @@ public class MyApplication extends Application {
 	@Override
 	public void onCreate() {		
 		super.onCreate();
-		
-		
-		
-		mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		
-		for (int i = 0; i < mTablesDB.size(); i++) {
-			String entityDB = mTablesDB.get(i);
-			mUriMatcher.addURI(BaasProviderContract.AUTHORITY, entityDB, i*2);
-			mUriMatcher.addURI(BaasProviderContract.AUTHORITY, entityDB + "/#", i*2+1);
-		}
-	}
 	
-	private class GetEntitiesAsyncTask extends AsyncTask<Void, Void, List<String>> {
-
-		@Override
-		protected List<String> doInBackground(Void... params) {
-			
-			List<String> entitiesNames = new ArrayList<String>();
-			
-			APIRestClient apiRestClient  = new APIRestClient(getApplicationContext());
-			
-			try {
-				entitiesNames = apiRestClient.getEntities();	  
-			}
-			catch (Exception e) {
-				
-			}
-			
-			return entitiesNames;
-		}
-
-		@Override
-		protected void onPostExecute(List<String> result) {
-			super.onPostExecute(result);
-			
-			mTablesDB = result;
-		}
-		
-		
-		
 	}
-	
 }

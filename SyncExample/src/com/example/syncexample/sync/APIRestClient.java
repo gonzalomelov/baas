@@ -49,7 +49,7 @@ public class APIRestClient {
 				context.getSharedPreferences("uy.com.group05.baasclient.sdk",Context.MODE_PRIVATE);
 		
 		//String accessToken = prefs.getString("accessToken", "Invalid");
-		String accessToken = "40250661-0cc4-4a2d-9bee-1b338ec72c3e";
+		String accessToken = "851f7514-cb0f-483a-b523-324708a53364";
 		
 		httpGet.setHeader("accessToken", accessToken);
 		
@@ -93,7 +93,7 @@ public class APIRestClient {
 		
 		//String accessToken = prefs.getString("accessToken", "Invalid");
 		
-		String accessToken = "40250661-0cc4-4a2d-9bee-1b338ec72c3e";
+		String accessToken = "851f7514-cb0f-483a-b523-324708a53364";
 		
 		httpPost.setHeader("accessToken", accessToken);
 		
@@ -137,7 +137,7 @@ public class APIRestClient {
 				context.getSharedPreferences("uy.com.group05.baasclient.sdk", Context.MODE_PRIVATE);
 		
 		//String accessToken = prefs.getString("accessToken", "Invalid");
-		String accessToken = "40250661-0cc4-4a2d-9bee-1b338ec72c3e";
+		String accessToken = "851f7514-cb0f-483a-b523-324708a53364";
 		
 		httpPost.setHeader("accessToken", accessToken);
 		

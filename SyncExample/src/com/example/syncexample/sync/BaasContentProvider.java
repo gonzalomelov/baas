@@ -21,19 +21,14 @@ public class BaasContentProvider extends ContentProvider {
  
 	private BaasSqlHelper mBaasSqlHelper;
 	
-	private UriMatcher mUriMatcher;
-	
-	private List<String> mTablesDB = new ArrayList<String>();
+	private MyApplication myApplication;
 	
 	@Override
 	public boolean onCreate() {
 		
 		mBaasSqlHelper = new BaasSqlHelper(getContext(), BaasProviderContract.BD_NAME, null, BaasProviderContract.BD_VERSION);
 		
-		MyApplication myApplication = (MyApplication)(getContext().getApplicationContext());
-		
-		mUriMatcher = myApplication.getmUriMatcher();
-		mTablesDB = myApplication.getmTablesDB();
+		myApplication = (MyApplication)(getContext().getApplicationContext());
 		
 		return true;
 	}
@@ -42,13 +37,14 @@ public class BaasContentProvider extends ContentProvider {
 	public Cursor query(Uri uri, String[] columns, String selection,
 			String[] selectionArgs, String orderBy) {
 		
-		int matchUri = mUriMatcher.match(uri);
+		int matchUri = myApplication.getmUriMatcher().match(uri);
 		
 		if (matchUri == -1) {
 			throw new IllegalArgumentException("QueryNotSupportedException: " + uri);
 		}
 		
-		String table = mTablesDB.get(matchUri);
+		int tableIndex = (int)Math.floor(matchUri/2);
+		String table = myApplication.getmTablesDB().get(tableIndex);
 		if (matchUri % 2 != 0) {
 			selection = selection + "_ID = " + uri.getLastPathSegment();
 		}
@@ -75,13 +71,14 @@ public class BaasContentProvider extends ContentProvider {
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		
-		int matchUri = mUriMatcher.match(uri);
+		int matchUri = myApplication.getmUriMatcher().match(uri);
 		
 		if (matchUri == -1) {
 			throw new IllegalArgumentException("InsertNotSupportedException: " + uri);
 		}
 		
-		String table = mTablesDB.get(matchUri);
+		int tableIndex = (int)Math.floor(matchUri/2);
+		String table = myApplication.getmTablesDB().get(tableIndex);
 		
 		SQLiteDatabase db = mBaasSqlHelper.getWritableDatabase();
 		
@@ -103,13 +100,13 @@ public class BaasContentProvider extends ContentProvider {
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		
-		int matchUri = mUriMatcher.match(uri);
+		int matchUri = myApplication.getmUriMatcher().match(uri);
 		
 		if (matchUri == -1) {
 			throw new IllegalArgumentException("InsertNotSupportedException: " + uri);
 		}
 		
-		String table = mTablesDB.get(matchUri);
+		String table = myApplication.getmTablesDB().get(matchUri);
 		
 		SQLiteDatabase db = mBaasSqlHelper.getWritableDatabase();
 		
@@ -121,13 +118,13 @@ public class BaasContentProvider extends ContentProvider {
 		
 		String type;
 		
-		int matchUri = mUriMatcher.match(uri);
+		int matchUri = myApplication.getmUriMatcher().match(uri);
 		
 		if (matchUri == -1) {
 			throw new IllegalArgumentException("GetTypeNotSupportedException: " + uri);
 		}
 		
-		String table = mTablesDB.get(matchUri);
+		String table = myApplication.getmTablesDB().get(matchUri);
 		
 		if (matchUri % 2 == 0) {
 			type = "vnd.android.cursor.dir/vnd.com.example.syncexample.provider" + "." + table;
