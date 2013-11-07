@@ -100,8 +100,6 @@ public class BaasContentProvider extends ContentProvider {
 		
 		long newRowId = db.insert(table, null, values);
 		
-//		this.getContext().getContentResolver().notifyChange(Uri.parse("content://com.example.syncexample.sync.provider/" + table), null);
-		
 		return ContentUris.withAppendedId(uri, newRowId);
 	}
 

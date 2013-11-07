@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.example.syncexample.Cliente;
 import com.example.syncexample.MyApplication;
 import com.example.syncexample.R;
 import com.google.gson.Gson;
@@ -75,8 +74,20 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 					Timestamp modifiedAt = Timestamp.valueOf(strModifiedAt);
 					
 					if (updatedAt == null || modifiedAt.after(updatedAt)) {
-						String entityValue = cursor.getString(1);
-						localEntities.add(entityValue);
+						int entityIndex = cursor.getColumnIndex("entity");
+						int syncidIndex = cursor.getColumnIndex("syncid");
+						
+						String entityValue = cursor.getString(entityIndex);
+						String syncid = cursor.getString(syncidIndex);
+						
+						JsonParser jsonParser = new JsonParser();
+						JsonObject jsonObject = (JsonObject) jsonParser.parse(entityValue);
+						
+						if (syncid != null && !syncid.isEmpty()) {
+							jsonObject.addProperty("syncid", syncid);	
+						}
+						
+						localEntities.add(jsonObject.toString());
 					}
 				}
 			}
@@ -99,7 +110,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 				JsonObject remoteObjectId = (JsonObject) jsonObj.get("_id");
 				
 				String syncId = remoteObjectId.get("$oid").getAsString();
-				Log.e("TAG", "antes");
+
 				jsonObj.remove("_id");
 				
 				ContentValues values = new ContentValues();

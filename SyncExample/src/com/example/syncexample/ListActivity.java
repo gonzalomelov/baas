@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.example.syncexample.sync.APIClient;
 import com.example.syncexample.sync.APIRestClient;
 import com.example.syncexample.sync.BaasProviderContract;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import android.app.Activity;
 import android.content.Context;
@@ -31,16 +35,27 @@ public class ListActivity extends Activity {
 		boolean local = getIntent().getExtras().getBoolean("local");
 		
 		if (local) {
-			Cursor clientes = getContentResolver().query(Uri.parse("content://com.example.syncexample.sync.provider/" + "Cliente"), null, null, null, null);
 			
-			List<String> clientesStr = new ArrayList<String>();
+			String clientesJson = "";
 			
-			while (clientes.moveToNext()) {
-				String entity = clientes.getString(1);
-				clientesStr.add(entity);
+			APIClient apiClient = new APIClient(this);
+			try {
+				clientesJson = apiClient.get("Cliente", "");	
+			}
+			catch (Exception e) {
+				
 			}
 			
-			mListView.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, clientesStr));			
+			JsonParser jsonParser = new JsonParser();
+			JsonArray clientesJsonArray = (JsonArray) jsonParser.parse(clientesJson); 
+			
+			List<String> list = new ArrayList<String>();
+			for (int i=0; i<clientesJsonArray.size(); i++) {
+			    JsonObject jsonObject = (JsonObject) clientesJsonArray.get(i);
+				list.add(jsonObject.toString());
+			}
+			
+			mListView.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, list));			
 	        
 		} else {
 			new ListAsync(this).execute();

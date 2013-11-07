@@ -1,5 +1,6 @@
 package com.example.syncexample;
 
+import com.example.syncexample.sync.APIClient;
 import com.example.syncexample.sync.BaasProviderContract;
 import com.google.gson.Gson;
 
@@ -26,34 +27,31 @@ public class AddActivity extends Activity {
 	
 	public void save(View view) {
 		Log.i("SYNCEXAMPLE", "save");
+			
+		nombreEditText = (EditText) findViewById(R.id.editText1);
+		telefonoEditText = (EditText) findViewById(R.id.editText2);
+		emailEditText = (EditText) findViewById(R.id.editText3);
 		
-		boolean local = getIntent().getExtras().getBoolean("local");
+		String nombre = nombreEditText.getText().toString();
+		String telefono = telefonoEditText.getText().toString();
+		String email = emailEditText.getText().toString();
 		
-		if (local) {
-			ContentValues values = new ContentValues();
-			
-			nombreEditText = (EditText) findViewById(R.id.editText1);
-			telefonoEditText = (EditText) findViewById(R.id.editText2);
-			emailEditText = (EditText) findViewById(R.id.editText3);
-			
-			String nombre = nombreEditText.getText().toString();
-			String telefono = telefonoEditText.getText().toString();
-			String email = emailEditText.getText().toString();
-			
-			Cliente cliente = new Cliente();
-			cliente.setEmail(email);
-			cliente.setNombre(nombre);
-			cliente.setTelefono(telefono);
-			
-			Gson gson = new Gson();
-			
-			values.put("entity", gson.toJson(cliente, Cliente.class));
-			
-			Uri result = getContentResolver().insert(Uri.parse("content://com.example.syncexample.sync.provider/" + "Cliente"), values);
-			
-		} else {
+		Cliente cliente = new Cliente();
+		cliente.setEmail(email);
+		cliente.setNombre(nombre);
+		cliente.setTelefono(telefono);
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(cliente, Cliente.class);
+		
+		APIClient apiClient = new APIClient(this);
+		try {
+			apiClient.post("Cliente", json);	
+		}
+		catch (Exception e) {
 			
 		}
+		
 		
 		finish();
 	}
