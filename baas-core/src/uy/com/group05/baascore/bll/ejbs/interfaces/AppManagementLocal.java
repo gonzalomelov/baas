@@ -39,6 +39,8 @@ public interface AppManagementLocal {
 				EntityCollectionAlreadyExistsException, 
 				InvalidNameException;
 	
+	public List<Application> getAllApplications();
+	
 	public boolean existsApplication(String nombre);
 	
 	public boolean existsApplication(long idApp);

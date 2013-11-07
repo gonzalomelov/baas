@@ -35,6 +35,7 @@ import uy.com.group05.baascore.dal.dao.RoleDao;
 import uy.com.group05.baascore.dal.dao.UserDao;
 import uy.com.group05.baascore.sl.entitiesws.ClientAuthenticationDTO;
 import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
+import uy.com.group05.baascore.sl.entitiesws.ClientEntity;
 import uy.com.group05.baascore.sl.entitiesws.ClientRegistrationDTO;
 import uy.com.group05.baascore.sl.entitiesws.PermissionEntityDTO;
 import uy.com.group05.baascore.sl.entitiesws.RolesClientDTO;
@@ -462,6 +463,39 @@ public class ClientManagement implements ClientManagementLocal {
 		else {
 			return true;
 		}
+	}
+
+	@Override
+	public ClientEntity authenticateExternal(long appId, String email, String password) {
+		
+		ClientEntity auten = new ClientEntity();
+		auten.setError(true);
+				
+		//App validation
+		Application app = appDao.read(appId);
+		
+		if (app == null) {
+			return auten;
+		}
+		
+		//Client validation
+		Client cliente = clientDao.readByEmail(appId, email);
+		if(cliente == null)
+			return auten;
+		
+		if(cliente.getPassword().equals(password)){
+			auten.setEmail(email);
+			auten.setId(cliente.getId());
+			auten.setName(cliente.getName());
+			auten.setLastname(cliente.getLastname());
+			auten.setError(false);
+			
+			return auten;
+		}
+		
+		
+		
+		return auten;
 	}
 }
 

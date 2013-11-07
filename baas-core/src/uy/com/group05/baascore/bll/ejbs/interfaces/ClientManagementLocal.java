@@ -13,6 +13,7 @@ import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.sl.entitiesws.ClientAuthenticationDTO;
 import uy.com.group05.baascore.sl.entitiesws.ClientDTO;
+import uy.com.group05.baascore.sl.entitiesws.ClientEntity;
 import uy.com.group05.baascore.sl.entitiesws.ClientRegistrationDTO;
 import uy.com.group05.baascore.sl.entitiesws.RolesClientDTO;
 
@@ -39,6 +40,8 @@ public interface ClientManagementLocal {
 	 */
 	public ClientAuthenticationDTO authenticate(String appName, UUID apiClientId, String email, String password);
 	
+	
+	
 	/**
 	 * Validacion de una llamada a la API de parte de una aplicación nuestra y de un cliente nuestro
 	 * @param appName Aplicación
@@ -60,6 +63,17 @@ public interface ClientManagementLocal {
 	 */
 	public ClientAuthenticationDTO authenticateExternal(long appId, long externalAppId, UUID apiClientId,
 			String email, String password);
+	
+	/**
+	 * Autenticar y retornar un access token para un cliente de otro BaaS para una aplicación de nuestro BaaS
+	 * @param appId Aplicación
+	 * @param externalAppId Aplicación externa
+	 * @param apiClientId Access Token de nuestra aplicación
+	 * @param email Email del usuario
+	 * @param password Password del usuario
+	 * @return Access Token si la autenticación fue válida para realizar llamadas a nuestra API
+	 */
+	public ClientEntity authenticateExternal(long appId, String email, String password);
 	
 	/**
 	 * Validacion de una llamada a la API de parte de una aplicación nuestra y de un cliente externo

@@ -70,6 +70,13 @@ public class AppManagement implements AppManagementLocal{
 		return apps;
 	}
 	
+	public List<Application> getAllApplications(){
+		
+		
+		return (List<Application>) appDao.readAll();
+		
+	}
+	
 	public long createApplication(long idUser, String nombreApp, List<String> rolesStr, List<String> entidadesStr)
 			throws
 				NombreAppAlreadyRegisteredException,
