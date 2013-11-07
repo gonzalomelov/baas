@@ -47,7 +47,7 @@ public class PushRestImpl implements PushRest {
 	}
 	
 	@Override
-	public boolean sendNotification(UUID accessToken, String appName, String pushChanName, String msgKey, String msgValue) {
+	public boolean sendNotificationToPushChannel(UUID accessToken, String appName, String pushChanName, String msgKey, String msgValue) {
 		try {
 			return pushChannelManagementLocal.sendNotificationToPushChannel(appName, pushChanName, msgKey, msgValue);
 		} catch (AppNotRegisteredException e) {
@@ -88,6 +88,24 @@ public class PushRestImpl implements PushRest {
 		} catch (AppNotRegisteredException e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	@Override
+	public boolean sendNotificationToClient(UUID accessToken, String appName,
+			String mailReceiver, String msgKey, String msgValue) {
+		try {
+			long appId = appManagementLocal.getApplication(appName).getId();
+			if (clientManagementLocal.existsClient(accessToken, appId))
+				return pushChannelManagementLocal.sendNotificationToClient(mailReceiver, msgKey, msgValue);
+			else
+				return false;
+		} catch (ClientNotRegisteredException e) {
+			e.printStackTrace();
+			return false;
+		} catch (AppNotRegisteredException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 }

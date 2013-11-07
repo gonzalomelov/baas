@@ -1,10 +1,8 @@
 package uy.com.group05.baascore.bll.ejbs;
 
-import java.io.IOException;import java.io.InputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -27,7 +25,6 @@ import uy.com.group05.baascore.dal.dao.ApplicationDao;
 import uy.com.group05.baascore.dal.dao.ClientDao;
 import uy.com.group05.baascore.dal.dao.EntityDao;
 import uy.com.group05.baascore.dal.dao.PushChannelDao;
-import uy.com.group05.baascore.sl.entitiesws.SimpleEntityDTO;
 import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelEntityDTO;
 
 @Stateless
@@ -360,7 +357,6 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 				}
 				return true;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return false;
 			}
@@ -378,6 +374,48 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		
 		return sendNotificationToPushChannel(appId, pushChanId, msgKey, msgValue);
 		
+	}
+	
+	@Override
+	public boolean sendNotificationToClient(String mailReceiver, String msgKey, String msgValue)
+			throws ClientNotRegisteredException {
+		
+		Client cliDest = clientMgmt.getClientFromEmail(mailReceiver);
+		
+		String regId = cliDest.getGcm_regId();
+		//String regId = "APA91bHDcO84iVqd0AXPlU1QptCM0ioLh9MKexkrfEIpz8khLS584yeXjYSb_RD_ggEEH0b008BZyQmkIu9XWzSnfCgl4hleH1yQ8N1mjbq25xyzemXiMFWDoOF-sWgb0GK1NFDfqWnzCjsomW5t-KTbucKfuh5iItKsA2gzdsQuLVtbesHu5cE";
+		
+		if (regId == null || regId.isEmpty())
+			return false;
+		
+		PropertyHandler propertyHandler = new PropertyHandler();
+		String gcmApiKey = propertyHandler.getProperty("gcmApiKey");
+		
+		Sender sender = new Sender(gcmApiKey);
+		Message message = new Message.Builder().timeToLive(600).addData(msgKey, msgValue).build();
+		
+		try {
+			Result result = sender.send(message, regId, 5);
+			if (result.getMessageId() != null) {
+				 String canonicalRegId = result.getCanonicalRegistrationId();
+				 if (canonicalRegId != null) {
+				   // same device has more than one registration ID: update database
+					 System.out.println("CAMBIÓ EL REGID... ACTUALIZAR EN LA BASE EL REGID DEL CLIENTE!!!!");
+					 return false;
+				 }
+			} else {
+				String error = result.getErrorCodeName();
+				if (error.equals(Constants.ERROR_NOT_REGISTERED)) {
+					// application has been removed from device - unregister database
+					System.out.println("NO EXISTE MÁS EL REGID... SE DESINSTALÓ LA APLICACIÓN.... BORRAR DE LA BASE EL REGID DEL CLIENTE!!!!");
+					return false;
+				}
+			}
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	@Override

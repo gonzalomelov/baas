@@ -442,5 +442,26 @@ public class ClientManagement implements ClientManagementLocal {
 			return false;
 		}
 	}
+
+	@Override
+	public Client getClientFromEmail(String mail)
+			throws ClientNotRegisteredException {
+		Client c = clientDao.readByEmail(mail);
+		if (c == null)
+			throw new ClientNotRegisteredException("No existe un cliente con e-mail " + mail);
+		
+		return c;
+	}
+
+	@Override
+	public boolean existsClient(UUID accessToken, long appId) {
+		Client c = clientDao.readByAccessToken(appId, accessToken);
+		if (c == null) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
 }
 

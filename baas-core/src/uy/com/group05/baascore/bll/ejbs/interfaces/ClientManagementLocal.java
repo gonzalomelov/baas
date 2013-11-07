@@ -89,4 +89,9 @@ public interface ClientManagementLocal {
 			throws	ClientNotRegisteredException;
 	
 	public boolean existsClient(long clientId);
+	
+	public Client getClientFromEmail(String mail)
+			throws ClientNotRegisteredException;
+	
+	public boolean existsClient(UUID accessToken, long appId);
 }

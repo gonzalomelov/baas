@@ -29,10 +29,21 @@ public interface PushRest {
 	@Path("/sendNotificationToPushChannel")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean sendNotification(
+	public boolean sendNotificationToPushChannel(
 			@HeaderParam("accessToken") UUID accessToken,
 			@FormParam("appName") String appName,
 			@FormParam("pushChanName") String pushChanName,
+			@FormParam("msgKey") String msgKey,
+			@FormParam("msgValue") String msgValue);
+	
+	@POST
+	@Path("/sendNotificationToClient")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean sendNotificationToClient(
+			@HeaderParam("accessToken") UUID accessToken,
+			@FormParam("appName") String appName,
+			@FormParam("mailReceiver") String mailReceiver,
 			@FormParam("msgKey") String msgKey,
 			@FormParam("msgValue") String msgValue);
 	
