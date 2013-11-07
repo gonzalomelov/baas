@@ -29,7 +29,7 @@ public class BaasContentProvider extends ContentProvider {
 		
 		//Prueba
 		mTablesDB = new ArrayList<String>();
-		mTablesDB.add("cliente");
+		mTablesDB.add("Cliente");
 		//Fin Prueba
 		
 		for (int i = 0; i < mTablesDB.size(); i++) {
@@ -100,7 +100,7 @@ public class BaasContentProvider extends ContentProvider {
 		
 		long newRowId = db.insert(table, null, values);
 		
-		this.getContext().getContentResolver().notifyChange(Uri.parse("content://com.example.syncexample.sync.provider/" + table), null);
+//		this.getContext().getContentResolver().notifyChange(Uri.parse("content://com.example.syncexample.sync.provider/" + table), null);
 		
 		return ContentUris.withAppendedId(uri, newRowId);
 	}
@@ -115,7 +115,17 @@ public class BaasContentProvider extends ContentProvider {
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		
-		throw new UnsupportedOperationException();
+		int matchUri = sUriMatcher.match(uri);
+		
+		if (matchUri == -1) {
+			throw new IllegalArgumentException("InsertNotSupportedException: " + uri);
+		}
+		
+		String table = mTablesDB.get(matchUri);
+		
+		SQLiteDatabase db = mBaasSqlHelper.getWritableDatabase();
+		
+		return db.delete(table, null, null);
 	}
 
 	@Override

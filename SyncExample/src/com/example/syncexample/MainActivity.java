@@ -76,7 +76,7 @@ public class MainActivity extends Activity {
 	        
 	        //Prueba
 	        List<String> mTablesDB = new ArrayList<String>();
-			mTablesDB.add("cliente");
+			mTablesDB.add("Cliente");
 			//Fin Prueba
 			
 			for (int i = 0; i < mTablesDB.size(); i++) {

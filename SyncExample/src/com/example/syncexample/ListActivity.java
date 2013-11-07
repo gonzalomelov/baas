@@ -31,7 +31,7 @@ public class ListActivity extends Activity {
 		boolean local = getIntent().getExtras().getBoolean("local");
 		
 		if (local) {
-			Cursor clientes = getContentResolver().query(Uri.parse("content://com.example.syncexample.sync.provider/" + "cliente"), null, null, null, null);
+			Cursor clientes = getContentResolver().query(Uri.parse("content://com.example.syncexample.sync.provider/" + "Cliente"), null, null, null, null);
 			
 			List<String> clientesStr = new ArrayList<String>();
 			

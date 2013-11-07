@@ -24,7 +24,7 @@ public class BaasSqlHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		mTablesDB = new ArrayList<String>();
-		mTablesDB.add("cliente");
+		mTablesDB.add("Cliente");
 		
 		for (String entity : mTablesDB) {
 			db.execSQL(
@@ -40,7 +40,7 @@ public class BaasSqlHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		mTablesDB = new ArrayList<String>();
-		mTablesDB.add("cliente");
+		mTablesDB.add("Cliente");
 		
 		for (String entity : mTablesDB) {
 			db.execSQL("DROP TABLE IF EXISTS " + entity);

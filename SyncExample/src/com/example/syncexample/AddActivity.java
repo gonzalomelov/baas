@@ -49,7 +49,7 @@ public class AddActivity extends Activity {
 			
 			values.put("entity", gson.toJson(cliente, Cliente.class));
 			
-			Uri result = getContentResolver().insert(Uri.parse("content://com.example.syncexample.sync.provider/" + "cliente"), values);
+			Uri result = getContentResolver().insert(Uri.parse("content://com.example.syncexample.sync.provider/" + "Cliente"), values);
 			
 		} else {
 			
