@@ -17,7 +17,7 @@ public class ObjetoCtrl {
 		this.objetos = new HashMap<Integer, Objeto>();
 		//Inicio con algo..
 		Usuario u = Factory.getUsuarioCtrl().getUsuario("n@");
-		Objeto obj = new Objeto(1, "PC de escritorio", "PC: PIV-HT 2.6GHz, 500GB, 2GB, teclado y mouse. Sin monitor", 150, u);
+		Objeto obj = new Objeto(1, "PC de escritorio", "PC: PIV-HT 2.6GHz, 500GB, 2GB, teclado y mouse. Sin monitor", 150, u.getMail());
 		u.addObjeto(obj);
 		this.objetos.put(idCont, obj);
 		idCont++;
@@ -38,7 +38,7 @@ public class ObjetoCtrl {
 		if (u==null){
 			return -1;
 		}
-		Objeto obj = new Objeto(idCont, nomObj, desc, valor, u);
+		Objeto obj = new Objeto(idCont, nomObj, desc, valor, u.getMail());
 		u.addObjeto(obj);
 		this.objetos.put(idCont, obj);
 		idCont++;

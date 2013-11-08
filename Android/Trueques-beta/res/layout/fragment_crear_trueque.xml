@@ -31,48 +31,62 @@
 	        android:layout_width="match_parent"
 	       	android:layout_height="wrap_content"
 	       	android:text="Nuevo Trueque"
-	       	android:textSize="25dp"
-	       	android:paddingBottom="40dp"/>
-        <EditText
-            android:id="@+id/nom_obj"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Objeto a cambiar"
-            android:inputType="text"
-            android:maxLines="1"
-            android:singleLine="true" >
-            <requestFocus />
-        </EditText>
-        
-        <EditText
-            android:id="@+id/desc_obj"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Descripcion del objeto"
-            android:inputType="text"
-            android:maxLines="1"
-            android:singleLine="true" >            
-        </EditText>
-
-        <EditText
-            android:id="@+id/valor_obj"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Valor ($)"         
-            android:inputType="numberDecimal"
-            android:maxLines="1"
-            android:singleLine="true" />
-        
-        <EditText
-            android:id="@+id/ubicacion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ubicacion"
-            android:inputType="text"
-            android:maxLines="1"
-            android:singleLine="true" >            
-        </EditText>
-        
+	       	android:textSize="25sp"
+	       	android:paddingBottom="0dp"/>
+	    
+	    <TableLayout 
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"> 
+		    <ImageView 
+		        android:id ="@+id/imgTrueque"
+		        android:layout_width="match_parent"
+		        android:layout_height="100sp"
+		        android:src="@drawable/ic_aceptar"/>"
+	        <EditText
+	            android:id="@+id/nom_obj"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:hint="Objeto a cambiar"
+	            android:inputType="text"
+	            android:maxLines="1"
+	            android:singleLine="true" >
+	            <requestFocus />
+	        </EditText>
+	        
+	        <EditText
+	            android:id="@+id/desc_obj"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:hint="Descripcion del objeto"
+	            android:inputType="text"
+	            android:maxLines="1"
+	            android:singleLine="true" >            
+	        </EditText>
+	
+	        <EditText
+	            android:id="@+id/valor_obj"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:hint="Valor ($)"         
+	            android:inputType="numberDecimal"
+	            android:maxLines="1"
+	            android:singleLine="true" />
+	        
+	        <EditText
+	            android:id="@+id/ubicacion"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:hint="Ubicacion"
+	            android:inputType="text"
+	            android:maxLines="1"
+	            android:singleLine="true" >            
+	        </EditText>
+   	</TableLayout>
+   
+   <TableLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="20sp">     
         <EditText
             android:id="@+id/desc_deseado"
             android:layout_width="match_parent"
@@ -80,9 +94,7 @@
             android:hint="¿Que busca a cambio?"
             android:inputType="text"
             android:singleLine="true"
-            android:paddingTop="50dp">
-
-            
+            android:paddingTop="10sp"> 
         </EditText>
         
         <EditText
@@ -93,9 +105,11 @@
             android:inputType="numberDecimal"
             android:maxLines="1"
             android:singleLine="true" />
-<TableLayout 
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+        </TableLayout>
+        
+	<TableLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content">
             <TableRow
                 android:layout_marginTop="16dp" >
 	            
@@ -114,6 +128,6 @@
 	            android:text="Publicar"
 	             />
             </TableRow>
-</TableLayout>
+	</TableLayout>
         
 </LinearLayout>

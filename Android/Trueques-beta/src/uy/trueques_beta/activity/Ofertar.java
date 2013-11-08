@@ -51,6 +51,7 @@ public class Ofertar extends Activity {
 	private Bitmap bitmap;
     private static int TAKE_PICTURE = 1;
     private static int SELECT_PICTURE = 2;
+    private ImageView imgOferta;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,8 @@ public class Ofertar extends Activity {
 
 		//Imagen por defecto para la oferta.
 		bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_logo);
+		imgOferta = (ImageView)findViewById(R.id.imgOferta);
+		imgOferta.setImageBitmap(bitmap);
 		Button btnImg = (Button)findViewById(R.id.BtnImg);
         btnImg.setOnClickListener(new OnClickListener() {                       
                        @Override
@@ -104,7 +107,12 @@ public class Ofertar extends Activity {
                  try {
                      is = getContentResolver().openInputStream(selectedImage);
                      BufferedInputStream bis = new BufferedInputStream(is);
-                     bitmap = BitmapFactory.decodeStream(bis);                                                            
+                     bitmap = BitmapFactory.decodeStream(bis);
+                     int w=bitmap.getWidth();
+              		int h=bitmap.getHeight();
+              		int height = (180*h)/w;
+              		bitmap=Bitmap.createScaledBitmap(bitmap, 180, height, true);
+                     imgOferta.setImageBitmap(bitmap);
                  } catch (FileNotFoundException e) {
                 	 Toast.makeText(this, "Error al cargar la imagen", Toast.LENGTH_SHORT).show();
                  }

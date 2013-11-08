@@ -44,6 +44,7 @@ public class UsuarioCtrl {
 			this.usuarios.put("u"+i+"@", new Usuario("user"+i, "u"+i+"@", "1234", new ArrayList<Objeto>()));
 		
 		this.usuarios.put("n@", new Usuario("nacho","n@", "1234", new ArrayList<Objeto>()));
+		this.usuarios.put("w@", new Usuario("nacho","w@", "1234", new ArrayList<Objeto>()));
 		this.admins.put("admin@", new Admin("Admin","admin@", "1234"));
 		//UsuarioCtrl.idCont++;
 		//++++
@@ -109,15 +110,15 @@ public class UsuarioCtrl {
 //			auten = SDKFactory.getClientFacade(context).authenticate(email, password);
 //			Log.i("LOGIN","-"+auten.isOk());
 //			
-//			//+++ crear usuario en baas
-//			Gson gson = new Gson();
-//			String json = gson.toJson(this.getUsuario("u2@"), Usuario.class);
-//			String entity="Usuario";
-//			Log.i("POST","Usuario= "+json);
-//			
-//			boolean ok = SDKFactory.getAPIFacade(context).post(entity, json);
-//			Log.i("POST","-"+ok);
-//			//++++
+////			//+++ crear usuario en baas
+////			Gson gson = new Gson();
+////			String json = gson.toJson(this.getUsuario("u2@"), Usuario.class);
+////			String entity="Usuario";
+////			Log.i("POST","Usuario= "+json);
+////			
+////			boolean ok = SDKFactory.getAPIFacade(context).post(entity, json);
+////			Log.i("POST","-"+ok);
+////			//++++
 //			return auten.isOk();
 //		}
 //		catch (UnsupportedEncodingException e) {

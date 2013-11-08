@@ -64,7 +64,7 @@ public class VistaOfertaPend extends Activity {
 			minVal.setText("$"+t.getMinVal());
 			
 			duenio = (TextView)findViewById(R.id.LblDuenio);
-			duenio.setText(o.getUsuario().getNombre());
+			duenio.setText(o.getUsuario());
 			valor = (TextView)findViewById(R.id.LblValor);
 			valor.setText("$"+o.getObjeto().getValor());
 			

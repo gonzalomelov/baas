@@ -1,12 +1,21 @@
 package uy.trueques_beta.negocio;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.client.ClientProtocolException;
+
+import com.google.gson.Gson;
+
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
+import uy.com.group05.baasclient.sdk.SDKFactory;
 import uy.trueques_beta.entities.Objeto;
 import uy.trueques_beta.entities.Oferta;
 import uy.trueques_beta.entities.Trueque;
@@ -21,13 +30,34 @@ public class TruequeCtrl {
 		return trueques.get(id);
 	}
 
-	public int crearTrueque(Objeto obj, String busca, float minVal, String ubicacion) {
+	public int crearTrueque(Context context, Objeto obj, String busca, float minVal, String ubicacion) {
 		if (obj==null || !Factory.getObjetoCtrl().existObjeto((obj.getId()))){
 			return -1;
 		}
 		
 		Trueque t = new Trueque(idCont, obj, busca, minVal, ubicacion);
-		t.getUsuario().setPublicados(t.getUsuario().getPublicados()+1);
+		//+++ crear usuario en baas
+//		try{
+			Gson gson = new Gson();
+			String json = gson.toJson(t, Trueque.class);
+			String entity="Trueque";
+			Log.i("POST","Trueque= "+json);
+		
+//		boolean ok = SDKFactory.getAPIFacade(context).post(entity, json);
+//		Log.i("POST","-"+ok);
+//		}
+//		catch (UnsupportedEncodingException e) {
+//			Log.i("POST",e.getMessage());
+//		}
+//		catch (ClientProtocolException e) {
+//			Log.i("POST",e.getMessage());
+//		}
+//		catch (IOException e) {
+//			Log.i("POST",e.getMessage());
+//		}
+		//++++
+		Usuario u = Factory.getUsuarioCtrl().getUsuario(t.getUsuario());
+		u.setPublicados(u.getPublicados()+1);
 		this.trueques.put(idCont, t);
 		idCont++;
 		return t.getIdTrueque();
@@ -45,9 +75,13 @@ public class TruequeCtrl {
 				t.setGanadora(ofer);
 				t.setActiva(false);
 				t.setFechaFin(new Date());
-				t.getUsuario().setRealizados(t.getUsuario().getRealizados()+1);
-				ofer.getUsuario().setAceptados(t.getUsuario().getAceptados()+1);
-				ofer.getUsuario().setRealizados(ofer.getUsuario().getRealizados()+1);
+				//DUENIO DE TRUEQUE
+				Usuario u = Factory.getUsuarioCtrl().getUsuario(t.getUsuario());
+				u.setRealizados(u.getRealizados()+1);
+				//OFERTANTE
+				u = Factory.getUsuarioCtrl().getUsuario(ofer.getUsuario());
+				u.setAceptados(u.getAceptados()+1);
+				u.setRealizados(u.getRealizados()+1);
 				//Marco las demas ofertas como rechazadas
 				for(Oferta o: t.getOfertas()){
 					if(!o.equals(ofer))
@@ -81,7 +115,7 @@ public class TruequeCtrl {
 		
 		List<Trueque> trueques = new ArrayList<Trueque>();
 		for(Trueque t: this.trueques.values()){
-			if ((t.getUsuario().getMail().equals(mail) && !t.isActiva()) || (t.getGanadora()!=null && t.getGanadora().getUsuario().getMail().equals(mail)))
+			if ((t.getUsuario().equals(mail) && !t.isActiva()) || (t.getGanadora()!=null && t.getGanadora().getUsuario().equals(mail)))
 				trueques.add(t);
 		}
 		
@@ -105,6 +139,13 @@ public class TruequeCtrl {
 		Oferta ofer = Factory.getOfertaCtrl().getOferta(idOfer);
 		if (ofer==null)
 			return false;
+		
+		//+++GSON
+		Gson gson = new Gson();
+		String json = gson.toJson(ofer, Oferta.class);
+		String entity="Oferta";
+		Log.i("POST","Oferta= "+json);
+		//+++
 		t.addOferta(ofer);
 		return true;
 	}
@@ -116,9 +157,24 @@ public class TruequeCtrl {
 		
 		List<Oferta> ofers = new ArrayList<Oferta>();
 		for(Trueque t: this.trueques.values()){
-			if (t.getUsuario().getMail().equals(mail))
+			if (t.getUsuario().equals(mail))
 				ofers.addAll(t.getOfertasPendientes());
 		}
 		return ofers;	
+	}
+	
+	public void puntuarTrueque(int idTrueque, int pts){
+		Trueque t = this.trueques.get(idTrueque);
+		if(t!=null){
+			t.setPuntosTrueque(pts);
+			Factory.getUsuarioCtrl().getUsuario(t.getObjeto().getDuenio()).puntuar(pts);
+		}
+	}
+	public void puntuarGanadora(int idTrueque, int pts){
+		Trueque t = this.trueques.get(idTrueque);
+		if(t!=null){
+			t.setPuntosGanadora(pts);
+			Factory.getUsuarioCtrl().getUsuario(t.getGanadora().getUsuario()).puntuar(pts);
+		}
 	}
 }

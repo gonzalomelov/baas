@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView;
@@ -128,9 +129,22 @@ public class VerTrueques extends Fragment implements AdapterView.OnItemClickList
 	        LayoutInflater inflater = context.getLayoutInflater();//getSystemService(Context.LAYOUT_INFLATER_SERVICE);//
 	        View item = inflater.inflate(R.layout.list_item_trueques, null);
 	        
-	        TextView itemTrueque = (TextView)item.findViewById(R.id.TextItemTrueque);
-	        itemTrueque.setText(((Trueque)trueques[position]).getObjeto().getNombre() + 
-	        		"   $"+ ((Trueque)trueques[position]).getObjeto().getValor());
+	        //NOMBRE OBJETO
+	        TextView objeto = (TextView)item.findViewById(R.id.Objeto);
+	        objeto.setText(((Trueque)trueques[position]).getObjeto().getNombre());
+	        //PRECIO
+	        TextView precio = (TextView)item.findViewById(R.id.Precio);
+	        precio.setText("$"+((Trueque)trueques[position]).getObjeto().getValor());
+	        //DUENIO
+	        TextView duenio = (TextView)item.findViewById(R.id.Duenio);
+	        duenio.setText("Publicado por: "+((Trueque)trueques[position]).getUsuario());
+	        //IMAGEN
+	        ImageView img = (ImageView)item.findViewById(R.id.imgTrueque);
+	        img.setImageBitmap(((Trueque)trueques[position]).getImagen());
+	        
+//	        TextView itemTrueque = (TextView)item.findViewById(R.id.TextItemTrueque);
+//	        itemTrueque.setText(((Trueque)trueques[position]).getObjeto().getNombre() + 
+//	        		"   $"+ ((Trueque)trueques[position]).getObjeto().getValor());
 	 
 //	        TextView lblDescObj = (TextView)item.findViewById(R.id.LblDescObj);
 //	        lblDescObj.setText(((Objeto) objs[position]).getDescripcion());

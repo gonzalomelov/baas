@@ -24,6 +24,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -31,6 +32,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class CrearTrueque extends Fragment{//Activity {
@@ -52,6 +54,7 @@ public class CrearTrueque extends Fragment{//Activity {
 	private EditText minValView;
 	private EditText ubicacionView;
 	private Button btnImg;
+	private ImageView imgTrueque;
 	private CrearTruequeListener listener;
 	
     private static int TAKE_PICTURE = 1;
@@ -81,6 +84,9 @@ public class CrearTrueque extends Fragment{//Activity {
 		
 		//Imagen por defecto para el trueque.
 		bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_logo);
+		imgTrueque = (ImageView)getView().findViewById(R.id.imgTrueque);
+		imgTrueque.setImageBitmap(bitmap);
+
 		
 		SharedPreferences prefs = this.getActivity().getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
@@ -117,11 +123,23 @@ public class CrearTrueque extends Fragment{//Activity {
                  Uri selectedImage = data.getData();
                  InputStream is;
                  try {
-                     is = this.getActivity().getContentResolver().openInputStream(selectedImage);
-                     BufferedInputStream bis = new BufferedInputStream(is);
-                     bitmap = BitmapFactory.decodeStream(bis);                                                            
+                    is = this.getActivity().getContentResolver().openInputStream(selectedImage);
+                    BufferedInputStream bis = new BufferedInputStream(is);
+                    bitmap = BitmapFactory.decodeStream(bis);  
+                    
+//                    Log.i("TAM_IMG", "Height="+bitmap.getHeight() +"Count="+ bitmap.getByteCount());
+//                    Bitmap bitmap2=Bitmap.createScaledBitmap(bitmap, 120, 120, false);
+//                    Log.i("TAM_IMG", "Height="+bitmap2.getHeight() +"Count="+ bitmap2.getByteCount());
+//                    bitmap=Bitmap.createScaledBitmap(bitmap, 120, 120, true);
+                    Log.i("TAM_IMG", "Height="+bitmap.getHeight()+" Width="+bitmap.getWidth() +"Count="+ bitmap.getByteCount());
+             		int w=bitmap.getWidth();
+             		int h=bitmap.getHeight();
+             		int height = (180*h)/w;
+             		bitmap=Bitmap.createScaledBitmap(bitmap, 180, height, true);
+             		Log.i("TAM_IMG", "Height="+bitmap.getHeight()+" Width="+bitmap.getWidth() +"Count="+ bitmap.getByteCount());
+                    imgTrueque.setImageBitmap(bitmap);
                  } catch (FileNotFoundException e) {
-                	 Toast.makeText(this.getActivity(), "Error al cargar la imagen", Toast.LENGTH_SHORT).show();
+                	Toast.makeText(this.getActivity(), "Error al cargar la imagen", Toast.LENGTH_SHORT).show();
                  }
          }
 	}
@@ -245,7 +263,7 @@ public class CrearTrueque extends Fragment{//Activity {
 			int idObj= Factory.getObjetoCtrl().crearObjeto(mail, nombre, desc, valor);
 			Objeto obj = Factory.getObjetoCtrl().getObjeto(idObj);
 			if (obj!=null){
-				this.idTrueque = Factory.getTruequeCtrl().crearTrueque(obj, descBusca, minVal, ubicacion);
+				this.idTrueque = Factory.getTruequeCtrl().crearTrueque(CrearTrueque.this.getActivity(), obj, descBusca, minVal, ubicacion);
 				Trueque t = Factory.getTruequeCtrl().getTrueque(this.idTrueque);
 				if(t!=null)
 					t.setImagen(bitmap);

@@ -8,11 +8,11 @@ public class Objeto {
 	private String nombre;
 	private String descripcion;
 	private float valor;
-	private Usuario duenio;
+	private String duenio;
 	//private BufferedImage foto;
 	
 	
-	public Objeto(int id, String nombre, String descripcion, float valor, Usuario duenio) {
+	public Objeto(int id, String nombre, String descripcion, float valor, String duenio) {
 		this.id = id;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
@@ -44,10 +44,10 @@ public class Objeto {
 	public void setValor(float valor) {
 		this.valor = valor;
 	}
-	public Usuario getDuenio() {
+	public String getDuenio() {
 		return duenio;
 	}
-	public void setDuenio(Usuario duenio) {
+	public void setDuenio(String duenio) {
 		this.duenio = duenio;
 	}
 	

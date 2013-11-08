@@ -4,6 +4,7 @@ import uy.trueques_beta.R;
 import uy.trueques_beta.R.layout;
 import uy.trueques_beta.R.menu;
 import uy.trueques_beta.entities.Trueque;
+import uy.trueques_beta.entities.Usuario;
 import uy.trueques_beta.negocio.Factory;
 import android.opengl.Visibility;
 import android.os.Bundle;
@@ -57,7 +58,8 @@ public class VistaTrueque extends Activity {
 			nombre.setText(t.getObjeto().getNombre());
 			
 			duenio = (TextView)findViewById(R.id.LblDuenio);
-			duenio.setText(t.getUsuario().getNombre());
+			Usuario u = Factory.getUsuarioCtrl().getUsuario(t.getUsuario());
+			duenio.setText(u.getNombre());
 			valor = (TextView)findViewById(R.id.LblValor);
 			valor.setText("$"+t.getObjeto().getValor());
 			fecha = (TextView)findViewById(R.id.LblFecha);
@@ -73,7 +75,7 @@ public class VistaTrueque extends Activity {
 			imagen.setImageBitmap(t.getImagen());
 			
 			button = (Button)findViewById(R.id.BtnOfertar);
-			if (this.mail.equals(t.getUsuario().getMail())){
+			if (this.mail.equals(t.getUsuario())){
 				button.setVisibility(View.GONE);
 				cantOfer = (TextView)findViewById(R.id.CantOfertas);
 				cantOfer.setVisibility(View.VISIBLE);

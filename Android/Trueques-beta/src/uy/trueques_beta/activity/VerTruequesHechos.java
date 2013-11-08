@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -98,12 +99,27 @@ public class VerTruequesHechos extends Fragment implements AdapterView.OnItemCli
 	        LayoutInflater inflater = context.getLayoutInflater();//getSystemService(Context.LAYOUT_INFLATER_SERVICE);//
 	        View item = inflater.inflate(R.layout.list_item_trueques, null);
 	        
-	        TextView itemTrueque = (TextView)item.findViewById(R.id.TextItemTrueque);
 	        Trueque t = (Trueque) trueques[position];
-	        itemTrueque.setText("Cambiaste " + t.getObjeto().getNombre() +" por " 
-	        		+ t.getGanadora().getObjeto().getNombre()+ "\n"
-	        		/*+ "El día " + t.getFechaFin().toGMTString());*/
-	        		+ "El día "+t.getFechaFin().getDate()+"-"+(t.getFechaFin().getMonth()+1)+"-"+(t.getFechaFin().getYear()+1900));
+	        //NOMBRE OBJETO
+	        TextView objeto = (TextView)item.findViewById(R.id.Objeto);
+	        objeto.setText("Cambiaste " + t.getObjeto().getNombre() +" por " 
+	        		+ t.getGanadora().getObjeto().getNombre());
+	        //PRECIO
+	        TextView precio = (TextView)item.findViewById(R.id.Precio);
+	        precio.setVisibility(View.GONE);;
+	        //DUENIO
+	        TextView fecha = (TextView)item.findViewById(R.id.Duenio);
+	        fecha.setText("El día "+t.getFechaFin().getDate()+"-"+(t.getFechaFin().getMonth()+1)+"-"+(t.getFechaFin().getYear()+1900));
+	        //IMAGEN
+	        ImageView img = (ImageView)item.findViewById(R.id.imgTrueque);
+	        img.setImageBitmap(((Trueque)trueques[position]).getImagen());
+	        
+//	        TextView itemTrueque = (TextView)item.findViewById(R.id.Objeto);//TextItemTrueque);
+//	        Trueque t = (Trueque) trueques[position];
+//	        itemTrueque.setText("Cambiaste " + t.getObjeto().getNombre() +" por " 
+//	        		+ t.getGanadora().getObjeto().getNombre()+ "\n"
+//	        		/*+ "El día " + t.getFechaFin().toGMTString());*/
+//	        		+ "El día "+t.getFechaFin().getDate()+"-"+(t.getFechaFin().getMonth()+1)+"-"+(t.getFechaFin().getYear()+1900));
 //	        TextView lblDescObj = (TextView)item.findViewById(R.id.LblDescObj);
 //	        lblDescObj.setText(((Objeto) objs[position]).getDescripcion());
 	 

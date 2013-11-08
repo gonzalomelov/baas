@@ -1,10 +1,16 @@
 package uy.trueques_beta.entities;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.util.Log;
 
 public class Trueque {
 	
@@ -21,7 +27,14 @@ public class Trueque {
 	private String ubicacion;
 	private int puntosTrueque;
 	private int puntosGanadora;
-	private Bitmap imagen;
+	//private Bitmap imagen;
+	private String imagen;
+	/*
+	 * ByteArrayOutputStream baos = new ByteArrayOutputStream();
+photo.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+byte[] imageBytes = baos.toByteArray();
+String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+	 */
 	
 	public Trueque (int id, Objeto obj, String busca, float minVal, String ubicacion){
 		this.idTrueque =id;
@@ -34,6 +47,7 @@ public class Trueque {
 		this.ubicacion=ubicacion;
 		this.puntosGanadora=0;
 		this.puntosTrueque=0;
+		this.imagen=null;
 	}
 
 	public int getIdTrueque() {
@@ -129,12 +143,16 @@ public class Trueque {
 		this.puntosTrueque = puntosTrueque;
 	}
 	//+++++++++++++
-	public Usuario getUsuario(){
+	public String getUsuario(){
 		return this.objeto.getDuenio();
 	}
 
 	public void addOferta(Oferta ofer){
 		this.ofertas.add(ofer);
+		Gson gson = new Gson();
+		String json = gson.toJson(this, Trueque.class);
+		String entity="Trueque";
+		Log.i("POST","Trueque= "+json);
 	}
 	
 	public boolean existOferta(int idOferta){
@@ -176,21 +194,46 @@ public class Trueque {
 		return pends;
 	}
 
-	public void puntuarTrueque(int pts){
-		this.puntosTrueque=pts;
-		this.objeto.getDuenio().puntuar(pts);
-	}
-	public void puntuarGanadora(int pts){
-		this.puntosGanadora=pts;
-		this.ganadora.getUsuario().puntuar(pts);
-	}
+//	public void puntuarTrueque(int pts){
+//		this.puntosTrueque=pts;
+//		this.objeto.getDuenio().puntuar(pts);
+//	}
+//	public void puntuarGanadora(int pts){
+//		this.puntosGanadora=pts;
+//		this.ganadora.getUsuario().puntuar(pts);
+//	}
 
 	public Bitmap getImagen() {
-		return imagen;
+		return decodeBase64(imagen);
+		//return imagen;
 	}
 
 	public void setImagen(Bitmap imagen) {
-		this.imagen = imagen;
+		
+		//this.imagen = imagen;
+		this.imagen = encodeTobase64(imagen);
+		Gson gson = new Gson();
+		String json = gson.toJson(this, Trueque.class);
+		String entity="Trueque";
+		Log.i("POST","Trueque= "+json);
+		//Log.i("IMAGEN", "Tamaño = "+this.imagen.getByteCount()/1024+"-H:"+this.imagen.getHeight());
+	}
+	
+	public static String encodeTobase64(Bitmap image)
+	{
+	    Bitmap immagex=image;
+	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    immagex.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+	    byte[] b = baos.toByteArray();
+	    String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
+
+	    Log.e("LOOK", imageEncoded);
+	    return imageEncoded;
+	}
+	public static Bitmap decodeBase64(String input) 
+	{
+	    byte[] decodedByte = Base64.decode(input, 0);
+	    return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length); 
 	}
 
 

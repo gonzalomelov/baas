@@ -117,12 +117,27 @@ public class VerOfertasPendientes extends Fragment implements AdapterView.OnItem
  
         public View getView(int position, View convertView, ViewGroup parent) {
         	LayoutInflater inflater = context.getLayoutInflater();
-	        View item = inflater.inflate(R.layout.list_item_ofertas, null);
+//	        View item = inflater.inflate(R.layout.list_item_ofertas, null);
+        	View item = inflater.inflate(R.layout.list_item_trueques, null);
+//	        TextView itemTrueque = (TextView)item.findViewById(R.id.TextItemOferta);
+//	        itemTrueque.setText(((Oferta)ofertas[position]).getObjeto().getNombre() + 
+//	        		"   $"+ ((Oferta)ofertas[position]).getObjeto().getValor());
+	 //++
+	        Oferta ofer= ((Oferta)ofertas[position]);
+	        String nomTrueque= Factory.getTruequeCtrl().getTrueque(ofer.getIdTrueque()).getObjeto().getNombre();
+	        //NOMBRE OBJETO
+	        TextView objeto = (TextView)item.findViewById(R.id.Objeto);
+	        objeto.setText(ofer.getObjeto().getNombre()+" por "+nomTrueque);
+	        //PRECIO
+	        TextView precio = (TextView)item.findViewById(R.id.Precio);
+	        precio.setText("$"+ofer.getObjeto().getValor());
+	        //DUENIO
+	        TextView duenio = (TextView)item.findViewById(R.id.Duenio);
+	        duenio.setText("Ofrecido por: "+ofer.getUsuario());
+	        //IMAGEN
+	        ImageView img = (ImageView)item.findViewById(R.id.imgTrueque);
+	        img.setImageBitmap(ofer.getImagen());
 	        
-	        TextView itemTrueque = (TextView)item.findViewById(R.id.TextItemOferta);
-	        itemTrueque.setText(((Oferta)ofertas[position]).getObjeto().getNombre() + 
-	        		"   $"+ ((Oferta)ofertas[position]).getObjeto().getValor());
-	 
 //		        TextView lblDescObj = (TextView)item.findViewById(R.id.LblDescObj);
 //		        lblDescObj.setText(((Objeto) objs[position]).getDescripcion());
 	 

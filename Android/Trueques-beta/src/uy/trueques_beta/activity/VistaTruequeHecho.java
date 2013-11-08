@@ -4,6 +4,7 @@ import uy.trueques_beta.R;
 import uy.trueques_beta.R.layout;
 import uy.trueques_beta.R.menu;
 import uy.trueques_beta.entities.Trueque;
+import uy.trueques_beta.entities.Usuario;
 import uy.trueques_beta.negocio.Factory;
 import android.os.Bundle;
 import android.app.Activity;
@@ -61,7 +62,7 @@ public class VistaTruequeHecho extends Activity {
 			nombre = (TextView)findViewById(R.id.LblObjetoTrueque);
 			nombre.setText("ERROR VUELVA A INTENTAR (id="+idTrueque+")");
 		}else{//SOY EL QUE PUBLICO EL TRUEQUE
-			if(t.getObjeto().getDuenio().getMail().equals(mail)){
+			if(t.getObjeto().getDuenio().equals(mail)){
 				this.soyTrueque=true;
 				//++ TRUEQUE
 				nombre = (TextView)findViewById(R.id.LblObjetoTrueque);
@@ -80,7 +81,8 @@ public class VistaTruequeHecho extends Activity {
 				objOfer = (TextView)findViewById(R.id.LblObjetoOferta);
 				objOfer.setText(t.getGanadora().getObjeto().getNombre());
 				duenio = (TextView)findViewById(R.id.LblDuenioOferta);
-				duenio.setText(t.getGanadora().getUsuario().getNombre());
+				Usuario u = Factory.getUsuarioCtrl().getUsuario(t.getGanadora().getUsuario());
+				duenio.setText(u.getNombre());
 				valorOfer = (TextView)findViewById(R.id.LblValorOferta);
 				valorOfer.setText("$"+t.getGanadora().getObjeto().getValor());
 				descOfer = (TextView)findViewById(R.id.LblDescOferta);
@@ -124,7 +126,8 @@ public class VistaTruequeHecho extends Activity {
 				objOfer = (TextView)findViewById(R.id.LblObjetoOferta);
 				objOfer.setText(t.getObjeto().getNombre());
 				duenio = (TextView)findViewById(R.id.LblDuenioOferta);
-				duenio.setText(t.getObjeto().getDuenio().getNombre());
+				Usuario u = Factory.getUsuarioCtrl().getUsuario((t.getObjeto().getDuenio()));
+				duenio.setText(u.getNombre());
 				valorOfer = (TextView)findViewById(R.id.LblValorOferta);
 				valorOfer.setText("$"+t.getObjeto().getValor());
 				descOfer = (TextView)findViewById(R.id.LblDescOferta);
@@ -167,9 +170,9 @@ public class VistaTruequeHecho extends Activity {
                 	//Factory.getTruequeCtrl().
                 	if (position!=0){
 	                	if(soyTrueque)
-	                		t.puntuarGanadora(position);
+	                		Factory.getTruequeCtrl().puntuarGanadora(t.getIdTrueque(), position);
 	                	else
-	                		t.puntuarTrueque(position);
+	                		Factory.getTruequeCtrl().puntuarTrueque(t.getIdTrueque(),position);
 	                	//Toast.makeText(, "Puntuaste en "+position+" el trueque", Toast.LENGTH_LONG);
 	                	Intent intent =new Intent(VistaTruequeHecho.this, VistaTruequeHecho.class);
 	                	intent.putExtra("idTrueque", idTrueque);

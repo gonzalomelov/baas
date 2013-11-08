@@ -15,8 +15,13 @@
 	       	android:layout_height="wrap_content"
 	       	android:text="Oferta por (---)"
 	       	android:textSize="25dp"
-	       	android:paddingBottom="40dp"/>
+	       	android:paddingBottom="5dp"/>
     
+    	<ImageView 
+		        android:id ="@+id/imgOferta"
+		        android:layout_width="match_parent"
+		        android:layout_height="130sp"
+		        android:src="@drawable/ic_aceptar"/>
         <EditText
             android:id="@+id/nom_obj"
             android:layout_width="match_parent"
