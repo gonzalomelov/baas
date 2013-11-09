@@ -3,6 +3,7 @@ package uy.com.group05.baasadmin.pl.beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -28,7 +29,12 @@ public class CreateApplicationBean {
 	
 	private String error;
 	
-		
+	@PostConstruct
+	public void init() {
+		rolList.add("default_local_clients");
+		rolList.add("default_external_clients");
+	}
+	
 	@ManagedProperty(value="#{userSessionManagementBean}")
 	private UserSessionManagementBean userSessionManagementBean;
 	

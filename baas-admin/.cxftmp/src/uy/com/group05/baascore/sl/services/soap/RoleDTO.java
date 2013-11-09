@@ -10,19 +10,19 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for pushChannelDTO complex type.
+ * <p>Java class for roleDTO complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="pushChannelDTO">
+ * &lt;complexType name="roleDTO">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="application" type="{http://soap.services.sl.baascore.group05.com.uy/}applicationDTO" minOccurs="0"/>
- *         &lt;element name="clients" type="{http://soap.services.sl.baascore.group05.com.uy/}clientDTO" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="permissions" type="{http://soap.services.sl.baascore.group05.com.uy/}permissionDTO" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -32,19 +32,19 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "pushChannelDTO", propOrder = {
+@XmlType(name = "roleDTO", propOrder = {
     "application",
-    "clients",
     "id",
-    "name"
+    "name",
+    "permissions"
 })
-public class PushChannelDTO {
+public class RoleDTO {
 
     protected ApplicationDTO application;
-    @XmlElement(nillable = true)
-    protected List<ClientDTO> clients;
     protected long id;
     protected String name;
+    @XmlElement(nillable = true)
+    protected List<PermissionDTO> permissions;
 
     /**
      * Gets the value of the application property.
@@ -68,35 +68,6 @@ public class PushChannelDTO {
      */
     public void setApplication(ApplicationDTO value) {
         this.application = value;
-    }
-
-    /**
-     * Gets the value of the clients property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the clients property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getClients().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link ClientDTO }
-     * 
-     * 
-     */
-    public List<ClientDTO> getClients() {
-        if (clients == null) {
-            clients = new ArrayList<ClientDTO>();
-        }
-        return this.clients;
     }
 
     /**
@@ -137,6 +108,35 @@ public class PushChannelDTO {
      */
     public void setName(String value) {
         this.name = value;
+    }
+
+    /**
+     * Gets the value of the permissions property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the permissions property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getPermissions().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link PermissionDTO }
+     * 
+     * 
+     */
+    public List<PermissionDTO> getPermissions() {
+        if (permissions == null) {
+            permissions = new ArrayList<PermissionDTO>();
+        }
+        return this.permissions;
     }
 
 }
