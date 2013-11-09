@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @javax.persistence.Entity
@@ -38,6 +39,12 @@ public class Application {
 	
 	@OneToMany(mappedBy = "application")
 	private List<Role> roles = new ArrayList<Role>();
+	
+	@OneToOne
+	private Role localClientsRole;
+	
+	@OneToOne
+	private Role externalClientsRole;
 	
 	@OneToMany(mappedBy = "application")
 	private List<Entity> entities = new ArrayList<Entity>();
@@ -117,6 +124,22 @@ public class Application {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+	public Role getLocalClientsRole() {
+		return localClientsRole;
+	}
+
+	public void setLocalClientsRole(Role localClientsRole) {
+		this.localClientsRole = localClientsRole;
+	}
+
+	public Role getExternalClientsRole() {
+		return externalClientsRole;
+	}
+
+	public void setExternalClientsRole(Role externalClientsRole) {
+		this.externalClientsRole = externalClientsRole;
 	}
 
 	public List<uy.com.group05.baascore.common.entities.Entity> getEntities() {

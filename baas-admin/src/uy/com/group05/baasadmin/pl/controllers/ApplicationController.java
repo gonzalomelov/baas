@@ -39,7 +39,6 @@ import uy.com.group05.baascore.sl.services.soap.PermissionDTO;
 import uy.com.group05.baascore.sl.services.soap.PermissionRoleDTO;
 import uy.com.group05.baascore.sl.services.soap.PushChanAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.PushChanNotRegisteredException_Exception;
-import uy.com.group05.baascore.sl.services.soap.PushChannelDTO;
 import uy.com.group05.baascore.sl.services.soap.RoleAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.RoleDTO;
 import uy.com.group05.baascore.sl.services.soap.SimpleApplicationDTO;

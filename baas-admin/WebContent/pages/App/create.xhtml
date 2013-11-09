@@ -197,7 +197,7 @@ body {
 
 						<f:facet name="header">Action</f:facet>
 
-						<h:commandLink value="Delete">
+						<h:commandLink value="Delete" rendered="#{(o != 'default_local_clients') &amp;&amp; (o != 'default_external_clients') }">
 							<f:ajax render="@form"
 								listener="#{createApplicationBean.deleteRole(o)}" />
 						</h:commandLink>

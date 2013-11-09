@@ -51,12 +51,14 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 	public void createNoSqlDb(String dbName)
 			throws MongoDBAlreadyExistsException {
 		
+		System.out.println("mongo.getDatabaseNames");
 		List<String> databaseNames = mongo.getDatabaseNames();
 		
 		if (databaseNames.contains(dbName)) {
 			throw new MongoDBAlreadyExistsException("Ya existe una base MongoDB con dicho nombre");
 		}
-			
+		
+		System.out.println("mongo.getDB(dbName)");
 		mongo.getDB(dbName);
 	}
 	
@@ -69,11 +71,14 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 		String mongoUser = propertyHandler.getProperty("mongoUser");
 		String mongoPassword = propertyHandler.getProperty("mongoPassword");
 		
+		System.out.println("mongo.getDB(dbName)");
 		DB mongoDb = mongo.getDB(dbName);
 		
 		if (mongoNeedsAuthentication) {
+			System.out.println("mongoDb.authenticate");
 			boolean auth = mongoDb.authenticate(mongoUser, mongoPassword.toCharArray());
 			if (!auth) {
+				System.out.println("MongoException");
 				throw new MongoException("No se tienen permisos para realizar la acción requerida");
 			}
 		}
@@ -85,7 +90,9 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 		BasicDBObject options = new BasicDBObject();
 		options.put("capped", false);
 		
+		System.out.println("mongoDb.createCollection");
 		mongoDb.createCollection(entity, options);
+		System.out.println("Success");
 	}
 	
 	@Override

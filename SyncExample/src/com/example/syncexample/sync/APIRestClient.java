@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class APIRestClient {
 		
 		String appName = AssetsPropertyReader.getProperties(context, "appName");
 		
-		String url = serviceUrl + "/api/entities" + "/" + appName + "/" + entity + "/" + query;
+		String url = serviceUrl + "/api/entities" + "/" + appName + "/" + entity + "/" + URLEncoder.encode(query, "ISO-8859-1");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(url);

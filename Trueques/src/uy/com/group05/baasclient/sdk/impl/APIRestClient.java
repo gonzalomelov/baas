@@ -37,7 +37,7 @@ public class APIRestClient {
 		
 		String appName = AssetsPropertyReader.getProperties(context, "appName");
 		
-		String url = serviceUrl + "/api/entities" + "/" + appName + "/" + entity + "/" + URLEncoder.encode(query, "ISO-8859-1");;
+		String url = serviceUrl + "/api/entities" + "/" + appName + "/" + entity + "/" + URLEncoder.encode(query, "ISO-8859-1");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(url);

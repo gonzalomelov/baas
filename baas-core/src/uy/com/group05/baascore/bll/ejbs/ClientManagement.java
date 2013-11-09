@@ -113,7 +113,13 @@ public class ClientManagement implements ClientManagementLocal {
 		c.setName(client.getName());
 		c.setPassword(client.getPassword());
 		
-		clientDao.create(c);
+		c = clientDao.create(c);
+		
+		//Agrego los roles por defecto
+		Role localRole = roleDao.readByName("default_local_clients");
+		c.addRole(localRole);
+		Role externalRole = roleDao.readByName("default_external_clients");
+		c.addRole(externalRole);
 		
 		registration.setOk(true);
 		
