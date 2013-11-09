@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.example.syncexample.MyApplication;
 import com.example.syncexample.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;

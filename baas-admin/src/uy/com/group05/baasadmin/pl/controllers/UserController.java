@@ -1,7 +1,12 @@
 package uy.com.group05.baasadmin.pl.controllers;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import uy.com.group05.baasadmin.common.exceptions.*;
+import uy.com.group05.baasadmin.common.utils.PropertyHandler;
 import uy.com.group05.baasadmin.pl.models.UserModel;
+import uy.com.group05.baascore.sl.services.impl.ApplicationServices;
 import uy.com.group05.baascore.sl.services.impl.UserServices;
 import uy.com.group05.baascore.sl.services.soap.EmailAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.UserDTO;
@@ -11,12 +16,23 @@ import uy.com.group05.baascore.sl.services.impl.UserServices;
 
 public class UserController {
 	
+	private UserServices service;
+	
+	public UserController() {
+		PropertyHandler propertyHandler = new PropertyHandler();
+		String wsdlHostLocation = propertyHandler.getProperty("wsdlHostLocation");
+		URL url = null;
+		try {
+			url = new URL(wsdlHostLocation + "/UserServices?wsdl");
+		} catch (MalformedURLException e) {}
+		
+		this.service = new UserServices(url);
+	}
+	
 	public long registerUser(UserModel userModel)
 		throws
 			EmailAlreadyRegisteredException,			
 			UnhandledRegistrationException, PasswordRepeatedException {
-		
-		
 		
 		try {
 			
@@ -26,7 +42,7 @@ public class UserController {
 			if(userModel.getPassword() == null)
 				throw new PasswordRepeatedException("El password no puede ser vacio.");
 			
-			UserServices service = new UserServices();
+			
 			uy.com.group05.baascore.sl.services.soap.UserServices port = service.getUserServicesPort();
 			
 			UserRegisterDTO u = new UserRegisterDTO();
@@ -60,7 +76,6 @@ public class UserController {
 			if(username == null || password == null)
 				throw new LoginException("Los datos ingresados no son correctos.");
 			
-			UserServices service = new UserServices();
 			uy.com.group05.baascore.sl.services.soap.UserServices port = service.getUserServicesPort();
 			
 			UserDTO datosUsuario = port.loginUser(username, password);
@@ -88,7 +103,7 @@ public class UserController {
 	}
 	
 	public boolean logoutUser(String email) {
-		UserServices service = new UserServices();
+		
 		uy.com.group05.baascore.sl.services.soap.UserServices port = service.getUserServicesPort();
 		
 		 try {
@@ -107,7 +122,7 @@ public class UserController {
 	}
 	
 	public UserModel loginFacebook(String email, String name, String lastname, String fbID){
-		UserServices service = new UserServices();
+		
 		uy.com.group05.baascore.sl.services.soap.UserServices port = service.getUserServicesPort();
 		
 		UserDTO userResponse = port.loginUserFacebook(email, name, lastname, fbID);

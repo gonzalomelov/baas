@@ -3,7 +3,6 @@ package com.example.syncexample.sync;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.syncexample.MyApplication;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

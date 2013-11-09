@@ -1,6 +1,8 @@
 package uy.com.group05.baasadmin.pl.controllers;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
@@ -21,8 +23,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import uy.com.group05.baasadmin.common.utils.PropertyHandler;
 import uy.com.group05.baasadmin.pl.beans.UserSessionManagementBean;
 import uy.com.group05.baasadmin.pl.models.UserModel;
+import uy.com.group05.baascore.sl.services.impl.ApplicationServices;
 
 @WebServlet("*.sec")
 public class SecurityServlet extends HttpServlet {
@@ -80,7 +84,12 @@ public class SecurityServlet extends HttpServlet {
         String token = null;
         if (faceCode != null && ! "".equals(faceCode)) {
             String appId = "641457435904811";
-            String redirectUrl = "http://localhost:8080/baas-admin/index.sec";
+            
+            PropertyHandler propertyHandler = new PropertyHandler();
+    		String host = propertyHandler.getProperty("host");
+    		
+            String redirectUrl = host + "/baas-admin/index.sec";
+           
             String faceAppSecret = "ea71cbca99628d6705f036c17aa5d5b5";
             String newUrl = "https://graph.facebook.com/oauth/access_token?client_id="
                     + appId + "&redirect_uri=" + redirectUrl + "&client_secret="

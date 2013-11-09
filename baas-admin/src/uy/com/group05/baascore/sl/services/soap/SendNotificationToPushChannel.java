@@ -18,7 +18,8 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="idApp" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="idCanal" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="mensaje" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="msgKey" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="msgValue" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -31,13 +32,15 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "sendNotificationToPushChannel", propOrder = {
     "idApp",
     "idCanal",
-    "mensaje"
+    "msgKey",
+    "msgValue"
 })
 public class SendNotificationToPushChannel {
 
     protected long idApp;
     protected long idCanal;
-    protected String mensaje;
+    protected String msgKey;
+    protected String msgValue;
 
     /**
      * Gets the value of the idApp property.
@@ -72,27 +75,51 @@ public class SendNotificationToPushChannel {
     }
 
     /**
-     * Gets the value of the mensaje property.
+     * Gets the value of the msgKey property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getMensaje() {
-        return mensaje;
+    public String getMsgKey() {
+        return msgKey;
     }
 
     /**
-     * Sets the value of the mensaje property.
+     * Sets the value of the msgKey property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setMensaje(String value) {
-        this.mensaje = value;
+    public void setMsgKey(String value) {
+        this.msgKey = value;
+    }
+
+    /**
+     * Gets the value of the msgValue property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getMsgValue() {
+        return msgValue;
+    }
+
+    /**
+     * Sets the value of the msgValue property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMsgValue(String value) {
+        this.msgValue = value;
     }
 
 }

@@ -16,7 +16,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="idApp" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="idCanal" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="idCliente" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *       &lt;/sequence>
@@ -29,31 +28,13 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "assignClientToPushChannel", propOrder = {
-    "idApp",
     "idCanal",
     "idCliente"
 })
 public class AssignClientToPushChannel {
 
-    protected long idApp;
     protected long idCanal;
     protected long idCliente;
-
-    /**
-     * Gets the value of the idApp property.
-     * 
-     */
-    public long getIdApp() {
-        return idApp;
-    }
-
-    /**
-     * Sets the value of the idApp property.
-     * 
-     */
-    public void setIdApp(long value) {
-        this.idApp = value;
-    }
 
     /**
      * Gets the value of the idCanal property.

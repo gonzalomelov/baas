@@ -1,5 +1,7 @@
 package uy.com.group05.baasadmin.pl.controllers;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import uy.com.group05.baasadmin.common.exceptions.EntityException;
 import uy.com.group05.baasadmin.common.exceptions.EntityPermissionException;
 import uy.com.group05.baasadmin.common.exceptions.PushChannelException;
 import uy.com.group05.baasadmin.common.exceptions.RoleException;
+import uy.com.group05.baasadmin.common.utils.PropertyHandler;
 import uy.com.group05.baasadmin.pl.models.AppModel;
 import uy.com.group05.baasadmin.pl.models.Application;
 import uy.com.group05.baasadmin.pl.models.Cliente;
@@ -49,17 +52,37 @@ import uy.com.group05.baascore.sl.services.soap.UserNotRegisteredException_Excep
 
 public class ApplicationController {
 
-	public AppModel GetAplicaciones(long UserId) throws ApplicationException {
+	private ApplicationServices service;
 
+	private PermissionServices permissionService;
+	
+	private PushServices pushService;
+	
+	public ApplicationController() {
 		
-				
+		PropertyHandler propertyHandler = new PropertyHandler();
+		String wsdlHostLocation = propertyHandler.getProperty("wsdlHostLocation");
+		
+		URL url = null;
+		URL urlPermissionServices = null;
+		URL urlPushServices = null;
+		
+		try {
+			url = new URL(wsdlHostLocation + "/ApplicationServices?wsdl");
+			urlPermissionServices = new URL(wsdlHostLocation + "/PermissionServices?wsdl");
+			urlPushServices = new URL(wsdlHostLocation + "/PushServices?wsdl");
+		} catch (MalformedURLException e) {}
+		
+		this.service = new ApplicationServices(url);
+		this.permissionService = new PermissionServices();
+		this.pushService = new PushServices();
+	}
+	
+	public AppModel GetAplicaciones(long UserId) throws ApplicationException {
+	
 		try {
 			
-			
-			
 			AppModel model = new AppModel();
-			
-			ApplicationServices service = new ApplicationServices();
 			
 			uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
 			
@@ -86,8 +109,6 @@ public class ApplicationController {
 
 	public void CreateApplication(long UserId, String appName, List<String> roles, List<String> entities) throws ApplicationException{
 		
-		ApplicationServices service = new ApplicationServices();
-		
 		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
 		
 		try {
@@ -109,8 +130,6 @@ public class ApplicationController {
 	}
 
 	public Application GetAplication(long id) throws ApplicationException{
-		
-		ApplicationServices service = new ApplicationServices();
 		
 		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
 		
@@ -179,8 +198,6 @@ public class ApplicationController {
 	
 	public List<Rol> getRoles(long appId){
 		
-		ApplicationServices service = new ApplicationServices();
-		
 		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
 		
 		try {
@@ -241,7 +258,6 @@ public class ApplicationController {
 	
 	
 	public long addEntity(long appId, long userId, String entityName) throws EntityException{
-		ApplicationServices service = new ApplicationServices();
 		
 		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
 		
@@ -262,7 +278,6 @@ public class ApplicationController {
 	
 	public long addRole(long userId, long appId, String roleName) throws RoleException{
 		
-		ApplicationServices service = new ApplicationServices();
 		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
 		
 		try {
@@ -283,7 +298,6 @@ public class ApplicationController {
 	
 	public long addPushChannel(long appId, String name) throws PushChannelException{
 		
-		ApplicationServices service = new ApplicationServices();
 		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
 		
 		try {
@@ -298,7 +312,7 @@ public class ApplicationController {
 	}
 	
 	public List<RolEntityPermission> getPermissions(long appId, long entityId) {
-		ApplicationServices service = new ApplicationServices();
+		
 		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
 		
 		try {
@@ -327,8 +341,7 @@ public class ApplicationController {
 	
 	public void saveEntityPermissions(long userId, long appId, long entityId, List<PermissionRoleDTO> permisos ) throws EntityPermissionException{
 		
-		PermissionServices service = new PermissionServices();
-		uy.com.group05.baascore.sl.services.soap.PermissionServices port = service.getPermissionServicesPort();		
+		uy.com.group05.baascore.sl.services.soap.PermissionServices port = permissionService.getPermissionServicesPort();		
 		
 		try {
 			port.assingPermissionEntity(userId, appId, entityId, permisos);
@@ -345,8 +358,8 @@ public class ApplicationController {
 	}
 	
 	public List<PushChannelEntity> getEntitiesAssociatedWithPushChannel(long appId, long pushChannelId) throws Exception {
-		PushServices service = new PushServices();
-		uy.com.group05.baascore.sl.services.soap.PushChannelServices port = service.getPushServicesPort();		
+
+		uy.com.group05.baascore.sl.services.soap.PushChannelServices port = pushService.getPushServicesPort();		
 		
 		try {
 			List<SimpleEntityDTO> entitiesDTO =  port.getEntitiesAssociatedWithPushChannel(appId, pushChannelId);
@@ -374,8 +387,7 @@ public class ApplicationController {
 	
 	public void assignEntityPushChannel(long appId, long pushChannelId, long entityId) throws Exception {
 		
-		PushServices service = new PushServices();
-		uy.com.group05.baascore.sl.services.soap.PushChannelServices port = service.getPushServicesPort();		
+		uy.com.group05.baascore.sl.services.soap.PushChannelServices port = pushService.getPushServicesPort();		
 		
 		try {
 			port.assignEntityToPushChannel(appId, pushChannelId, entityId);	
@@ -390,8 +402,7 @@ public class ApplicationController {
 	
 	public void unassignEntityPushChannel(long appId, long pushChannelId, long entityId) throws Exception {
 		
-		PushServices service = new PushServices();
-		uy.com.group05.baascore.sl.services.soap.PushChannelServices port = service.getPushServicesPort();		
+		uy.com.group05.baascore.sl.services.soap.PushChannelServices port = pushService.getPushServicesPort();		
 		
 		try {
 			port.unassignEntityToPushChannel(appId, pushChannelId, entityId);	
@@ -406,8 +417,7 @@ public class ApplicationController {
 	
 	public void savePushChannelEntities(long appId, long pushChannelId, List<SimplePushChannelEntityDTO> entities) throws Exception {
 		
-		PushServices service = new PushServices();
-		uy.com.group05.baascore.sl.services.soap.PushChannelServices port = service.getPushServicesPort();		
+		uy.com.group05.baascore.sl.services.soap.PushChannelServices port = pushService.getPushServicesPort();		
 		
 		try {
 			port.savePushChannelEntities(appId, pushChannelId, entities);	
@@ -422,7 +432,6 @@ public class ApplicationController {
 	
 	public ChartDto getChartValues(long appId, TipoChart tipochart) throws Exception{
 		
-		ApplicationServices service = new ApplicationServices();
 		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
 		
 		try {
@@ -434,3 +443,4 @@ public class ApplicationController {
 		
 	}
 }
+

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.example.syncexample.MyApplication;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -106,7 +105,8 @@ public class BaasContentProvider extends ContentProvider {
 			throw new IllegalArgumentException("InsertNotSupportedException: " + uri);
 		}
 		
-		String table = myApplication.getmTablesDB().get(matchUri);
+		int tableIndex = (int)Math.floor(matchUri/2);
+		String table = myApplication.getmTablesDB().get(tableIndex);
 		
 		SQLiteDatabase db = mBaasSqlHelper.getWritableDatabase();
 		
@@ -124,7 +124,8 @@ public class BaasContentProvider extends ContentProvider {
 			throw new IllegalArgumentException("GetTypeNotSupportedException: " + uri);
 		}
 		
-		String table = myApplication.getmTablesDB().get(matchUri);
+		int tableIndex = (int)Math.floor(matchUri/2);
+		String table = myApplication.getmTablesDB().get(tableIndex);
 		
 		if (matchUri % 2 == 0) {
 			type = "vnd.android.cursor.dir/vnd.com.example.syncexample.provider" + "." + table;

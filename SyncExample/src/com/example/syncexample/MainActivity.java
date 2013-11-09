@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.example.syncexample.sync.BaasProviderContract;
 import com.example.syncexample.sync.BaasProviderObserver;
+import com.example.syncexample.sync.MyApplication;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
