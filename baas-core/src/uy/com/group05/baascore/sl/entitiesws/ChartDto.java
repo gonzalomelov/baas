@@ -1,38 +1,40 @@
 package uy.com.group05.baascore.sl.entitiesws;
 
+import java.util.List;
+
 public class ChartDto {
 	
-	private int pedidosHttp;
+	private List<Integer> pedidosHttp;
 	
-	private int dispRegistrados;
+	private List<Integer> dispRegistrados;
 
-	private int mensajesPushEnviados;
+	private List<Integer> mensajesPushEnviados;
 
-	public int getPedidosHttp() {
+	public List<Integer> getPedidosHttp() {
 		return pedidosHttp;
 	}
 
-	public void setPedidosHttp(int pedidosHttp) {
+	public void setPedidosHttp(List<Integer> pedidosHttp) {
 		this.pedidosHttp = pedidosHttp;
 	}
 
-	public int getDispRegistrados() {
+	public List<Integer> getDispRegistrados() {
 		return dispRegistrados;
 	}
 
-	public void setDispRegistrados(int dispRegistrados) {
+	public void setDispRegistrados(List<Integer> dispRegistrados) {
 		this.dispRegistrados = dispRegistrados;
 	}
 
-	public int getMensajesPushEnviados() {
+	public List<Integer> getMensajesPushEnviados() {
 		return mensajesPushEnviados;
 	}
 
-	public void setMensajesPushEnviados(int mensajesPushEnviados) {
+	public void setMensajesPushEnviados(List<Integer> mensajesPushEnviados) {
 		this.mensajesPushEnviados = mensajesPushEnviados;
 	}
 
-	
+		
 	
 	
 }

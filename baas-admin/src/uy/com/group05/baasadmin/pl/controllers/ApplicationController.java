@@ -43,6 +43,7 @@ import uy.com.group05.baascore.sl.services.soap.SimpleApplicationDTO;
 import uy.com.group05.baascore.sl.services.soap.SimpleEntityDTO;
 import uy.com.group05.baascore.sl.services.soap.SimplePushChannelDTO;
 import uy.com.group05.baascore.sl.services.soap.SimplePushChannelEntityDTO;
+import uy.com.group05.baascore.sl.services.soap.TipoChart;
 import uy.com.group05.baascore.sl.services.soap.UserCantAccessAppException_Exception;
 import uy.com.group05.baascore.sl.services.soap.UserNotRegisteredException_Exception;
 
@@ -419,13 +420,13 @@ public class ApplicationController {
 		}
 	}
 	
-	public ChartDto getChartValues(long appId) throws Exception{
+	public ChartDto getChartValues(long appId, TipoChart tipochart) throws Exception{
 		
 		ApplicationServices service = new ApplicationServices();
 		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
 		
 		try {
-			return port.getChartsValues(appId);
+			return port.getChartsValues(appId, tipochart );
 		} catch (AppNotRegisteredException_Exception e) {
 			throw new Exception(e.getMessage());
 		}

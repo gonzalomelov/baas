@@ -3,6 +3,7 @@ package uy.com.group05.baascore.bll.ejbs;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -12,10 +13,12 @@ import uy.com.group05.baascore.bll.ejbs.interfaces.APIManagementLocal;
 import uy.com.group05.baascore.bll.ejbs.interfaces.PushChannelManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Entity;
+import uy.com.group05.baascore.common.entities.Estadisticas;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
 import uy.com.group05.baascore.dal.dao.EntityDao;
+import uy.com.group05.baascore.dal.dao.EstadisticasDao;
 import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
 
 import org.apache.http.HttpResponse;
@@ -45,6 +48,9 @@ public class APIManagement implements APIManagementLocal {
 	private ApplicationDao appDao;
 	
 	@Inject
+	private EstadisticasDao estadisticasDao;
+	
+	@Inject
 	private PushChannelManagementLocal pushChannelManagementLocal;
 	
 	@Override
@@ -56,6 +62,15 @@ public class APIManagement implements APIManagementLocal {
 		if(entity == null){		
 			return null;			
 		}
+		
+		Application app = appDao.readByName(appName);
+		
+		Estadisticas est = new Estadisticas();
+		est.setAppId(app.getId());
+		est.setTipoEstadisticas(1);
+		est.setTiempo(new Date());
+		
+		estadisticasDao.create(est);
 		
 		return noSqlDbDao.getEntities(appName, entity, query); 
  
@@ -83,9 +98,16 @@ public class APIManagement implements APIManagementLocal {
 
 		noSqlDbDao.addEntity(appName, entity, jsonObj);
 		
+		Estadisticas est = new Estadisticas();
+		est.setAppId(appId);
+		est.setTipoEstadisticas(1);
+		est.setTiempo(new Date());
+		
+		estadisticasDao.create(est);
+		
 		pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, entityId);
 
-		//######### Llamo a GCM para que todos los clientes actualicen
+		//######### Llamo a GCM para que todos los clientes actualizen
 		try {
 			startDataSynchronization(entity);
 		}

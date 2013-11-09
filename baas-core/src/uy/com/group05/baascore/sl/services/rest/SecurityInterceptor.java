@@ -54,10 +54,10 @@ public class SecurityInterceptor implements PreProcessInterceptor, AcceptedByMet
 			
 			String operation = request.getHttpMethod();
 			
-			if (!clientManagementLocal.validate(appName, operation, entity, accessToken))
-			{
-				return new ServerResponse("Access denied for these resource", 403, new Headers<Object>());
-			}	
+//			if (!clientManagementLocal.validate(appName, operation, entity, accessToken))
+//			{
+//				return new ServerResponse("Access denied for these resource", 403, new Headers<Object>());
+//			}	
 		}
 		
 		return null;

@@ -16,6 +16,7 @@ import javax.jws.WebService;
 
 
 
+
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Client;
@@ -44,6 +45,7 @@ import uy.com.group05.baascore.sl.entitiesws.PermissionDTO;
 import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
 import uy.com.group05.baascore.sl.entitiesws.SimpleApplicationDTO;
 import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelDTO;
+import uy.com.group05.baascore.sl.entitiesws.TipoChart;
 import uy.com.group05.baascore.sl.services.soap.ApplicationServices;
 import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
 
@@ -224,9 +226,9 @@ public class ApplicationServicesImpl implements ApplicationServices{
 
 
 	@Override
-	public ChartDto getChartsValues(long idApp)
+	public ChartDto getChartsValues(long idApp, TipoChart tipoChart)
 			throws AppNotRegisteredException {
 		
-		return appManagementLocal.getChartValues(idApp);
+		return appManagementLocal.getChartsValues(idApp, tipoChart);
 	}
 }

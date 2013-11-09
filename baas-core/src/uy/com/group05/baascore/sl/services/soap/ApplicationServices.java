@@ -11,6 +11,7 @@ import javax.jws.WebService;
 
 
 
+
 import uy.com.group05.baascore.common.exceptions.InvalidNameException;
 import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
@@ -32,6 +33,7 @@ import uy.com.group05.baascore.sl.entitiesws.PushChannelDTO;
 import uy.com.group05.baascore.sl.entitiesws.RoleDTO;
 import uy.com.group05.baascore.sl.entitiesws.SimpleApplicationDTO;
 import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelDTO;
+import uy.com.group05.baascore.sl.entitiesws.TipoChart;
 
 @WebService
 public interface ApplicationServices {
@@ -172,7 +174,10 @@ public interface ApplicationServices {
 			@WebParam(name = "idApp") long idApp)
 			throws AppNotRegisteredException;
 	
-	public ChartDto getChartsValues(@WebParam(name = "idApp") long idApp)throws AppNotRegisteredException;
+	public ChartDto getChartsValues(
+			@WebParam(name = "idApp") long idApp,
+			@WebParam(name = "tipoChart") TipoChart tipoChart)
+					throws AppNotRegisteredException;
 	
 //	@WebMethod
 //	public 

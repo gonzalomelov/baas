@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="idApp" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="tipoChart" type="{http://soap.services.sl.baascore.group05.com.uy/}tipoChart" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -27,11 +28,13 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "getChartsValues", propOrder = {
-    "idApp"
+    "idApp",
+    "tipoChart"
 })
 public class GetChartsValues {
 
     protected long idApp;
+    protected TipoChart tipoChart;
 
     /**
      * Gets the value of the idApp property.
@@ -47,6 +50,30 @@ public class GetChartsValues {
      */
     public void setIdApp(long value) {
         this.idApp = value;
+    }
+
+    /**
+     * Gets the value of the tipoChart property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link TipoChart }
+     *     
+     */
+    public TipoChart getTipoChart() {
+        return tipoChart;
+    }
+
+    /**
+     * Sets the value of the tipoChart property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link TipoChart }
+     *     
+     */
+    public void setTipoChart(TipoChart value) {
+        this.tipoChart = value;
     }
 
 }

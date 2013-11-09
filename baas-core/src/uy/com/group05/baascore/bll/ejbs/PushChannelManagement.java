@@ -2,7 +2,9 @@ package uy.com.group05.baascore.bll.ejbs;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -14,6 +16,7 @@ import uy.com.group05.baascore.bll.ejbs.interfaces.PushChannelManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.entities.Entity;
+import uy.com.group05.baascore.common.entities.Estadisticas;
 import uy.com.group05.baascore.common.entities.PushChannel;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.ClientNotRegisteredException;
@@ -24,6 +27,7 @@ import uy.com.group05.baascore.common.utils.PropertyHandler;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
 import uy.com.group05.baascore.dal.dao.ClientDao;
 import uy.com.group05.baascore.dal.dao.EntityDao;
+import uy.com.group05.baascore.dal.dao.EstadisticasDao;
 import uy.com.group05.baascore.dal.dao.PushChannelDao;
 import uy.com.group05.baascore.sl.entitiesws.SimplePushChannelEntityDTO;
 
@@ -42,6 +46,9 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 	AppManagementLocal appMgmt;
 	@Inject
 	ClientManagementLocal clientMgmt;
+	
+	@Inject
+	private EstadisticasDao estadisticasDao;
 	
 	@Override	
 	public long createPushChannel(long idApp, String nombreCanal)
@@ -78,8 +85,19 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		if (!this.existsPushChannel(idCanal))
 			throw new PushChanNotRegisteredException("No existe el canal push con id " + idCanal);
 		
+		
+		
 		PushChannel pushChannel = pushDao.read(idCanal);
 		Client client = clientMgmt.getClient(idCliente);
+		
+		
+		
+		Estadisticas est = new Estadisticas();
+		est.setAppId(pushChannel.getApplication().getId());
+		est.setTipoEstadisticas(3);
+		est.setTiempo(new Date());
+		
+		estadisticasDao.create(est);
 		
 		// Si el cliente ya está suscripto, no hago nada
 		if (pushChannel.hasClient(client))
@@ -160,6 +178,13 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		if (entity == null) {
 			throw new EntityNotRegisteredException("No existe la entidad con id " + entityId);
 		}
+		
+		Estadisticas est = new Estadisticas();
+		est.setAppId(appId);
+		est.setTipoEstadisticas(2);
+		est.setTiempo(new Date());
+		
+		estadisticasDao.create(est);
 		
 		List<PushChannel> canales = getPushChannelsAssociatedWithEntity(appId, entityId);
 		

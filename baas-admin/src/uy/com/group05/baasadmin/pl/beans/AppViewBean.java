@@ -3,7 +3,6 @@ package uy.com.group05.baasadmin.pl.beans;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -22,6 +21,7 @@ import uy.com.group05.baasadmin.pl.models.Entity;
 import uy.com.group05.baasadmin.pl.models.PushChannel;
 import uy.com.group05.baasadmin.pl.models.Rol;
 import uy.com.group05.baascore.sl.services.soap.ChartDto;
+import uy.com.group05.baascore.sl.services.soap.TipoChart;
 
 @ManagedBean(name = "appViewBean")
 @ViewScoped
@@ -96,7 +96,7 @@ public class AppViewBean {
 			
 			mensajesPushEnviados = new ArrayList<Integer>();
 
-			createLinearModel();
+			createLinearModel(TipoChart.HORAS);
 			
 		}
 
@@ -334,7 +334,7 @@ public class AppViewBean {
 		this.linearModel = linearModel;
 	}
 	
-	private void createLinearModel() {  
+	private void createLinearModel(TipoChart tipoChart) {  
         
         
         try{
@@ -342,32 +342,16 @@ public class AppViewBean {
         	linearModel = new CartesianChartModel();  
         	
 			ApplicationController appController = new ApplicationController();
-			ChartDto datosChart = appController.getChartValues(app.getId());
+			ChartDto datosChart = appController.getChartValues(app.getId(), tipoChart);
 					
-			pedidosHttp.add(0, datosChart.getPedidosHttp());
-			
-			if(pedidosHttp.size() > 10){
-				for(int i = 10; i < pedidosHttp.size();i++){
-					pedidosHttp.remove(i);
-				}
-			}
-			
-			dispRegistrados.add(0, datosChart.getDispRegistrados());
-			
-			if(dispRegistrados.size() > 10){
-				for(int i = 10; i < dispRegistrados.size();i++){
-					dispRegistrados.remove(i);
-				}
-			}
+			pedidosHttp = datosChart.getPedidosHttp();
 			
 			
-			mensajesPushEnviados.add(0, datosChart.getMensajesPushEnviados());
 			
-			if(mensajesPushEnviados.size() > 10){
-				for(int i = 10; i < mensajesPushEnviados.size();i++){
-					mensajesPushEnviados.remove(i);
-				}
-			}
+			dispRegistrados = datosChart.getDispRegistrados();
+			
+			
+			mensajesPushEnviados = datosChart.getMensajesPushEnviados();
 			
 			ChartSeries pedidosHttpChart = new ChartSeries();  
 			pedidosHttpChart.setLabel("Pedidos HTTP");  
@@ -411,7 +395,7 @@ public class AppViewBean {
 	
 	public String cargarChart() {
 		
-		createLinearModel();
+		createLinearModel(TipoChart.HORAS);
 		
 		return null;
 	

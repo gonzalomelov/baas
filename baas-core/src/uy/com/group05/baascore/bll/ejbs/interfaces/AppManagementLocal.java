@@ -23,6 +23,7 @@ import uy.com.group05.baascore.common.exceptions.PushChanNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.UserCantAccessAppException;
 import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.sl.entitiesws.ChartDto;
+import uy.com.group05.baascore.sl.entitiesws.TipoChart;
 
 @Local
 public interface AppManagementLocal {
@@ -111,6 +112,6 @@ public interface AppManagementLocal {
 	
 	public Application getApplication(String appName) throws AppNotRegisteredException;
 	
-	public ChartDto getChartValues(long appId) throws AppNotRegisteredException;
+	public ChartDto getChartsValues(long idApp, TipoChart tipoChart) throws AppNotRegisteredException;
 	
 }

@@ -128,6 +128,14 @@ body {
 		
 		<div class="chartsBox">
 			<h:form>
+				
+       			 <p:selectOneMenu value="#{buttonBean.number}">  
+		            <f:selectItem itemLabel="Minutes" itemValue="Minutos"  />  
+		            <f:selectItem itemLabel="Hours" itemValue="Horas" />  
+		            <f:selectItem itemLabel="Days" itemValue="Dias" />  
+		            <f:selectItem itemLabel="Months" itemValue="Meses" />  
+		        </p:selectOneMenu>  
+       			
 				<p:lineChart id="linear" value="#{appViewBean.linearModel}" legendPosition="e"  
      				title="Estadisticas" style="height:300px"/>
      			
@@ -412,7 +420,7 @@ body {
 	<!-- application script for Charisma demo -->
 	<script src="../../js/charisma.js"></script>
 	
-	<script src="../../js/LoadChart.js"></script>
+
 
 
 </body>

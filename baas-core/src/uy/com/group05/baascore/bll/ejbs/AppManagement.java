@@ -1,6 +1,8 @@
 package uy.com.group05.baascore.bll.ejbs;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -32,12 +34,14 @@ import uy.com.group05.baascore.common.exceptions.UserNotRegisteredException;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
 import uy.com.group05.baascore.dal.dao.ClientDao;
 import uy.com.group05.baascore.dal.dao.EntityDao;
+import uy.com.group05.baascore.dal.dao.EstadisticasDao;
 import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
 import uy.com.group05.baascore.dal.dao.PermissionDao;
 import uy.com.group05.baascore.dal.dao.PushChannelDao;
 import uy.com.group05.baascore.dal.dao.RoleDao;
 import uy.com.group05.baascore.dal.dao.UserDao;
 import uy.com.group05.baascore.sl.entitiesws.ChartDto;
+import uy.com.group05.baascore.sl.entitiesws.TipoChart;
 
 @Stateless
 public class AppManagement implements AppManagementLocal{
@@ -58,6 +62,8 @@ public class AppManagement implements AppManagementLocal{
 	ClientDao clientDao;
 	@Inject
 	PushChannelDao pushChannelDao;
+	@Inject
+	EstadisticasDao estadisticasDao;
 	
 	public List<Application> listApplications(long idUser) throws UserNotRegisteredException{
 		User user = userDao.read(idUser);
@@ -478,28 +484,161 @@ public class AppManagement implements AppManagementLocal{
 		return app;
 	}
 	
-	public ChartDto getChartValues(long appId) throws AppNotRegisteredException{
+
+	@Override
+	public ChartDto getChartsValues(long idApp, TipoChart tipoChart)
+			throws AppNotRegisteredException {
 		
-		Application app = appDao.readById(appId);
+		Application app = appDao.readById(idApp);
 		
 		if (app == null)
-			throw new AppNotRegisteredException("No existe la aplicación con id " + appId);
+			throw new AppNotRegisteredException("No existe la aplicación con id " + idApp);
 		
 		ChartDto respuesta = new ChartDto();
 		
-		respuesta.setDispRegistrados(generarValoresRandomicos(0,15));
-		respuesta.setMensajesPushEnviados(generarValoresRandomicos(0, 150));
-		respuesta.setPedidosHttp(generarValoresRandomicos(0, 299));
+		List<Integer> dispRegistrados = new ArrayList<Integer>();
+		List<Integer> mensajesPush = new ArrayList<Integer>();
+		List<Integer> pedidosHttp = new ArrayList<Integer>();
+		
+		Date tiempoActual = new Date();
+		Date tiempoMinAux;
+		Date tiempoMaxAux;
+		Calendar cal = Calendar.getInstance();
+		switch(tipoChart){
+			case Minutos:
+				for(int i = 0; i < 10; i++){
+					
+					
+					cal.setTime(tiempoActual);
+					cal.add(Calendar.MINUTE, -i - 1);
+					tiempoMinAux = cal.getTime();
+					
+					
+					cal.setTime(tiempoActual);
+					cal.add(Calendar.MINUTE, -i);
+					tiempoMaxAux = cal.getTime();
+
+							
+
+					// pedidos http
+					int valor = estadisticasDao.readByType(idApp, 1, tiempoMinAux, tiempoMaxAux);
+					pedidosHttp.add(valor);
+					
+					// pedidos mensajesPush
+					valor = estadisticasDao.readByType(idApp, 2, tiempoMinAux, tiempoMaxAux);
+					mensajesPush.add(valor);
+					
+					// pedidos dispRegistrados
+					valor = estadisticasDao.readByType(idApp, 3, tiempoMinAux, tiempoMaxAux);
+					dispRegistrados.add(valor);
+					
+				}
+				break;
+			case Horas:
+for(int i = 0; i < 10; i++){
+					
+					
+					cal.setTime(tiempoActual);
+					cal.add(Calendar.HOUR, -i - 1);
+					tiempoMinAux = cal.getTime();
+					
+					
+					cal.setTime(tiempoActual);
+					cal.add(Calendar.HOUR, -i);
+					tiempoMaxAux = cal.getTime();
+
+							
+
+					// pedidos http
+					int valor = estadisticasDao.readByType(idApp, 1, tiempoMinAux, tiempoMaxAux);
+					pedidosHttp.add(valor);
+					
+					// pedidos mensajesPush
+					valor = estadisticasDao.readByType(idApp, 2, tiempoMinAux, tiempoMaxAux);
+					mensajesPush.add(valor);
+					
+					// pedidos dispRegistrados
+					valor = estadisticasDao.readByType(idApp, 3, tiempoMinAux, tiempoMaxAux);
+					dispRegistrados.add(valor);
+					
+				}
+				break;
+			case Dias:
+				for(int i = 0; i < 15; i++){
+									
+									
+									cal.setTime(tiempoActual);
+									cal.add(Calendar.DATE, -i - 1);
+									tiempoMinAux = cal.getTime();
+									
+									
+									cal.setTime(tiempoActual);
+									cal.add(Calendar.DATE, -i);
+									tiempoMaxAux = cal.getTime();
+
+											
+
+									// pedidos http
+									int valor = estadisticasDao.readByType(idApp, 1, tiempoMinAux, tiempoMaxAux);
+									pedidosHttp.add(valor);
+									
+									// pedidos mensajesPush
+									valor = estadisticasDao.readByType(idApp, 2, tiempoMinAux, tiempoMaxAux);
+									mensajesPush.add(valor);
+									
+									// pedidos dispRegistrados
+									valor = estadisticasDao.readByType(idApp, 3, tiempoMinAux, tiempoMaxAux);
+									dispRegistrados.add(valor);
+									
+								}
+								break;
+			case Mes:
+				for(int i = 0; i < 6; i++){
+									
+									
+									cal.setTime(tiempoActual);
+									cal.add(Calendar.MONTH, -i - 1);
+									tiempoMinAux = cal.getTime();
+									
+									
+									cal.setTime(tiempoActual);
+									cal.add(Calendar.MONTH, -i);
+									tiempoMaxAux = cal.getTime();
+
+											
+
+									// pedidos http
+									int valor = estadisticasDao.readByType(idApp, 1, tiempoMinAux, tiempoMaxAux);
+									pedidosHttp.add(valor);
+									
+									// pedidos mensajesPush
+									valor = estadisticasDao.readByType(idApp, 2, tiempoMinAux, tiempoMaxAux);
+									mensajesPush.add(valor);
+									
+									// pedidos dispRegistrados
+									valor = estadisticasDao.readByType(idApp, 3, tiempoMinAux, tiempoMaxAux);
+									dispRegistrados.add(valor);
+									
+								}
+								break;
+				default: break;
+		}		
+		
+		
+		respuesta.setDispRegistrados(dispRegistrados);
+		respuesta.setMensajesPushEnviados(mensajesPush);
+		respuesta.setPedidosHttp(pedidosHttp);
 		
 		return respuesta;
-		
 	}
-	
-	private int generarValoresRandomicos(int min, int max){
-		Random rand = new Random();
 
-        // nextInt is normally exclusive of the top value,
-        // so add 1 to make it inclusive
-        return rand.nextInt((max - min) + 1) + min;
-	}
+
+	
+//	private int generarValoresRandomicos(int min, int max){
+//		Random rand = new Random();
+//
+//        // nextInt is normally exclusive of the top value,
+//        // so add 1 to make it inclusive
+//        return rand.nextInt((max - min) + 1) + min;
+//	}
 }
