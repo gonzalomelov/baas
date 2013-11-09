@@ -1,7 +1,10 @@
 package uy.trueques_beta.activity;
 
+import java.util.List;
+
 import uy.trueques_beta.R;
 import uy.trueques_beta.activity.VerTrueques.AdaptadorTrueque;
+import uy.trueques_beta.activity.VerTrueques.VerTruequeTask;
 import uy.trueques_beta.activity.VerTrueques.VerTruequesListener;
 import uy.trueques_beta.entities.Trueque;
 import uy.trueques_beta.negocio.Factory;
@@ -9,7 +12,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +32,8 @@ public class VerTruequesHechos extends Fragment implements AdapterView.OnItemCli
 	private TextView lblVerTrueques;
 	private Object[] trueques;
 	private VerTruequesHechosListener listener;
+	private int size;
+	private VerTruequeTask mAuthTask = null;
 			
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,19 +52,23 @@ public class VerTruequesHechos extends Fragment implements AdapterView.OnItemCli
 		//Obtengo datos del usuario
         SharedPreferences prefs = this.getActivity().getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
-//		Bundle bundle = this.getIntent().getExtras();
-//		this.mail = bundle.getString("mail");
-		//***Pruba
-		trueques = Factory.getTruequeCtrl().getTruequesUsuario(this.mail).toArray();
-		int size=this.trueques.length;
+
+		if(mAuthTask==null){
+			mAuthTask = new VerTruequeTask();
+			mAuthTask.execute((Void) null);
+		}
+		
+		size=0;
+//		trueques = Factory.getTruequeCtrl().getTruequesUsuario(this.getActivity(), this.mail).toArray();
+//		int size=this.trueques.length;
 		
 		lblVerTrueques = (TextView)getView().findViewById(R.id.LblVerTrueques);
 		lblVerTrueques.setText("Trueques realizados: " + size);
 		 
 		
-		this.adaptador = new AdaptadorTrueque(this, R.layout.list_item_trueques, trueques);
+		//this.adaptador = new AdaptadorTrueque(this, R.layout.list_item_trueques, trueques);
 		lstTrueques = (ListView)getView().findViewById(R.id.LstTrueques);
-		lstTrueques.setAdapter(adaptador);
+		//lstTrueques.setAdapter(adaptador);
 		
 		lstTrueques.setOnItemClickListener(this);
 		
@@ -69,19 +80,60 @@ public class VerTruequesHechos extends Fragment implements AdapterView.OnItemCli
 		Trueque t =((Trueque)adapterView.getItemAtPosition(position));
 		//AVISO AL ACTIVITY
 		if (listener!=null) {
-            listener.onTruequeHechoSeleccionado(t.getIdTrueque());
+            listener.onTruequeHechoSeleccionado(t);//.getIdTrueque());
         }
 	}
 	
 	public interface VerTruequesHechosListener {
-        void onTruequeHechoSeleccionado(int idTrueque);
+        void onTruequeHechoSeleccionado(Trueque t);//int idTrueque);
     }
  
     public void setVerTruequesHechosListener(VerTruequesHechosListener listener) {
         this.listener=listener;
     }
 	
-	
+    public class VerTruequeTask extends AsyncTask<Void, Void, Boolean> {
+		//private int idTrueque;
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			
+			size = 0;
+			List<Trueque> ts =null;
+			ts = Factory.getTruequeCtrl().getTruequesUsuario(VerTruequesHechos.this.getActivity(), mail);
+			//ts = Factory.getTruequeCtrl().getTruequesActivos(VerTrueques.this.getActivity());
+			if(ts!=null){
+				trueques=ts.toArray();
+				size=trueques.length;
+				return true;
+			}
+			else
+				return false;
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			mAuthTask = null;
+			//showProgress(false);
+
+			if (success) {
+				Log.i("[VerTruequesHechos]:", "EXITO!");
+				adaptador = new AdaptadorTrueque(VerTruequesHechos.this, R.layout.list_item_trueques, trueques);
+				lstTrueques.setAdapter(adaptador);
+				lblVerTrueques.setText("Trueques realizados: " + size);
+		    	
+			} else {
+				Log.i("[VerTruequesHechos]:", "ERROR");
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			mAuthTask = null;
+			//showProgress(false);
+		}
+	}
+    
+    
 	//Creo la clase para el adaptador
 	class AdaptadorTrueque extends ArrayAdapter {
 		 

@@ -3,6 +3,7 @@ package uy.trueques_beta.negocio;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,37 +31,43 @@ public class TruequeCtrl {
 		return trueques.get(id);
 	}
 
-	public int crearTrueque(Context context, Objeto obj, String busca, float minVal, String ubicacion) {
+	public int crearTrueque(Context context, Objeto obj, String busca, float minVal, String ubicacion, Bitmap bitmap) {
 		if (obj==null || !Factory.getObjetoCtrl().existObjeto((obj.getId()))){
 			return -1;
 		}
 		
-		Trueque t = new Trueque(idCont, obj, busca, minVal, ubicacion);
+		Trueque t= null;
+		//Trueque t = new Trueque(idCont, obj, busca, minVal, ubicacion);
 		//+++ crear usuario en baas
-//		try{
+		try{
+			
+			t = new Trueque(context, idCont, obj, busca, minVal, ubicacion, bitmap);
+			
 			Gson gson = new Gson();
 			String json = gson.toJson(t, Trueque.class);
 			String entity="Trueque";
-			Log.i("POST","Trueque= "+json);
-		
-//		boolean ok = SDKFactory.getAPIFacade(context).post(entity, json);
-//		Log.i("POST","-"+ok);
-//		}
-//		catch (UnsupportedEncodingException e) {
-//			Log.i("POST",e.getMessage());
-//		}
-//		catch (ClientProtocolException e) {
-//			Log.i("POST",e.getMessage());
-//		}
-//		catch (IOException e) {
-//			Log.i("POST",e.getMessage());
-//		}
+			Log.i("[crearTrueque]:","Trueque= "+json);
+			boolean ok = SDKFactory.getAPIFacade(context).post(entity, json);
+			Log.i("[crearTrueque]:","-"+ok);
+		}
+		catch (UnsupportedEncodingException e) {
+			Log.i("[crearTrueque]:",e.getMessage());
+		}
+		catch (ClientProtocolException e) {
+			Log.i("[crearTrueque]:",e.getMessage());
+		}
+		catch (IOException e) {
+			Log.i("[crearTrueque]:",e.getMessage());
+		}
 		//++++
-		Usuario u = Factory.getUsuarioCtrl().getUsuario(t.getUsuario());
-		u.setPublicados(u.getPublicados()+1);
-		this.trueques.put(idCont, t);
-		idCont++;
-		return t.getIdTrueque();
+		if (t!=null){
+			Usuario u = Factory.getUsuarioCtrl().getUsuario(t.getUsuario());
+			u.setPublicados(u.getPublicados()+1);
+			this.trueques.put(idCont, t);
+			idCont++;
+			return t.getIdTrueque();
+		}
+		return -1;
 	}
 	
 	public boolean aceptarOferta(int idTrueque, int idOferta){
@@ -100,30 +107,109 @@ public class TruequeCtrl {
 		return this.trueques.get(idTrueque).rechazarOferta(idOferta);
 	}
 	
-	public List<Trueque> getTruequesActivos(){
-		
-		List<Trueque> trueques = new ArrayList<Trueque>();
-		for(Trueque t: this.trueques.values()){
-			if (t.isActiva())
-				trueques.add(t);
+	public List<Trueque> getTruequesActivos(Context context){
+		//SDK
+		try
+		{
+			String entity = "Trueque";
+			String query = "";//"{activa:true}";
+			
+			String json = SDKFactory.getAPIFacade(context).get(entity, query);
+			
+			Log.i("[TruequeCtrl]:", json);
+			Gson gson = new Gson();
+			Trueque[] arrayTrueques = gson.fromJson(json, Trueque[].class);
+			return Arrays.asList(arrayTrueques);
 		}
+		catch (UnsupportedEncodingException e) {
+			Log.i("GetTruequesActivos:", e.getMessage());
+			return new ArrayList<Trueque>();
+		}
+		catch (ClientProtocolException e) {
+			Log.i("GetTruequesActivos:", e.getMessage());
+			return new ArrayList<Trueque>();
+		}
+		catch (IOException e) {
+			Log.i("GetTruequesActivos:", e.getMessage());
+			return new ArrayList<Trueque>();
+		}
+		//SDK
 		
-		return trueques;
+		
+//		List<Trueque> trueques = new ArrayList<Trueque>();
+//		for(Trueque t: this.trueques.values()){
+//			if (t.isActiva())
+//				trueques.add(t);
+//		}
+//		
+//		return trueques;
 	}
 	
-	public List<Trueque> getTruequesUsuario(String mail){
+	public List<Trueque> getTruequesUsuario(Context context, String mail){
 		
-		List<Trueque> trueques = new ArrayList<Trueque>();
-		for(Trueque t: this.trueques.values()){
-			if ((t.getUsuario().equals(mail) && !t.isActiva()) || (t.getGanadora()!=null && t.getGanadora().getUsuario().equals(mail)))
-				trueques.add(t);
+//		List<Trueque> trueques = new ArrayList<Trueque>();
+//		for(Trueque t: this.trueques.values()){
+//			if ((t.getUsuario().equals(mail) && !t.isActiva()) || (t.getGanadora()!=null && t.getGanadora().getUsuario().equals(mail)))
+//				trueques.add(t);
+//		}
+		//SDK
+		try
+		{
+			String entity = "Trueque";
+			String query = ""; //if ((t.getUsuario().equals(mail) && !t.isActiva()) || (t.getGanadora()!=null && t.getGanadora().getUsuario().equals(mail)))
+			
+			String json = SDKFactory.getAPIFacade(context).get(entity, query);
+			
+			Log.i("[TruequeCtrl]:", json);
+			Gson gson = new Gson();
+			Trueque[] arrayTrueques = gson.fromJson(json, Trueque[].class);
+			return Arrays.asList(arrayTrueques);
 		}
+		catch (UnsupportedEncodingException e) {
+			Log.i("GetTruequesActivos:", e.getMessage());
+			return new ArrayList<Trueque>();
+		}
+		catch (ClientProtocolException e) {
+			Log.i("GetTruequesActivos:", e.getMessage());
+			return new ArrayList<Trueque>();
+		}
+		catch (IOException e) {
+			Log.i("GetTruequesActivos:", e.getMessage());
+			return new ArrayList<Trueque>();
+		}
+		//SDK
 		
-		return trueques;
+		//return trueques;
 	}
 	
-	public List<Trueque> getTrueques(){
-		return new ArrayList<Trueque>(this.trueques.values());
+	public List<Trueque> getTrueques(Context context){
+		//return new ArrayList<Trueque>(this.trueques.values());
+		//SDK
+		try
+		{
+			String entity = "Trueque";
+			String query = ""; //
+			
+			String json = SDKFactory.getAPIFacade(context).get(entity, query);
+			
+			Log.i("[TruequeCtrl]:", json);
+			Gson gson = new Gson();
+			Trueque[] arrayTrueques = gson.fromJson(json, Trueque[].class);
+			return Arrays.asList(arrayTrueques);
+		}
+		catch (UnsupportedEncodingException e) {
+			Log.i("[GetTrueques]:", e.getMessage());
+			return new ArrayList<Trueque>();
+		}
+		catch (ClientProtocolException e) {
+			Log.i("[GetTrueques]:", e.getMessage());
+			return new ArrayList<Trueque>();
+		}
+		catch (IOException e) {
+			Log.i("[GetTrueques]:", e.getMessage());
+			return new ArrayList<Trueque>();
+		}
+		//SDK		
 	}
 	
 	public boolean crearOferta(int idTrueque, String mail, String nomObj, String desc, float valor, String ubicacion, Bitmap imagen){
@@ -176,5 +262,26 @@ public class TruequeCtrl {
 			t.setPuntosGanadora(pts);
 			Factory.getUsuarioCtrl().getUsuario(t.getGanadora().getUsuario()).puntuar(pts);
 		}
+	}
+
+	public boolean setImagen(Context context, int idTrueque, Bitmap bitmap) {
+		Trueque t = this.trueques.get(idTrueque);
+		if(t!=null){
+			try {
+				t.setImagen(context, bitmap);
+			} catch (UnsupportedEncodingException e) {
+				Log.i("SETIMAGEN: ",e.getMessage());
+				return false;
+			} catch (ClientProtocolException e) {
+				Log.i("SETIMAGEN: ",e.getMessage());
+				return false;
+			} catch (IOException e) {
+				Log.i("SETIMAGEN: ",e.getMessage());
+				return false;
+			}
+			return true;
+		}
+		return false;
+		
 	}
 }

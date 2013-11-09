@@ -1,20 +1,24 @@
 package uy.trueques_beta.activity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import uy.trueques_beta.R;
 import uy.trueques_beta.R.layout;
 import uy.trueques_beta.R.menu;
+import uy.trueques_beta.activity.CrearTrueque.CrearTruequeTask;
 //import uy.trueques_beta.activity.Home.AdaptadorObjetos;
 import uy.trueques_beta.entities.Objeto;
 import uy.trueques_beta.entities.Trueque;
 import uy.trueques_beta.negocio.Factory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -35,6 +39,8 @@ public class VerTrueques extends Fragment implements AdapterView.OnItemClickList
 	private TextView lblVerTrueques;
 	private Object[] trueques;
 	private VerTruequesListener listener;
+	private int size;
+	private VerTruequeTask mAuthTask = null;
 			
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,35 +59,26 @@ public class VerTrueques extends Fragment implements AdapterView.OnItemClickList
 		//Obtengo datos del usuario
         SharedPreferences prefs = this.getActivity().getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
-//		Bundle bundle = this.getIntent().getExtras();
-//		this.mail = bundle.getString("mail");
-		//***Pruba
-		trueques = Factory.getTruequeCtrl().getTruequesActivos().toArray();
-		int size=trueques.length;
+		if(mAuthTask==null){
+			mAuthTask = new VerTruequeTask();
+			mAuthTask.execute((Void) null);
+		}
 		
+//		trueques = Factory.getTruequeCtrl().getTruequesActivos(this.getActivity()).toArray();
+//		int size=trueques.length;
+		
+		size=0;
 		lblVerTrueques = (TextView)getView().findViewById(R.id.LblVerTrueques);
-		lblVerTrueques.setText(lblVerTrueques.getText().toString() +" ("+ size +")");
+		lblVerTrueques.setText(lblVerTrueques.getText().toString());
 		 
-		this.adaptador = new AdaptadorTrueque(this, R.layout.list_item_trueques, trueques);
+//		this.adaptador = new AdaptadorTrueque(this, R.layout.list_item_trueques, trueques);
 		lstTrueques = (ListView)getView().findViewById(R.id.LstTrueques);
-		lstTrueques.setAdapter(adaptador);
+//		lstTrueques.setAdapter(adaptador);
 		
 		lstTrueques.setOnItemClickListener(this);
 		
 	}
 
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.ver_trueques, menu);
-//		return true;
-//	}
-	
-//	@Override
-//	public void onBackPressed() {
-//		// TODO Auto-generated method stub
-//		super.onBackPressed();
-//	}
 
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -94,18 +91,59 @@ public class VerTrueques extends Fragment implements AdapterView.OnItemClickList
 		
 		//AVISO AL ACTIVITY
 		if (listener!=null) {
-            listener.onTruequeSeleccionado(t.getIdTrueque());
+            listener.onTruequeSeleccionado(t);//.getIdTrueque());
         }
 	}
 	
 	public interface VerTruequesListener {
-        void onTruequeSeleccionado(int idTrueque);
+        void onTruequeSeleccionado(Trueque t);//int idTrueque);
     }
  
     public void setVerTruequesListener(VerTruequesListener listener) {
         this.listener=listener;
     }
-	
+
+    public class VerTruequeTask extends AsyncTask<Void, Void, Boolean> {
+		//private int idTrueque;
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			
+			size = 0;
+			List<Trueque> ts =null;
+			ts = Factory.getTruequeCtrl().getTruequesActivos(VerTrueques.this.getActivity());
+			if(ts!=null){
+				trueques=ts.toArray();
+				size=trueques.length;
+				return true;
+			}
+			else
+				return false;
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			mAuthTask = null;
+			//showProgress(false);
+
+			if (success) {
+				Log.i("[VerTrueques]:", "EXITO!");
+				adaptador = new AdaptadorTrueque(VerTrueques.this, R.layout.list_item_trueques, trueques);
+				lstTrueques.setAdapter(adaptador);
+				lblVerTrueques.setText(lblVerTrueques.getText().toString() +" ("+ size +")");
+		    	
+			} else {
+				Log.i("[VerTrueques]:", "ERROR");
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			mAuthTask = null;
+			//showProgress(false);
+		}
+	}
+    
+    
 	
 	//Creo la clase para el adaptador
 	class AdaptadorTrueque extends ArrayAdapter {

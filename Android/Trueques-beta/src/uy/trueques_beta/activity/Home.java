@@ -9,6 +9,7 @@ import uy.trueques_beta.activity.VerOfertasPendientes.VerOfertasPendientesListen
 import uy.trueques_beta.activity.VerTrueques.VerTruequesListener;
 import uy.trueques_beta.activity.VerTruequesHechos.VerTruequesHechosListener;
 import uy.trueques_beta.entities.Oferta;
+import uy.trueques_beta.entities.Trueque;
 import uy.trueques_beta.fragment.Fragment1;
 import uy.trueques_beta.negocio.Factory;
 import android.os.Build;
@@ -180,10 +181,11 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 
 
 	@Override
-	public void onTruequeSeleccionado(int idTrueque) {
+	public void onTruequeSeleccionado(Trueque t){//int idTrueque) {
 		//IR a VistaTrueque con IdTrueque
 		Intent intent = new Intent(Home.this, VistaTrueque.class);
-		intent.putExtra("idTrueque", (int)idTrueque);
+		//intent.putExtra("idTrueque", (int)idTrueque);
+		intent.putExtra("Trueque", t.toJson());
 		startActivity(intent);
 	}
 
@@ -198,10 +200,11 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 	}
 
 	@Override
-	public void onTruequeHechoSeleccionado(int idTrueque) {
+	public void onTruequeHechoSeleccionado(Trueque t) {
 		//IR a VistaTrueque con IdTrueque
 		Intent intent = new Intent(Home.this, VistaTruequeHecho.class);
-		intent.putExtra("idTrueque", (int)idTrueque);
+		//intent.putExtra("idTrueque", (int)idTrueque);
+		intent.putExtra("Trueque", t.toJson());
 		startActivity(intent);
 	}
 	

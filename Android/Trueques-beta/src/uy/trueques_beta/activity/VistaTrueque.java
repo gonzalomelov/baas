@@ -43,12 +43,13 @@ public class VistaTrueque extends Activity {
 		
 		//Obtengo el mail del usuario
 		Intent intent = this.getIntent();
-		this.idTrueque = intent.getIntExtra("idTrueque", -1);//.getString("idTrueque");
+		this.idTrueque = intent.getIntExtra("idTrueque", -1);//.getString("idTrueque")
 		//this.mail = intent.getExtras().getString("mail");
 		SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
 		
-		this.t = Factory.getTruequeCtrl().getTrueque(idTrueque);
+		String truequeJson= intent.getExtras().getString("Trueque");
+		this.t = Trueque.fromJson(truequeJson);//Factory.getTruequeCtrl().getTrueque(idTrueque);
 		
 		if(t==null){
 			nombre = (TextView)findViewById(R.id.LblNomTrueque);

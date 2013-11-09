@@ -263,10 +263,10 @@ public class CrearTrueque extends Fragment{//Activity {
 			int idObj= Factory.getObjetoCtrl().crearObjeto(mail, nombre, desc, valor);
 			Objeto obj = Factory.getObjetoCtrl().getObjeto(idObj);
 			if (obj!=null){
-				this.idTrueque = Factory.getTruequeCtrl().crearTrueque(CrearTrueque.this.getActivity(), obj, descBusca, minVal, ubicacion);
-				Trueque t = Factory.getTruequeCtrl().getTrueque(this.idTrueque);
-				if(t!=null)
-					t.setImagen(bitmap);
+				this.idTrueque = Factory.getTruequeCtrl().crearTrueque(CrearTrueque.this.getActivity(), obj, descBusca, minVal, ubicacion, bitmap);
+//				Trueque t = Factory.getTruequeCtrl().getTrueque(this.idTrueque);
+//				if(t!=null)
+//					Factory.getTruequeCtrl().setImagen(CrearTrueque.this.getActivity(), t.getIdTrueque(),bitmap);
 				return idTrueque>0;
 			}
 			else

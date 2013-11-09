@@ -1,12 +1,19 @@
 package uy.trueques_beta.entities;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.http.client.ClientProtocolException;
+
+import uy.com.group05.baasclient.sdk.SDKFactory;
+
 import com.google.gson.Gson;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -36,7 +43,8 @@ byte[] imageBytes = baos.toByteArray();
 String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 	 */
 	
-	public Trueque (int id, Objeto obj, String busca, float minVal, String ubicacion){
+	public Trueque (Context context, int id, Objeto obj, String busca, float minVal, String ubicacion, Bitmap bitmap) 
+			throws UnsupportedEncodingException, ClientProtocolException, IOException{
 		this.idTrueque =id;
 		this.objeto=obj;
 		this.activa=true;
@@ -47,8 +55,19 @@ String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 		this.ubicacion=ubicacion;
 		this.puntosGanadora=0;
 		this.puntosTrueque=0;
-		this.imagen=null;
+		this.imagen=encodeTobase64(bitmap);
+		
+//		// POST de la entidad nueva
+//		Gson gson = new Gson();
+//		String json = gson.toJson(this, Trueque.class);
+//		String entity="Trueque";
+//		Log.i("POST","Trueque= "+json);
+//		boolean ok = SDKFactory.getAPIFacade(context).post(entity, json);
+//		Log.i("POST","-"+ok);
+//		// POST.
 	}
+	
+	
 
 	public int getIdTrueque() {
 		return idTrueque;
@@ -208,14 +227,19 @@ String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 		//return imagen;
 	}
 
-	public void setImagen(Bitmap imagen) {
+	public void setImagen(Context context, Bitmap imagen) 
+			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
 		//this.imagen = imagen;
 		this.imagen = encodeTobase64(imagen);
+		// POST de la entidad nueva
 		Gson gson = new Gson();
 		String json = gson.toJson(this, Trueque.class);
 		String entity="Trueque";
 		Log.i("POST","Trueque= "+json);
+		boolean ok = SDKFactory.getAPIFacade(context).post(entity, json);
+		Log.i("POST","-"+ok);
+		// POST.
 		//Log.i("IMAGEN", "Tamaño = "+this.imagen.getByteCount()/1024+"-H:"+this.imagen.getHeight());
 	}
 	
@@ -234,6 +258,20 @@ String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 	{
 	    byte[] decodedByte = Base64.decode(input, 0);
 	    return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length); 
+	}
+
+
+
+	public String toJson() {
+		Gson gson = new Gson();
+		String json = gson.toJson(this, Trueque.class);
+		return json;
+	}
+	
+	public static Trueque fromJson(String json) {
+		Gson gson = new Gson();
+		Trueque t = gson.fromJson(json, Trueque.class);
+		return t;
 	}
 
 

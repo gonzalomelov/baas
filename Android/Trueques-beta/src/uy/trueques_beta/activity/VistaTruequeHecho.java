@@ -56,7 +56,8 @@ public class VistaTruequeHecho extends Activity {
 		SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
 		
-		this.t = Factory.getTruequeCtrl().getTrueque(idTrueque);
+		String truequeJson= intent.getExtras().getString("Trueque");
+		this.t = Trueque.fromJson(truequeJson);//Factory.getTruequeCtrl().getTrueque(idTrueque);
 		
 		if(t==null){
 			nombre = (TextView)findViewById(R.id.LblObjetoTrueque);

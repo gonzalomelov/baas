@@ -69,28 +69,32 @@ public class UsuarioCtrl {
 		this.usuarios.put(mail, new Usuario(nombre,mail, pass,new ArrayList<Objeto>()));
 		//SDK
 		
-//		ClientRegistrationDTO clientRegistration;
-//		try {
-//			clientRegistration = SDKFactory.getClientFacade(context).register(mail, pass, nombre, "");
-//			Log.i("REGISTRO","-"+clientRegistration.isOk());
-//			
-//			return clientRegistration.isOk();
-//		}
-//		catch (UnsupportedEncodingException e) {
-//			Log.i("REGISTRO",e.getMessage());
-//			return false;
-//		}
-//		catch (ClientProtocolException e) {
-//			Log.i("REGISTRO",e.getMessage());
-//			return false;
-//		}
-//		catch (IOException e) {
-//			Log.i("REGISTRO",e.getMessage());
-//			return false;
-//		}
+		ClientRegistrationDTO clientRegistration;
+		ClientAuthenticationDTO auten ;
+		try {
+			clientRegistration = SDKFactory.getClientFacade(context).register(mail, pass, nombre, "");
+			Log.i("REGISTRO","-"+clientRegistration.isOk());
+			
+			auten = SDKFactory.getClientFacade(context).authenticate(mail, pass);
+			Log.i("LOGIN","-"+auten.isOk());
+			
+			return clientRegistration.isOk() && auten.isOk();
+		}
+		catch (UnsupportedEncodingException e) {
+			Log.i("REGISTRO",e.getMessage());
+			return false;
+		}
+		catch (ClientProtocolException e) {
+			Log.i("REGISTRO",e.getMessage());
+			return false;
+		}
+		catch (IOException e) {
+			Log.i("REGISTRO",e.getMessage());
+			return false;
+		}
 		//SDK
 	
-		return true;
+		//return true;
 	}
 	
 	public boolean registrarUsuarioAdmin(String mail, String nombre, String pass) {
