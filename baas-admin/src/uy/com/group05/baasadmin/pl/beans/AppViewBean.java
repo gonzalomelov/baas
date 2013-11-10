@@ -51,6 +51,20 @@ public class AppViewBean {
 	
 	private CartesianChartModel linearModel;  
 	
+	public String tipoFiltroChart = "Horas";
+	
+	
+	
+	
+
+	public String getTipoFiltroChart() {
+		return tipoFiltroChart;
+	}
+
+	public void setTipoFiltroChart(String tipoFiltroChart) {
+		this.tipoFiltroChart = tipoFiltroChart;
+	}
+
 	public String getRolName() {
 		return rolName;
 	}
@@ -395,7 +409,20 @@ public class AppViewBean {
 	
 	public String cargarChart() {
 		
-		createLinearModel(TipoChart.HORAS);
+		//createLinearModel(TipoChart.HORAS);
+		System.out.println(tipoFiltroChart);
+		TipoChart chart= TipoChart.MINUTOS;
+		if(tipoFiltroChart.equals("Horas")){
+			chart = TipoChart.HORAS;
+		}
+		else if(tipoFiltroChart.equals("Dias")){
+			chart = TipoChart.DIAS;
+		}
+		else if(tipoFiltroChart.equals("Meses")){
+			chart = TipoChart.MES;
+		}
+		
+		createLinearModel(chart);
 		
 		return null;
 	

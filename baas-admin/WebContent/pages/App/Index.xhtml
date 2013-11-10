@@ -6,7 +6,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
-	<link id="bs-css" href="../../css/bootstrap-classic.css"
+	<link id="bs-css" href="../../css/bootstrap-slate.css"
 		rel="stylesheet" />
 	<style type="text/css">
 body {
@@ -129,12 +129,18 @@ body {
 		<div class="chartsBox">
 			<h:form>
 				
-       			 <p:selectOneMenu value="#{buttonBean.number}">  
-		            <f:selectItem itemLabel="Minutes" itemValue="Minutos"  />  
+       			 
+       			
+       			
+       			 <h:selectOneMenu value="#{appViewBean.tipoFiltroChart}" styleClass="chartType">
+		   			<f:selectItem itemLabel="Minutes" itemValue="Minutos"  />  
 		            <f:selectItem itemLabel="Hours" itemValue="Horas" />  
 		            <f:selectItem itemLabel="Days" itemValue="Dias" />  
-		            <f:selectItem itemLabel="Months" itemValue="Meses" />  
-		        </p:selectOneMenu>  
+		            <f:selectItem itemLabel="Months" itemValue="Meses" />
+		            <f:ajax execute="@form" render="@form"
+						listener="#{appViewBean.cargarChart}" />
+		   		</h:selectOneMenu>
+       			
        			
 				<p:lineChart id="linear" value="#{appViewBean.linearModel}" legendPosition="e"  
      				title="Estadisticas" style="height:300px"/>
@@ -419,7 +425,7 @@ body {
 	<script src="../../js/jquery.history.js"></script>
 	<!-- application script for Charisma demo -->
 	<script src="../../js/charisma.js"></script>
-	
+	<script src="../../js/LoadChart.js"></script>
 
 
 
