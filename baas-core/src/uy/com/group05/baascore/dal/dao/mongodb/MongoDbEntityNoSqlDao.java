@@ -24,6 +24,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
+import com.mongodb.WriteResult;
 import com.mongodb.util.JSON;
 import com.mongodb.util.JSONParseException;
 
@@ -159,8 +160,8 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 				//Actualizo si el objeto remoto es mas nuevo que el local
 				if (remoteObjUpdatedAt.after(localObjUpdatedAt)) {
 					
-					//Le quito el syncid
-					remoteObj.removeField("syncid");
+					//Valor de modificacion para syncronización
+					remoteObj.put("updatedat", new Timestamp(System.currentTimeMillis()).toString());
 					
 					dbCollection.update(queryDbObject, remoteObj);
 				}

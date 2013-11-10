@@ -74,8 +74,6 @@ public class BaasContentProvider extends ContentProvider {
 			Log.e("TAG", "##### Entity ######");
 			Log.e("TAG", "_id: " + cursor.getString(0));
 			Log.e("TAG", "entity: " + cursor.getString(1));
-			Log.e("TAG", "syncid: " + cursor.getString(2));
-			Log.e("TAG", "modifiedat: " + cursor.getString(3));
 		}
 		
 		return cursor;
@@ -94,9 +92,6 @@ public class BaasContentProvider extends ContentProvider {
 		String table = myApplication.getmTablesDB().get(tableIndex);
 		
 		SQLiteDatabase db = mBaasSqlHelper.getWritableDatabase();
-		
-		//Valor de modificacion para syncronización
-		values.put("modifiedat", new Timestamp(System.currentTimeMillis()).toString());
 		
 		long newRowId = db.insert(table, null, values);
 		

@@ -21,6 +21,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 
 public class APIClientImpl implements APIFacade {
 	private Context context;
@@ -45,6 +46,9 @@ public class APIClientImpl implements APIFacade {
 			JsonElement jsonElement = gson.fromJson(entityValue, JsonElement.class);
 			JsonObject jsonObject = jsonElement.getAsJsonObject();
 
+			jsonObject.remove("updatedat");
+			jsonObject.remove("syncid");
+			
 			jsonArray.add(jsonObject);    
 		}
 		
@@ -88,8 +92,6 @@ public class APIClientImpl implements APIFacade {
 		
 		Gson gson = new Gson();
 		
-		String modifiedAt = new Timestamp(System.currentTimeMillis()).toString();
-		
 		for (boolean hasItem = entities.moveToFirst();  hasItem;  hasItem = entities.moveToNext()) {
 			String entityValue = entities.getString(1);
 			
@@ -106,10 +108,11 @@ public class APIClientImpl implements APIFacade {
 					jsonObject.add(key, value);
 				}
 				
+				JsonPrimitive timestamp = new JsonPrimitive(new Timestamp(System.currentTimeMillis()).toString());
+				jsonObject.add("updatedat", timestamp);
+				
 				ContentValues contentValues = new ContentValues();
 				contentValues.put("entity", jsonObject.toString());
-				contentValues.put("syncid", entities.getString(entities.getColumnIndex("syncid")));
-				contentValues.put("modifiedat", modifiedAt);
 				
 				String where = "_id = " + entities.getString(entities.getColumnIndex("_id"));
 				

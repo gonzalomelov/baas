@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
 
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
@@ -57,6 +58,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 			SyncResult syncResult) {
 		
 		try {
+			Log.e("TAG", "EPA");
 			MyApplication myApplication = (MyApplication)(getContext().getApplicationContext());
 			Timestamp updatedAt = myApplication.getUpdatedAt();
 			
@@ -67,29 +69,25 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 			//Obtengo entidades modificados desde base local
 			Cursor cursor = provider.query(Uri.parse("content://uy.com.group05.baassdk.sync.provider" + "/" + entity), null, null, null, null);
 			
+			Log.e("TAG", "query");
+			
 			List<String> localEntities = new ArrayList<String>();
 			if (cursor != null) {
 				while (cursor.moveToNext()) {
 					//Si modifiqué el elemento local, entonces lo mando al servidor para mergear
-					int modifiedAtIndex = cursor.getColumnIndex("modifiedat");
-					String strModifiedAt = cursor.getString(modifiedAtIndex);
-					Timestamp modifiedAt = Timestamp.valueOf(strModifiedAt);
+
+					String entityValue = cursor.getString(cursor.getColumnIndex("entity"));
+					JsonParser jsonParser = new JsonParser();
+					JsonObject jsonObject = (JsonObject) jsonParser.parse(entityValue);
 					
-					if (updatedAt == null || modifiedAt.after(updatedAt)) {
-						int entityIndex = cursor.getColumnIndex("entity");
-						int syncidIndex = cursor.getColumnIndex("syncid");
-						
-						String entityValue = cursor.getString(entityIndex);
-						String syncid = cursor.getString(syncidIndex);
-						
-						JsonParser jsonParser = new JsonParser();
-						JsonObject jsonObject = (JsonObject) jsonParser.parse(entityValue);
-						
-						if (syncid != null && !syncid.isEmpty()) {
-							jsonObject.addProperty("syncid", syncid);	
-						}
+					Log.e("TAG", "jsonObject");
+					
+					if (updatedAt == null ||
+						jsonObject.get("updatedat") == null ||
+						Timestamp.valueOf(jsonObject.get("updatedat").getAsString()).after(updatedAt)) {
 						
 						localEntities.add(jsonObject.toString());
+						Log.e("TAG", "Update: " + jsonObject.toString());
 					}
 				}
 			}
@@ -107,19 +105,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 			Timestamp newTimestamp = new Timestamp(System.currentTimeMillis());
 			
 			for (int i = 0; i < remoteEntities.size(); i++) {
-				
 				JsonObject jsonObj = (JsonObject) remoteEntities.get(i);
-				JsonObject remoteObjectId = (JsonObject) jsonObj.get("_id");
 				
+				JsonObject remoteObjectId = (JsonObject) jsonObj.get("_id");
 				String syncId = remoteObjectId.get("$oid").getAsString();
-
 				jsonObj.remove("_id");
+				
+				jsonObj.add("syncid", jsonParser.parse(syncId));
 				
 				ContentValues values = new ContentValues();
 				Log.e("TAG", "entity: " + jsonObj.toString());
 				values.put("entity", jsonObj.toString());
-				values.put("syncid", syncId);
-				values.put("modifiedat", newTimestamp.toString());
 				
 				Log.e("TAG", "after insert");
 				provider.insert(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), values);

@@ -35,9 +35,7 @@ public class BaasSqlHelper extends SQLiteOpenHelper {
 			db.execSQL(
 					"CREATE TABLE " + entity + " (" +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-					"entity TEXT, " +
-					"syncid TEXT, " +
-					"modifiedat TEXT)");
+					"entity TEXT)");
 		}
 		
 	}
@@ -53,9 +51,7 @@ public class BaasSqlHelper extends SQLiteOpenHelper {
 			db.execSQL(
 					"CREATE TABLE " + entity + " (" +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-					"entity TEXT, " +
-					"syncid TEXT, " +
-					"modifiedat TEXT)");
+					"entity TEXT)");
 		}
 	}
 
