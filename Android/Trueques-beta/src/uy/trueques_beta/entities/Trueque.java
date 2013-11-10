@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
 
-import uy.com.group05.baasclient.sdk.SDKFactory;
+import uy.com.group05.baassdk.SDKFactory;
 
 import com.google.gson.Gson;
 

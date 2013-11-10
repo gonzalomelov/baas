@@ -28,7 +28,7 @@ public class APIClientImpl implements APIFacade {
 	public String get(String entity, String query)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
-		Cursor entities = context.getContentResolver().query(Uri.parse("content://com.example.syncexample.sync.provider/" + entity), null, null, null, null);
+		Cursor entities = context.getContentResolver().query(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null, null, null, null);
 		
 		JsonArray jsonArray = new JsonArray();
 		
@@ -53,9 +53,9 @@ public class APIClientImpl implements APIFacade {
 		ContentValues values = new ContentValues();
 		values.put("entity", json);
 		
-		Uri result = context.getContentResolver().insert(Uri.parse("content://com.example.syncexample.sync.provider/" + entity), values);
+		Uri result = context.getContentResolver().insert(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), values);
 		
-		context.getContentResolver().notifyChange(Uri.parse("content://com.example.syncexample.sync.provider/" + entity), null);
+		context.getContentResolver().notifyChange(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null);
 		
 		return true;
 	}

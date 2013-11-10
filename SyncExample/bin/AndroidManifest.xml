@@ -10,11 +10,11 @@
 
     <!-- BaaS -->
     <permission
-        	android:name="com.example.syncexample.sync.provider.permission" />
+        	android:name="uy.com.group05.baassdk.sync.provider.permission" />
     
     <!-- Sync Adapter --> 
     <uses-permission
-        	android:name="com.example.syncexample.sync.provider.permission" />
+        	android:name="uy.com.group05.baassdk.sync.provider.permission" />
     <uses-permission
             android:name="android.permission.INTERNET"/>
     <uses-permission
@@ -25,7 +25,7 @@
             android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
     
     <!-- GCM -->
-    <permission android:name="com.example.syncexample.sync.permission.C2D_MESSAGE"
+    <permission android:name="uy.com.group05.baassdk.sync.permission.C2D_MESSAGE"
         	android:protectionLevel="signature" />
     <uses-permission
             android:name="com.google.android.c2dm.permission.RECEIVE"/>
@@ -34,13 +34,13 @@
     <uses-permission
             android:name="android.permission.WAKE_LOCK"/>
     <uses-permission
-        	android:name="com.example.syncexample.sync.permission.C2D_MESSAGE" />
+        	android:name="uy.com.group05.baassdk.sync.permission.C2D_MESSAGE" />
     
     
     <!-- Fin BaaS -->
     
     <application
-        android:name="MyApplication"
+        android:name="uy.com.group05.baassdk.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -85,18 +85,18 @@
         
         <!-- BaaS -->
         <receiver
-            android:name="com.example.syncexample.sync.GcmBroadcastReceiver"
+            android:name="uy.com.group05.baassdk.sync.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.example.syncexample.sync" />
+                <category android:name="uy.com.group05.baassdk.sync" />
             </intent-filter>
         </receiver>
         
-        <service android:name="com.example.syncexample.sync.GcmIntentService" />
+        <service android:name="uy.com.group05.baassdk.sync.GcmIntentService" />
         
         <service
-            	android:name="com.example.syncexample.sync.AuthenticatorService">
+            	android:name="uy.com.group05.baassdk.sync.AuthenticatorService">
             <intent-filter >
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -105,7 +105,7 @@
                 android:resource="@xml/authenticator" />
         </service>
         <service
-		        android:name="com.example.syncexample.sync.SyncAdapterService"
+		        android:name="uy.com.group05.baassdk.sync.SyncAdapterService"
 		        android:exported="true"
 		        android:process=":sync">
 		    <intent-filter>
@@ -116,11 +116,11 @@
 		            android:resource="@xml/syncadapter" />
 		</service>
         <provider
-            android:name="com.example.syncexample.sync.BaasContentProvider"
-            android:authorities="com.example.syncexample.sync.provider"
+            android:name="uy.com.group05.baassdk.sync.BaasContentProvider"
+            android:authorities="uy.com.group05.baassdk.sync.provider"
             android:exported="false"
             android:syncable="true"
-            android:permission="com.example.syncexample.sync.provider.permission" />
+            android:permission="uy.com.group05.baassdk.sync.provider.permission" />
 		
         <!-- Fin BaaS -->
     </application>

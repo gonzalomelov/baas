@@ -15,8 +15,6 @@ public class BaasSqlHelper extends SQLiteOpenHelper {
  
 	private Context context;
 	
-	private List<String> mTablesDB;
-	
 	public BaasSqlHelper(
 			Context context,
 			String dbName,
@@ -25,13 +23,13 @@ public class BaasSqlHelper extends SQLiteOpenHelper {
 		
 		super(context, dbName, cursorFactory, version);
 		this.context = context;
-		
-		MyApplication myApplication = (MyApplication)(this.context.getApplicationContext());
-		mTablesDB = myApplication.getmTablesDB();
 	}
 	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		
+		MyApplication myApplication = (MyApplication)(this.context.getApplicationContext());
+		List<String> mTablesDB = myApplication.getmTablesDB();
 		
 		for (String entity : mTablesDB) {
 			db.execSQL(
@@ -46,6 +44,9 @@ public class BaasSqlHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		MyApplication myApplication = (MyApplication)(this.context.getApplicationContext());
+		List<String> mTablesDB = myApplication.getmTablesDB();
+		
 		for (String entity : mTablesDB) {
 			db.execSQL("DROP TABLE IF EXISTS " + entity);
 			

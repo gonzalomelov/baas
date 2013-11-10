@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import uy.com.group05.baassdk.sync.BaasProviderContract;
+
 import com.google.gson.Gson;
 
 import android.app.Application;
@@ -20,6 +22,8 @@ public class MyApplication extends Application {
     private UriMatcher mUriMatcher;
     
     private List<String> mTablesDB = new ArrayList<String>();
+    
+    private boolean initialized = false;
     
 	public Timestamp getUpdatedAt() {
 		return updatedAt;
@@ -45,9 +49,19 @@ public class MyApplication extends Application {
 		this.mTablesDB = mTablesDB;
 	}
 
-	@Override
-	public void onCreate() {		
-		super.onCreate();
-	
+	public void init(List<String> entities) {
+		if (!initialized) {
+			mTablesDB = entities;
+
+			mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+			
+			for (int i = 0; i < mTablesDB.size(); i++) {
+				String entityDB = mTablesDB.get(i);
+				mUriMatcher.addURI(BaasProviderContract.AUTHORITY, entityDB, i*2);
+				mUriMatcher.addURI(BaasProviderContract.AUTHORITY, entityDB + "/#", i*2+1);
+			}
+			
+			initialized = true;
+		}
 	}
 }

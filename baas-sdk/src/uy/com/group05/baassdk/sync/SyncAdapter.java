@@ -65,7 +65,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 			Log.e("TAG", entity);
 			
 			//Obtengo entidades modificados desde base local
-			Cursor cursor = provider.query(Uri.parse("content://com.example.syncexample.sync.provider" + "/" + entity), null, null, null, null);
+			Cursor cursor = provider.query(Uri.parse("content://uy.com.group05.baassdk.sync.provider" + "/" + entity), null, null, null, null);
 			
 			List<String> localEntities = new ArrayList<String>();
 			if (cursor != null) {
@@ -102,7 +102,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 			JsonParser jsonParser = new JsonParser();
 			JsonArray remoteEntities = (JsonArray) jsonParser.parse(remoteStringEntities); 
 
-			provider.delete(Uri.parse("content://com.example.syncexample.sync.provider/" + entity), null, null);
+			provider.delete(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null, null);
 			
 			Timestamp newTimestamp = new Timestamp(System.currentTimeMillis());
 			
@@ -122,7 +122,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 				values.put("modifiedat", newTimestamp.toString());
 				
 				Log.e("TAG", "after insert");
-				provider.insert(Uri.parse("content://com.example.syncexample.sync.provider/" + entity), values);
+				provider.insert(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), values);
 				Log.e("TAG", "after insert");
 			}
 			

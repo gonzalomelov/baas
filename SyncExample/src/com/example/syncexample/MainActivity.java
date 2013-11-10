@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.example.syncexample.sync.BaasProviderContract;
-import com.example.syncexample.sync.BaasProviderObserver;
-import com.example.syncexample.sync.MyApplication;
+import uy.com.group05.baassdk.MyApplication;
+import uy.com.group05.baassdk.sync.BaasProviderContract;
+import uy.com.group05.baassdk.sync.BaasProviderObserver;
+import uy.com.group05.baassdk.sync.Constants;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -81,7 +83,7 @@ public class MainActivity extends Activity {
 				String entityDB = myApplication.getmTablesDB().get(i);
 				
 				BaasProviderObserver observer = new BaasProviderObserver(null);
-		        mResolver.registerContentObserver(Uri.parse("content://com.example.syncexample.sync.provider/" + entityDB), true, observer);
+		        mResolver.registerContentObserver(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entityDB), true, observer);
 		        mObservers.add(observer);
 			}
 		}

@@ -3,9 +3,8 @@ package com.example.syncexample;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.syncexample.sync.APIRestClient;
-import com.example.syncexample.sync.BaasProviderContract;
-import com.example.syncexample.sync.MyApplication;
+import uy.com.group05.baassdk.MyApplication;
+import uy.com.group05.baassdk.sync.BaasProviderContract;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,18 +25,13 @@ public class FirstActivity extends Activity {
 		
 		myApplication = (MyApplication)getApplicationContext();
 		
-		myApplication.getmTablesDB().add("E1");
-		myApplication.getmTablesDB().add("E2");
-		myApplication.getmTablesDB().add("E3");
-		myApplication.getmTablesDB().add("Cliente");
+		List<String> entities = new ArrayList<String>();
+		entities.add("E1");
+		entities.add("E2");
+		entities.add("E3");
+		entities.add("Cliente");
 		
-		myApplication.setmUriMatcher(new UriMatcher(UriMatcher.NO_MATCH));
-		
-		for (int i = 0; i < myApplication.getmTablesDB().size(); i++) {
-			String entityDB = myApplication.getmTablesDB().get(i);
-			myApplication.getmUriMatcher().addURI(BaasProviderContract.AUTHORITY, entityDB, i*2);
-			myApplication.getmUriMatcher().addURI(BaasProviderContract.AUTHORITY, entityDB + "/#", i*2+1);
-		}
+		myApplication.init(entities);
 	}
 
 	public void main(View view) {

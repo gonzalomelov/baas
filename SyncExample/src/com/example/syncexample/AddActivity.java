@@ -1,7 +1,9 @@
 package com.example.syncexample;
 
-import com.example.syncexample.sync.APIClient;
-import com.example.syncexample.sync.BaasProviderContract;
+import uy.com.group05.baassdk.APIFacade;
+import uy.com.group05.baassdk.SDKFactory;
+import uy.com.group05.baassdk.impl.APIClientImpl;
+import uy.com.group05.baassdk.sync.BaasProviderContract;
 import com.google.gson.Gson;
 
 import android.app.Activity;
@@ -44,7 +46,7 @@ public class AddActivity extends Activity {
 		Gson gson = new Gson();
 		String json = gson.toJson(cliente, Cliente.class);
 		
-		APIClient apiClient = new APIClient(this);
+		APIFacade apiClient = SDKFactory.getAPIFacade(this);
 		try {
 			apiClient.post("Cliente", json);	
 		}

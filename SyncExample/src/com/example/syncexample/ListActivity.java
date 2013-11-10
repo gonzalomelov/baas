@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.example.syncexample.sync.APIClient;
-import com.example.syncexample.sync.APIRestClient;
-import com.example.syncexample.sync.BaasProviderContract;
+import uy.com.group05.baassdk.APIFacade;
+import uy.com.group05.baassdk.SDKFactory;
+import uy.com.group05.baassdk.impl.APIClientImpl;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -39,7 +40,7 @@ public class ListActivity extends Activity {
 			
 			String clientesJson = "";
 			
-			APIClient apiClient = new APIClient(this);
+			APIFacade apiClient = SDKFactory.getAPIFacade(this);
 			try {
 				clientesJson = apiClient.get("Cliente", "");	
 			}
@@ -64,66 +65,6 @@ public class ListActivity extends Activity {
 			
 			mListView.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, list));			
 	        
-		} else {
-			new ListAsync(this).execute();
 		}
 	}
-	
-	private class ListAsync extends AsyncTask<String, Void, List<Cliente>> {
-
-		private Context mContext;
-		
-		public ListAsync(Context context) {
-			mContext = context.getApplicationContext();
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-		}
-
-		@Override
-		protected List<Cliente> doInBackground(String... arg0) {
-			// TODO Auto-generated method stub
-			
-			APIRestClient apiRestClient  = new APIRestClient(getApplicationContext());
-			
-			try {
-				String json = apiRestClient.get("Cliente", "");
-				Gson gson = new Gson();
-				Cliente[] clientsArray = gson.fromJson(json, Cliente[].class);
-				return clientsArray.length == 0 ? new ArrayList<Cliente>() : Arrays.asList(clientsArray);  
-			}
-			catch (Exception e) {
-				
-			}
-			
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(List<Cliente> result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-			
-			List<String> clientesStr = new ArrayList<String>();
-			
-			if (result != null) {
-				
-				for (Cliente c : result) {
-					String nombre = c.getNombre();
-					String telefono = c.getTelefono();
-					String email = c.getEmail();
-					
-					clientesStr.add(nombre + " - " + telefono + " - " + email + " - ");
-				}	
-			}
-			
-			
-			mListView.setAdapter(new ArrayAdapter<String>(mContext, R.layout.list_item, clientesStr));
-		}
-		 
-	} 
-
 }

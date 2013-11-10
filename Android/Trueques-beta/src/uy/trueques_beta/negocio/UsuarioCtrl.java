@@ -20,9 +20,9 @@ import com.google.gson.Gson;
 
 import android.content.Context;
 import android.util.Log;
-import uy.com.group05.baasclient.sdk.SDKFactory;
-import uy.com.group05.baasclient.sdk.entities.ClientAuthenticationDTO;
-import uy.com.group05.baasclient.sdk.entities.ClientRegistrationDTO;
+import uy.com.group05.baassdk.SDKFactory;
+import uy.com.group05.baassdk.entities.ClientAuthenticationDTO;
+import uy.com.group05.baassdk.entities.ClientRegistrationDTO;
 import uy.trueques_beta.entities.Admin;
 import uy.trueques_beta.entities.Objeto;
 import uy.trueques_beta.entities.Usuario;

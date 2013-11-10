@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
-import uy.com.group05.baasclient.sdk.SDKFactory;
+import uy.com.group05.baassdk.SDKFactory;
 import uy.trueques_beta.entities.Objeto;
 import uy.trueques_beta.entities.Oferta;
 import uy.trueques_beta.entities.Trueque;

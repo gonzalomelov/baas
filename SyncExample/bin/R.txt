@@ -24,8 +24,8 @@ int color common_signin_btn_light_text_focused 0x7f050007
 int color common_signin_btn_light_text_pressed 0x7f050005
 int color common_signin_btn_text_dark 0x7f05000a
 int color common_signin_btn_text_light 0x7f05000b
-int dimen activity_horizontal_margin 0x7f080000
-int dimen activity_vertical_margin 0x7f080001
+int dimen activity_horizontal_margin 0x7f090000
+int dimen activity_vertical_margin 0x7f090001
 int drawable common_signin_btn_icon_dark 0x7f020000
 int drawable common_signin_btn_icon_disabled_dark 0x7f020001
 int drawable common_signin_btn_icon_disabled_focus_dark 0x7f020002
@@ -106,8 +106,8 @@ int string common_google_play_services_update_title 0x7f070007
 int string common_signin_button_text 0x7f070011
 int string common_signin_button_text_long 0x7f070012
 int string hello_world 0x7f07001b
-int style AppBaseTheme 0x7f090000
-int style AppTheme 0x7f090001
+int style AppBaseTheme 0x7f080000
+int style AppTheme 0x7f080001
 int[] styleable MapAttrs { 0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003, 0x7f010004, 0x7f010005, 0x7f010006, 0x7f010007, 0x7f010008, 0x7f010009, 0x7f01000a, 0x7f01000b, 0x7f01000c, 0x7f01000d }
 int styleable MapAttrs_cameraBearing 1
 int styleable MapAttrs_cameraTargetLat 2
