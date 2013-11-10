@@ -41,8 +41,6 @@ public class EnviarMensajeCanalPushActivity extends Activity {
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
-    String SENDER_ID = "892349087446"; // Project ID creado desde la consola de Google.
-
     // Para los logs
     static final String TAG = "GCM Trueque";
 
@@ -79,7 +77,6 @@ public class EnviarMensajeCanalPushActivity extends Activity {
     		protected void onPreExecute() {
     			this.dialog.setMessage("Cargando canales...");
     			this.dialog.setIndeterminate(true);
-    			this.dialog.setCancelable(false);
     			this.dialog.show();
     		}
     		
