@@ -48,7 +48,14 @@ public class AddActivity extends Activity {
 		
 		APIFacade apiClient = SDKFactory.getAPIFacade(this);
 		try {
-			apiClient.post("Cliente", json);	
+			boolean update = getIntent().getExtras().getBoolean("update");
+			if (update) {
+				apiClient.update("Cliente", "{nombre : 'a'}", json);
+			} else {
+				apiClient.post("Cliente", json);
+			}
+			
+				
 		}
 		catch (Exception e) {
 			

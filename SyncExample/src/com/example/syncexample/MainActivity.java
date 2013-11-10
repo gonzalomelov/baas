@@ -132,10 +132,11 @@ public class MainActivity extends Activity {
 		startActivity(i);
 	}
 	
-	public void addRemoteClient(View view) {
-		Log.i("SYNCEXAMPLE", "addRemoteClient");
+	public void update(View view) {
+		Log.i("SYNCEXAMPLE", "update");
 		Intent i = new Intent(this, AddActivity.class);
-		i.putExtra("local", false);
+		i.putExtra("local", true);
+		i.putExtra("update", true);
 		startActivity(i);
 	}
 	

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import uy.com.group05.baassdk.MyApplication;
 
 
@@ -17,6 +20,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.BaseColumns;
+import android.util.Log;
  
 public class BaasContentProvider extends ContentProvider {
  
@@ -66,6 +70,14 @@ public class BaasContentProvider extends ContentProvider {
 				orderBy,
 				limit);
 		
+		while (cursor.moveToNext()) {
+			Log.e("TAG", "##### Entity ######");
+			Log.e("TAG", "_id: " + cursor.getString(0));
+			Log.e("TAG", "entity: " + cursor.getString(1));
+			Log.e("TAG", "syncid: " + cursor.getString(2));
+			Log.e("TAG", "modifiedat: " + cursor.getString(3));
+		}
+		
 		return cursor;
 	}
 	
@@ -95,7 +107,20 @@ public class BaasContentProvider extends ContentProvider {
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
 
-		throw new UnsupportedOperationException();
+		int matchUri = myApplication.getmUriMatcher().match(uri);
+		
+		if (matchUri == -1) {
+			throw new IllegalArgumentException("InsertNotSupportedException: " + uri);
+		}
+		
+		int tableIndex = (int)Math.floor(matchUri/2);
+		String table = myApplication.getmTablesDB().get(tableIndex);
+		
+		SQLiteDatabase db = mBaasSqlHelper.getWritableDatabase();
+		
+		int rowsAffected = db.update(table, values, selection, selectionArgs);
+		
+		return rowsAffected;
 	}
 	
 	@Override

@@ -51,8 +51,8 @@
         android:layout_alignRight="@+id/button3"
         android:layout_below="@+id/button3"
         android:layout_marginTop="23dp"
-        android:text="Add remote Client"
-        android:onClick="addRemoteClient" />
+        android:text="Update"
+        android:onClick="update" />
 
     <Button
         android:id="@+id/button5"
