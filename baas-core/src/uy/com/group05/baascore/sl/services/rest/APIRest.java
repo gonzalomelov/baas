@@ -3,8 +3,10 @@ package uy.com.group05.baascore.sl.services.rest;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -39,6 +41,25 @@ public interface APIRest {
 			//@HeaderParam("accessToken") UUID accessToken,
 			@PathParam("appName") String appName,
 			@PathParam("entity") String entity,
+			String jsonObj);
+	
+	@DELETE
+	@Path("/entities/{appName}/{entity}/{query}")
+	public boolean delete(
+			//@HeaderParam("accessToken") UUID accessToken,
+			@PathParam("appName") String appName,
+			@PathParam("entity") String entity,
+			@PathParam("query") String query);
+	
+	@PUT
+	@Path("/entities/{appName}/{entity}/{query}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)	
+	public boolean put(
+			//@HeaderParam("accessToken") UUID accessToken,
+			@PathParam("appName") String appName,
+			@PathParam("entity") String entity,
+			@PathParam("query") String query,
 			String jsonObj);
 	
 	@POST

@@ -41,8 +41,8 @@
         android:layout_alignLeft="@+id/button2"
         android:layout_below="@+id/button2"
         android:layout_marginTop="21dp"
-        android:text="Show remote list"
-        android:onClick="showRemoteList" />
+        android:text="Delete"
+        android:onClick="delete" />
 
     <Button
         android:id="@+id/button4"

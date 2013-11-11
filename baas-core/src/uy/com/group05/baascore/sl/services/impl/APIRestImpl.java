@@ -42,6 +42,37 @@ public class APIRestImpl implements APIRest {
 		}
 	}
 	
+	@Override
+	public boolean delete(String appName, String entity, String query) {
+		
+		try {
+			return apiManagementLocal.delete(appName, entity, query);
+		} catch (AppNotRegisteredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (EntityNotRegisteredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean put(String appName, String entity, String query, String jsonObj) {
+		try {
+			return apiManagementLocal.put(appName, entity, query, jsonObj);
+		} catch (AppNotRegisteredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (EntityNotRegisteredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	public String sync(String appName, String entity, String jsonObjs) {
 
 		try {

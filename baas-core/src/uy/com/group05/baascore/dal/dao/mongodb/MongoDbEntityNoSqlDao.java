@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 
 import org.bson.types.ObjectId;
 
+import uy.com.group05.baascore.common.datatypes.SyncNoSqlResult;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityCollectionAlreadyExistsException;
 import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
@@ -125,8 +126,35 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 	}
 	
 	@Override
-	public String sync(String appName, String entity, String jsonObjs)
+	public void updateEntity(String application, String entity, String query, String jsonEntity)
+			throws JSONParseException {
+		
+		DB mongoDb = mongo.getDB(application);
+		DBCollection dbCollection = mongoDb.getCollection(entity);
+		
+		DBObject dbQuery = (DBObject) JSON.parse(query);
+		DBObject dbObject = (DBObject) JSON.parse(jsonEntity);
+		
+		dbObject.put("updatedat", (new Timestamp(System.currentTimeMillis())).toString());
+		
+		dbCollection.update(dbQuery, dbObject);
+	}
+
+	@Override
+	public void removeEntity(String application, String entity, String query) {
+		DB mongoDb = mongo.getDB(application);
+		DBCollection dbCollection = mongoDb.getCollection(entity);
+		
+		DBObject dbObject = (DBObject) JSON.parse(query);
+		
+		dbCollection.remove(dbObject);
+	}
+	
+	@Override
+	public SyncNoSqlResult sync(String appName, String entity, String jsonObjs)
 			throws AppNotRegisteredException, EntityNotRegisteredException {
+		
+		boolean sincronizar = false;
 		
 		DB mongoDb = mongo.getDB(appName);
 		DBCollection dbCollection = mongoDb.getCollection(entity);
@@ -143,6 +171,8 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 				remoteObj.put("updatedat", (new Timestamp(System.currentTimeMillis())).toString());
 				dbCollection.insert(remoteObj);
 				
+				sincronizar = true;
+				
 			} else {
 				//Si el elemento ya se encuentra comparo por fecha de modificación
 				ObjectId remoteObjId = new ObjectId(remoteObj.getString("syncid"));
@@ -154,35 +184,37 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 				
 				BasicDBObject localObj = (BasicDBObject) dbCollection.findOne(queryDbObject);
 				
-				Timestamp localObjUpdatedAt =  Timestamp.valueOf(localObj.getString("updatedat"));
-				Timestamp remoteObjUpdatedAt =  Timestamp.valueOf(remoteObj.getString("updatedat"));
+				boolean delete = remoteObj.getBoolean("delete");
 				
-				//Actualizo si el objeto remoto es mas nuevo que el local
-				if (remoteObjUpdatedAt.after(localObjUpdatedAt)) {
+				if (delete) {
+					dbCollection.remove(queryDbObject);
 					
-					//Valor de modificacion para syncronización
-					remoteObj.put("updatedat", new Timestamp(System.currentTimeMillis()).toString());
+					sincronizar = true;
 					
-					dbCollection.update(queryDbObject, remoteObj);
+				} else {
+					Timestamp localObjUpdatedAt =  Timestamp.valueOf(localObj.getString("updatedat"));
+					Timestamp remoteObjUpdatedAt =  Timestamp.valueOf(remoteObj.getString("updatedat"));
+					
+					//Actualizo si el objeto remoto es mas nuevo que el local
+					if (remoteObjUpdatedAt.after(localObjUpdatedAt)) {
+						
+						//Valor de modificacion para syncronización
+						remoteObj.put("updatedat", new Timestamp(System.currentTimeMillis()).toString());
+						
+						dbCollection.update(queryDbObject, remoteObj);
+						
+						sincronizar = true;
+					}	
 				}
-			}
-			
-			
-			
+				
+			}	
 		}
 		
-		return JSON.serialize(dbCollection.find());
+		SyncNoSqlResult result = new SyncNoSqlResult();
+		result.setJson(JSON.serialize(dbCollection.find()));
+		result.setSincronizar(sincronizar);
+		
+		return result;
 	}
 	
-	@Override
-	public void updateEntity(String application, String entity, String jsonEntity)
-			throws JSONParseException {
-		
-		DB mongoDb = mongo.getDB(application);
-		DBCollection dbCollection = mongoDb.getCollection(entity);
-		
-		DBObject dbObject = (DBObject) JSON.parse(jsonEntity);
-		//dbCollection.update(, o);	
-	}
-
 }

@@ -52,7 +52,6 @@ public class APIClientImpl implements APIFacade {
 			jsonArray.add(jsonObject);    
 		}
 		
-		
 		return jsonArray.toString();
 	}
 	
@@ -88,8 +87,6 @@ public class APIClientImpl implements APIFacade {
 			cmpValue = entry.getValue().getAsString();
 		}
 		
-		List<Integer> updateObjectsId = new ArrayList<Integer>();
-		
 		Gson gson = new Gson();
 		
 		for (boolean hasItem = entities.moveToFirst();  hasItem;  hasItem = entities.moveToNext()) {
@@ -99,8 +96,7 @@ public class APIClientImpl implements APIFacade {
 			JsonObject jsonObject = jsonElement.getAsJsonObject();
 
 			if (cmpType.isEmpty() || jsonObject.has(cmpType) && jsonObject.get(cmpType).getAsString().equals(cmpValue)) {
-				updateObjectsId.add(entities.getPosition());
-				
+
 				for (Map.Entry<String, JsonElement> entry : jsonValues.entrySet()) {
 					String key = entry.getKey();
 					JsonElement value = entry.getValue();
@@ -127,6 +123,46 @@ public class APIClientImpl implements APIFacade {
 	
 	public boolean delete(String entity, String query)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
+		
+		Cursor entities = context.getContentResolver().query(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null, null, null, null);
+		
+		JsonParser jsonParser = new JsonParser();
+		JsonObject jsonQuery = (JsonObject)jsonParser.parse(query);
+		
+		String cmpType = ""; 
+		String cmpValue = "";
+		
+		for (Map.Entry<String, JsonElement> entry : jsonQuery.entrySet()) {
+			cmpType = entry.getKey();
+			cmpValue = entry.getValue().getAsString();
+		}
+		
+		Gson gson = new Gson();
+		
+		for (boolean hasItem = entities.moveToFirst();  hasItem;  hasItem = entities.moveToNext()) {
+			String entityValue = entities.getString(1);
+			
+			JsonElement jsonElement = gson.fromJson(entityValue, JsonElement.class);
+			JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+			if (cmpType.isEmpty() || jsonObject.has(cmpType) && jsonObject.get(cmpType).getAsString().equals(cmpValue)) {
+				
+				JsonPrimitive timestamp = new JsonPrimitive(new Timestamp(System.currentTimeMillis()).toString());
+				jsonObject.add("updatedat", timestamp);
+				
+				JsonPrimitive delete = new JsonPrimitive(true);
+				jsonObject.add("delete", delete);
+				
+				ContentValues contentValues = new ContentValues();
+				contentValues.put("entity", jsonObject.toString());
+				
+				String where = "_id = " + entities.getString(entities.getColumnIndex("_id"));
+				
+				context.getContentResolver().update(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), contentValues, where, null);
+			}
+		}
+		
+		context.getContentResolver().notifyChange(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null);
 		
 		return true;
 	}

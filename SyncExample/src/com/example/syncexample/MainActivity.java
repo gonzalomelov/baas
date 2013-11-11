@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import uy.com.group05.baassdk.APIFacade;
 import uy.com.group05.baassdk.MyApplication;
+import uy.com.group05.baassdk.SDKFactory;
 import uy.com.group05.baassdk.sync.BaasProviderContract;
 import uy.com.group05.baassdk.sync.BaasProviderObserver;
 import uy.com.group05.baassdk.sync.Constants;
@@ -125,11 +127,17 @@ public class MainActivity extends Activity {
 		startActivity(i);
 	}
 	
-	public void showRemoteList(View view) {
+	public void delete(View view) {
 		Log.i("SYNCEXAMPLE", "showRemoteList");
-		Intent i = new Intent(this, ListActivity.class);
-		i.putExtra("local", false);
-		startActivity(i);
+
+		APIFacade apiClient = SDKFactory.getAPIFacade(this);
+		try {
+			apiClient.delete("Cliente", "{email: 'e'}");	
+		}
+		catch (Exception e) {
+			
+		}
+
 	}
 	
 	public void update(View view) {

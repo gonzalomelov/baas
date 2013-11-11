@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.APIManagementLocal;
 import uy.com.group05.baascore.bll.ejbs.interfaces.PushChannelManagementLocal;
+import uy.com.group05.baascore.common.datatypes.SyncNoSqlResult;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.Estadisticas;
@@ -119,6 +120,62 @@ public class APIManagement implements APIManagementLocal {
 	}
 	
 	@Override
+	public boolean delete(String appName, String entity, String query)
+			throws AppNotRegisteredException, EntityNotRegisteredException {
+	
+		Application app = appDao.readByName(appName);
+		if (app == null) {
+			throw new AppNotRegisteredException("No existe la aplicación con nombre " + appName);
+		}
+		
+		long appId = app.getId();
+		
+		Entity ent = entityDao.readByName(appId, entity);
+		if (ent == null) {
+			throw new EntityNotRegisteredException("No existe la entidad con nombre " + entity);
+		}
+	
+		noSqlDbDao.removeEntity(appName, entity, query);
+		
+		try {
+			startDataSynchronization(entity);
+		}
+		catch (Exception e) {
+		
+		}
+		
+		return true;
+	}
+
+	@Override
+	public boolean put(String appName, String entity, String query, String jsonObj)
+			throws AppNotRegisteredException, EntityNotRegisteredException {
+
+		Application app = appDao.readByName(appName);
+		if (app == null) {
+			throw new AppNotRegisteredException("No existe la aplicación con nombre " + appName);
+		}
+		
+		long appId = app.getId();
+		
+		Entity ent = entityDao.readByName(appId, entity);
+		if (ent == null) {
+			throw new EntityNotRegisteredException("No existe la entidad con nombre " + entity);
+		}
+		
+		noSqlDbDao.updateEntity(appName, entity, query, jsonObj);
+		
+		try {
+			startDataSynchronization(entity);
+		}
+		catch (Exception e) {
+		
+		}
+		
+		return true;
+	}
+
+	@Override
 	public String sync(String appName, String entity, String jsonObjs) throws AppNotRegisteredException, EntityNotRegisteredException {
 		Application app = appDao.readByName(appName);
 		if (app == null) {
@@ -132,7 +189,18 @@ public class APIManagement implements APIManagementLocal {
 			throw new EntityNotRegisteredException("No existe la entidad con nombre " + entity);
 		}
 
-		return noSqlDbDao.sync(appName, entity, jsonObjs);
+		SyncNoSqlResult result = noSqlDbDao.sync(appName, entity, jsonObjs);
+		
+		if (result.isSincronizar()) {
+			try {
+				startDataSynchronization(entity);
+			}
+			catch (Exception e) {
+			
+			}
+		}
+		
+		return result.getJson();
 	}
 	
 	public List<String> getEntitiesNames(String appName) throws AppNotRegisteredException {
