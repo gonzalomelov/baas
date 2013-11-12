@@ -73,8 +73,8 @@ public class ApplicationController {
 		} catch (MalformedURLException e) {}
 		
 		this.service = new ApplicationServices(url);
-		this.permissionService = new PermissionServices();
-		this.pushService = new PushServices();
+		this.permissionService = new PermissionServices(urlPermissionServices);
+		this.pushService = new PushServices(urlPushServices);
 	}
 	
 	public AppModel GetAplicaciones(long UserId) throws ApplicationException {
