@@ -42,7 +42,7 @@ public class VerUsuarios extends Activity implements AdapterView.OnItemClickList
 //		Bundle bundle = this.getIntent().getExtras();
 //		this.mail = bundle.getString("mail");
 		//***Pruba
-		usuarios = Factory.getUsuarioCtrl().getUsuarios().toArray();
+		usuarios = Factory.getUsuarioCtrl().getUsuarios(this).toArray();
 		int size=usuarios.length;
 		
 		lblUsuarios = (TextView)findViewById(R.id.LblUsuarios);

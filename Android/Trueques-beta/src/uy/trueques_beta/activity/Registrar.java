@@ -114,11 +114,12 @@ public class Registrar extends Activity {
 			mailView.setError(getString(R.string.error_invalid_email));
 			focusView = mailView;
 			cancel = true;
-		} else if (Factory.getUsuarioCtrl().getUsuario(email)!=null){
-			mailView.setError("El email ya esta registrado");
-			focusView = mailView;
-			cancel = true;
-		}
+		} 
+//		else if (Factory.getUsuarioCtrl().getUsuario(email)!=null){
+//			mailView.setError("El email ya esta registrado");
+//			focusView = mailView;
+//			cancel = true;
+//		}
 
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first

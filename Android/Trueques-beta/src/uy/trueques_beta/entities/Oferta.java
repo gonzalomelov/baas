@@ -1,6 +1,9 @@
 package uy.trueques_beta.entities;
 
 import java.io.ByteArrayOutputStream;
+import java.util.UUID;
+
+import com.google.gson.Gson;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,26 +13,27 @@ import android.util.Log;
 
 public class Oferta {
 
-	private int idOferta;
+	private String idOferta;
 	private Objeto objeto;
 	private boolean rechazada;
-	private int  idTrueque;
+	private String idTrueque;
 	private String ubicacion;
 	//private Bitmap imagen;
 	private String imagen;
 	
-	public Oferta(int idOferta, Objeto objeto, int idTrueque, String ubicacion){
-		this.idOferta=idOferta;
+	public Oferta(Objeto objeto, String idTrueque, String ubicacion, Bitmap bitmap){
+		this.idOferta=UUID.randomUUID().toString();//idOferta;
 		this.objeto=objeto;
 		this.setRechazada(false);
 		this.idTrueque = idTrueque;
 		this.ubicacion= ubicacion;
+		this.imagen=encodeTobase64(bitmap);
 	}
 	
-	public int getIdOferta() {
+	public String getIdOferta() {
 		return idOferta;
 	}
-	public void setIdOferta(int idOferta) {
+	public void setIdOferta(String idOferta) {
 		this.idOferta = idOferta;
 	}
 	public Objeto getObjeto() {
@@ -60,11 +64,11 @@ public class Oferta {
 	    return this.idOferta == ofer.getIdOferta();
 	}
 
-	public int getIdTrueque() {
+	public String getIdTrueque() {
 		return idTrueque;
 	}
 
-	public void setTrueque(int trueque) {
+	public void setTrueque(String trueque) {
 		this.idTrueque = trueque;
 	}
 
@@ -101,6 +105,18 @@ public class Oferta {
 	{
 	    byte[] decodedByte = Base64.decode(input, 0);
 	    return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length); 
+	}
+	
+	public String toJson() {
+		Gson gson = new Gson();
+		String json = gson.toJson(this, Oferta.class);
+		return json;
+	}
+	
+	public static Oferta fromJson(String json) {
+		Gson gson = new Gson();
+		Oferta o = gson.fromJson(json, Oferta.class);
+		return o;
 	}
 	
 }

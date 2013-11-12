@@ -140,7 +140,7 @@ public class CrearObjeto extends Activity {
 			// TODO: register the new account here.
 			return true;*/
 			
-			return Factory.getObjetoCtrl().crearObjeto(mail, nombre, desc, valor) !=0;
+			return !Factory.getObjetoCtrl().crearObjeto(CrearObjeto.this, mail, nombre, desc, valor).equals("");
 		}
 
 		@Override

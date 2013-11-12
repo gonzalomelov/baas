@@ -6,10 +6,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.http.client.ClientProtocolException;
-
-import uy.com.group05.baassdk.SDKFactory;
 
 import com.google.gson.Gson;
 
@@ -21,7 +20,7 @@ import android.util.Log;
 
 public class Trueque {
 	
-	private int idTrueque;
+	private String idTrueque;
 	private Date fechaIni;
 	private Date fechaFin;
 	private Objeto objeto;
@@ -43,9 +42,9 @@ byte[] imageBytes = baos.toByteArray();
 String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 	 */
 	
-	public Trueque (Context context, int id, Objeto obj, String busca, float minVal, String ubicacion, Bitmap bitmap) 
+	public Trueque (Objeto obj, String busca, float minVal, String ubicacion, Bitmap bitmap) 
 			throws UnsupportedEncodingException, ClientProtocolException, IOException{
-		this.idTrueque =id;
+		this.idTrueque = UUID.randomUUID().toString();//(mostSigBits, leastSigBits);
 		this.objeto=obj;
 		this.activa=true;
 		this.fechaIni= new Date();
@@ -69,11 +68,11 @@ String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 	
 	
 
-	public int getIdTrueque() {
+	public String getIdTrueque() {
 		return idTrueque;
 	}
 
-	public void setIdTrueque(int idTrueque) {
+	public void setIdTrueque(String idTrueque) {
 		this.idTrueque = idTrueque;
 	}
 
@@ -161,6 +160,37 @@ String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 	public void setPuntosTrueque(int puntosTrueque) {
 		this.puntosTrueque = puntosTrueque;
 	}
+	public Bitmap getImagen() {
+		return decodeBase64(imagen);
+		//return imagen;
+	}
+
+	public void setImagen(Context context, Bitmap imagen) 
+			throws UnsupportedEncodingException, ClientProtocolException, IOException {
+		
+		this.imagen = encodeTobase64(imagen);
+	}
+	
+	public static String encodeTobase64(Bitmap image)
+	{
+	    Bitmap immagex=image;
+	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    immagex.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+	    byte[] b = baos.toByteArray();
+	    String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
+
+	    Log.e("LOOK", imageEncoded);
+	    return imageEncoded;
+	}
+	public static Bitmap decodeBase64(String input) 
+	{
+	    byte[] decodedByte = Base64.decode(input, 0);
+	    return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length); 
+	}
+	
+	
+	
+	//+++++++++++++
 	//+++++++++++++
 	public String getUsuario(){
 		return this.objeto.getDuenio();
@@ -168,32 +198,28 @@ String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 
 	public void addOferta(Oferta ofer){
 		this.ofertas.add(ofer);
-		Gson gson = new Gson();
-		String json = gson.toJson(this, Trueque.class);
-		String entity="Trueque";
-		Log.i("POST","Trueque= "+json);
 	}
 	
-	public boolean existOferta(int idOferta){
+	public boolean existOferta(String idOferta){
 		if(this.ofertas==null || this.ofertas.isEmpty())
 			return false;
 		
 		boolean existe=false;
 		for(Oferta ofer: this.ofertas){
-			if(ofer.getIdOferta()==idOferta)
+			if(ofer.getIdOferta().equals(idOferta))
 				existe = true;
 		}
 		
 		return existe;
 	}
 	
-	public boolean rechazarOferta(int idOferta){
+	public boolean rechazarOferta(String idOferta){
 		if(this.ofertas==null || this.ofertas.isEmpty())
 			return false;
 		
 		//boolean existe=false;
 		for(Oferta ofer: this.ofertas){
-			if(ofer.getIdOferta()==idOferta)
+			if(ofer.getIdOferta().equals(idOferta))
 				ofer.setRechazada(true);
 		}
 		
@@ -221,45 +247,6 @@ String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 //		this.puntosGanadora=pts;
 //		this.ganadora.getUsuario().puntuar(pts);
 //	}
-
-	public Bitmap getImagen() {
-		return decodeBase64(imagen);
-		//return imagen;
-	}
-
-	public void setImagen(Context context, Bitmap imagen) 
-			throws UnsupportedEncodingException, ClientProtocolException, IOException {
-		
-		//this.imagen = imagen;
-		this.imagen = encodeTobase64(imagen);
-		// POST de la entidad nueva
-		Gson gson = new Gson();
-		String json = gson.toJson(this, Trueque.class);
-		String entity="Trueque";
-		Log.i("POST","Trueque= "+json);
-		boolean ok = SDKFactory.getAPIFacade(context).post(entity, json);
-		Log.i("POST","-"+ok);
-		// POST.
-		//Log.i("IMAGEN", "Tamaño = "+this.imagen.getByteCount()/1024+"-H:"+this.imagen.getHeight());
-	}
-	
-	public static String encodeTobase64(Bitmap image)
-	{
-	    Bitmap immagex=image;
-	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	    immagex.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-	    byte[] b = baos.toByteArray();
-	    String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
-
-	    Log.e("LOOK", imageEncoded);
-	    return imageEncoded;
-	}
-	public static Bitmap decodeBase64(String input) 
-	{
-	    byte[] decodedByte = Base64.decode(input, 0);
-	    return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length); 
-	}
-
 
 
 	public String toJson() {

@@ -9,9 +9,9 @@ public class Usuario {
 	private String nombre;
 	private String mail;
 	private String pass;
-	private List<Objeto> objetos = new ArrayList<Objeto>();
-	private List<Oferta> ofertas = new ArrayList<Oferta>();
-	private List<Trueque> trueques = new ArrayList<Trueque>();
+	private List<String> objetos = new ArrayList<String>();//<Objeto>();
+	private List<String> ofertas = new ArrayList<String>();//<Oferta>();
+	private List<String> trueques = new ArrayList<String>();//<Trueque>();
 	//+++
 	private int publicados; //trueques
 	private int aceptados; //trueques aceptados
@@ -20,13 +20,13 @@ public class Usuario {
 	private int total;
 	private boolean bloqueado;
 	
-	public Usuario(String nombre, String mail, String pass, List<Objeto> objetos) {
+	public Usuario(String nombre, String mail, String pass) {
 		super();
 		//this.id = id;
 		this.nombre = nombre;
 		this.mail = mail;
 		this.pass = pass;
-		this.objetos = objetos;
+		//this.objetos = objetos;
 		
 		this.publicados =0;
 		this.aceptados =0;
@@ -60,10 +60,10 @@ public class Usuario {
 	public void setPass(String pass) {
 		this.pass = pass;
 	}
-	public List<Objeto> getObjetos() {
+	public List<String> getObjetos() {
 		return objetos;
 	}
-	public void setObjetos(List<Objeto> objetos) {
+	public void setObjetos(List<String> objetos) {
 		this.objetos = objetos;
 	}
 	public int getPublicados() {
@@ -90,11 +90,11 @@ public class Usuario {
 		this.realizados = realizados;
 	}
 	
-	public List<Oferta> getOfertas() {
+	public List<String> getOfertas() {
 		return ofertas;
 	}
 
-	public void setOfertas(List<Oferta> ofertas) {
+	public void setOfertas(List<String> ofertas) {
 		this.ofertas = ofertas;
 	}
 	public int getPuntos() {
@@ -121,21 +121,21 @@ public class Usuario {
 	
 	//+++++++
 
-	public void addObjeto(Objeto obj){
+	public void addObjeto(String obj){
 		if (this.objetos==null)
-			this.objetos = new ArrayList<Objeto>();
+			this.objetos = new ArrayList<String>();
 		this.objetos.add(obj);
 	}
 	
-	public void addOferta(Oferta oferta){
+	public void addOferta(String oferta){
 		if (this.ofertas==null)
-			this.ofertas = new ArrayList<Oferta>();
+			this.ofertas = new ArrayList<String>();
 		this.ofertas.add(oferta);
 	}
 	
-	public void addTrueque(Trueque t){
+	public void addTrueque(String t){
 		if (this.trueques==null)
-			this.trueques = new ArrayList<Trueque>();
+			this.trueques = new ArrayList<String>();
 		this.trueques.add(t);
 	}
 
@@ -147,7 +147,7 @@ public class Usuario {
 		if (this.total==0)
 			return 0;
 		else
-			return this.puntos/this.total;
+			return (this.puntos/this.total);
 	}
 
 

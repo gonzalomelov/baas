@@ -5,13 +5,16 @@ import uy.trueques_beta.R.layout;
 import uy.trueques_beta.R.menu;
 import uy.trueques_beta.entities.Oferta;
 import uy.trueques_beta.entities.Trueque;
+import uy.trueques_beta.entities.Usuario;
 import uy.trueques_beta.negocio.Factory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Im;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -21,9 +24,10 @@ import android.widget.Toast;
 
 public class VistaOfertaPend extends Activity {
 
-	
+	private OfertaTask mAuthTask =null;
 	private String mail;
 	private Oferta o;
+	private Usuario u;
 	private Trueque t;
 	
 	private TextView nombre;
@@ -36,26 +40,23 @@ public class VistaOfertaPend extends Activity {
 	private ImageView img;
 	private Button buttonRechazar;
 	private Button buttonAceptar;
-	private int idOferta;
+	private String idOferta;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vista_oferta_pend);
 		
-		//Obtengo el mail del usuario
 		Intent intent = this.getIntent();
-		this.idOferta = intent.getIntExtra("idOferta", -1);//.getString("idTrueque");
-		//this.mail = intent.getExtras().getString("mail");
+		String ofertaJson= intent.getExtras().getString("Oferta");
+		this.o = Oferta.fromJson(ofertaJson); //this.o = Factory.getOfertaCtrl().getOferta(idOferta);
+		
 		SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
-		
-		this.o = Factory.getOfertaCtrl().getOferta(idOferta);
-		this.t = Factory.getTruequeCtrl().getTrueque(o.getIdTrueque());
-		
+
 		if(o==null || t==null){
 			nombre = (TextView)findViewById(R.id.LblNomTrueque);
-			nombre.setText("ERROR VUELVA A INTENTAR (id="+idOferta+")");
+			nombre.setText("ERROR VUELVA A INTENTAR");
 		}else{
 			
 			nombre = (TextView)findViewById(R.id.LblNomTrueque);
@@ -78,41 +79,44 @@ public class VistaOfertaPend extends Activity {
 			img = (ImageView)findViewById(R.id.imageView1);
 			img.setImageBitmap(o.getImagen());
 			
-			
 			buttonRechazar = (Button)findViewById(R.id.BtnRechazar);
-			buttonRechazar.setOnClickListener(
-					new View.OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							if(o!=null){
-								Factory.getTruequeCtrl().rechazarOferta(t.getIdTrueque(), o.getIdOferta());
-								Intent intent = new Intent(VistaOfertaPend.this, Home.class);
-						        //intent.putExtra("idTrueque", (int)t.getIdTrueque());
-						        //intent.putExtra("mail", mail);
-								startActivity(intent);
-							}
-						}
-					});
+			buttonAceptar = (Button)findViewById(R.id.BtnAceptar);
 			
-			buttonAceptar = (Button)findViewById(R.id.BtnAceptar);			
-			buttonAceptar.setOnClickListener(
-					new View.OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							if (Factory.getUsuarioCtrl().getUsuario(mail).isBloqueado()){	
-								Toast.makeText(VistaOfertaPend.this, "Usuario bloqueado, no puede realizar la acción", Toast.LENGTH_SHORT);
-							}
-							else{
-								if(o!=null){
-									Factory.getTruequeCtrl().aceptarOferta(t.getIdTrueque(), o.getIdOferta());
-									Intent intent = new Intent(VistaOfertaPend.this, Home.class);
-							        //intent.putExtra("idTrueque", (int)t.getIdTrueque());
-							        //intent.putExtra("mail", mail);
-									startActivity(intent);
-								}
-							}
-						}
-					});
+//			buttonRechazar = (Button)findViewById(R.id.BtnRechazar);
+//			buttonRechazar.setOnClickListener(
+//					new View.OnClickListener() {
+//						@Override
+//						public void onClick(View view) {
+//							if (Factory.getUsuarioCtrl().getUsuario(mail).isBloqueado()){	
+//								Toast.makeText(VistaOfertaPend.this, "Usuario bloqueado, no puede realizar la acción", Toast.LENGTH_SHORT).show();
+//							}
+//							else{
+//								if(o!=null){
+//									Factory.getTruequeCtrl().rechazarOferta(t.getIdTrueque(), o.getIdOferta());
+//									Intent intent = new Intent(VistaOfertaPend.this, Home.class);
+//									startActivity(intent);
+//								}
+//							}
+//						}
+//					});
+//			
+//			buttonAceptar = (Button)findViewById(R.id.BtnAceptar);			
+//			buttonAceptar.setOnClickListener(
+//					new View.OnClickListener() {
+//						@Override
+//						public void onClick(View view) {
+//							if (Factory.getUsuarioCtrl().getUsuario(mail).isBloqueado()){	
+//								Toast.makeText(VistaOfertaPend.this, "Usuario bloqueado, no puede realizar la acción", Toast.LENGTH_SHORT).show();
+//							}
+//							else{
+//								if(o!=null){
+//									Factory.getTruequeCtrl().aceptarOferta(t.getIdTrueque(), o.getIdOferta());
+//									Intent intent = new Intent(VistaOfertaPend.this, Home.class);
+//									startActivity(intent);
+//								}
+//							}
+//						}
+//					});
 		}
 	}
 
@@ -123,4 +127,67 @@ public class VistaOfertaPend extends Activity {
 		return true;
 	}
 
+	
+	public class OfertaTask extends AsyncTask<Void, Void, Boolean> {
+		//private int idTrueque;
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			u = Factory.getUsuarioCtrl().getUsuario(VistaOfertaPend.this,mail);
+			return u!=null;
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			mAuthTask = null;
+			//showProgress(false);
+
+			if (success) {	
+				buttonRechazar.setOnClickListener(
+						new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								if (u.isBloqueado()){	
+									Toast.makeText(VistaOfertaPend.this, "Usuario bloqueado, no puede realizar la acción", Toast.LENGTH_SHORT).show();
+								}
+								else{
+									if(o!=null){
+										Factory.getTruequeCtrl().rechazarOferta(VistaOfertaPend.this, t.getIdTrueque(), o.getIdOferta());
+										Intent intent = new Intent(VistaOfertaPend.this, Home.class);
+										startActivity(intent);
+									}
+								}
+							}
+						});
+						
+				buttonAceptar.setOnClickListener(
+						new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								if (u.isBloqueado()){	
+									Toast.makeText(VistaOfertaPend.this, "Usuario bloqueado, no puede realizar la acción", Toast.LENGTH_SHORT).show();
+								}
+								else{
+									if(o!=null){
+										Factory.getTruequeCtrl().aceptarOferta(VistaOfertaPend.this, t.getIdTrueque(), o.getIdOferta());
+										Intent intent = new Intent(VistaOfertaPend.this, Home.class);
+										startActivity(intent);
+									}
+								}
+							}
+						});
+				
+		    	
+			} else {
+				Log.i("[VistaTrueque]:", "ERROR");
+				Toast.makeText(VistaOfertaPend.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			mAuthTask = null;
+			//showProgress(false);
+		}
+	}	
+	
 }

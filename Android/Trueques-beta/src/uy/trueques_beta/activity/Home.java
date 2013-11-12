@@ -192,10 +192,10 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 
 
 	@Override
-	public void onOfertaSeleccionado(int idOferta) {
+	public void onOfertaSeleccionado(Oferta o) {
 		//IR a VistaOfertaPend con idOferta
 		Intent intent = new Intent(Home.this, VistaOfertaPend.class);
-		intent.putExtra("idOferta", (int)idOferta);
+		intent.putExtra("Oferta", o.toJson());
 		startActivity(intent);
 	}
 

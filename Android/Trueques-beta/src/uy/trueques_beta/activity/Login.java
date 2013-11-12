@@ -242,7 +242,7 @@ public class Login extends Activity {
 			// TODO: register the new account here.
 			return true;*/
 			if(this.isChk)
-				return Factory.getUsuarioCtrl().loginAsAdmin(mEmail, mPassword);
+				return Factory.getUsuarioCtrl().loginAsAdmin(Login.this, mEmail, mPassword);
 			else
 				return Factory.getUsuarioCtrl().login(Login.this, mEmail, mPassword);
 		}

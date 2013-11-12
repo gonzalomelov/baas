@@ -40,7 +40,7 @@ public class VistaUsuario extends Activity {
 		Bundle bundle = this.getIntent().getExtras();
 		this.usuario = bundle.getString("mailUsuario");
 		
-		this.u = Factory.getUsuarioCtrl().getUsuario(this.usuario);
+		this.u = Factory.getUsuarioCtrl().getUsuario(this, this.usuario); //DEBERIA FALLAR
 		if(u==null)
 			finish();
 		
@@ -106,9 +106,9 @@ public class VistaUsuario extends Activity {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			if(u.isBloqueado())
-				return Factory.getUsuarioCtrl().desbloquear(usuario);
+				return Factory.getUsuarioCtrl().desbloquear(VistaUsuario.this, usuario);
 			else
-				return Factory.getUsuarioCtrl().bloquear(usuario);
+				return Factory.getUsuarioCtrl().bloquear(VistaUsuario.this, usuario);
 		}
 
 		@Override

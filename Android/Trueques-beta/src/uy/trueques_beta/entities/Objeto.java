@@ -1,10 +1,12 @@
 package uy.trueques_beta.entities;
 
+import java.util.UUID;
+
 
 
 public class Objeto {
 
-	private int id;
+	private String idObjeto;
 	private String nombre;
 	private String descripcion;
 	private float valor;
@@ -12,19 +14,19 @@ public class Objeto {
 	//private BufferedImage foto;
 	
 	
-	public Objeto(int id, String nombre, String descripcion, float valor, String duenio) {
-		this.id = id;
+	public Objeto(String nombre, String descripcion, float valor, String duenio) {
+		this.idObjeto = UUID.randomUUID().toString();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.valor = valor;
 		this.duenio = duenio;
 	}
 	
-	public int getId() {
-		return id;
+	public String getIdObjeto() {
+		return idObjeto;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setIdObjeto(String id) {
+		this.idObjeto = id;
 	}
 	public String getNombre() {
 		return nombre;

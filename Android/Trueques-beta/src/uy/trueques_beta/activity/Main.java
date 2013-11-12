@@ -12,6 +12,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import uy.com.group05.baassdk.MyApplication;
 import uy.com.group05.baassdk.sync.BaasProviderObserver;
 import uy.com.group05.baassdk.sync.Constants;
+import uy.com.group05.baassdk.*;
 import uy.trueques_beta.R;
 import uy.trueques_beta.R.layout;
 import uy.trueques_beta.R.menu;
@@ -114,7 +115,7 @@ public class Main extends Activity {
         //COMPRUEBO SI EL USUARIO YA ESTA LOGEADO
         SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
         String mail = prefs.getString("mail", "");
-        if(!mail.equals("") && Factory.getUsuarioCtrl().getUsuario(mail)!=null){ 
+        if(!mail.equals("") && Factory.getUsuarioCtrl().getUsuario(this, mail)!=null){ 
         	startActivity(new Intent(Main.this, Home.class));
         }
     }

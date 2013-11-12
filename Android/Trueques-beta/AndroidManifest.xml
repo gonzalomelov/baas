@@ -179,6 +179,10 @@
             android:syncable="true"
             android:permission="uy.com.group05.baassdk.sync.provider.permission" />
 		
+        <meta-data
+		    android:name="com.google.android.gms.version"
+		    android:value="@integer/google_play_services_version" />
+        
         <!-- Fin BaaS SDK -->
         
     </application>

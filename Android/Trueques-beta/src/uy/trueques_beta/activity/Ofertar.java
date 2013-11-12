@@ -35,7 +35,7 @@ public class Ofertar extends Activity {
 
 	private CrearOfertaTask mAuthTask = null;
 	private String mail;
-	private int idTrueque;
+	//private String idTrueque;
 	private Trueque t;
 	
 	private String nombre;
@@ -60,9 +60,11 @@ public class Ofertar extends Activity {
 
 		SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
-		this.idTrueque = this.getIntent().getIntExtra("idTrueque", -1);
-		
-		this.t = Factory.getTruequeCtrl().getTrueque(idTrueque);
+		//this.idTrueque = this.getIntent().getExtras().getString("idTrueque", "");
+		Intent intent = this.getIntent();
+		String truequeJson= intent.getExtras().getString("Trueque");
+		this.t = Trueque.fromJson(truequeJson);
+		//this.t = Factory.getTruequeCtrl().getTrueque(idTrueque);
 		
 		tituloView = (TextView)findViewById(R.id.LblTitleOfertar);
 		if (this.t!=null)
@@ -201,7 +203,7 @@ public class Ofertar extends Activity {
 			@Override
 			protected Boolean doInBackground(Void... params) {
 				if (t!=null)
-					return Factory.getTruequeCtrl().crearOferta(t.getIdTrueque(), mail, nombre, desc, valor, ubicacion, bitmap);
+					return Factory.getTruequeCtrl().crearOferta(Ofertar.this, t.getIdTrueque(), mail, nombre, desc, valor, ubicacion, bitmap);
 				else
 					return false;
 			}

@@ -97,7 +97,7 @@ public class CrearTrueque extends Fragment{//Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						if (Factory.getUsuarioCtrl().getUsuario(mail).isBloqueado()){	
+						if (Factory.getUsuarioCtrl().getUsuario(CrearTrueque.this.getActivity(), mail).isBloqueado()){	
 							Toast.makeText(CrearTrueque.this.getActivity(), "Usuario bloqueado, no puede realizar la acción", Toast.LENGTH_SHORT);
 							//finish();
 						}else
@@ -257,17 +257,17 @@ public class CrearTrueque extends Fragment{//Activity {
 	}
 	
 	public class CrearTruequeTask extends AsyncTask<Void, Void, Boolean> {
-		private int idTrueque;
+		private String idTrueque;
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			int idObj= Factory.getObjetoCtrl().crearObjeto(mail, nombre, desc, valor);
-			Objeto obj = Factory.getObjetoCtrl().getObjeto(idObj);
+			String idObj= Factory.getObjetoCtrl().crearObjeto(CrearTrueque.this.getActivity(), mail, nombre, desc, valor);
+			Objeto obj = Factory.getObjetoCtrl().getObjeto(CrearTrueque.this.getActivity(), idObj);
 			if (obj!=null){
 				this.idTrueque = Factory.getTruequeCtrl().crearTrueque(CrearTrueque.this.getActivity(), obj, descBusca, minVal, ubicacion, bitmap);
 //				Trueque t = Factory.getTruequeCtrl().getTrueque(this.idTrueque);
 //				if(t!=null)
 //					Factory.getTruequeCtrl().setImagen(CrearTrueque.this.getActivity(), t.getIdTrueque(),bitmap);
-				return idTrueque>0;
+				return !idTrueque.equals("");
 			}
 			else
 				return false;
@@ -304,5 +304,7 @@ public class CrearTrueque extends Fragment{//Activity {
 			//showProgress(false);
 		}
 	}
+	
+	
 
 }

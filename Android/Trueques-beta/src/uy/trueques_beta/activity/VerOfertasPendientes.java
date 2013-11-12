@@ -6,16 +6,19 @@ import uy.trueques_beta.R;
 import uy.trueques_beta.R.layout;
 import uy.trueques_beta.R.menu;
 import uy.trueques_beta.activity.VerTrueques.AdaptadorTrueque;
+import uy.trueques_beta.activity.VerTrueques.VerTruequeTask;
 import uy.trueques_beta.activity.VerTrueques.VerTruequesListener;
 import uy.trueques_beta.entities.Oferta;
 import uy.trueques_beta.entities.Trueque;
 import uy.trueques_beta.negocio.Factory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -28,6 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class VerOfertasPendientes extends Fragment implements AdapterView.OnItemClickListener {//extends Activity implements AdapterView.OnItemClickListener {
+	private VerOfertasPendientesTask mAuthTask = null;
 
 	private AdaptadorOferta adaptador;
 	private String mail;
@@ -35,6 +39,7 @@ public class VerOfertasPendientes extends Fragment implements AdapterView.OnItem
 	private TextView lblVerOfertas;
 	private Object[] ofertas;
 	private VerOfertasPendientesListener listener;
+	int size;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,19 +59,19 @@ public class VerOfertasPendientes extends Fragment implements AdapterView.OnItem
         SharedPreferences prefs = this.getActivity().getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
 		
-		//Obtengo las ofertas pendientes
-		ofertas = Factory.getTruequeCtrl().getOfertasPendientes(mail).toArray();
-		int size= ofertas.length;
-				
-		lblVerOfertas = (TextView)getView().findViewById(R.id.LblVerOfertas);
-		lblVerOfertas.setText(lblVerOfertas.getText().toString() +" ("+ size +")");
+//		//Obtengo las ofertas pendientes
+//		ofertas = Factory.getTruequeCtrl().getOfertasPendientes(mail).toArray();
+//		int size= ofertas.length;
+//				
+//		lblVerOfertas = (TextView)getView().findViewById(R.id.LblVerOfertas);
+//		lblVerOfertas.setText(lblVerOfertas.getText().toString() +" ("+ size +")");
 		 
 		//trueques = Factory.getTruequeCtrl().getTrueques().toArray();
-		this.adaptador = new AdaptadorOferta(this, R.layout.list_item_ofertas, ofertas);
-		lstOfertas = (ListView)getView().findViewById(R.id.LstOfertas);
-		lstOfertas.setAdapter(adaptador);
-		
-		lstOfertas.setOnItemClickListener(this);
+//		this.adaptador = new AdaptadorOferta(this, R.layout.list_item_ofertas, ofertas);
+//		lstOfertas = (ListView)getView().findViewById(R.id.LstOfertas);
+//		lstOfertas.setAdapter(adaptador);
+//		
+//		lstOfertas.setOnItemClickListener(this);
 	}
 
 //	@Override
@@ -86,12 +91,12 @@ public class VerOfertasPendientes extends Fragment implements AdapterView.OnItem
 //	}
 		//AVISO AL ACTIVITY
 		if (listener!=null) {
-	        listener.onOfertaSeleccionado(o.getIdOferta());
+	        listener.onOfertaSeleccionado(o);
 	    }
 	}
 
 	public interface VerOfertasPendientesListener {
-	    void onOfertaSeleccionado(int idOferta);
+	    void onOfertaSeleccionado(Oferta o);
 	}
 	
 	public void setVerOfertasPendientesListener(VerOfertasPendientesListener listener) {
@@ -102,32 +107,22 @@ public class VerOfertasPendientes extends Fragment implements AdapterView.OnItem
 	class AdaptadorOferta extends ArrayAdapter {
 		 
 	    Activity context;
-		//Object[] ofers;
 	 
 	    public AdaptadorOferta(Fragment context, int textViewResourceId, Object[] objects) {
 			super(context.getActivity(), textViewResourceId, objects);
 			//this.ofers = objects;
 			this.context = context.getActivity();
 	    }
-//		    AdaptadorTrueque(Activity context, int resource, Trueque[] objects) {
-//	            super(context, R.layout.list_item_trueques, trueques);
-//	            //this.trueques = Factory.getTruequeCtrl().getTrueques().toArray();
-//	            this.context = context;
-//	        }
  
         public View getView(int position, View convertView, ViewGroup parent) {
         	LayoutInflater inflater = context.getLayoutInflater();
-//	        View item = inflater.inflate(R.layout.list_item_ofertas, null);
         	View item = inflater.inflate(R.layout.list_item_trueques, null);
-//	        TextView itemTrueque = (TextView)item.findViewById(R.id.TextItemOferta);
-//	        itemTrueque.setText(((Oferta)ofertas[position]).getObjeto().getNombre() + 
-//	        		"   $"+ ((Oferta)ofertas[position]).getObjeto().getValor());
-	 //++
+
 	        Oferta ofer= ((Oferta)ofertas[position]);
-	        String nomTrueque= Factory.getTruequeCtrl().getTrueque(ofer.getIdTrueque()).getObjeto().getNombre();
+	        //String nomTrueque= Factory.getTruequeCtrl().getTrueque(ofer.getIdTrueque()).getObjeto().getNombre();
 	        //NOMBRE OBJETO
 	        TextView objeto = (TextView)item.findViewById(R.id.Objeto);
-	        objeto.setText(ofer.getObjeto().getNombre()+" por "+nomTrueque);
+	        objeto.setText(ofer.getObjeto().getNombre());//+" por "+nomTrueque);
 	        //PRECIO
 	        TextView precio = (TextView)item.findViewById(R.id.Precio);
 	        precio.setText("$"+ofer.getObjeto().getValor());
@@ -138,11 +133,57 @@ public class VerOfertasPendientes extends Fragment implements AdapterView.OnItem
 	        ImageView img = (ImageView)item.findViewById(R.id.imgTrueque);
 	        img.setImageBitmap(ofer.getImagen());
 	        
-//		        TextView lblDescObj = (TextView)item.findViewById(R.id.LblDescObj);
-//		        lblDescObj.setText(((Objeto) objs[position]).getDescripcion());
-	 
 	        return(item);
         }
 	}
+
+	public class VerOfertasPendientesTask extends AsyncTask<Void, Void, Boolean> {
+		//private int idTrueque;
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			
+			size=0;
+			List<Oferta> ofs; 
+			ofs=Factory.getTruequeCtrl().getOfertasPendientes(VerOfertasPendientes.this.getActivity(), mail);
+			if(ofs!=null){
+				ofertas=ofs.toArray();
+				size=ofertas.length;
+				return true;
+			}
+			else
+				return false;
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			mAuthTask = null;
+			//showProgress(false);
+
+			if (success) {
+				Log.i("[VerOfertasPendientes]:", "EXITO!");
+				//Obtengo las ofertas pendientes
+				
+				//size= ofertas.length;
+						
+				lblVerOfertas = (TextView)getView().findViewById(R.id.LblVerOfertas);
+				lblVerOfertas.setText(lblVerOfertas.getText().toString() +" ("+ size +")");
+				adaptador = new AdaptadorOferta(VerOfertasPendientes.this, R.layout.list_item_ofertas, ofertas);
+				lstOfertas = (ListView)getView().findViewById(R.id.LstOfertas);
+				lstOfertas.setAdapter(adaptador);
+				
+				lstOfertas.setOnItemClickListener(VerOfertasPendientes.this);
+		    	
+			} else {
+				Log.i("[VerOfertasPendientes]:", "ERROR");
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			mAuthTask = null;
+			//showProgress(false);
+		}
+	}
+	
 
 }
