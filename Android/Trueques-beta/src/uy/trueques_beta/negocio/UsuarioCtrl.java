@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 
 import android.content.Context;
 import android.util.Log;
+import uy.com.group05.baassdk.MyApplication;
 import uy.com.group05.baassdk.SDKFactory;
 import uy.com.group05.baassdk.entities.ClientAuthenticationDTO;
 import uy.com.group05.baassdk.entities.ClientRegistrationDTO;
@@ -176,11 +177,15 @@ public class UsuarioCtrl {
 				Gson gson = new Gson();
 				String json = gson.toJson(u, Usuario.class);
 				String entity="Usuario";
-				SDKFactory.getAPIFacade(context).post(entity, json);
+				//SDKFactory.getAPIFacade(context).post(entity, json);
 				
 				Log.i("[registrarUsuario]:","Usuario= "+json);
 				ok = SDKFactory.getAPIFacade(context).post(entity, json);
 			
+				//Para actualizar todos los datos
+				MyApplication myApplication = (MyApplication)(context.getApplicationContext());
+				SDKFactory.getAPIFacade(context).updateAll(myApplication.getmTablesDB());
+				
 				return clientRegistration.isOk() && auten.isOk() && ok;
 			}	
 			return clientRegistration.isOk();
@@ -218,6 +223,10 @@ public class UsuarioCtrl {
 		try
 		{
 			auten = SDKFactory.getClientFacade(context).authenticate(email, password);
+			
+			MyApplication myApplication = (MyApplication)(context.getApplicationContext());
+			SDKFactory.getAPIFacade(context).updateAll(myApplication.getmTablesDB());
+			
 			Log.i("LOGIN","-"+auten.isOk());
 			return auten.isOk();
 		}

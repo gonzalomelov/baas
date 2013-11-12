@@ -59,6 +59,11 @@ public class VerOfertasPendientes extends Fragment implements AdapterView.OnItem
         SharedPreferences prefs = this.getActivity().getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
 		
+		if(mAuthTask==null){
+			mAuthTask = new VerOfertasPendientesTask();
+			mAuthTask.execute((Void) null);
+		}
+		
 //		//Obtengo las ofertas pendientes
 //		ofertas = Factory.getTruequeCtrl().getOfertasPendientes(mail).toArray();
 //		int size= ofertas.length;

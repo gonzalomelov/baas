@@ -2,6 +2,7 @@ package uy.com.group05.baascore.bll.ejbs;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,11 +14,14 @@ import uy.com.group05.baascore.bll.ejbs.interfaces.APIManagementLocal;
 import uy.com.group05.baascore.bll.ejbs.interfaces.PushChannelManagementLocal;
 import uy.com.group05.baascore.common.datatypes.SyncNoSqlResult;
 import uy.com.group05.baascore.common.entities.Application;
+import uy.com.group05.baascore.common.entities.Client;
 import uy.com.group05.baascore.common.entities.Entity;
 import uy.com.group05.baascore.common.entities.Estadisticas;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
 import uy.com.group05.baascore.common.exceptions.EntityNotRegisteredException;
+import uy.com.group05.baascore.common.utils.PropertyHandler;
 import uy.com.group05.baascore.dal.dao.ApplicationDao;
+import uy.com.group05.baascore.dal.dao.ClientDao;
 import uy.com.group05.baascore.dal.dao.EntityDao;
 import uy.com.group05.baascore.dal.dao.EstadisticasDao;
 import uy.com.group05.baascore.dal.dao.NoSqlDbDao;
@@ -30,7 +34,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.codehaus.jackson.JsonParser;
 import org.eclipse.jetty.util.ajax.JSON;
+import org.json.simple.JSONArray;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
@@ -53,6 +59,9 @@ public class APIManagement implements APIManagementLocal {
 	
 	@Inject
 	private PushChannelManagementLocal pushChannelManagementLocal;
+	
+	@Inject
+	private ClientDao clientDao;
 	
 	@Override
 	public String get(String appName, String entity, String query) {
@@ -108,13 +117,7 @@ public class APIManagement implements APIManagementLocal {
 		
 		pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, entityId);
 
-		//######### Llamo a GCM para que todos los clientes actualizen
-		try {
-			startDataSynchronization(entity);
-		}
-		catch (Exception e) {
-		
-		}
+		startDataSynchronization(app.getId(), entity);
 		
 		return true;
 	}
@@ -137,12 +140,9 @@ public class APIManagement implements APIManagementLocal {
 	
 		noSqlDbDao.removeEntity(appName, entity, query);
 		
-		try {
-			startDataSynchronization(entity);
-		}
-		catch (Exception e) {
+		pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, ent.getId());
 		
-		}
+		startDataSynchronization(app.getId(), entity);
 		
 		return true;
 	}
@@ -165,12 +165,9 @@ public class APIManagement implements APIManagementLocal {
 		
 		noSqlDbDao.updateEntity(appName, entity, query, jsonObj);
 		
-		try {
-			startDataSynchronization(entity);
-		}
-		catch (Exception e) {
+		pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, ent.getId());
 		
-		}
+		startDataSynchronization(app.getId(), entity);
 		
 		return true;
 	}
@@ -192,13 +189,10 @@ public class APIManagement implements APIManagementLocal {
 		SyncNoSqlResult result = noSqlDbDao.sync(appName, entity, jsonObjs);
 		
 		if (result.isSincronizar()) {
-			try {
-				startDataSynchronization(entity);
-			}
-			catch (Exception e) {
-			
-			}
+			startDataSynchronization(app.getId(), entity);
 		}
+		
+		pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, ent.getId());
 		
 		return result.getJson();
 	}
@@ -219,36 +213,56 @@ public class APIManagement implements APIManagementLocal {
 		return entitiesNames;
 	}
 	
-	private void startDataSynchronization(String entity) throws Exception {
-		String url = "https://android.googleapis.com/gcm/send";
-		
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(url);
-		
-		httpPost.setHeader("Authorization", "key=AIzaSyBvmUSmsiLpQkkISV7NrH6AgHHwr5c5v6A");
-		httpPost.setHeader("Content-Type", "application/json");
-		
-		String registrationIds =
-				"{"
-				+ "\"registration_ids\":[\"APA91bEmVgFtIagMeGLXiehdXTXRDIfbX4vCpULU5A0US9cnnWEFn1tM2xY1vpHi8eW9CVfU6OhZtL86f8EhSU7LcWJZgNRYd6XXhSKrl7pa2yzVUQXtssvGC5IlMtkQtSbd8hVeTVu4RMyOsxlLNVlCsHfKs16GPVnuWu-8NEhknuHGednc2Ms\"], "
-				+ "\"data\":{ \"entity\":\"" + entity + "\"}"
-				+ "}";
-		
-		StringEntity strEntity = new StringEntity(registrationIds);
-		httpPost.setEntity(strEntity);
-		
-		HttpResponse httpResponse = httpClient.execute(httpPost);
-		
-		int statusCode = httpResponse.getStatusLine().getStatusCode();
-		
-		if (statusCode != HttpStatus.SC_OK) {
-			throw new Exception("Cannot send messages");
+	private void startDataSynchronization(long appId, String entity) {
+		try {
+			String url = "https://android.googleapis.com/gcm/send";
+			
+			HttpClient httpClient = new DefaultHttpClient();
+			HttpPost httpPost = new HttpPost(url);
+			
+			PropertyHandler propertyHandler = new PropertyHandler();
+			String gcmApiKey = propertyHandler.getProperty("gcmApiKey");
+			
+			httpPost.setHeader("Authorization", "key=" + gcmApiKey);
+			httpPost.setHeader("Content-Type", "application/json");
+			
+			List<Client> clients = clientDao.readAll(appId);
+			
+			JSONArray list = new JSONArray();
+			
+			for (Client c : clients) {
+				if (!c.getGcm_regId().isEmpty()) {
+					list.add(c.getGcm_regId());	
+				}
+			}
+			
+			StringWriter out = new StringWriter();
+			list.writeJSONString(out);
+			String jsonText = out.toString();
+
+			String registrationIds = jsonText;
+			
+			String httpPostBody =
+					"{"
+					+ "\"registration_ids\": " + registrationIds + " , "
+					+ "\"data\":{ \"entity\":\"" + entity + "\"}"  + " , "
+					+ "\"data\":{ \"type\":\"sync\"}"
+					+ "}";
+			
+			StringEntity strEntity = new StringEntity(httpPostBody);
+			httpPost.setEntity(strEntity);
+			
+			HttpResponse httpResponse = httpClient.execute(httpPost);
+			
+			int statusCode = httpResponse.getStatusLine().getStatusCode();
+			
+			if (statusCode != HttpStatus.SC_OK) {
+				throw new Exception("Cannot send messages");
+			}
+			
 		}
-		
-		BufferedReader br = new BufferedReader(
-				new InputStreamReader(httpResponse.getEntity().getContent()));
-		
-		
-		return ;
+		catch (Exception e) {
+			
+		}
 	}
 }

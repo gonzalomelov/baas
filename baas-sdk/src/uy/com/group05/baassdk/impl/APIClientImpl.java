@@ -36,9 +36,20 @@ public class APIClientImpl implements APIFacade {
 		
 		Cursor entities = context.getContentResolver().query(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null, null, null, null);
 		
-		JsonArray jsonArray = new JsonArray();
+		JsonParser jsonParser = new JsonParser();
+		JsonObject jsonQuery = (JsonObject)jsonParser.parse(query);
+		
+		String cmpType = ""; 
+		String cmpValue = "";
+		
+		for (Map.Entry<String, JsonElement> entry : jsonQuery.entrySet()) {
+			cmpType = entry.getKey();
+			cmpValue = entry.getValue().getAsString();
+		}
 		
 		Gson gson = new Gson();
+		
+		JsonArray jsonArray = new JsonArray();
 		
 		for (boolean hasItem = entities.moveToFirst();  hasItem;  hasItem = entities.moveToNext()) {
 			String entityValue = entities.getString(1);
@@ -46,10 +57,26 @@ public class APIClientImpl implements APIFacade {
 			JsonElement jsonElement = gson.fromJson(entityValue, JsonElement.class);
 			JsonObject jsonObject = jsonElement.getAsJsonObject();
 
-			jsonObject.remove("updatedat");
-			jsonObject.remove("syncid");
-			
-			jsonArray.add(jsonObject);    
+			if (cmpType.isEmpty()) {
+				jsonObject.remove("updatedat");
+				jsonObject.remove("syncid");
+				
+				jsonArray.add(jsonObject);
+				
+			} else if (cmpType.equals("objeto.duenio")) {
+				//Veo si es de algun hijo
+				JsonObject jsonObjectChild = (JsonObject)jsonObject.get("objeto");
+				
+				if (jsonObjectChild.has("duenio") && jsonObjectChild.get("duenio").getAsString().equals(cmpValue)) {
+					jsonArray.add(jsonObject);	
+				}
+				
+			} else if (jsonObject.has(cmpType) && jsonObject.get(cmpType).getAsString().equals(cmpValue)) {
+				jsonObject.remove("updatedat");
+				jsonObject.remove("syncid");
+				
+				jsonArray.add(jsonObject);
+			}
 		}
 		
 		return jsonArray.toString();
@@ -163,6 +190,16 @@ public class APIClientImpl implements APIFacade {
 		}
 		
 		context.getContentResolver().notifyChange(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null);
+		
+		return true;
+	}
+	
+	public boolean updateAll(List<String> entities)
+			throws UnsupportedEncodingException, ClientProtocolException, IOException {
+		
+		for (String entity : entities) {
+			context.getContentResolver().notifyChange(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null);	
+		}
 		
 		return true;
 	}

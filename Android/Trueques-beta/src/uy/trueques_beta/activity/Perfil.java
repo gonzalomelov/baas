@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+ 
 public class Perfil extends Fragment {//Activity {
 
 	private PerfilTask mAuthTask = null;
@@ -53,6 +53,61 @@ public class Perfil extends Fragment {//Activity {
         super.onActivityCreated(state);
 		SharedPreferences prefs = this.getActivity().getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
+		
+		Usuario u = Factory.getUsuarioCtrl().getUsuario(Perfil.this.getActivity(), mail);
+		
+		mAuthTask = null;
+		//showProgress(false);
+
+		if (u != null) {
+			
+			//Seteo los datos del usuario
+			lblNombre = (TextView)getView().findViewById(R.id.LblNombre);
+			lblNombre.setText(u.getNombre());
+			lblEmail = (TextView)getView().findViewById(R.id.LblEmail);
+			lblEmail.setText(u.getMail());
+			
+			lblRealizados = (TextView)getView().findViewById(R.id.LblRealizados);
+			lblRealizados.setText(String.valueOf(u.getRealizados()));
+			lblAceptados = (TextView)getView().findViewById(R.id.LblAceptados);
+			lblAceptados.setText(String.valueOf(u.getAceptados()));
+			lblPublicados = (TextView)getView().findViewById(R.id.LblPublicados);
+			lblPublicados.setText(String.valueOf(u.getPublicados()));
+			//Puntaje
+			imgText = (TextView)getView().findViewById(R.id.LblImgText);
+			imgText.setText("Tu promedio es "+u.getPuntaje()+"! Pts.");
+			imgPts = (ImageView)getView().findViewById(R.id.imagePuntaje);
+			
+			switch(Math.round(u.getPuntaje())){
+				case 0:
+					imgPts.setImageResource(R.drawable.ic_pts0);
+					break;
+				case 1:
+					imgPts.setImageResource(R.drawable.ic_pts1);
+					break;
+				case 2:
+					imgPts.setImageResource(R.drawable.ic_pts2);
+					break;
+				case 3:
+					imgPts.setImageResource(R.drawable.ic_pts3);
+					break;
+				case 4:
+					imgPts.setImageResource(R.drawable.ic_pts4);
+					break;
+				case 5:
+					imgPts.setImageResource(R.drawable.ic_pts5);
+					break;
+			}
+			
+			if(u.isBloqueado()){
+				lblBloq = (TextView)getView().findViewById(R.id.LblBloqueado);
+				lblBloq.setVisibility(View.VISIBLE);;
+			}
+		} else {
+			//finish();
+			Toast.makeText(Perfil.this.getActivity().getBaseContext(), "U = NULL", Toast.LENGTH_SHORT).show();
+			Log.i("[Perfil]:", "no se pudo cargar el usuario");
+		}
 		
 //		Usuario u = Factory.getUsuarioCtrl().getUsuario(mail);
 //		if(u==null){

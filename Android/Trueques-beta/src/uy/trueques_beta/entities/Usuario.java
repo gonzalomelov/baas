@@ -97,6 +97,15 @@ public class Usuario {
 	public void setOfertas(List<String> ofertas) {
 		this.ofertas = ofertas;
 	}
+	
+	public List<String> getTrueques() {
+		return trueques;
+	}
+
+	public void setTrueques(List<String> trueques) {
+		this.trueques = trueques;
+	}
+
 	public int getPuntos() {
 		return puntos;
 	}

@@ -99,7 +99,7 @@ public class VerTruequesHechos extends Fragment implements AdapterView.OnItemCli
 			
 			size = 0;
 			List<Trueque> ts =null;
-			ts = Factory.getTruequeCtrl().getTruequesUsuario(VerTruequesHechos.this.getActivity(), mail);
+			ts = Factory.getTruequeCtrl().getTruequesHechosUsuario(VerTruequesHechos.this.getActivity(), mail);
 			//ts = Factory.getTruequeCtrl().getTruequesActivos(VerTrueques.this.getActivity());
 			if(ts!=null){
 				trueques=ts.toArray();

@@ -82,6 +82,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 					
 					Log.e("TAG", "jsonObject");
 					
+					if (jsonObject.get("updatedat") != null) {
+						Log.e("SYNCHRONIZATION", "updatedat: " + jsonObject.get("updatedat").getAsString());
+						Log.e("SYNCHRONIZATION", "myApplication.updatedAt: " + updatedAt);	
+					}
+					
 					if (updatedAt == null ||
 						jsonObject.get("updatedat") == null ||
 						Timestamp.valueOf(jsonObject.get("updatedat").getAsString()).after(updatedAt)) {
@@ -122,7 +127,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 				Log.e("TAG", "after insert");
 			}
 			
-			myApplication.setUpdatedAt(newTimestamp);
+			//myApplication.setUpdatedAt(newTimestamp);
 			
 			Log.e("TAG", "newTimestamp: " + newTimestamp.toString());
 			

@@ -190,7 +190,7 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		
 		for (PushChannel canal : canales) {
 			try {
-				sendNotificationToPushChannel(appId, canal.getId(), "post", entity.getName());
+				sendNotificationToPushChannel(appId, canal.getId(), "message", "Se han actualizado los " + entity.getName());
 			} catch (PushChanNotRegisteredException e) {
 				// No debería pasar
 				e.printStackTrace();

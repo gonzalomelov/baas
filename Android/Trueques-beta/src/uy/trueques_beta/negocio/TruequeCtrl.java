@@ -2,6 +2,7 @@ package uy.trueques_beta.negocio;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -101,6 +102,31 @@ public class TruequeCtrl {
 			u.addTrueque(t.getIdTrueque());
 			//this.trueques.put(idCont, t);
 			//idCont++;
+			
+			try{
+				Gson gson = new Gson();
+				
+				String query =  "{mail:\""+u.getMail()+"\"}";
+				
+				String trueques = gson.toJson(u.getTrueques());
+				String values = "{publicados:\""+u.getPublicados()+"\", trueques:"+trueques+"}";
+				
+				SDKFactory.getAPIFacade(context).update("Usuario", query, values);
+				
+			}
+			catch (UnsupportedEncodingException e) {
+				Log.i("[updateUsuario]:",e.getMessage());
+				return "";
+			}
+			catch (ClientProtocolException e) {
+				Log.i("[crearTrueque]:",e.getMessage());
+				return "";
+			}
+			catch (IOException e) {
+				Log.i("[crearTrueque]:",e.getMessage());
+				return "";
+			}
+			
 			return t.getIdTrueque();
 		}
 		return "";
@@ -109,7 +135,7 @@ public class TruequeCtrl {
 	public boolean aceptarOferta(Context context, String idTrueque, String idOferta){
 		Trueque t = getTrueque(context, idTrueque);
 		//(!this.trueques.containsKey(idTrueque) || !this.trueques.get(idTrueque).existOferta(idOferta))
-		if(t==null || t.existOferta(idOferta))
+		if(t==null || !t.existOferta(idOferta))
 			return false;
 		
 		//++++ ACEPTAR UNA OFERTA ++++//
@@ -117,20 +143,67 @@ public class TruequeCtrl {
 		if (t.getGanadora()==null && t.isActiva()){
 			Oferta ofer = Factory.getOfertaCtrl().getOferta(context, idOferta);
 			if (!ofer.isRechazada()){
-				t.setGanadora(ofer);
-				t.setActiva(false);
-				t.setFechaFin(new Date());
-				//DUENIO DE TRUEQUE
-				Usuario u = Factory.getUsuarioCtrl().getUsuario(context, t.getUsuario());
-				u.setRealizados(u.getRealizados()+1);
-				//OFERTANTE
-				u = Factory.getUsuarioCtrl().getUsuario(context, ofer.getUsuario());
-				u.setAceptados(u.getAceptados()+1);
-				u.setRealizados(u.getRealizados()+1);
-				//Marco las demas ofertas como rechazadas
-				for(Oferta o: t.getOfertas()){
-					if(!o.equals(ofer))
-						o.setRechazada(true);
+				
+				try
+				{
+					Gson gson = new Gson();
+					
+					t.setGanadora(ofer);
+					t.setActiva(false);
+					t.setFechaFin(new Date());
+					
+					String query =  "{idTrueque:\""+t.getIdTrueque()+"\"}";
+					String values = "{ganadora:"+t.getGanadora().toJson()+", activa:\""+t.isActiva()+"\", fechaFin: \""+t.getFechaFin().toLocaleString() +"\"}";
+					
+					SDKFactory.getAPIFacade(context).update("Trueque", query, values);
+					
+					//DUENIO DE TRUEQUE
+					Usuario u = Factory.getUsuarioCtrl().getUsuario(context, t.getUsuario());
+					u.setRealizados(u.getRealizados()+1);
+					
+					query =  "{mail:\""+u.getMail()+"\"}";
+					values = "{realizados:"+u.getRealizados()+"}";
+					
+					SDKFactory.getAPIFacade(context).update("Usuario", query, values);	
+					
+					//OFERTANTE
+					Usuario uOfertante = Factory.getUsuarioCtrl().getUsuario(context, ofer.getUsuario());
+					uOfertante.setAceptados(uOfertante.getAceptados()+1);
+					uOfertante.setRealizados(uOfertante.getRealizados()+1);
+					
+					query =  "{mail:\""+uOfertante.getMail()+"\"}";
+					values = "{aceptados:"+uOfertante.getAceptados()+", realizados:"+uOfertante.getRealizados()+"}";
+					
+					SDKFactory.getAPIFacade(context).update("Usuario", query, values);
+					
+					//Marco las demas ofertas como rechazadas
+					for(Oferta o: t.getOfertas()){
+						if(!o.equals(ofer))
+							o.setRechazada(true);
+					}
+					
+					query =  "{idTrueque:\""+t.getIdTrueque()+"\"}";
+					values = "{rechazada:true}";
+					
+					SDKFactory.getAPIFacade(context).update("Oferta", query, values);
+					
+					//Actualizo la oferta ganadora
+					query =  "{idOferta:\""+idOferta+"\"}";
+					values = "{rechazada:false}";
+					
+					SDKFactory.getAPIFacade(context).update("Oferta", query, values);
+				}
+				catch (UnsupportedEncodingException e) {
+					Log.i("[GetUsuario]:", e.getMessage());
+					return false;
+				}
+				catch (ClientProtocolException e) {
+					Log.i("[GetUsuario]:", e.getMessage());
+					return false;
+				}
+				catch (IOException e) {
+					Log.i("[GetUsuario]:", e.getMessage());
+					return false;
 				}
 			}
 		}
@@ -185,6 +258,53 @@ public class TruequeCtrl {
 //		return trueques;
 	}
 	
+	public List<Trueque> getTruequesHechosUsuario(Context context, String mail){
+		
+//		List<Trueque> trueques = new ArrayList<Trueque>();
+//		for(Trueque t: this.trueques.values()){
+//			if ((t.getUsuario().equals(mail) && !t.isActiva()) || (t.getGanadora()!=null && t.getGanadora().getUsuario().equals(mail)))
+//				trueques.add(t);
+//		}
+		//SDK
+		try
+		{
+			String entity = "Trueque";
+			String query = "{}"; //if ((t.getUsuario().equals(mail) && !t.isActiva()) || (t.getGanadora()!=null && t.getGanadora().getUsuario().equals(mail)))
+			
+			String json = SDKFactory.getAPIFacade(context).get(entity, query);
+			
+			Log.i("[TruequeCtrl]:", json);
+			Gson gson = new Gson();
+			Trueque[] arrayTrueques = gson.fromJson(json, Trueque[].class);
+			
+			List<Trueque> truequesHechos = new ArrayList<Trueque>();
+			List<Trueque> trueques = Arrays.asList(arrayTrueques);
+			
+			for (Trueque t : trueques) {
+				if ((t.getUsuario().equals(mail) && !t.isActiva()) || (t.getGanadora()!=null && t.getGanadora().getUsuario().equals(mail))) {
+					truequesHechos.add(t);
+				}
+			}
+			
+			return truequesHechos;
+		}
+		catch (UnsupportedEncodingException e) {
+			Log.i("GetTruequesActivos:", e.getMessage());
+			return new ArrayList<Trueque>();
+		}
+		catch (ClientProtocolException e) {
+			Log.i("GetTruequesActivos:", e.getMessage());
+			return new ArrayList<Trueque>();
+		}
+		catch (IOException e) {
+			Log.i("GetTruequesActivos:", e.getMessage());
+			return new ArrayList<Trueque>();
+		}
+		//SDK
+		
+		//return trueques;
+	}
+	
 	public List<Trueque> getTruequesUsuario(Context context, String mail){
 		
 //		List<Trueque> trueques = new ArrayList<Trueque>();
@@ -196,14 +316,17 @@ public class TruequeCtrl {
 		try
 		{
 			String entity = "Trueque";
-			String query = ""; //if ((t.getUsuario().equals(mail) && !t.isActiva()) || (t.getGanadora()!=null && t.getGanadora().getUsuario().equals(mail)))
+			String query = "{}"; //if ((t.getUsuario().equals(mail) && !t.isActiva()) || (t.getGanadora()!=null && t.getGanadora().getUsuario().equals(mail)))
 			
 			String json = SDKFactory.getAPIFacade(context).get(entity, query);
 			
 			Log.i("[TruequeCtrl]:", json);
 			Gson gson = new Gson();
 			Trueque[] arrayTrueques = gson.fromJson(json, Trueque[].class);
-			return Arrays.asList(arrayTrueques);
+			
+			List<Trueque> trueques = Arrays.asList(arrayTrueques);
+			
+			return trueques;
 		}
 		catch (UnsupportedEncodingException e) {
 			Log.i("GetTruequesActivos:", e.getMessage());
@@ -298,6 +421,32 @@ public class TruequeCtrl {
 			return false;
 
 		t.addOferta(ofer);
+		
+		try{
+			Gson gson = new Gson();
+			
+			String query =  "{idTrueque:\""+idTrueque+"\"}";
+			
+			String ofertas = gson.toJson(t.getOfertas());
+			String values = "{ofertas:"+ofertas+"}";
+			
+			SDKFactory.getAPIFacade(context).update("Trueque", query, values);
+			
+		}
+		catch (UnsupportedEncodingException e) {
+			Log.i("[updateUsuario]:",e.getMessage());
+			return false;
+		}
+		catch (ClientProtocolException e) {
+			Log.i("[crearTrueque]:",e.getMessage());
+			return false;
+		}
+		catch (IOException e) {
+			Log.i("[crearTrueque]:",e.getMessage());
+			return false;
+		}
+		
+		
 		return true;
 	}
 	
@@ -320,6 +469,30 @@ public class TruequeCtrl {
 		if(t!=null){
 			t.setPuntosTrueque(pts);
 			Factory.getUsuarioCtrl().getUsuario(context, t.getObjeto().getDuenio()).puntuar(pts);
+			
+			try {
+				String query =  "{idTrueque:\""+idTrueque+"\"}";
+				String values = "{puntosTrueque:"+pts+"}";
+				
+				SDKFactory.getAPIFacade(context).update("Trueque", query, values);
+				
+				Usuario usu = Factory.getUsuarioCtrl().getUsuario(context, t.getObjeto().getDuenio());
+				
+				query =  "{mail:\""+usu.getMail()+"\"}";
+				values = "{total:"+(usu.getTotal()+1)+", puntos:"+(usu.getPuntos()+pts)+"}";
+				
+				SDKFactory.getAPIFacade(context).update("Usuario", query, values);
+				
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -327,7 +500,33 @@ public class TruequeCtrl {
 		Trueque t = getTrueque(context, idTrueque);//this.trueques.get(idTrueque);
 		if(t!=null){
 			t.setPuntosGanadora(pts);
-			Factory.getUsuarioCtrl().getUsuario(context, t.getGanadora().getUsuario()).puntuar(pts);
+			//Factory.getUsuarioCtrl().getUsuario(context, t.getGanadora().getObjeto().getDuenio()).puntuar(pts);
+//			this.total++;
+//			this.puntos+=pts;
+			
+			try {
+				String query =  "{idTrueque:\""+idTrueque+"\"}";
+				String values = "{puntosGanadora:"+pts+"}";
+				
+				SDKFactory.getAPIFacade(context).update("Trueque", query, values);
+				
+				Usuario usu = Factory.getUsuarioCtrl().getUsuario(context, t.getGanadora().getObjeto().getDuenio());
+				
+				query =  "{mail:\""+usu.getMail()+"\"}";
+				values = "{total:"+(usu.getTotal()+1)+", puntos:"+(usu.getPuntos()+pts)+"}";
+				
+				SDKFactory.getAPIFacade(context).update("Usuario", query, values);
+				
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

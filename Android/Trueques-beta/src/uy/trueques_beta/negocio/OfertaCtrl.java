@@ -93,7 +93,33 @@ public class OfertaCtrl {
 		}
 		//++++
 		if (ofer!=null){
+			
 			u.addOferta(ofer.getIdOferta());
+			
+			try{
+				Gson gson = new Gson();
+				
+				String query =  "{mail:\""+u.getMail()+"\"}";
+				
+				String ofertas = gson.toJson(u.getOfertas());
+				String values = "{ofertas:"+ofertas+"}";
+				
+				SDKFactory.getAPIFacade(context).update("Usuario", query, values);
+				
+			}
+			catch (UnsupportedEncodingException e) {
+				Log.i("[updateUsuario]:",e.getMessage());
+				return "";
+			}
+			catch (ClientProtocolException e) {
+				Log.i("[crearTrueque]:",e.getMessage());
+				return "";
+			}
+			catch (IOException e) {
+				Log.i("[crearTrueque]:",e.getMessage());
+				return "";
+			}
+			
 			return ofer.getIdOferta();
 		}
 		return "";

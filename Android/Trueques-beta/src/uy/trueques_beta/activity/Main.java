@@ -3,6 +3,7 @@ package uy.trueques_beta.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -83,7 +84,7 @@ public class Main extends Activity {
             if (regid.isEmpty()) {
                 registerInBackground();
             }
-			
+            
 			mAccount = new Account(Constants.ACCOUNT, Constants.ACCOUNT_TYPE);
 			mAccountManager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
 			if (mAccountManager.addAccountExplicitly(mAccount, null, null)) {

@@ -63,6 +63,7 @@ public final class R {
 		public static final int common_signin_btn_text_pressed_dark = 0x7f020016;
 		public static final int common_signin_btn_text_pressed_light = 0x7f020017;
 		public static final int ic_launcher = 0x7f02001f;
+		public static final int ic_logo = 0x7f020020;
 		public static final int ic_plusone_medium_off_client = 0x7f020023;
 		public static final int ic_plusone_small_off_client = 0x7f020024;
 		public static final int ic_plusone_standard_off_client = 0x7f020025;

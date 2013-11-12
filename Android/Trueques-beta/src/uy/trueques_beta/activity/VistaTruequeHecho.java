@@ -80,6 +80,8 @@ public class VistaTruequeHecho extends Activity {
 		adaptador.setDropDownViewResource(
                 android.R.layout.simple_spinner_dropdown_item);
          
+		spinner = (Spinner)findViewById(R.id.puntos_spinner);
+		
         spinner.setAdapter(adaptador);
 
         spinner.setOnItemSelectedListener(
