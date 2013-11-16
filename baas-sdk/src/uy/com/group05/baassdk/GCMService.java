@@ -31,6 +31,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -309,6 +310,65 @@ public class GCMService {
     	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 	    if (networkInfo != null && networkInfo.isConnected()) {
 	    	boolean res = sendNotificationToPushChannel(appContext, nombreCanalPush, msgKey, msgValue);
+	    	return res;
+	    }
+	    else {
+	    	return false;
+	    }
+    }
+    
+    private boolean sendNotificationToClient(Context context, String mailReceptor, String msgKey, String msgValue)
+			throws UnsupportedEncodingException, ClientProtocolException,
+			IOException {
+		
+		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
+		
+		String url = serviceUrl + "/push/sendNotificationToClient";
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(url);
+		
+		SharedPreferences prefs =
+			     context.getSharedPreferences("uy.com.group05.baasclient.sdk",Context.MODE_PRIVATE);
+		
+		String accessToken = prefs.getString("accessToken", "");
+		String appName = AssetsPropertyReader.getProperties(context, "appName");
+		
+		httpPost.setHeader("accessToken", accessToken);
+		
+		List<NameValuePair> formParameters = new ArrayList<NameValuePair>();
+		formParameters.add(new BasicNameValuePair("appName", appName));
+		formParameters.add(new BasicNameValuePair("mailReceiver", mailReceptor));
+		formParameters.add(new BasicNameValuePair("msgKey", msgKey));
+		formParameters.add(new BasicNameValuePair("msgValue", msgValue));
+		
+		httpPost.setEntity(new UrlEncodedFormEntity(formParameters));
+		
+		android.util.Log.i("GCM SDK", "accessToken: " + accessToken);
+		android.util.Log.i("GCM SDK", "appName: " + appName);
+		android.util.Log.i("GCM SDK", "mailReceiver: " + mailReceptor);
+		android.util.Log.i("GCM SDK", "msgKey: " + msgKey);
+		android.util.Log.i("GCM SDK", "msgValue: " + msgValue);
+		
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+		
+		int statusCode = httpResponse.getStatusLine().getStatusCode();
+		
+		android.util.Log.i("GCM SDK", "statusCode: " + statusCode);
+		
+		if (statusCode == HttpStatus.SC_OK) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+    
+    public boolean sendNotificationToClient(String mailReceptor, String msgKey, String msgValue) throws UnsupportedEncodingException, ClientProtocolException, IOException {
+    	ConnectivityManager connMgr = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+    	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+	    if (networkInfo != null && networkInfo.isConnected()) {
+	    	boolean res = sendNotificationToClient(appContext, mailReceptor, msgKey, msgValue);
 	    	return res;
 	    }
 	    else {
