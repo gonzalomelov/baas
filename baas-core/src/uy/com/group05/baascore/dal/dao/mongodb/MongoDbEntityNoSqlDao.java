@@ -40,9 +40,16 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 		String mongoHost = propertyHandler.getProperty("mongoHost");
 		int mongoPort = Integer.parseInt(propertyHandler.getProperty("mongoPort"));
 		
+		String mongoUser = propertyHandler.getProperty("mongoUser");
+		String mongoPassword = propertyHandler.getProperty("mongoPassword");
+		
 		try {
+			System.out.println("before MongoClient");
 			mongo = new MongoClient(mongoHost, mongoPort);
 			
+			boolean auth = mongo.getDB("admin").authenticate(mongoUser, mongoPassword.toCharArray());
+			
+			System.out.println(auth);
 		}
 		catch (Exception e) {
 			
@@ -53,14 +60,12 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 	public void createNoSqlDb(String dbName)
 			throws MongoDBAlreadyExistsException {
 		
-		System.out.println("mongo.getDatabaseNames");
 		List<String> databaseNames = mongo.getDatabaseNames();
 		
 		if (databaseNames.contains(dbName)) {
 			throw new MongoDBAlreadyExistsException("Ya existe una base MongoDB con dicho nombre");
 		}
 		
-		System.out.println("mongo.getDB(dbName)");
 		mongo.getDB(dbName);
 	}
 	
@@ -68,22 +73,8 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 	public void createEntityCollection(String dbName, String entity)
 			throws EntityCollectionAlreadyExistsException, MongoException {
 		
-		PropertyHandler propertyHandler = new PropertyHandler();
-		boolean mongoNeedsAuthentication = Boolean.parseBoolean(propertyHandler.getProperty("mongoNeedsAuthentication"));
-		String mongoUser = propertyHandler.getProperty("mongoUser");
-		String mongoPassword = propertyHandler.getProperty("mongoPassword");
-		
 		System.out.println("mongo.getDB(dbName)");
 		DB mongoDb = mongo.getDB(dbName);
-		
-		if (mongoNeedsAuthentication) {
-			System.out.println("mongoDb.authenticate");
-			boolean auth = mongoDb.authenticate(mongoUser, mongoPassword.toCharArray());
-			if (!auth) {
-				System.out.println("MongoException");
-				throw new MongoException("No se tienen permisos para realizar la acción requerida");
-			}
-		}
 		
 		if (mongoDb.collectionExists(entity)) {
 			throw new EntityCollectionAlreadyExistsException("Ya existe la colleción para la base especificada");

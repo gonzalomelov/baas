@@ -1,9 +1,18 @@
 package uy.trueques_beta.activity;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
+import org.apache.http.client.ClientProtocolException;
+
+import uy.com.group05.baassdk.GCMService;
+import uy.com.group05.baassdk.SDKFactory;
 import uy.trueques_beta.R;
 import uy.trueques_beta.R.layout;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.Menu;
@@ -31,9 +40,9 @@ public class Configuracion extends Activity {
 		this.editor = prefs.edit();
 //		editor.putString("mail", mail);
 //		editor.commit();
-		notiNO = prefs.getBoolean("NotiNuevaOferta", true);
-		notiOA =prefs.getBoolean("NotiOfertaAceptada", true);
-		notiOR =prefs.getBoolean("NotiOfertaRechazada", true);
+		notiNO = prefs.getBoolean("NotiNuevaOferta", false);
+		notiOA =prefs.getBoolean("NotiOfertaAceptada", false);
+		notiOR =prefs.getBoolean("NotiOfertaRechazada", false);
 		
 		nueva = (CheckBox) findViewById(R.id.chkNuevasOfertas);
 		aceptada = (CheckBox) findViewById(R.id.chkOfertasAceptadas);
@@ -55,6 +64,49 @@ public class Configuracion extends Activity {
 		                //is chkIos checked?
 				if (((CheckBox) v).isChecked()) {
 					Toast.makeText(Configuracion.this, "Registrado", Toast.LENGTH_SHORT).show();
+					
+					new AsyncTask<Void, Void, Boolean>() {
+//			    		private final ProgressDialog dialog = new ProgressDialog(act);
+			    		@Override
+			    		protected void onPreExecute() {
+//			    			this.dialog.setMessage("Suscribiendo a canales...");
+//			    			this.dialog.setIndeterminate(true);
+//			    			this.dialog.show();
+			    		}
+			    		
+					    @Override
+					    protected Boolean doInBackground(Void... params) {
+					    	
+							try {
+								GCMService gcms = SDKFactory.getGCMService(Configuracion.this);
+								gcms.subscribeToPushChannel("NotiNuevaOferta");
+							} catch (UnsupportedEncodingException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+								return false;
+							} catch (ClientProtocolException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+								return false;
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+								return false;
+							}
+					    	
+					    	return true;
+					    }
+					    
+					    @Override
+			            protected void onPostExecute(Boolean ok) {
+//					    	if (this.dialog.isShowing()) {
+//					    		this.dialog.dismiss();
+//					    	}
+//					    	Toast.makeText(act, "Suscripciones realizadas", Toast.LENGTH_LONG).show();
+//					    	act.finish();
+			            }
+					}.execute(null, null, null);
+					
 					editor.putBoolean("NotiNuevaOferta", true);
 				}else{
 					Toast.makeText(Configuracion.this, "Eliminado", Toast.LENGTH_SHORT).show();

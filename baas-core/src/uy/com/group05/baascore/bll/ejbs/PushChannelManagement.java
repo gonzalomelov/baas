@@ -364,22 +364,25 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 			Message message = new Message.Builder().timeToLive(600).addData(msgKey, msgValue).build();
 			
 			try {
-				Result result = sender.send(message, regId, 5);
-				if (result.getMessageId() != null) {
-					 String canonicalRegId = result.getCanonicalRegistrationId();
-					 if (canonicalRegId != null) {
-					   // same device has more than one registration ID: update database
-						 System.out.println("CAMBIÓ EL REGID... ACTUALIZAR EN LA BASE EL REGID DEL CLIENTE!!!!");
-						 return false;
-					 }
-				} else {
-					String error = result.getErrorCodeName();
-					if (error.equals(Constants.ERROR_NOT_REGISTERED)) {
-						// application has been removed from device - unregister database
-						System.out.println("NO EXISTE MÁS EL REGID... SE DESINSTALÓ LA APLICACIÓN.... BORRAR DE LA BASE EL REGID DEL CLIENTE!!!!");
-						return false;
-					}
+				if (regId != null) {
+					Result result = sender.send(message, regId, 5);
+					if (result.getMessageId() != null) {
+						 String canonicalRegId = result.getCanonicalRegistrationId();
+						 if (canonicalRegId != null) {
+						   // same device has more than one registration ID: update database
+							 System.out.println("CAMBIÓ EL REGID... ACTUALIZAR EN LA BASE EL REGID DEL CLIENTE!!!!");
+							 return false;
+						 }
+					} else {
+						String error = result.getErrorCodeName();
+						if (error.equals(Constants.ERROR_NOT_REGISTERED)) {
+							// application has been removed from device - unregister database
+							System.out.println("NO EXISTE MÁS EL REGID... SE DESINSTALÓ LA APLICACIÓN.... BORRAR DE LA BASE EL REGID DEL CLIENTE!!!!");
+							return false;
+						}
+					}	
 				}
+				
 				return true;
 			} catch (IOException e) {
 				e.printStackTrace();

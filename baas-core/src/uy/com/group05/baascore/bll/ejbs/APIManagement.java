@@ -140,6 +140,13 @@ public class APIManagement implements APIManagementLocal {
 	
 		noSqlDbDao.removeEntity(appName, entity, query);
 		
+		Estadisticas est = new Estadisticas();
+		est.setAppId(app.getId());
+		est.setTipoEstadisticas(1);
+		est.setTiempo(new Date());
+		
+		estadisticasDao.create(est);
+		
 		pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, ent.getId());
 		
 		startDataSynchronization(app.getId(), entity);
@@ -165,6 +172,13 @@ public class APIManagement implements APIManagementLocal {
 		
 		noSqlDbDao.updateEntity(appName, entity, query, jsonObj);
 		
+		Estadisticas est = new Estadisticas();
+		est.setAppId(app.getId());
+		est.setTipoEstadisticas(1);
+		est.setTiempo(new Date());
+		
+		estadisticasDao.create(est);
+		
 		pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, ent.getId());
 		
 		startDataSynchronization(app.getId(), entity);
@@ -187,6 +201,13 @@ public class APIManagement implements APIManagementLocal {
 		}
 
 		SyncNoSqlResult result = noSqlDbDao.sync(appName, entity, jsonObjs);
+		
+		Estadisticas est = new Estadisticas();
+		est.setAppId(app.getId());
+		est.setTipoEstadisticas(1);
+		est.setTiempo(new Date());
+		
+		estadisticasDao.create(est);
 		
 		if (result.isSincronizar()) {
 			startDataSynchronization(app.getId(), entity);
