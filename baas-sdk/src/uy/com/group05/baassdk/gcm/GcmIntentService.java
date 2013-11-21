@@ -66,6 +66,10 @@ public class GcmIntentService extends IntentService {
                 	Bundle bundle = new Bundle();
                 	bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
                 	bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+                	
+                	String entity = extras.getString("entity");
+                	Log.e("SYNCHRONIZATIONENTITY", "Entidad: " + entity);
+                	
                 	bundle.putString("entity", extras.getString("entity"));
             		
             		ContentResolver.requestSync(mAccount, BaasProviderContract.AUTHORITY, bundle);	
