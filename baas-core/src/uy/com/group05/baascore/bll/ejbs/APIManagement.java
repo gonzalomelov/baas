@@ -266,9 +266,10 @@ public class APIManagement implements APIManagementLocal {
 			String httpPostBody =
 					"{"
 					+ "\"registration_ids\": " + registrationIds + " , "
-					+ "\"data\":{ \"entity\":\"" + entity + "\"}"  + " , "
-					+ "\"data\":{ \"type\":\"sync\"}"
+					+ "\"data\":{ \"type\":\"sync\", \"entity\":\"" + entity + "\" }"
 					+ "}";
+			
+			System.out.println("@@@@@@@@@: " + httpPostBody);
 			
 			StringEntity strEntity = new StringEntity(httpPostBody);
 			httpPost.setEntity(strEntity);
