@@ -16,6 +16,14 @@ body {
 .sidebar-nav {
 	padding: 9px 0;
 }
+
+
+.btn.btn-large.btn-success.btn-guardar {
+    float: right;
+    margin-right: 21%;
+    margin-top: 5%;
+}
+
 </style>
 
 	<link href="../../css/bootstrap-responsive.css" rel="stylesheet" />
@@ -105,7 +113,7 @@ body {
 	</div>
 
 	<div class="page-header">
-		<h1 class="h1Title">#{entityBean.entity.name}</h1>
+		<h1 class="h1Title">Edit Entity</h1>
 	</div>
 
 	<h:form>
@@ -131,7 +139,7 @@ body {
 
 
 		</div>
-		<h:commandButton value="Guardar" action="#{entityBean.submit}" />
+		<h:commandButton value="Guardar" action="#{entityBean.submit}" styleClass="btn btn-large btn-success btn-guardar"/>
 	</h:form>
 	<!-- external javascript
 	================================================== -->

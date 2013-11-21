@@ -29,6 +29,7 @@
 }
 
 .chartType {
-    float: right;
- 
+    
+    left: 80%;
+    position: relative;
 }
