@@ -1,5 +1,6 @@
 package uy.trueques_beta.activity;
 
+import uy.com.group05.baassdk.SDKFactory;
 import uy.trueques_beta.R;
 import uy.trueques_beta.R.layout;
 import uy.trueques_beta.R.menu;
@@ -35,6 +36,9 @@ public class VerUsuarios extends Activity implements AdapterView.OnItemClickList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ver_usuarios);
+		
+		//Inicializo GCM
+		SDKFactory.getGCMService(this);
 		
 		//Obtengo datos del usuario
         SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);

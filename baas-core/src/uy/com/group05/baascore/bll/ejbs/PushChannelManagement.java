@@ -358,10 +358,9 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		
 		for (Client c : clientes) {
 			String regId = c.getGcm_regId();
-			//String regId = "APA91bHDcO84iVqd0AXPlU1QptCM0ioLh9MKexkrfEIpz8khLS584yeXjYSb_RD_ggEEH0b008BZyQmkIu9XWzSnfCgl4hleH1yQ8N1mjbq25xyzemXiMFWDoOF-sWgb0GK1NFDfqWnzCjsomW5t-KTbucKfuh5iItKsA2gzdsQuLVtbesHu5cE";
 			
 			Sender sender = new Sender(gcmApiKey);
-			Message message = new Message.Builder().timeToLive(600).addData(msgKey, msgValue).build();
+			Message message = new Message.Builder().timeToLive(600).addData(msgKey, msgValue).addData("type", "notification").build();
 			
 			try {
 				if (regId != null) {

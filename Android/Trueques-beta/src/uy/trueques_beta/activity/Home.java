@@ -1,5 +1,6 @@
 package uy.trueques_beta.activity;
 
+import uy.com.group05.baassdk.SDKFactory;
 import uy.trueques_beta.R;
 import uy.trueques_beta.R.id;
 import uy.trueques_beta.R.layout;
@@ -47,6 +48,9 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		
+		//Inicializo GCM
+		SDKFactory.getGCMService(this);
 		
 		//+++ DRAWER
 		opcionesMenu = new String[] {"Perfil", "Publicar Trueque", "Ver Trueques", "Ofertas Pendientes", "Trueques Realizados","Cerrar Sesión"};
