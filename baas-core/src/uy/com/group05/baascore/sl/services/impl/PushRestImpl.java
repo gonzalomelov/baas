@@ -77,6 +77,25 @@ public class PushRestImpl implements PushRest {
 			return false;
 		}
 	}
+	
+	@Override
+	public boolean unsubscribeFromPushChannel(UUID accessToken, String appName, String pushChanName) {
+		try {
+			long appId = appManagementLocal.getApplication(appName).getId();
+			long clientId = clientManagementLocal.getClientWithAccessToken(accessToken, appId).getId();
+			long pushChanId = pushChannelManagementLocal.getPushChannel(appId, pushChanName).getId();
+			return pushChannelManagementLocal.unassignClientFromPushChannel(appId, pushChanId, clientId);
+		} catch (AppNotRegisteredException e) {
+			e.printStackTrace();
+			return false;
+		} catch (PushChanNotRegisteredException e) {
+			e.printStackTrace();
+			return false;
+		} catch (ClientNotRegisteredException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	@Override
 	public List<SimplePushChannelDTO> getPushChannelsOfApplication(String appName) {

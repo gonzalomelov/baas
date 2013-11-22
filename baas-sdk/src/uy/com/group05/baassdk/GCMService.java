@@ -481,4 +481,59 @@ public class GCMService {
 	    }
     }
     
+    private boolean unsubscribeFromPushChannel(Context context, String nombreCanal)
+			throws UnsupportedEncodingException, ClientProtocolException,
+			IOException {
+		
+		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
+		
+		String url = serviceUrl + "/push/unsubscribe";
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(url);
+		
+		SharedPreferences prefs =
+			     context.getSharedPreferences("uy.com.group05.baasclient.sdk",Context.MODE_PRIVATE);
+		
+		String accessToken = prefs.getString("accessToken", "");
+		String appName = AssetsPropertyReader.getProperties(context, "appName");
+		
+		httpPost.setHeader("accessToken", accessToken);
+		
+		List<NameValuePair> formParameters = new ArrayList<NameValuePair>();
+		formParameters.add(new BasicNameValuePair("appName", appName));
+		formParameters.add(new BasicNameValuePair("pushChanName", nombreCanal));
+		
+		httpPost.setEntity(new UrlEncodedFormEntity(formParameters));
+		
+		android.util.Log.i("GCM SDK", "accessToken: " + accessToken);
+		android.util.Log.i("GCM SDK", "appName: " + appName);
+		android.util.Log.i("GCM SDK", "pushChanName: " + nombreCanal);
+		
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+		
+		int statusCode = httpResponse.getStatusLine().getStatusCode();
+		
+		android.util.Log.i("GCM SDK", "statusCode: " + statusCode);
+		
+		if (statusCode == HttpStatus.SC_OK) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+    
+    public boolean unsubscribeFromPushChannel(String nombreCanalPush) throws UnsupportedEncodingException, ClientProtocolException, IOException {
+    	ConnectivityManager connMgr = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+    	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+	    if (networkInfo != null && networkInfo.isConnected()) {
+	    	boolean res = unsubscribeFromPushChannel(appContext, nombreCanalPush);
+	    	return res;
+	    }
+	    else {
+	    	return false;
+	    }
+    }
+    
 }

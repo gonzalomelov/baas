@@ -56,6 +56,15 @@ public interface PushRest {
 			@FormParam("appName") String appName,
 			@FormParam("pushChanName") String pushChanName);
 	
+	@POST
+	@Path("/unsubscribe")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean unsubscribeFromPushChannel(
+			@HeaderParam("accessToken") UUID accessToken,
+			@FormParam("appName") String appName,
+			@FormParam("pushChanName") String pushChanName);
+	
 	@GET
 	@Path("/getPushChannels")
 	@Produces(MediaType.APPLICATION_JSON)
