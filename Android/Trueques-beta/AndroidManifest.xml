@@ -7,41 +7,32 @@
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="18" />
-    
+
     <!-- BaaS SDK -->
-    <permission
-        	android:name="uy.com.group05.baassdk.sync.provider.permission" />
-    
-    <uses-permission
-        	android:name="uy.com.group05.baassdk.sync.provider.permission" />
-    <uses-permission
-            android:name="android.permission.READ_SYNC_SETTINGS"/>
-    <uses-permission
-            android:name="android.permission.WRITE_SYNC_SETTINGS"/>
-    <uses-permission
-            android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
-    <uses-permission
-        	android:name="android.permission.INTERNET"/>
-	<uses-permission
-	    	android:name="android.permission.ACCESS_NETWORK_STATE"/>/
-    
+    <permission android:name="uy.com.group05.baassdk.sync.provider.permission" />
+
+    <uses-permission android:name="uy.com.group05.baassdk.sync.provider.permission" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+/
+
     <!-- GCM -->
-    <permission android:name="uy.com.group05.baassdk.permission.C2D_MESSAGE"
-        	android:protectionLevel="signature" />
-    <uses-permission
-        	android:name="uy.com.group05.baassdk.permission.C2D_MESSAGE" />
-    
-    <uses-permission
-        	android:name="com.google.android.c2dm.permission.RECEIVE" />
-    
-    
-	
-	<!-- GCM requires a Google account. -->
+    <permission
+        android:name="uy.com.group05.baassdk.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="uy.com.group05.baassdk.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <!-- GCM requires a Google account. -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <!-- Keeps the processor from sleeping when a message is received. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <!-- Fin BaaS SDK  -->
+    <!-- Fin BaaS SDK -->
 
     <application
         android:name="uy.com.group05.baassdk.MyApplication"
@@ -75,7 +66,7 @@
         <activity
             android:name="uy.trueques_beta.activity.Perfil"
             android:label="@string/title_activity_perfil" >
-        </activity>
+        </activity>
         -->
         <activity
             android:name="uy.trueques_beta.activity.CrearTrueque"
@@ -131,53 +122,57 @@
             android:name="uy.trueques_beta.activity.VistaUsuario"
             android:label="@string/title_activity_vista_usuario" >
         </activity>
-        
-        
+
         <!-- BaaS SDK -->
         <receiver
             android:name="uy.com.group05.baassdk.gcm.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="uy.com.group05.baassdk.gcm" />
             </intent-filter>
         </receiver>
-        
+
         <service android:name="uy.com.group05.baassdk.gcm.GcmIntentService" />
-        
-        <service
-            	android:name="uy.com.group05.baassdk.sync.AuthenticatorService">
-            <intent-filter >
+        <service android:name="uy.com.group05.baassdk.sync.AuthenticatorService" >
+            <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
         <service
-		        android:name="uy.com.group05.baassdk.sync.SyncAdapterService"
-		        android:exported="true"
-		        android:process=":sync">
-		    <intent-filter>
-		        <action android:name="android.content.SyncAdapter" />
-		    </intent-filter>
-		    <meta-data
-		            android:name="android.content.SyncAdapter"
-		            android:resource="@xml/syncadapter" />
-		</service>
+            android:name="uy.com.group05.baassdk.sync.SyncAdapterService"
+            android:exported="true"
+            android:process=":sync" >
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
+
         <provider
             android:name="uy.com.group05.baassdk.sync.BaasContentProvider"
             android:authorities="uy.com.group05.baassdk.sync.provider"
             android:exported="false"
-            android:syncable="true"
-            android:permission="uy.com.group05.baassdk.sync.provider.permission" />
-		
-<!--         <meta-data -->
-<!-- 		    android:name="com.google.android.gms.version" -->
-<!-- 		    android:value="@integer/google_play_services_version" /> -->
-        
+            android:permission="uy.com.group05.baassdk.sync.provider.permission"
+            android:syncable="true" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <!-- Fin BaaS SDK -->
-        
+        <activity
+            android:name="uy.trueques_beta.activity.VerRSS"
+            android:label="@string/title_activity_ver_rss" >
+        </activity>
     </application>
 
 </manifest>

@@ -30,5 +30,6 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_ver_usuarios">Usuarios</string>
     <string name="title_activity_vista_usuario">Usuario</string>
+    <string name="title_activity_ver_rss">VerRSS</string>
 
 </resources>

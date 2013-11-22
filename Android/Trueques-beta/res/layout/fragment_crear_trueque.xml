@@ -32,7 +32,7 @@
 	       	android:layout_height="wrap_content"
 	       	android:text="Nuevo Trueque"
 	       	android:textSize="25sp"
-	       	android:paddingBottom="0dp"/>
+	       	android:paddingBottom="0sp"/>
 	    
 	    <TableLayout 
 		    android:layout_width="match_parent"
@@ -86,7 +86,7 @@
    <TableLayout 
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_marginTop="20sp">     
+	    android:layout_marginTop="10sp">     
         <EditText
             android:id="@+id/desc_deseado"
             android:layout_width="match_parent"
@@ -94,7 +94,7 @@
             android:hint="¿Que busca a cambio?"
             android:inputType="text"
             android:singleLine="true"
-            android:paddingTop="10sp"> 
+            android:paddingTop="7sp"> 
         </EditText>
         
         <EditText
@@ -111,7 +111,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content">
             <TableRow
-                android:layout_marginTop="16dp" >
+                android:layout_marginTop="5sp" >
 	            
 	            <Button
 	            android:id="@+id/BtnImg"
