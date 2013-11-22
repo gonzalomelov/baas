@@ -131,8 +131,8 @@ public class APIClientImpl implements APIFacade {
 					jsonObject.add(key, value);
 				}
 				
-				JsonPrimitive timestamp = new JsonPrimitive(new Timestamp(System.currentTimeMillis()).toString());
-				jsonObject.add("updatedat", timestamp);
+//				JsonPrimitive timestamp = new JsonPrimitive(new Timestamp(System.currentTimeMillis()).toString());
+//				jsonObject.add("updatedat", timestamp);
 				
 				ContentValues contentValues = new ContentValues();
 				contentValues.put("entity", jsonObject.toString());

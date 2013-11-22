@@ -199,9 +199,13 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 					Timestamp localObjUpdatedAt =  Timestamp.valueOf(localObj.getString("updatedat"));
 					Timestamp remoteObjUpdatedAt =  Timestamp.valueOf(remoteObj.getString("updatedat"));
 					
-					//Actualizo si el objeto remoto es mas nuevo que el local
-					//if (remoteObjUpdatedAt.after(localObjUpdatedAt)) {
-					if (true) {
+					System.out.println("%%%%%%%%%%%%%% localObjUpdatedAt: " + localObjUpdatedAt);
+					System.out.println("%%%%%%%%%%%%%% remoteObjUpdatedAt: " + remoteObjUpdatedAt);
+					
+					//Actualizo si el objeto remoto es el mismo q el local
+					if (!remoteObjUpdatedAt.equals(localObjUpdatedAt)) {
+						System.out.println("%%%%%%%%%%%%%% Viejo");
+					} else {
 						
 						BasicDBObject localTempObj = (BasicDBObject) localObj.clone();
 						BasicDBObject remoteTempObj = (BasicDBObject) remoteObj.clone();
