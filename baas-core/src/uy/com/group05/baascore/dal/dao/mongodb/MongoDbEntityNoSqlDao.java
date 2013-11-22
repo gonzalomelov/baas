@@ -145,6 +145,10 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 	public SyncNoSqlResult sync(String appName, String entity, String jsonObjs)
 			throws AppNotRegisteredException, EntityNotRegisteredException {
 		
+		System.out.println("&&&&&&&&&&&& Entidad: " + entity);
+		
+		String updatedat = new Timestamp(System.currentTimeMillis()).toString();
+		
 		boolean sincronizar = false;
 		
 		DB mongoDb = mongo.getDB(appName);
@@ -157,10 +161,16 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 			String remoteJson = (String) remoteList.get(i);
 			BasicDBObject remoteObj = (BasicDBObject) JSON.parse(remoteJson);
 			
+			System.out.println("&&&&&&&&&&&& remoteObj: " + remoteObj);
+			
 			if (!remoteObj.containsField("syncid")) {
 				//Si no se encuentra el elemento por id, lo agrego seteandole el updatedat
-				remoteObj.put("updatedat", (new Timestamp(System.currentTimeMillis())).toString());
-				dbCollection.insert(remoteObj);
+				remoteObj.put("updatedat", updatedat);
+				WriteResult wr = dbCollection.insert(remoteObj);
+			
+				System.out.println("&&&&&&&&&&&& Resultado: " + "Nuevo");
+				
+				System.out.println("&&&&&&&&&&&& Insertado: " + wr.toString());
 				
 				sincronizar = true;
 				
@@ -180,9 +190,12 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 				if (delete) {
 					dbCollection.remove(queryDbObject);
 					
+					System.out.println("&&&&&&&&&&&& Resultado: " + "Borrar");
+					
 					sincronizar = true;
 					
 				} else {
+					
 					Timestamp localObjUpdatedAt =  Timestamp.valueOf(localObj.getString("updatedat"));
 					Timestamp remoteObjUpdatedAt =  Timestamp.valueOf(remoteObj.getString("updatedat"));
 					
@@ -190,17 +203,51 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 					//if (remoteObjUpdatedAt.after(localObjUpdatedAt)) {
 					if (true) {
 						
-						//Valor de modificacion para syncronización
-						remoteObj.put("updatedat", new Timestamp(System.currentTimeMillis()).toString());
+						BasicDBObject localTempObj = (BasicDBObject) localObj.clone();
+						BasicDBObject remoteTempObj = (BasicDBObject) remoteObj.clone();
 						
-						dbCollection.update(queryDbObject, remoteObj);
+						System.out.println("%%%%%%%%%%%%%% Local Antes: " + localTempObj);
+						System.out.println("%%%%%%%%%%%%%% Remoto Antes: " + remoteTempObj);
 						
-						sincronizar = true;
+						//quito el _id
+						localTempObj.removeField("_id");
+						remoteTempObj.removeField("_id");
+						
+						//quito el updatedat
+						localTempObj.removeField("updatedat");
+						remoteTempObj.removeField("updatedat");
+						
+						//quito el syncid
+						localTempObj.removeField("syncid");
+						remoteTempObj.removeField("syncid");
+						
+						System.out.println("%%%%%%%%%%%%%% Local: " + localTempObj);
+						System.out.println("%%%%%%%%%%%%%% Remoto: " + remoteTempObj);
+						
+						boolean same = localTempObj.equals(remoteTempObj);
+						
+						System.out.println("%%%%%%%%%%%%%% Same: " + same);
+						
+						if (!same) {
+							
+							System.out.println("&&&&&&&&&&&& Resultado: " + "Actualizar");
+							
+							//Valor de modificacion para syncronización
+							remoteObj.put("updatedat", updatedat);
+							
+							WriteResult wr = dbCollection.update(queryDbObject, remoteObj);
+							
+							System.out.println("&&&&&&&&&&&& Actualizado: " + wr.toString());
+							
+							sincronizar = true;	
+						}
+						
 					}	
 				}
 				
 			}	
 		}
+		System.out.println("&&&&&&&&&&&& Fin Entidad: " + entity + ". Sincronizar: " + sincronizar);
 		
 		SyncNoSqlResult result = new SyncNoSqlResult();
 		result.setJson(JSON.serialize(dbCollection.find()));
