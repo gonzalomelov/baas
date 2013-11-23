@@ -3,6 +3,8 @@ package uy.trueques_beta.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 public class Usuario {
 
 	//private int id;
@@ -160,6 +162,16 @@ public class Usuario {
 	}
 
 
+	public String toJson() {
+		Gson gson = new Gson();
+		String json = gson.toJson(this, Usuario.class);
+		return json;
+	}
 	
+	public static Usuario fromJson(String json) {
+		Gson gson = new Gson();
+		Usuario u = gson.fromJson(json, Usuario.class);
+		return u;
+	}
 	
 }
