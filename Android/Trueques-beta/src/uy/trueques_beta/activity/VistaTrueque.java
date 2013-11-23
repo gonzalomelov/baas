@@ -170,11 +170,11 @@ public class VistaTrueque extends Activity {
 				
 				button = (Button)findViewById(R.id.BtnOfertar);
 				if (mail.equals(t.getUsuario())){
-					button.setVisibility(View.GONE);
-					cantOfer = (TextView)findViewById(R.id.CantOfertas);
-					cantOfer.setVisibility(View.VISIBLE);
-					cantOfer.setText("Tienes "+t.getOfertasPendientes().size()+" ofertas pendientes");
-					//button.setText("Ver ofertas pendientes ("+t.getOfertasPendientes().size()+")");
+					//button.setVisibility(View.GONE);
+					//cantOfer = (TextView)findViewById(R.id.CantOfertas);
+					//cantOfer.setVisibility(View.VISIBLE);
+					//cantOfer.setText("Tienes "+t.getOfertasPendientes().size()+" ofertas pendientes");
+					button.setText("Ver ofertas pendientes ("+t.getOfertasPendientes().size()+")");
 				}
 		    	
 				button.setOnClickListener(
@@ -182,14 +182,22 @@ public class VistaTrueque extends Activity {
 							@Override
 							public void onClick(View view) {
 								if (u.isBloqueado()){	
-									Toast.makeText(VistaTrueque.this, "Usuario bloqueado, no puede realizar la acción", Toast.LENGTH_SHORT).show();;
+									Toast.makeText(VistaTrueque.this, "Usuario bloqueado, no puede realizar la acción", Toast.LENGTH_SHORT).show();
 								}
 								else{
 									if(t!=null){
-										Intent intent = new Intent(VistaTrueque.this, Ofertar.class);
-								        intent.putExtra("Trueque", t.toJson());
-								        intent.putExtra("mail", mail);
-										startActivity(intent);
+										if (mail.equals(t.getUsuario())){
+											Intent intent = new Intent(VistaTrueque.this, Home.class);
+									        //intent.putExtra("Trueque", t.toJson());
+									        intent.putExtra("from", "VistaTrueque");
+											startActivity(intent);
+										}
+										else{
+											Intent intent = new Intent(VistaTrueque.this, Ofertar.class);
+									        intent.putExtra("Trueque", t.toJson());
+									        intent.putExtra("mail", mail);
+											startActivity(intent);
+										}
 									}
 								}
 							}

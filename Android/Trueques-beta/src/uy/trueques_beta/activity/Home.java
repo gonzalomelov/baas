@@ -7,9 +7,11 @@ import uy.trueques_beta.R.layout;
 import uy.trueques_beta.R.menu;
 import uy.trueques_beta.activity.CrearTrueque.CrearTruequeListener;
 import uy.trueques_beta.activity.VerOfertasPendientes.VerOfertasPendientesListener;
+import uy.trueques_beta.activity.VerRSS.VerRSSListener;
 import uy.trueques_beta.activity.VerTrueques.VerTruequesListener;
 import uy.trueques_beta.activity.VerTruequesHechos.VerTruequesHechosListener;
 import uy.trueques_beta.entities.Oferta;
+import uy.trueques_beta.entities.RSS;
 import uy.trueques_beta.entities.Trueque;
 import uy.trueques_beta.fragment.Fragment1;
 import uy.trueques_beta.negocio.Factory;
@@ -36,7 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
 
-public class Home extends Activity implements VerTruequesListener, CrearTruequeListener, VerOfertasPendientesListener, VerTruequesHechosListener{
+public class Home extends Activity implements VerTruequesListener, CrearTruequeListener, VerOfertasPendientesListener, VerTruequesHechosListener, VerRSSListener{
 
 	private String[] opcionesMenu;
 	private DrawerLayout drawerLayout;
@@ -53,8 +55,8 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 		SDKFactory.getGCMService(this);
 		
 		//+++ DRAWER
-		opcionesMenu = new String[] {"Perfil", "Publicar Trueque", "Ver Trueques", "Ofertas Pendientes", "Trueques Realizados","Cerrar Sesión"};
-		imagenesMenu= new int[] {R.drawable.ic_perfil, R.drawable.ic_crear_trueque, R.drawable.ic_ver_trueques,R.drawable.ic_ver_ofertas,R.drawable.ic_trueques_ok, R.drawable.ic_cerrar};
+		opcionesMenu = new String[] {"Perfil", "Publicar Trueque", "Ver Trueques", "Ofertas Pendientes", "Trueques Realizados", "Ver RSS","Cerrar Sesión"};
+		imagenesMenu= new int[] {R.drawable.ic_perfil, R.drawable.ic_crear_trueque, R.drawable.ic_ver_trueques,R.drawable.ic_ver_ofertas,R.drawable.ic_trueques_ok, R.drawable.ic_rss, R.drawable.ic_cerrar};
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
  
@@ -101,6 +103,10 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 	                    ((VerTruequesHechos)fragment).setVerTruequesHechosListener(Home.this);
 	                    break;
 	                case 5:
+	                    fragment = new VerRSS();
+	                    ((VerRSS)fragment).setVerRSSListener(Home.this);
+	                    break;
+	                case 6:
 	                    cerrar = true;
 	                    break;
 	            }
@@ -133,12 +139,25 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 	            }
 	        }
 	    });
-		
-		//Inicio en Perfil
-		FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, new Perfil()).commit();
-        drawerList.setItemChecked(0, true);
-        getActionBar().setTitle(opcionesMenu[0]);
+		String from=null;
+		Intent intent = this.getIntent();
+		if(intent.getExtras()!=null)
+			from=intent.getExtras().getString("from", "nada");
+		if(from==null || !from.equals("VistaTrueque")){
+			//Inicio en Perfil
+			FragmentManager fragmentManager = getFragmentManager();
+	        fragmentManager.beginTransaction().replace(R.id.content_frame, new Perfil()).commit();
+	        drawerList.setItemChecked(0, true);
+	        getActionBar().setTitle(opcionesMenu[0]);
+		}else{
+			//Voy a OfertasPendientes
+			android.app.Fragment fragment= new VerOfertasPendientes();
+            ((VerOfertasPendientes)fragment).setVerOfertasPendientesListener(Home.this);
+			FragmentManager fragmentManager = getFragmentManager();
+	        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+	        drawerList.setItemChecked(3, true);
+	        getActionBar().setTitle(opcionesMenu[3]);
+		}
 		
         SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
         if(prefs.getBoolean("PrimeraVez", true)){
@@ -168,6 +187,8 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		//super.onBackPressed();
+		drawerLayout.openDrawer(drawerList);
+		Toast.makeText(this, "Para navegar usa el menú", Toast.LENGTH_SHORT).show();
 	}
 
 
@@ -267,5 +288,13 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 		// TODO Auto-generated method stub
 		super.onPostCreate(savedInstanceState);
 		conmutador.syncState();
+	}
+
+
+
+	@Override
+	public void onRSSSeleccionado(RSS r) {
+		// TODO Auto-generated method stub
+		
 	}
 }

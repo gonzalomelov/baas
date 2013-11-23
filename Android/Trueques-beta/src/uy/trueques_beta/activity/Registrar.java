@@ -4,6 +4,7 @@ import uy.trueques_beta.R;
 import uy.trueques_beta.R.layout;
 import uy.trueques_beta.R.menu;
 import uy.trueques_beta.activity.Login.UserLoginTask;
+import uy.trueques_beta.entities.Usuario;
 import uy.trueques_beta.negocio.Factory;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -137,6 +138,7 @@ public class Registrar extends Activity {
 	
 	public class RegistroTask extends AsyncTask<Void, Void, Boolean> {
 		private boolean isChk = false;
+		private Usuario u=null;
 		
 		@Override
 		protected void onPreExecute() {
@@ -149,9 +151,18 @@ public class Registrar extends Activity {
 			
 			if(this.isChk)
 				return Factory.getUsuarioCtrl().registrarUsuarioAdmin(email, nombre, pass);
-			else
-				return Factory.getUsuarioCtrl().registrarUsuario(Registrar.this, email, nombre, pass);
-			
+			else{
+				if(Factory.getUsuarioCtrl().registrarUsuario(Registrar.this, email, nombre, pass)){
+					u = null;
+					while (u==null)
+						u= Factory.getUsuarioCtrl().getUsuario(Registrar.this, email);
+					return true;
+				}else{
+					return false;
+				}
+				//return Factory.getUsuarioCtrl().registrarUsuario(Registrar.this, email, nombre, pass);
+			}
+				
 			//return Factory.getUsuarioCtrl().registrarUsuario(email, nombre, pass);
 		}
 
@@ -166,6 +177,8 @@ public class Registrar extends Activity {
 					intent = new Intent(Registrar.this, VerUsuarios.class);
 				}else{//COMUN
 					intent = new Intent(Registrar.this, Home.class);
+					//Usuario u = Factory.getUsuarioCtrl().getUsuario(Registrar.this, email);
+					intent.putExtra("Usuario", u.toJson()); //Le paso el usuario tmb
 				}
 				//Intent intent = new Intent(Registrar.this, Home.class);
 				

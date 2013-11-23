@@ -264,6 +264,7 @@ public class VistaTruequeHecho extends Activity {
 			//showProgress(false);
 		
 			if (success) {
+				t = Factory.getTruequeCtrl().getTrueque(VistaTruequeHecho.this, t.getIdTrueque());
 				Intent intent =new Intent(VistaTruequeHecho.this, VistaTruequeHecho.class);
             	intent.putExtra("Trueque", t.toJson());
             	startActivity(intent);

@@ -6,6 +6,7 @@ import uy.trueques_beta.R.id;
 import uy.trueques_beta.R.layout;
 import uy.trueques_beta.R.menu;
 import uy.trueques_beta.R.string;
+import uy.trueques_beta.entities.Usuario;
 import uy.trueques_beta.negocio.Factory;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -212,7 +213,7 @@ public class Login extends Activity {
 	 */
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		private boolean isChk = false;
-		
+		private Usuario u=null;
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
@@ -244,8 +245,17 @@ public class Login extends Activity {
 			return true;*/
 			if(this.isChk)
 				return Factory.getUsuarioCtrl().loginAsAdmin(Login.this, mEmail, mPassword);
-			else
-				return Factory.getUsuarioCtrl().login(Login.this, mEmail, mPassword);
+			else{
+				if(Factory.getUsuarioCtrl().login(Login.this, mEmail, mPassword)){
+					u = null;
+					while (u==null)
+						u= Factory.getUsuarioCtrl().getUsuario(Login.this, mEmail);
+					return true;
+				}else{
+					return false;
+				}
+				//return Factory.getUsuarioCtrl().login(Login.this, mEmail, mPassword);
+			}
 		}
 
 		@Override
@@ -259,6 +269,10 @@ public class Login extends Activity {
 					intent = new Intent(Login.this, VerUsuarios.class);
 				}else{//COMUN
 					intent = new Intent(Login.this, Home.class);
+//					Usuario u = null;
+//					while (u==null)
+//						u= Factory.getUsuarioCtrl().getUsuario(Login.this, mEmail);
+					intent.putExtra("Usuario", u.toJson()); //Le paso el usuario tmb
 				}
 				//SETEO EL MAIL LOGEADO
 				SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);

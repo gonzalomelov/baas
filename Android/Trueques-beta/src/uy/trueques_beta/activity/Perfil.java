@@ -7,6 +7,8 @@ import uy.trueques_beta.R.id;
 import uy.trueques_beta.R.layout;
 import uy.trueques_beta.R.menu;
 import uy.trueques_beta.activity.Registrar.RegistroTask;
+import uy.trueques_beta.activity.VistaTrueque.VistaTruequeTask;
+import uy.trueques_beta.entities.Trueque;
 import uy.trueques_beta.entities.Usuario;
 import uy.trueques_beta.negocio.Factory;
 import android.os.AsyncTask;
@@ -32,6 +34,7 @@ import android.widget.Toast;
 public class Perfil extends Fragment {//Activity {
 
 	private PerfilTask mAuthTask = null;
+	private Usuario u;
 	
 	private String mail;
 	private TextView lblNombre;
@@ -56,11 +59,22 @@ public class Perfil extends Fragment {//Activity {
 		SharedPreferences prefs = this.getActivity().getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
 		
-		Usuario u = Factory.getUsuarioCtrl().getUsuario(Perfil.this.getActivity(), mail);
+		this.u =null;
+		Intent intent = this.getActivity().getIntent();
+		if(intent.getExtras()!=null){
+			String usuarioJson= intent.getExtras().getString("Usuario");
+			this.u = Usuario.fromJson(usuarioJson);
+		}
+//		if(mAuthTask==null){
+//			mAuthTask = new PerfilTask();
+//			mAuthTask.execute((Void) null);
+//		}
 		
-		mAuthTask = null;
-		//showProgress(false);
-
+//		Usuario u = Factory.getUsuarioCtrl().getUsuario(Perfil.this.getActivity(), mail);
+//		
+//		mAuthTask = null;
+//		//showProgress(false);
+//
 		if (u != null) {
 			
 			SDKFactory.getGCMService(Perfil.this.getActivity());
@@ -108,9 +122,13 @@ public class Perfil extends Fragment {//Activity {
 				lblBloq.setVisibility(View.VISIBLE);;
 			}
 		} else {
+			if(mAuthTask==null){
+				mAuthTask = new PerfilTask();
+				mAuthTask.execute((Void) null);
+			}
 			//finish();
-			Toast.makeText(Perfil.this.getActivity().getBaseContext(), "U = NULL", Toast.LENGTH_SHORT).show();
-			Log.i("[Perfil]:", "no se pudo cargar el usuario");
+//			Toast.makeText(Perfil.this.getActivity().getBaseContext(), "U = NULL", Toast.LENGTH_SHORT).show();
+//			Log.i("[Perfil]:", "no se pudo cargar el usuario");
 		}
 		
 //		Usuario u = Factory.getUsuarioCtrl().getUsuario(mail);
@@ -175,7 +193,7 @@ public class Perfil extends Fragment {//Activity {
     //############# AsyncTask para traer datos del usuario
     public class PerfilTask extends AsyncTask<Void, Void, Boolean> {
 		//private boolean isChk = false;
-		private Usuario u;
+		//private Usuario u;
 		
 		@Override
 		protected void onPreExecute() {
