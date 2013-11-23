@@ -13,6 +13,7 @@ import java.util.Map;
 import org.apache.http.client.ClientProtocolException;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import uy.com.group05.baassdk.*;
 import android.content.Context;
@@ -39,6 +40,7 @@ public class TruequeCtrl {
 			Log.i("[TruequeCtrl]:", json);
 			//if (!json.isEmpty()){
 			Gson gson = new Gson();
+			
 			Trueque[] ts = gson.fromJson(json, Trueque[].class);
 			if(ts.length>0)
 				return ts[0];
@@ -151,9 +153,23 @@ public class TruequeCtrl {
 					t.setGanadora(ofer);
 					t.setActiva(false);
 					t.setFechaFin(new Date());
+					//"MMM dd, yyyy hh: mm: ss aa"
+//					//Date date = new java.util.Date(); 
+//					SimpleDateFormat sdf=new SimpleDateFormat("MMM dd, yyyy hh: mm: ss aa");
+//					//String fecha = sdf.format(date);
+//					
+//					Log.e("FECHASSSSS", t.getFechaFin()+"/"+t.getFechaIni());
+//					Log.e("FECHASSSSS", sdf.format(t.getFechaFin()));
+//					sdf=new SimpleDateFormat("dd/MM/yyyy");
+//					Log.e("FECHASSSSS", sdf.format(t.getFechaFin()));
+//					Log.e("FECHASSSSS", t.getFechaFin().toGMTString());
+//					Log.e("FECHASSSSS", t.getFechaFin().toLocaleString());
+//					Log.e("FECHASSSSS", t.getFechaFin().toString());
+//					
+//					System.out.println(gson.toJson(t.getFechaFin()));
 					
 					String query =  "{idTrueque:\""+t.getIdTrueque()+"\"}";
-					String values = "{ganadora:"+t.getGanadora().toJson()+", activa:\""+t.isActiva()+"\", fechaFin: \""+t.getFechaFin().toLocaleString() +"\"}";
+					String values = "{ganadora:"+t.getGanadora().toJson()+", activa:\""+t.isActiva()+"\", fechaFin: "+gson.toJson(t.getFechaFin()) +"}";
 					
 					SDKFactory.getAPIFacade(context).update("Trueque", query, values);
 					
@@ -217,7 +233,29 @@ public class TruequeCtrl {
 		if(t==null || t.existOferta(idOferta))
 			return false;
 		
-		return t.rechazarOferta(idOferta);//this.trueques.get(idTrueque).rechazarOferta(idOferta);
+		try{
+			
+			if (!t.rechazarOferta(idOferta))//this.trueques.get(idTrueque).rechazarOferta(idOferta);
+				return false;
+			//Actualizo la oferta
+			String query =  "{idOferta:\""+idOferta+"\"}";
+			String values = "{rechazada:true}";
+			
+			SDKFactory.getAPIFacade(context).update("Oferta", query, values);
+			return true;
+		}
+		catch (UnsupportedEncodingException e) {
+			Log.e("[RechazarOferta]:", e.getMessage());
+			return false;
+		}
+		catch (ClientProtocolException e) {
+			Log.e("[RechazarOferta]:", e.getMessage());
+			return false;
+		}
+		catch (IOException e) {
+			Log.e("[RechazarOferta]:", e.getMessage());
+			return false;
+		}
 	}
 	
 	public List<Trueque> getTruequesActivos(Context context){
@@ -289,15 +327,15 @@ public class TruequeCtrl {
 			return truequesHechos;
 		}
 		catch (UnsupportedEncodingException e) {
-			Log.i("GetTruequesActivos:", e.getMessage());
+			Log.e("GetTruequesActivos:", e.getMessage());
 			return new ArrayList<Trueque>();
 		}
 		catch (ClientProtocolException e) {
-			Log.i("GetTruequesActivos:", e.getMessage());
+			Log.e("GetTruequesActivos:", e.getMessage());
 			return new ArrayList<Trueque>();
 		}
 		catch (IOException e) {
-			Log.i("GetTruequesActivos:", e.getMessage());
+			Log.e("GetTruequesActivos:", e.getMessage());
 			return new ArrayList<Trueque>();
 		}
 		//SDK
