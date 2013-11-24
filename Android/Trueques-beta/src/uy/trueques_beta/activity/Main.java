@@ -1,39 +1,38 @@
 package uy.trueques_beta.activity;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Map;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
+import org.apache.http.client.ClientProtocolException;
 
+import persistence.Cursor;
+import persistence.Operador;
+import persistence.Query;
+import sdk.application.ApplicationInfo;
+import sdk.classes.JSON;
+import sdk.servicios.Clientes;
+import sdk.servicios.Persistencia;
+import uy.com.group05.baassdk.GCMService;
 import uy.com.group05.baassdk.MyApplication;
-import uy.com.group05.baassdk.sync.BaasProviderObserver;
-import uy.com.group05.baassdk.sync.Constants;
-import uy.com.group05.baassdk.*;
+import uy.com.group05.baassdk.SDKFactory;
 import uy.trueques_beta.R;
-import uy.trueques_beta.R.layout;
-import uy.trueques_beta.R.menu;
+import uy.trueques_beta.entities.Admin;
 import uy.trueques_beta.negocio.Factory;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.util.Log;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 public class Main extends Activity {
 
@@ -48,6 +47,7 @@ public class Main extends Activity {
         
         context = getApplicationContext();
 		
+        //####### Inicialización SDK nuestro
 		MyApplication myApplication = (MyApplication)(context.getApplicationContext());
 		
 		List<String> entities = new ArrayList<String>();
@@ -59,7 +59,27 @@ public class Main extends Activity {
 		
 		myApplication.init(this, entities); 
 
-        //+++
+		//####### Inicialización SDK ellos
+		//Setear id de aplicacion
+        ApplicationInfo.setAppId("3");
+        String deviceId = Secure.getString(Main.this.getContentResolver(), Secure.ANDROID_ID);
+        ApplicationInfo.setDeviceId(deviceId);
+		
+        String[] columnas = new String[5];
+        columnas[0] = "_id";
+        columnas[1] = "nombre";
+        columnas[2] = "mail";
+        columnas[3] = "pass";
+        columnas[4] = "json";
+        
+        try {
+        	int tabla = Persistencia.crearTabla("admin", columnas, getApplicationContext());
+        }
+        catch (Exception e) {
+        	
+        }
+		
+		//+++
         Factory.getObjetoCtrl();
         Factory.getUsuarioCtrl();
         //+++++
@@ -102,4 +122,71 @@ public class Main extends Activity {
 	    	Toast.makeText(getBaseContext(), "Presiona de nuevo para salir", Toast.LENGTH_SHORT).show();
 	    back_pressed = System.currentTimeMillis();
 	}
+    
+    public void test() {
+    	new AsyncTask<Void, Void, Boolean>() {
+    		
+		    @Override
+		    protected Boolean doInBackground(Void... params) {
+		    	
+		    	//####### Inicialización SDK de ellos
+				//Setear id de aplicacion
+		        ApplicationInfo.setAppId("3");
+		        String deviceId = Secure.getString(Main.this.getContentResolver(), Secure.ANDROID_ID);
+		        ApplicationInfo.setDeviceId(deviceId);
+				
+		        String[] columnas = new String[5];
+		        columnas[0] = "_id";
+		        columnas[1] = "nombre";
+		        columnas[2] = "mail";
+		        columnas[3] = "pass";
+		        columnas[4] = "json";
+		        
+		        try {
+		        	int tabla = Persistencia.crearTabla("admin", columnas, getApplicationContext());
+		        	
+		        	String registro = Clientes.registrarse("gmelo@gmelo.com", "gpass", "gname", "gnick", ApplicationInfo.getDeviceId(), Main.this);
+		        	
+		        	String login = Clientes.login("gmelo@gmelo.com", "gpass", Main.this);
+		        	
+		        	Admin admin = new Admin("gname", "gmelo@gmelo.com", "gpass");
+		        	
+		        	Gson gson = new Gson();
+		            
+		            JSON json = new JSON();
+		            json.addAtributo("nombre", "gname");
+		            json.addAtributo("mail", "gmelo@gmelo.com");
+		            json.addAtributo("pass", "gpass");
+		            json.addAtributo("json", gson.toJson(admin));
+		            
+		            int insert = Persistencia.insertJson(json, "admin");
+		            
+		            Query q = new Query();
+		            q.setTabla("admin");
+		            q.setAtributo("_id");
+		            q.setOperador(Operador.igual);
+		            q.setValor("1");
+		            
+		            Cursor c = Persistencia.selectJson(q);
+		            JSON[] jsons = c.getJsons();
+		            JSON jsonObj = jsons[0];
+		            Map<String, Object> jsonMap = jsonObj.getJson();
+		            
+		            Admin a = gson.fromJson((String)jsonMap.get("json"), Admin.class);
+		            
+		            a.getNombre();
+		            
+		        }
+		        catch (Exception e) {
+		        	int a = 1;
+		        }
+		        return true;
+		    }
+		    
+		    @Override
+            protected void onPostExecute(Boolean ok) {
+
+            }
+		}.execute(null, null, null);
+    }
 }

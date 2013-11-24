@@ -10,6 +10,10 @@ import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
 
+import persistence.Cursor;
+import persistence.Operador;
+import persistence.Query;
+
 
 
 
@@ -21,8 +25,13 @@ import org.apache.http.client.ClientProtocolException;
 
 import com.google.gson.Gson;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import sdk.application.ApplicationInfo;
+import sdk.classes.JSON;
+import sdk.servicios.Clientes;
+import sdk.servicios.Persistencia;
 import uy.com.group05.baassdk.MyApplication;
 import uy.com.group05.baassdk.SDKFactory;
 import uy.com.group05.baassdk.entities.ClientAuthenticationDTO;
@@ -89,17 +98,61 @@ public class UsuarioCtrl {
 //		return usuarios.get(mail);
 	}
 	
+//	public Admin getAdmin(Context context, String mail) {
+//		//SDK
+//		try
+//		{
+//			String entity = "Admin";
+//			String query = "{mail:\""+mail+"\"}";
+//			String json = SDKFactory.getAPIFacade(context).get(entity, query);
+//			
+//			Log.i("[UsuarioCtrl]:", json);
+//			if (!json.isEmpty()){
+//				Gson gson = new Gson();
+//				Admin a = gson.fromJson(json, Admin.class);
+//				return a;
+//			}
+//			else{
+//				return null;
+//			}
+//		}
+//		catch (UnsupportedEncodingException e) {
+//			Log.i("[GetAdmin]:", e.getMessage());
+//			return null;
+//		}
+//		catch (ClientProtocolException e) {
+//			Log.i("[GetAdmin]:", e.getMessage());
+//			return null;
+//		}
+//		catch (IOException e) {
+//			Log.i("[GetAdmin]:", e.getMessage());
+//			return null;
+//		}
+//		//SDK
+//		//return admins.get(mail);
+//	}
+	
 	public Admin getAdmin(Context context, String mail) {
 		//SDK
 		try
 		{
-			String entity = "Admin";
-			String query = "{mail:\""+mail+"\"}";
-			String json = SDKFactory.getAPIFacade(context).get(entity, query);
+			Gson gson = new Gson();
 			
+			Query q = new Query();
+            q.setTabla("admin");
+            q.setAtributo("_id");
+            q.setOperador(Operador.igual);
+            q.setValor("1");
+            
+            Cursor c = Persistencia.selectJson(q);
+            JSON[] jsons = c.getJsons();
+            JSON jsonObj = jsons[0];
+            Map<String, Object> jsonMap = jsonObj.getJson();
+            
+            String json = (String)jsonMap.get("json");
+            
 			Log.i("[UsuarioCtrl]:", json);
 			if (!json.isEmpty()){
-				Gson gson = new Gson();
 				Admin a = gson.fromJson(json, Admin.class);
 				return a;
 			}
@@ -107,20 +160,10 @@ public class UsuarioCtrl {
 				return null;
 			}
 		}
-		catch (UnsupportedEncodingException e) {
+		catch (Exception e) {
 			Log.i("[GetAdmin]:", e.getMessage());
 			return null;
 		}
-		catch (ClientProtocolException e) {
-			Log.i("[GetAdmin]:", e.getMessage());
-			return null;
-		}
-		catch (IOException e) {
-			Log.i("[GetAdmin]:", e.getMessage());
-			return null;
-		}
-		//SDK
-		//return admins.get(mail);
 	}
 	
 	public List<Usuario> getUsuarios(Context context){
@@ -128,7 +171,7 @@ public class UsuarioCtrl {
 		try
 		{
 			String entity = "Usuario";
-			String query = "";
+			String query = "{}";
 			
 			String json = SDKFactory.getAPIFacade(context).get(entity, query);
 			
@@ -207,16 +250,56 @@ public class UsuarioCtrl {
 		//return true;
 	}
 	
-	public boolean registrarUsuarioAdmin(String mail, String nombre, String pass) {
-		//++++++FALTA++++++
-		if (this.admins.containsKey(mail)){
-			return false;
+//	public boolean registrarUsuarioAdmin(String mail, String nombre, String pass) {
+//		//++++++FALTA++++++
+//		if (this.admins.containsKey(mail)){
+//			return false;
+//		}
+//		this.admins.put(mail, new Admin(nombre,mail, pass));
+//		return true;
+//	}
+	
+	public boolean registrarUsuarioAdmin(Context context, String mail, String nombre, String pass) {
+		
+		try {
+			String registro = Clientes.registrarse(mail, pass, nombre, nombre, ApplicationInfo.getDeviceId(), (Activity)context);
+			
+			//Autentico
+			if (registro.contains("OK")){
+				String login = Clientes.login(mail, pass, (Activity)context);
+				
+				Log.i("LOGIN","-"+login.contains("OK"));
+				
+				//Creo la entidad usuario asociada
+				Admin admin = new Admin(nombre, mail, pass);
+	        	
+	        	Gson gson = new Gson();
+	            
+	            JSON json = new JSON();
+	            json.addAtributo("nombre", nombre);
+	            json.addAtributo("mail", mail);
+	            json.addAtributo("pass", pass);
+	            json.addAtributo("json", gson.toJson(admin));
+	            
+	            int insert = Persistencia.insertJson(json, "admin");
+			
+				//Para actualizar todos los datos
+				MyApplication myApplication = (MyApplication)(context.getApplicationContext());
+				SDKFactory.getAPIFacade(context).updateAll(myApplication.getmTablesDB());
+				
+				return registro.contains("OK") && login.contains("OK") && insert > 0;
+			}
+			
+			return registro.equals("OK");
 		}
-		this.admins.put(mail, new Admin(nombre,mail, pass));
-		return true;
+		catch (Exception e) {
+			
+		}
+		
+		return false;
 	}
 	
-
+	
 	public Boolean login(Context context, String email, String password) {
 		//SDK
 		ClientAuthenticationDTO auten ;
@@ -252,35 +335,50 @@ public class UsuarioCtrl {
 //			return false;
 	}
 
+//	public boolean loginAsAdmin(Context context, String email, String password) {
+//		//SDK
+//		ClientAuthenticationDTO auten ;
+//		try
+//		{
+//			auten = SDKFactory.getClientFacade(context).authenticate(email, password);
+//			Log.i("LOGIN","-"+auten.isOk());
+//			return auten.isOk();
+//		}
+//		catch (UnsupportedEncodingException e) {
+//			Log.i("LOGIN",e.getMessage());
+//			return false;
+//		}
+//		catch (ClientProtocolException e) {
+//			Log.i("LOGIN",e.getMessage());
+//			return false;
+//		}
+//		catch (IOException e) {
+//			Log.i("LOGIN",e.getMessage());
+//			return false;
+//		}
+//		//SDK
+////		Admin a= admins.get(email);
+////		if (a==null)
+////			return false;
+////		else if (a.getPass().equals(password))
+////			return true;
+////		else 
+////			return false;
+//	}
+	
 	public boolean loginAsAdmin(Context context, String email, String password) {
-		//SDK
-		ClientAuthenticationDTO auten ;
-		try
-		{
-			auten = SDKFactory.getClientFacade(context).authenticate(email, password);
-			Log.i("LOGIN","-"+auten.isOk());
-			return auten.isOk();
+
+		boolean ret = false;
+		
+		try {
+			String login = Clientes.login(email, password, (Activity)context);
+			ret = login.contains("OK");
 		}
-		catch (UnsupportedEncodingException e) {
-			Log.i("LOGIN",e.getMessage());
-			return false;
+		catch (Exception e) {
+			
 		}
-		catch (ClientProtocolException e) {
-			Log.i("LOGIN",e.getMessage());
-			return false;
-		}
-		catch (IOException e) {
-			Log.i("LOGIN",e.getMessage());
-			return false;
-		}
-		//SDK
-//		Admin a= admins.get(email);
-//		if (a==null)
-//			return false;
-//		else if (a.getPass().equals(password))
-//			return true;
-//		else 
-//			return false;
+		
+		return ret;
 	}
 	
 	public boolean bloquear(Context context, String mail){
@@ -288,6 +386,17 @@ public class UsuarioCtrl {
 		if (u==null)
 			return false;
 		u.setBloqueado(true);
+		
+		String query =  "{mail:\""+mail+"\"}";
+		String values = "{bloqueado:"+true+"}";
+		
+		try {
+			SDKFactory.getAPIFacade(context).update("Usuario", query, values);
+		}
+		catch (Exception e) {
+			return false;
+		}
+		
 		return true;
 	}
 	
@@ -295,7 +404,19 @@ public class UsuarioCtrl {
 		Usuario u=getUsuario(context, mail);//this.usuarios.get(mail);
 		if (u==null)
 			return false;
+		
 		u.setBloqueado(false);
+		
+		String query =  "{mail:\""+mail+"\"}";
+		String values = "{bloqueado:"+false+"}";
+		
+		try {
+			SDKFactory.getAPIFacade(context).update("Usuario", query, values);
+		}
+		catch (Exception e) {
+			return false;
+		}
+		
 		return true;
 	}
 	

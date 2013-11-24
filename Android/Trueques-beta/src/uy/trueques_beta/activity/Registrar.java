@@ -131,7 +131,7 @@ public class Registrar extends Activity {
 			// perform the user login attempt.
 //			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 //			showProgress(true);
-			mAuthTask = new RegistroTask();
+			mAuthTask = new RegistroTask(this);
 			mAuthTask.execute((Void) null);
 		}
 	}
@@ -139,6 +139,11 @@ public class Registrar extends Activity {
 	public class RegistroTask extends AsyncTask<Void, Void, Boolean> {
 		private boolean isChk = false;
 		private Usuario u=null;
+		Context context;
+		
+		public RegistroTask(Context context){
+			this.context = context;
+		}
 		
 		@Override
 		protected void onPreExecute() {
@@ -150,7 +155,7 @@ public class Registrar extends Activity {
 		protected Boolean doInBackground(Void... params) {
 			
 			if(this.isChk)
-				return Factory.getUsuarioCtrl().registrarUsuarioAdmin(email, nombre, pass);
+				return Factory.getUsuarioCtrl().registrarUsuarioAdmin(context, email, nombre, pass);
 			else{
 				if(Factory.getUsuarioCtrl().registrarUsuario(Registrar.this, email, nombre, pass)){
 					u = null;
