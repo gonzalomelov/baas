@@ -10,6 +10,8 @@ import java.util.Map;
 import org.apache.http.client.ClientProtocolException;
 
 import uy.com.group05.baassdk.APIFacade;
+import uy.com.group05.baassdk.MyApplication;
+import uy.com.group05.baassdk.sync.APIRestClient;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -34,164 +36,201 @@ public class APIClientImpl implements APIFacade {
 	public String get(String entity, String query)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
-		Cursor entities = context.getContentResolver().query(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null, null, null, null);
+		MyApplication myApplication = (MyApplication)(context.getApplicationContext());
 		
-		JsonParser jsonParser = new JsonParser();
-		JsonObject jsonQuery = (JsonObject)jsonParser.parse(query);
-		
-		String cmpType = ""; 
-		String cmpValue = "";
-		
-		for (Map.Entry<String, JsonElement> entry : jsonQuery.entrySet()) {
-			cmpType = entry.getKey();
-			cmpValue = entry.getValue().getAsString();
-		}
-		
-		Gson gson = new Gson();
-		
-		JsonArray jsonArray = new JsonArray();
-		
-		for (boolean hasItem = entities.moveToFirst();  hasItem;  hasItem = entities.moveToNext()) {
-			String entityValue = entities.getString(1);
+		if (myApplication.getmTablesDB().contains(entity)) {
+			Cursor entities = context.getContentResolver().query(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null, null, null, null);
 			
-			JsonElement jsonElement = gson.fromJson(entityValue, JsonElement.class);
-			JsonObject jsonObject = jsonElement.getAsJsonObject();
-
-			if (cmpType.isEmpty()) {
-				jsonObject.remove("updatedat");
-				jsonObject.remove("syncid");
-				
-				jsonArray.add(jsonObject);
-				
-			} else if (cmpType.equals("objeto.duenio")) {
-				//Veo si es de algun hijo
-				JsonObject jsonObjectChild = (JsonObject)jsonObject.get("objeto");
-				
-				if (jsonObjectChild.has("duenio") && jsonObjectChild.get("duenio").getAsString().equals(cmpValue)) {
-					jsonArray.add(jsonObject);	
-				}
-				
-			} else if (jsonObject.has(cmpType) && jsonObject.get(cmpType).getAsString().equals(cmpValue)) {
-				jsonObject.remove("updatedat");
-				jsonObject.remove("syncid");
-				
-				jsonArray.add(jsonObject);
+			JsonParser jsonParser = new JsonParser();
+			JsonObject jsonQuery = (JsonObject)jsonParser.parse(query);
+			
+			String cmpType = ""; 
+			String cmpValue = "";
+			
+			for (Map.Entry<String, JsonElement> entry : jsonQuery.entrySet()) {
+				cmpType = entry.getKey();
+				cmpValue = entry.getValue().getAsString();
 			}
+			
+			Gson gson = new Gson();
+			
+			JsonArray jsonArray = new JsonArray();
+			
+			for (boolean hasItem = entities.moveToFirst();  hasItem;  hasItem = entities.moveToNext()) {
+				String entityValue = entities.getString(1);
+				
+				JsonElement jsonElement = gson.fromJson(entityValue, JsonElement.class);
+				JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+				if (cmpType.isEmpty()) {
+					jsonObject.remove("updatedat");
+					jsonObject.remove("syncid");
+					
+					jsonArray.add(jsonObject);
+					
+				} else if (cmpType.equals("objeto.duenio")) {
+					//Veo si es de algun hijo
+					JsonObject jsonObjectChild = (JsonObject)jsonObject.get("objeto");
+					
+					if (jsonObjectChild.has("duenio") && jsonObjectChild.get("duenio").getAsString().equals(cmpValue)) {
+						jsonArray.add(jsonObject);	
+					}
+					
+				} else if (jsonObject.has(cmpType) && jsonObject.get(cmpType).getAsString().equals(cmpValue)) {
+					jsonObject.remove("updatedat");
+					jsonObject.remove("syncid");
+					
+					jsonArray.add(jsonObject);
+				}
+			}
+			
+			return jsonArray.toString();
+		} else { //if (myApplication.getmTablesREST().contains(entity)) {
+			
+			APIRestClient apiRestClient = new APIRestClient(context);
+			String remoteStringEntities = apiRestClient.get(entity, query);
+
+			return remoteStringEntities; 
 		}
-		
-		return jsonArray.toString();
 	}
 	
 	@Override
 	public boolean post(String entity, String json)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
-		ContentValues values = new ContentValues();
-		values.put("entity", json);
+		MyApplication myApplication = (MyApplication)(context.getApplicationContext());
 		
-		Uri result = context.getContentResolver().insert(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), values);
-		
-		context.getContentResolver().notifyChange(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null);
-		
-		return true;
+		if (myApplication.getmTablesDB().contains(entity)) {
+			ContentValues values = new ContentValues();
+			values.put("entity", json);
+			
+			Uri result = context.getContentResolver().insert(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), values);
+			
+			context.getContentResolver().notifyChange(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null);
+			
+			return true;	
+		} else { //if (myApplication.getmTablesREST().contains(entity)) {
+			APIRestClient apiRestClient = new APIRestClient(context);
+			
+			return apiRestClient.post(entity, json);
+			
+		}	
 	}
 	
 	@Override
 	public boolean update(String entity, String query, String values)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
-		Cursor entities = context.getContentResolver().query(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null, null, null, null);
+		MyApplication myApplication = (MyApplication)(context.getApplicationContext());
 		
-		JsonParser jsonParser = new JsonParser();
-		JsonObject jsonQuery = (JsonObject)jsonParser.parse(query);
-		JsonObject jsonValues = (JsonObject)jsonParser.parse(values);
-		
-		String cmpType = ""; 
-		String cmpValue = "";
-		
-		for (Map.Entry<String, JsonElement> entry : jsonQuery.entrySet()) {
-			cmpType = entry.getKey();
-			cmpValue = entry.getValue().getAsString();
-		}
-		
-		Gson gson = new Gson();
-		
-		for (boolean hasItem = entities.moveToFirst();  hasItem;  hasItem = entities.moveToNext()) {
-			String entityValue = entities.getString(1);
+		if (myApplication.getmTablesDB().contains(entity)) {
+			Cursor entities = context.getContentResolver().query(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null, null, null, null);
 			
-			JsonElement jsonElement = gson.fromJson(entityValue, JsonElement.class);
-			JsonObject jsonObject = jsonElement.getAsJsonObject();
-
-			if (cmpType.isEmpty() || jsonObject.has(cmpType) && jsonObject.get(cmpType).getAsString().equals(cmpValue)) {
-
-				for (Map.Entry<String, JsonElement> entry : jsonValues.entrySet()) {
-					String key = entry.getKey();
-					JsonElement value = entry.getValue();
-					
-					jsonObject.add(key, value);
-				}
-				
-//				JsonPrimitive timestamp = new JsonPrimitive(new Timestamp(System.currentTimeMillis()).toString());
-//				jsonObject.add("updatedat", timestamp);
-				
-				ContentValues contentValues = new ContentValues();
-				contentValues.put("entity", jsonObject.toString());
-				
-				String where = "_id = " + entities.getString(entities.getColumnIndex("_id"));
-				
-				context.getContentResolver().update(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), contentValues, where, null);
+			JsonParser jsonParser = new JsonParser();
+			JsonObject jsonQuery = (JsonObject)jsonParser.parse(query);
+			JsonObject jsonValues = (JsonObject)jsonParser.parse(values);
+			
+			String cmpType = ""; 
+			String cmpValue = "";
+			
+			for (Map.Entry<String, JsonElement> entry : jsonQuery.entrySet()) {
+				cmpType = entry.getKey();
+				cmpValue = entry.getValue().getAsString();
 			}
+			
+			Gson gson = new Gson();
+			
+			for (boolean hasItem = entities.moveToFirst();  hasItem;  hasItem = entities.moveToNext()) {
+				String entityValue = entities.getString(1);
+				
+				JsonElement jsonElement = gson.fromJson(entityValue, JsonElement.class);
+				JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+				if (cmpType.isEmpty() || jsonObject.has(cmpType) && jsonObject.get(cmpType).getAsString().equals(cmpValue)) {
+
+					for (Map.Entry<String, JsonElement> entry : jsonValues.entrySet()) {
+						String key = entry.getKey();
+						JsonElement value = entry.getValue();
+						
+						jsonObject.add(key, value);
+					}
+					
+//					JsonPrimitive timestamp = new JsonPrimitive(new Timestamp(System.currentTimeMillis()).toString());
+//					jsonObject.add("updatedat", timestamp);
+					
+					ContentValues contentValues = new ContentValues();
+					contentValues.put("entity", jsonObject.toString());
+					
+					String where = "_id = " + entities.getString(entities.getColumnIndex("_id"));
+					
+					context.getContentResolver().update(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), contentValues, where, null);
+				}
+			}
+			
+			context.getContentResolver().notifyChange(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null);
+			
+			return true;
+		} else { //if (myApplication.getmTablesREST().contains(entity)) {
+			APIRestClient apiRestClient = new APIRestClient(context);
+			
+			return apiRestClient.put(entity, values, query);		
 		}
-		
-		context.getContentResolver().notifyChange(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null);
-		
-		return true;
 	}
+	
+	
 	
 	public boolean delete(String entity, String query)
 			throws UnsupportedEncodingException, ClientProtocolException, IOException {
 		
-		Cursor entities = context.getContentResolver().query(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null, null, null, null);
+		MyApplication myApplication = (MyApplication)(context.getApplicationContext());
 		
-		JsonParser jsonParser = new JsonParser();
-		JsonObject jsonQuery = (JsonObject)jsonParser.parse(query);
-		
-		String cmpType = ""; 
-		String cmpValue = "";
-		
-		for (Map.Entry<String, JsonElement> entry : jsonQuery.entrySet()) {
-			cmpType = entry.getKey();
-			cmpValue = entry.getValue().getAsString();
-		}
-		
-		Gson gson = new Gson();
-		
-		for (boolean hasItem = entities.moveToFirst();  hasItem;  hasItem = entities.moveToNext()) {
-			String entityValue = entities.getString(1);
+		if (myApplication.getmTablesDB().contains(entity)) {
+			Cursor entities = context.getContentResolver().query(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null, null, null, null);
 			
-			JsonElement jsonElement = gson.fromJson(entityValue, JsonElement.class);
-			JsonObject jsonObject = jsonElement.getAsJsonObject();
-
-			if (cmpType.isEmpty() || jsonObject.has(cmpType) && jsonObject.get(cmpType).getAsString().equals(cmpValue)) {
-				
-				JsonPrimitive timestamp = new JsonPrimitive(new Timestamp(System.currentTimeMillis()).toString());
-				jsonObject.add("updatedat", timestamp);
-				
-				JsonPrimitive delete = new JsonPrimitive(true);
-				jsonObject.add("delete", delete);
-				
-				ContentValues contentValues = new ContentValues();
-				contentValues.put("entity", jsonObject.toString());
-				
-				String where = "_id = " + entities.getString(entities.getColumnIndex("_id"));
-				
-				context.getContentResolver().update(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), contentValues, where, null);
+			JsonParser jsonParser = new JsonParser();
+			JsonObject jsonQuery = (JsonObject)jsonParser.parse(query);
+			
+			String cmpType = ""; 
+			String cmpValue = "";
+			
+			for (Map.Entry<String, JsonElement> entry : jsonQuery.entrySet()) {
+				cmpType = entry.getKey();
+				cmpValue = entry.getValue().getAsString();
 			}
-		}
-		
-		context.getContentResolver().notifyChange(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null);
-		
-		return true;
+			
+			Gson gson = new Gson();
+			
+			for (boolean hasItem = entities.moveToFirst();  hasItem;  hasItem = entities.moveToNext()) {
+				String entityValue = entities.getString(1);
+				
+				JsonElement jsonElement = gson.fromJson(entityValue, JsonElement.class);
+				JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+				if (cmpType.isEmpty() || jsonObject.has(cmpType) && jsonObject.get(cmpType).getAsString().equals(cmpValue)) {
+					
+					JsonPrimitive timestamp = new JsonPrimitive(new Timestamp(System.currentTimeMillis()).toString());
+					jsonObject.add("updatedat", timestamp);
+					
+					JsonPrimitive delete = new JsonPrimitive(true);
+					jsonObject.add("delete", delete);
+					
+					ContentValues contentValues = new ContentValues();
+					contentValues.put("entity", jsonObject.toString());
+					
+					String where = "_id = " + entities.getString(entities.getColumnIndex("_id"));
+					
+					context.getContentResolver().update(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), contentValues, where, null);
+				}
+			}
+			
+			context.getContentResolver().notifyChange(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), null);
+			
+			return true;
+		} else { //if (myApplication.getmTablesREST().contains(entity)) {
+			APIRestClient apiRestClient = new APIRestClient(context);
+			
+			return apiRestClient.delete(entity, query);
+		}	
 	}
 	
 	public boolean updateAll(List<String> entities)

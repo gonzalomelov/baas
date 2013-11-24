@@ -50,14 +50,21 @@ public class Main extends Activity {
         //####### Inicialización SDK nuestro
 		MyApplication myApplication = (MyApplication)(context.getApplicationContext());
 		
-		List<String> entities = new ArrayList<String>();
-		entities.add("Admin");
-		entities.add("Objeto");
-		entities.add("Oferta");
-		entities.add("Trueque");
-		entities.add("Usuario");
+		List<String> syncEntities = new ArrayList<String>();
+//		syncEntities.add("Admin");
+//		syncEntities.add("Objeto");
+//		syncEntities.add("Trueque");
+//		syncEntities.add("Usuario");
+//		syncEntities.add("Oferta");
 		
-		myApplication.init(this, entities); 
+		List<String> commonEntities = new ArrayList<String>();
+		commonEntities.add("Admin");
+		commonEntities.add("Objeto");
+		commonEntities.add("Trueque");
+		commonEntities.add("Usuario");
+		commonEntities.add("Oferta");
+		
+		myApplication.init(this, syncEntities, commonEntities); 
 
 		//####### Inicialización SDK ellos
 		//Setear id de aplicacion
@@ -87,7 +94,7 @@ public class Main extends Activity {
         //COMPRUEBO SI EL USUARIO YA ESTA LOGEADO
         SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
         String mail = prefs.getString("mail", "");
-        if(!mail.equals("") && Factory.getUsuarioCtrl().getUsuario(this, mail)!=null){ 
+        if(!mail.equals("")) {// && Factory.getUsuarioCtrl().getUsuario(this, mail)!=null){ 
         	startActivity(new Intent(Main.this, Home.class));
         }
     }

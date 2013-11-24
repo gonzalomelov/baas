@@ -25,6 +25,8 @@ public class Entity {
 	
 	private String name;
 	
+	private boolean sync;
+	
 	@ManyToOne
 	private Application application;
 	
@@ -37,9 +39,10 @@ public class Entity {
 	
 	public Entity() {}
 	
-	public Entity(String nombre, Application app){
+	public Entity(String nombre, Application app, boolean sync){
 		this.name = nombre;
 		this.application = app;
+		this.sync = sync;
 	}
 	
 	public long getId() {
@@ -56,6 +59,14 @@ public class Entity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isSync() {
+		return sync;
+	}
+
+	public void setSync(boolean sync) {
+		this.sync = sync;
 	}
 
 	public Application getApplication() {

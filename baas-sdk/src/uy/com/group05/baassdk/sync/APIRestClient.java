@@ -12,8 +12,10 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -105,6 +107,89 @@ public class APIRestClient {
 		httpPost.setEntity(strEntity);
 		
 		HttpResponse httpResponse = httpClient.execute(httpPost);
+		
+		int statusCode = httpResponse.getStatusLine().getStatusCode();
+		
+		Boolean ret = Boolean.valueOf(false);
+		
+		if (statusCode != HttpStatus.SC_OK) {
+			return ret;
+		}
+		
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader(httpResponse.getEntity().getContent()));
+		
+		Gson gson = new Gson();
+		ret = gson.fromJson(br, Boolean.class);
+		
+		return ret;
+	}
+	
+	public boolean put(String entity, String json, String query)
+			throws UnsupportedEncodingException, ClientProtocolException, IOException {
+		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
+		
+		String appName = AssetsPropertyReader.getProperties(context, "appName");
+		
+		String url = serviceUrl + "/api/entities" + "/" + appName + "/" + entity + "/" + URLEncoder.encode(query, "ISO-8859-1");
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPut httpPut = new HttpPut(url);
+		
+		SharedPreferences prefs =
+				context.getSharedPreferences("uy.com.group05.baasclient.sdk",Context.MODE_PRIVATE);
+		
+		//String accessToken = prefs.getString("accessToken", "Invalid");
+		
+		String accessToken = "851f7514-cb0f-483a-b523-324708a53364";
+		
+		httpPut.setHeader("accessToken", accessToken);
+		
+		StringEntity strEntity = new StringEntity(json);
+		strEntity.setContentType("application/json");
+		
+		httpPut.setEntity(strEntity);
+		
+		HttpResponse httpResponse = httpClient.execute(httpPut);
+		
+		int statusCode = httpResponse.getStatusLine().getStatusCode();
+		
+		Boolean ret = Boolean.valueOf(false);
+		
+		if (statusCode != HttpStatus.SC_OK) {
+			return ret;
+		}
+		
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader(httpResponse.getEntity().getContent()));
+		
+		Gson gson = new Gson();
+		ret = gson.fromJson(br, Boolean.class);
+		
+		return ret;
+	}
+	
+	public boolean delete(String entity, String query)
+			throws UnsupportedEncodingException, ClientProtocolException, IOException {
+		String serviceUrl = AssetsPropertyReader.getProperties(context, "baasUrl");
+		
+		String appName = AssetsPropertyReader.getProperties(context, "appName");
+		
+		String url = serviceUrl + "/api/entities" + "/" + appName + "/" + entity + "/" + URLEncoder.encode(query, "ISO-8859-1");
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpDelete httpDelete = new HttpDelete(url);
+		
+		SharedPreferences prefs =
+				context.getSharedPreferences("uy.com.group05.baasclient.sdk",Context.MODE_PRIVATE);
+		
+		//String accessToken = prefs.getString("accessToken", "Invalid");
+		
+		String accessToken = "851f7514-cb0f-483a-b523-324708a53364";
+		
+		httpDelete.setHeader("accessToken", accessToken);
+		
+		HttpResponse httpResponse = httpClient.execute(httpDelete);
 		
 		int statusCode = httpResponse.getStatusLine().getStatusCode();
 		

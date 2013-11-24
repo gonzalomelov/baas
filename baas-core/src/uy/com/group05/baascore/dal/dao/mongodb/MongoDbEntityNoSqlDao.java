@@ -97,8 +97,6 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 		
 		DBObject dbObject = (DBObject) JSON.parse(jsonEntity);
 		
-		dbObject.put("updatedat", (new Timestamp(System.currentTimeMillis())).toString());
-		
 		dbCollection.insert(dbObject);	
 	}
 
@@ -126,9 +124,10 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 		DBObject dbQuery = (DBObject) JSON.parse(query);
 		DBObject dbObject = (DBObject) JSON.parse(jsonEntity);
 		
-		dbObject.put("updatedat", (new Timestamp(System.currentTimeMillis())).toString());
+		BasicDBObject updateObj = new BasicDBObject();
+		updateObj.put("$set", dbObject);
 		
-		dbCollection.update(dbQuery, dbObject);
+		dbCollection.update(dbQuery, updateObj);
 	}
 
 	@Override

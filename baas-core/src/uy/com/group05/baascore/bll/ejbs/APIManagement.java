@@ -117,7 +117,7 @@ public class APIManagement implements APIManagementLocal {
 		
 		pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, entityId);
 
-		startDataSynchronization(app.getId(), entity);
+		//startDataSynchronization(app.getId(), entity);
 		
 		return true;
 	}
@@ -149,7 +149,7 @@ public class APIManagement implements APIManagementLocal {
 		
 		pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, ent.getId());
 		
-		startDataSynchronization(app.getId(), entity);
+		//startDataSynchronization(app.getId(), entity);
 		
 		return true;
 	}
@@ -181,7 +181,7 @@ public class APIManagement implements APIManagementLocal {
 		
 		pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, ent.getId());
 		
-		startDataSynchronization(app.getId(), entity);
+		//startDataSynchronization(app.getId(), entity);
 		
 		return true;
 	}

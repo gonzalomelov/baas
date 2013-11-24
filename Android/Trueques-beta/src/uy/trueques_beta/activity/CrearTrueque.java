@@ -97,10 +97,10 @@ public class CrearTrueque extends Fragment{//Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						if (Factory.getUsuarioCtrl().getUsuario(CrearTrueque.this.getActivity(), mail).isBloqueado()){	
-							Toast.makeText(CrearTrueque.this.getActivity(), "Usuario bloqueado, no puede realizar la acción", Toast.LENGTH_SHORT);
+//						if (Factory.getUsuarioCtrl().getUsuario(CrearTrueque.this.getActivity(), mail).isBloqueado()){	
+//							Toast.makeText(CrearTrueque.this.getActivity(), "Usuario bloqueado, no puede realizar la acción", Toast.LENGTH_SHORT);
 							//finish();
-						}else
+//						}else
 							attemptCrearTrueque();
 					}
 				});
@@ -131,12 +131,12 @@ public class CrearTrueque extends Fragment{//Activity {
 //                    Bitmap bitmap2=Bitmap.createScaledBitmap(bitmap, 120, 120, false);
 //                    Log.i("TAM_IMG", "Height="+bitmap2.getHeight() +"Count="+ bitmap2.getByteCount());
 //                    bitmap=Bitmap.createScaledBitmap(bitmap, 120, 120, true);
-                    Log.i("TAM_IMG", "Height="+bitmap.getHeight()+" Width="+bitmap.getWidth() +"Count="+ bitmap.getByteCount());
+//                    Log.i("TAM_IMG", "Height="+bitmap.getHeight()+" Width="+bitmap.getWidth() +"Count="+ bitmap.getByteCount());
              		int w=bitmap.getWidth();
              		int h=bitmap.getHeight();
              		int height = (180*h)/w;
              		bitmap=Bitmap.createScaledBitmap(bitmap, 180, height, true);
-             		Log.i("TAM_IMG", "Height="+bitmap.getHeight()+" Width="+bitmap.getWidth() +"Count="+ bitmap.getByteCount());
+//             		Log.i("TAM_IMG", "Height="+bitmap.getHeight()+" Width="+bitmap.getWidth() +"Count="+ bitmap.getByteCount());
                     imgTrueque.setImageBitmap(bitmap);
                  } catch (FileNotFoundException e) {
                 	Toast.makeText(this.getActivity(), "Error al cargar la imagen", Toast.LENGTH_SHORT).show();
