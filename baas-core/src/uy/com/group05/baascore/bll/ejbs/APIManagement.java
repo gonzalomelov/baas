@@ -211,9 +211,10 @@ public class APIManagement implements APIManagementLocal {
 		
 		if (result.isSincronizar()) {
 			startDataSynchronization(app.getId(), entity);
+			
+			//Si hay que sincronizar es porque se cambiar los datos, por lo tanto hay que avisar si corresponde
+			pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, ent.getId());
 		}
-		
-		pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, ent.getId());
 		
 		return result.getJson();
 	}
