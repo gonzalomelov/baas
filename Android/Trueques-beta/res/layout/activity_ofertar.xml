@@ -74,25 +74,31 @@
         </EditText>
         
 <TableLayout 
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal">
             <TableRow
-                android:layout_marginTop="20sp" >
-	            
+                android:layout_marginTop="20sp" 
+                android:layout_gravity="center_horizontal">
+	        <LinearLayout 
+	            android:layout_width="match_parent"
+    			android:layout_height="match_parent"
+    			android:orientation="horizontal">
 	            <Button
 	            android:id="@+id/BtnImg"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="Agregar imagen"
 	            android:textSize="14sp"
-	             /> 
+	            style="@style/btnStyleBreakerBay"/> 
                 <Button
 	            android:id="@+id/BtnOfertar"
-	            android:layout_width="wrap_content"
+	            android:layout_width="120sp"
 	            android:layout_height="wrap_content"
-	            android:layout_marginLeft="50sp"
+	            android:layout_marginLeft="40sp"
 	            android:text="Ofertar"
-	             />
+	            style="@style/btnStyleBreakerBay"/>
+            </LinearLayout>
             </TableRow>
 </TableLayout>
 

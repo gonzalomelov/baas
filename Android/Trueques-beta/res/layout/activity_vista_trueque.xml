@@ -107,6 +107,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Ofertar"
+        style="@style/btnStyleBreakerBay"
    	 />
     <TextView android:id="@+id/CantOfertas"
         android:layout_width="wrap_content"

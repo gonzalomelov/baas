@@ -40,6 +40,14 @@
             style="@style/LoginFormContainer"
             android:orientation="vertical" >
 
+            <TextView 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ingresa con tu cuenta de XXXXAPP"
+                android:textSize="22sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10sp"/>
+            
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
@@ -61,14 +69,6 @@
                 android:maxLines="1"
                 android:singleLine="true" />
 
-             <CheckBox
-		        android:id="@+id/chkAdmin"
-		        android:layout_width="wrap_content"
-		        android:layout_height="50sp"
-		        android:text="Ingresar como Administrador"
-		        android:checked="false" 
-		        android:layout_marginBottom="10sp"/>
-             
             <Button
                 android:id="@+id/sign_in_button"
                 android:layout_width="match_parent"
@@ -78,9 +78,8 @@
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
                 android:text="Login" 
-                style="@style/btnStyleBreakerBay"/>
-            
-           
+                style="@style/btnStyleBreakerBay"/>   
+
         </LinearLayout>
     </ScrollView>
     

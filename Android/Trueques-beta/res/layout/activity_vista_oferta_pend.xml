@@ -51,7 +51,7 @@
         android:id="@+id/tableDatosOferta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="15dp"
+        android:paddingBottom="10dp"
         android:paddingTop="5dp" >
 
        <TableRow android:paddingBottom="3dp" >
@@ -94,7 +94,7 @@
                 android:textSize="18sp" />
         </TableRow>
         
-        <TableLayout android:paddingBottom="10dp">
+        <TableLayout android:paddingBottom="7dp">
             <TextView android:id="@+id/LblDesc" />
         </TableLayout>
         
@@ -103,7 +103,7 @@
                 android:textSize="16sp" />
         </TableRow>
         
-        <TableLayout android:paddingBottom="5dp">
+        <TableLayout android:paddingBottom="0dp">
             <TextView android:id="@+id/LblUbicacion" />
         </TableLayout>
         
@@ -116,17 +116,17 @@
 	    <TableRow>
 		    <Button
 		        android:id="@+id/BtnRechazar"
-		        android:layout_width="match_parent"
+		        android:layout_width="130sp"
 		        android:layout_height="wrap_content"
 		        android:text="Rechazar"
-		        android:layout_marginRight="50dp"
-		   	 />
+		        android:layout_marginRight="20dp"
+		        style="@style/btnStyleBreakerBay"/>
 		    <Button
 		        android:id="@+id/BtnAceptar"
-		        android:layout_width="match_parent"
+		        android:layout_width="130sp"
 		        android:layout_height="wrap_content"
 		        android:text="Aceptar"
-		   	 />
+		        style="@style/btnStyleBreakerBay"/>
 	    </TableRow>
     </TableLayout>
 
