@@ -17,7 +17,8 @@
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-/
+/
+
 
     <!-- GCM -->
     <permission
@@ -66,7 +67,12 @@
         <activity
             android:name="uy.trueques_beta.activity.Perfil"
             android:label="@string/title_activity_perfil" >
-        </activity>
+        </activity>
+
+
+
+
+
         -->
         <activity
             android:name="uy.trueques_beta.activity.CrearTrueque"
@@ -122,9 +128,22 @@
             android:name="uy.trueques_beta.activity.VistaUsuario"
             android:label="@string/title_activity_vista_usuario" >
         </activity>
+        
+        <!-- GCM NO SDK-->
+        <receiver
+            android:name="uy.trueques_beta.gcm.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="uy.trueques_beta.gcm" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="uy.trueques_beta.gcm.GcmIntentService" />
 
         <!-- BaaS SDK -->
-        <receiver
+        <!-- <receiver
             android:name="uy.com.group05.baassdk.gcm.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
@@ -135,6 +154,7 @@
         </receiver>
 
         <service android:name="uy.com.group05.baassdk.gcm.GcmIntentService" />
+        -->
         <service android:name="uy.com.group05.baassdk.sync.AuthenticatorService" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
@@ -164,9 +184,9 @@
             android:permission="uy.com.group05.baassdk.sync.provider.permission"
             android:syncable="true" />
 
-        <meta-data
+        <!-- <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            android:value="@integer/google_play_services_version" /> -->
 
         <!-- Fin BaaS SDK -->
         <activity

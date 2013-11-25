@@ -16,8 +16,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import uy.com.group05.baassdk.*;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.util.Log;
 import uy.trueques_beta.entities.Objeto;
 import uy.trueques_beta.entities.Oferta;
@@ -28,6 +30,7 @@ public class TruequeCtrl {
 	
 	//private Map<Integer, Trueque> trueques = new HashMap<Integer, Trueque>();
 	//static private int idCont = 1;
+	private Activity act;
 	
 	public Trueque getTrueque(Context context, String id) {
 		//SDK
@@ -135,6 +138,7 @@ public class TruequeCtrl {
 	}
 	
 	public boolean aceptarOferta(Context context, String idTrueque, String idOferta){
+		this.act = (Activity) context;
 		Trueque t = getTrueque(context, idTrueque);
 		//(!this.trueques.containsKey(idTrueque) || !this.trueques.get(idTrueque).existOferta(idOferta))
 		if(t==null || !t.existOferta(idOferta))
@@ -192,6 +196,10 @@ public class TruequeCtrl {
 					
 					SDKFactory.getAPIFacade(context).update("Usuario", query, values);
 					
+					// Notificacion
+					NotifTask mandarNotif = new NotifTask();
+					mandarNotif.execute(uOfertante.getMail(), t.getUsuario() + " aceptó tu oferta!", "dif", "ofertaAceptada");
+					
 					//Marco las demas ofertas como rechazadas
 					for(Oferta o: t.getOfertas()){
 						if(!o.equals(ofer))
@@ -242,6 +250,11 @@ public class TruequeCtrl {
 			String values = "{rechazada:true}";
 			
 			SDKFactory.getAPIFacade(context).update("Oferta", query, values);
+			
+			// Notificacion
+			NotifTask mandarNotif = new NotifTask();
+			mandarNotif.execute(Factory.getOfertaCtrl().getOferta(context, idOferta).getUsuario(), t.getUsuario() + " rechazó tu oferta.", "dif", "ofertaRechazada");
+			
 			return true;
 		}
 		catch (UnsupportedEncodingException e) {
@@ -445,6 +458,7 @@ public class TruequeCtrl {
 	}
 	
 	public boolean crearOferta(Context context, String idTrueque, String mail, String nomObj, String desc, float valor, String ubicacion, Bitmap imagen){
+		this.act = (Activity) context;
 		Trueque t = getTrueque(context, idTrueque); //this.trueques.get(idTrueque);
 		if (t==null)
 			return false;
@@ -468,7 +482,12 @@ public class TruequeCtrl {
 			String ofertas = gson.toJson(t.getOfertas());
 			String values = "{ofertas:"+ofertas+"}";
 			
-			SDKFactory.getAPIFacade(context).update("Trueque", query, values);
+			boolean ok = SDKFactory.getAPIFacade(context).update("Trueque", query, values);
+			if (ok) {
+				// Notificacion
+				NotifTask mandarNotif = new NotifTask();
+				mandarNotif.execute(t.getUsuario(), "Nueva oferta de " + mail, "dif", "ofertaNueva");
+			}
 			
 		}
 		catch (UnsupportedEncodingException e) {
@@ -587,5 +606,41 @@ public class TruequeCtrl {
 		}
 		return false;
 		
+	}
+	
+	private class NotifTask extends AsyncTask<String, Void, Boolean> {
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+		
+		@Override
+		protected Boolean doInBackground(String... params) {
+			GCMService gcms = SDKFactory.getGCMService(act);
+			Log.i("GCM SDK", "Se va a mandar una notificacion personalizada...");
+			try {
+				return gcms.sendNotificationToClient(params[0], "message", params[1], params[2], params[3]);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+				return false;
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+				return false;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			
+		}
+
+		@Override
+		protected void onCancelled() {
+			
+		}
 	}
 }

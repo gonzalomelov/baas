@@ -112,11 +112,11 @@ public class PushRestImpl implements PushRest {
 
 	@Override
 	public boolean sendNotificationToClient(UUID accessToken, String appName,
-			String mailReceiver, String msgKey, String msgValue) {
+			String mailReceiver, String msgKey, String msgValue, String difKey, String difValue) {
 		try {
 			long appId = appManagementLocal.getApplication(appName).getId();
 			if (clientManagementLocal.existsClient(accessToken, appId))
-				return pushChannelManagementLocal.sendNotificationToClient(mailReceiver, msgKey, msgValue);
+				return pushChannelManagementLocal.sendNotificationToClient(mailReceiver, msgKey, msgValue, difKey, difValue);
 			else
 				return false;
 		} catch (ClientNotRegisteredException e) {

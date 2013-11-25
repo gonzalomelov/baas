@@ -45,7 +45,9 @@ public interface PushRest {
 			@FormParam("appName") String appName,
 			@FormParam("mailReceiver") String mailReceiver,
 			@FormParam("msgKey") String msgKey,
-			@FormParam("msgValue") String msgValue);
+			@FormParam("msgValue") String msgValue,
+			@FormParam("difKey") String difKey,
+			@FormParam("difValue") String difValue);
 	
 	@POST
 	@Path("/subscribe")

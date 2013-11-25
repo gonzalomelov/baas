@@ -22,12 +22,13 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 public class Configuracion extends Activity {
-	private CheckBox nueva, aceptada, rechazada;
+	private CheckBox chkOfertasNuevas, chkOfertasAceptadas, chkOfertasRechazadas, chkTruequesNuevos;
 	private SharedPreferences.Editor editor;
 	private String mail;
 	private boolean notiNO;
 	private boolean notiOA;
 	private boolean notiOR;
+	private boolean notiTruequesNuevos;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +41,20 @@ public class Configuracion extends Activity {
 		this.editor = prefs.edit();
 //		editor.putString("mail", mail);
 //		editor.commit();
-		notiNO = prefs.getBoolean("NotiNuevaOferta", false);
-		notiOA =prefs.getBoolean("NotiOfertaAceptada", false);
-		notiOR =prefs.getBoolean("NotiOfertaRechazada", false);
+		notiNO = prefs.getBoolean("notifOfertasNuevas", false);
+		notiOA =prefs.getBoolean("notifOfertasAceptadas", false);
+		notiOR =prefs.getBoolean("notifOfertasRechazadas", false);
+		notiTruequesNuevos=prefs.getBoolean("truequesNuevos", false);
 		
-		nueva = (CheckBox) findViewById(R.id.chkNuevasOfertas);
-		aceptada = (CheckBox) findViewById(R.id.chkOfertasAceptadas);
-		rechazada = (CheckBox) findViewById(R.id.chkOfertasRechazadas);
+		chkOfertasNuevas = (CheckBox) findViewById(R.id.chkNuevasOfertas);
+		chkOfertasAceptadas = (CheckBox) findViewById(R.id.chkOfertasAceptadas);
+		chkOfertasRechazadas = (CheckBox) findViewById(R.id.chkOfertasRechazadas);
+		chkTruequesNuevos = (CheckBox) findViewById(R.id.chkTruequesNuevos);
 		
-		nueva.setChecked(notiNO);
-		aceptada.setChecked(notiOA);
-		rechazada.setChecked(notiOR);
+		chkOfertasNuevas.setChecked(notiNO);
+		chkOfertasAceptadas.setChecked(notiOA);
+		chkOfertasRechazadas.setChecked(notiOR);
+		chkTruequesNuevos.setChecked(notiTruequesNuevos);
 		
 		addListenerOnCheck();
 	}
@@ -58,93 +62,157 @@ public class Configuracion extends Activity {
 	
 	 public void addListenerOnCheck() {
 		 
-			nueva.setOnClickListener(new OnClickListener() {
+		 chkOfertasNuevas.setOnClickListener(new OnClickListener() {
 			  @Override
 			  public void onClick(View v) {
 		                //is chkIos checked?
 				if (((CheckBox) v).isChecked()) {
 					Toast.makeText(Configuracion.this, "Registrado", Toast.LENGTH_SHORT).show();
-					
-					new AsyncTask<Void, Void, Boolean>() {
-//			    		private final ProgressDialog dialog = new ProgressDialog(act);
-			    		@Override
-			    		protected void onPreExecute() {
-//			    			this.dialog.setMessage("Suscribiendo a canales...");
-//			    			this.dialog.setIndeterminate(true);
-//			    			this.dialog.show();
-			    		}
-			    		
-					    @Override
-					    protected Boolean doInBackground(Void... params) {
-					    	
-							try {
-								GCMService gcms = SDKFactory.getGCMService(Configuracion.this);
-								gcms.subscribeToPushChannel("NotiNuevaOferta");
-							} catch (UnsupportedEncodingException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-								return false;
-							} catch (ClientProtocolException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-								return false;
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-								return false;
-							}
-					    	
-					    	return true;
-					    }
-					    
-					    @Override
-			            protected void onPostExecute(Boolean ok) {
-//					    	if (this.dialog.isShowing()) {
-//					    		this.dialog.dismiss();
-//					    	}
-//					    	Toast.makeText(act, "Suscripciones realizadas", Toast.LENGTH_LONG).show();
-//					    	act.finish();
-			            }
-					}.execute(null, null, null);
-					
-					editor.putBoolean("NotiNuevaOferta", true);
+					editor.putBoolean("notifOfertasNuevas", true);
 				}else{
 					Toast.makeText(Configuracion.this, "Eliminado", Toast.LENGTH_SHORT).show();
-					editor.putBoolean("NotiNuevaOferta", false);
+					editor.putBoolean("notifOfertasNuevas", false);
 				}
 				editor.commit();
 			  }
 			});
 			
-			aceptada.setOnClickListener(new OnClickListener() {
+			chkOfertasAceptadas.setOnClickListener(new OnClickListener() {
 			  @Override
 			  public void onClick(View v) {
 		                //is chkIos checked?
 				if (((CheckBox) v).isChecked()) {
 					Toast.makeText(Configuracion.this, "Registrado", Toast.LENGTH_SHORT).show();
-					editor.putBoolean("NotiOfertaAceptada", true);
+					editor.putBoolean("notifOfertasAceptadas", true);
 				}else{
 					Toast.makeText(Configuracion.this, "Eliminado", Toast.LENGTH_SHORT).show();
-					editor.putBoolean("NotiOfertaAceptada", false);
+					editor.putBoolean("notifOfertasAceptadas", false);
 				}
 				editor.commit();
 			  }
 			});
 			
-			rechazada.setOnClickListener(new OnClickListener() {
+			chkOfertasRechazadas.setOnClickListener(new OnClickListener() {
 			  @Override
 			  public void onClick(View v) {
 		                //is chkIos checked?
 				if (((CheckBox) v).isChecked()) {
 					Toast.makeText(Configuracion.this, "Registrado", Toast.LENGTH_SHORT).show();
-					editor.putBoolean("NotiOfertaRechazada", true);
+					editor.putBoolean("notifOfertasRechazadas", true);
 				}else{
 					Toast.makeText(Configuracion.this, "Eliminado", Toast.LENGTH_SHORT).show();
-					editor.putBoolean("NotiOfertaRechazada", false);
+					editor.putBoolean("notifOfertasRechazadas", false);
 				}
 				editor.commit();
 			  }
 			});
+			
+			// Canal Push de Trueques Nuevos
+			chkTruequesNuevos.setOnClickListener(new OnClickListener() {
+				  @Override
+				  public void onClick(View v) {
+					  final CheckBox check = (CheckBox) v;
+					if (check.isChecked()) {
+						new AsyncTask<Void, Void, Boolean>() {
+//				    		private final ProgressDialog dialog = new ProgressDialog(act);
+				    		@Override
+				    		protected void onPreExecute() {
+//				    			this.dialog.setMessage("Suscribiendo a canales...");
+//				    			this.dialog.setIndeterminate(true);
+//				    			this.dialog.show();
+				    		}
+				    		
+						    @Override
+						    protected Boolean doInBackground(Void... params) {
+						    	
+								try {
+									GCMService gcms = SDKFactory.getGCMService(Configuracion.this);
+									return gcms.subscribeToPushChannel("truequesNuevos");
+								} catch (UnsupportedEncodingException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+									return false;
+								} catch (ClientProtocolException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+									return false;
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+									return false;
+								}
+						    }
+						    
+						    @Override
+				            protected void onPostExecute(Boolean ok) {
+//						    	if (this.dialog.isShowing()) {
+//						    		this.dialog.dismiss();
+//						    	}
+//						    	Toast.makeText(act, "Suscripciones realizadas", Toast.LENGTH_LONG).show();
+//						    	act.finish();
+						    	if (ok) {
+						    		Toast.makeText(Configuracion.this, "Registrado", Toast.LENGTH_SHORT).show();
+						    		editor.putBoolean("truequesNuevos", true);
+						    		editor.commit();
+						    	}
+						    	else {
+						    		Toast.makeText(Configuracion.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+						    		check.setChecked(false);
+						    	}
+				            }
+						}.execute(null, null, null);
+					}else{
+						new AsyncTask<Void, Void, Boolean>() {
+//				    		private final ProgressDialog dialog = new ProgressDialog(act);
+				    		@Override
+				    		protected void onPreExecute() {
+//				    			this.dialog.setMessage("Suscribiendo a canales...");
+//				    			this.dialog.setIndeterminate(true);
+//				    			this.dialog.show();
+				    		}
+				    		
+						    @Override
+						    protected Boolean doInBackground(Void... params) {
+						    	
+								try {
+									GCMService gcms = SDKFactory.getGCMService(Configuracion.this);
+									return gcms.unsubscribeFromPushChannel("truequesNuevos");
+								} catch (UnsupportedEncodingException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+									return false;
+								} catch (ClientProtocolException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+									return false;
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+									return false;
+								}
+						    }
+						    
+						    @Override
+				            protected void onPostExecute(Boolean ok) {
+//						    	if (this.dialog.isShowing()) {
+//						    		this.dialog.dismiss();
+//						    	}
+//						    	Toast.makeText(act, "Suscripciones realizadas", Toast.LENGTH_LONG).show();
+//						    	act.finish();
+						    	if (ok) {
+						    		Toast.makeText(Configuracion.this, "Eliminado", Toast.LENGTH_SHORT).show();
+						    		editor.putBoolean("truequesNuevos", false);
+						    	}
+						    	else {
+						    		Toast.makeText(Configuracion.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+						    		check.setChecked(true);
+						    	}
+				            }
+						}.execute(null, null, null);
+					}
+					editor.commit();
+				  }
+				});
 	 }
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

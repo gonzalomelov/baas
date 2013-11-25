@@ -84,7 +84,8 @@ public interface PushChannelManagementLocal {
 			String pushChanName, String msgKey, String msgValue) throws AppNotRegisteredException,
 			PushChanNotRegisteredException;
 	
-	public boolean sendNotificationToClient(String mailReceiver, String msgKey, String msgValue) throws ClientNotRegisteredException;
+	public boolean sendNotificationToClient(String mailReceiver, String msgKey, String msgValue, String difKey, String difValue)
+			throws ClientNotRegisteredException;
 	
 	public PushChannel getPushChannel(long appId, String pushChanName)
 			throws PushChanNotRegisteredException;

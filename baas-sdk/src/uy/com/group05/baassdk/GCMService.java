@@ -317,7 +317,7 @@ public class GCMService {
 	    }
     }
     
-    private boolean sendNotificationToClient(Context context, String mailReceptor, String msgKey, String msgValue)
+    private boolean sendNotificationToClient(Context context, String mailReceptor, String msgKey, String msgValue, String difKey, String difValue)
 			throws UnsupportedEncodingException, ClientProtocolException,
 			IOException {
 		
@@ -341,6 +341,8 @@ public class GCMService {
 		formParameters.add(new BasicNameValuePair("mailReceiver", mailReceptor));
 		formParameters.add(new BasicNameValuePair("msgKey", msgKey));
 		formParameters.add(new BasicNameValuePair("msgValue", msgValue));
+		formParameters.add(new BasicNameValuePair("difKey", difKey));
+		formParameters.add(new BasicNameValuePair("difValue", difValue));
 		
 		httpPost.setEntity(new UrlEncodedFormEntity(formParameters));
 		
@@ -349,6 +351,8 @@ public class GCMService {
 		android.util.Log.i("GCM SDK", "mailReceiver: " + mailReceptor);
 		android.util.Log.i("GCM SDK", "msgKey: " + msgKey);
 		android.util.Log.i("GCM SDK", "msgValue: " + msgValue);
+		android.util.Log.i("GCM SDK", "difKey: " + difKey);
+		android.util.Log.i("GCM SDK", "difValue: " + difValue);
 		
 		HttpResponse httpResponse = httpClient.execute(httpPost);
 		
@@ -364,11 +368,12 @@ public class GCMService {
 		}
 	}
     
-    public boolean sendNotificationToClient(String mailReceptor, String msgKey, String msgValue) throws UnsupportedEncodingException, ClientProtocolException, IOException {
+    public boolean sendNotificationToClient(String mailReceptor, String msgKey, String msgValue, String difKey, String difValue)
+    		throws UnsupportedEncodingException, ClientProtocolException, IOException {
     	ConnectivityManager connMgr = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
     	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 	    if (networkInfo != null && networkInfo.isConnected()) {
-	    	boolean res = sendNotificationToClient(appContext, mailReceptor, msgKey, msgValue);
+	    	boolean res = sendNotificationToClient(appContext, mailReceptor, msgKey, msgValue, difKey, difValue);
 	    	return res;
 	    }
 	    else {

@@ -190,7 +190,10 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		
 		for (PushChannel canal : canales) {
 			try {
-				sendNotificationToPushChannel(appId, canal.getId(), "message", "Se han actualizado los " + entity.getName());
+				System.out.println("Se va a mandar una notificacion push porque se actualizo la entidad " + entity.getName());
+				boolean ok = sendNotificationToPushChannel(appId, canal.getId(), "message", "Se ha actualizado " + entity.getName());
+				if (!ok)
+					System.out.println("No se mandó la notificacion push.");
 			} catch (PushChanNotRegisteredException e) {
 				// No debería pasar
 				e.printStackTrace();
@@ -404,7 +407,7 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 	}
 	
 	@Override
-	public boolean sendNotificationToClient(String mailReceiver, String msgKey, String msgValue)
+	public boolean sendNotificationToClient(String mailReceiver, String msgKey, String msgValue, String difKey, String difValue)
 			throws ClientNotRegisteredException {
 		
 		Client cliDest = clientMgmt.getClientFromEmail(mailReceiver);
@@ -419,8 +422,15 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		String gcmApiKey = propertyHandler.getProperty("gcmApiKey");
 		
 		Sender sender = new Sender(gcmApiKey);
-		Message message = new Message.Builder().timeToLive(600).addData(msgKey, msgValue).build();
-		
+		Message message;
+		if (difKey == null) {
+			message = new Message.Builder().timeToLive(600).addData(msgKey, msgValue).addData("type", "notification").build();
+			System.out.println("Mando notificación sin difKey.");
+		}
+		else {
+			message = new Message.Builder().timeToLive(600).addData(msgKey, msgValue).addData(difKey, difValue).addData("type", "notification").build();
+			System.out.println("Mando notificación con difKey: " + difKey + " y difValue: " + difValue);
+		}
 		try {
 			Result result = sender.send(message, regId, 5);
 			if (result.getMessageId() != null) {

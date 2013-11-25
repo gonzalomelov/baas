@@ -53,6 +53,18 @@
         android:layout_height="1sp">
     </TableLayout>
     
+ 	<CheckBox
+        android:id="@+id/chkTruequesNuevos"
+        android:layout_width="wrap_content"
+        android:layout_height="50sp"
+        android:text="Trueques Nuevos"
+        android:checked="true" />
+ 	<TableLayout 
+        android:background="#aaaaaa"
+        android:layout_width="match_parent"
+        android:layout_height="1sp">
+    </TableLayout>
+    
  	<!-- 
     <Button
         android:id="@+id/btnDisplay"
