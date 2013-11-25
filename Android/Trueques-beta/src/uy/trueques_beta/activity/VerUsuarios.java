@@ -1,14 +1,18 @@
 package uy.trueques_beta.activity;
 
+import java.util.List;
+
 import uy.com.group05.baassdk.SDKFactory;
 import uy.trueques_beta.R;
 import uy.trueques_beta.R.layout;
 import uy.trueques_beta.R.menu;
 import uy.trueques_beta.activity.VerOfertasPendientes.AdaptadorOferta;
 import uy.trueques_beta.activity.VerTrueques.AdaptadorTrueque;
+import uy.trueques_beta.activity.VerTrueques.VerTruequeTask;
 import uy.trueques_beta.entities.Trueque;
 import uy.trueques_beta.entities.Usuario;
 import uy.trueques_beta.negocio.Factory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
@@ -16,6 +20,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +38,8 @@ public class VerUsuarios extends Activity implements AdapterView.OnItemClickList
 	private TextView lblUsuarios;
 	private Object[] usuarios;
 	private ProgressDialog pd;
+	private int size;
+	private VerUsuariosTask mAuthTask=null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,20 +52,27 @@ public class VerUsuarios extends Activity implements AdapterView.OnItemClickList
 		//Obtengo datos del usuario
         SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
+		
+		if(mAuthTask==null){
+			pd = ProgressDialog.show(this,"Ver Usuarios","Cargando Usuarios",true,false,null);
+			mAuthTask = new VerUsuariosTask();
+			mAuthTask.execute((Void) null);
+		}
+		
 //		Bundle bundle = this.getIntent().getExtras();
 //		this.mail = bundle.getString("mail");
 		//***Pruba
-		usuarios = Factory.getUsuarioCtrl().getUsuarios(this).toArray();
-		int size=usuarios.length;
+//		usuarios = Factory.getUsuarioCtrl().getUsuarios(this).toArray();
+//		int size=usuarios.length;
 		
-		lblUsuarios = (TextView)findViewById(R.id.LblUsuarios);
-		lblUsuarios.setText(lblUsuarios.getText().toString() +" ("+ size +")");
-		 
-		this.adaptador = new AdaptadorUsuario(this, R.layout.list_item_usuarios, usuarios);
-		lstUsuarios = (ListView)findViewById(R.id.LstUsuarios);
-		lstUsuarios.setAdapter(adaptador);
-		
-		lstUsuarios.setOnItemClickListener(this);
+//		lblUsuarios = (TextView)findViewById(R.id.LblUsuarios);
+//		lblUsuarios.setText(lblUsuarios.getText().toString() +" ("+ size +")");
+//		 
+//		this.adaptador = new AdaptadorUsuario(this, R.layout.list_item_usuarios, usuarios);
+//		lstUsuarios = (ListView)findViewById(R.id.LstUsuarios);
+//		lstUsuarios.setAdapter(adaptador);
+//		
+//		lstUsuarios.setOnItemClickListener(this);
 	}
 
 	@Override
@@ -106,6 +120,54 @@ public class VerUsuarios extends Activity implements AdapterView.OnItemClickList
 		}
 	}
 
+	public class VerUsuariosTask extends AsyncTask<Void, Void, Boolean> {
+		//private int idTrueque;
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			
+			size = 0;
+			List<Usuario> us =null;
+			us = Factory.getUsuarioCtrl().getUsuarios(VerUsuarios.this);
+			if(us!=null){
+				usuarios=us.toArray();
+				size=usuarios.length;
+				return true;
+			}
+			else
+				return false;
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			mAuthTask = null;
+			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
+
+			if (success) {
+				lblUsuarios = (TextView)findViewById(R.id.LblUsuarios);
+				lblUsuarios.setText(lblUsuarios.getText().toString() +" ("+ size +")");
+				 
+				adaptador = new AdaptadorUsuario(VerUsuarios.this, R.layout.list_item_usuarios, usuarios);
+				lstUsuarios = (ListView)findViewById(R.id.LstUsuarios);
+				lstUsuarios.setAdapter(adaptador);
+				
+				lstUsuarios.setOnItemClickListener(VerUsuarios.this);
+		    	
+			} else {
+				Log.i("[VerTrueques]:", "ERROR");
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			mAuthTask = null;
+			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
+		}
+	}
+	
 	
 		//Creo la clase para el adaptador
 		class AdaptadorUsuario extends ArrayAdapter {

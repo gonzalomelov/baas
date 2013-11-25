@@ -19,9 +19,13 @@ import uy.com.group05.baassdk.GCMService;
 import uy.com.group05.baassdk.MyApplication;
 import uy.com.group05.baassdk.SDKFactory;
 import uy.trueques_beta.R;
+import uy.trueques_beta.activity.CrearTrueque.CrearTruequeTask;
 import uy.trueques_beta.entities.Admin;
+import uy.trueques_beta.entities.Objeto;
+import uy.trueques_beta.entities.Usuario;
 import uy.trueques_beta.negocio.Factory;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,6 +43,9 @@ public class Main extends Activity {
 	private Context context;
 	
     private long back_pressed;
+    private String mail;
+    private ProgressDialog pd;
+    private LoginTask mAuthTask =null;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,9 +100,12 @@ public class Main extends Activity {
         
         //COMPRUEBO SI EL USUARIO YA ESTA LOGEADO
         SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
-        String mail = prefs.getString("mail", "");
-        if(!mail.equals("")) {// && Factory.getUsuarioCtrl().getUsuario(this, mail)!=null){ 
-        	startActivity(new Intent(Main.this, Home.class));
+        mail = prefs.getString("mail", "");
+        if(!mail.equals("") && mAuthTask==null) {// && Factory.getUsuarioCtrl().getUsuario(this, mail)!=null){ 
+        	pd = ProgressDialog.show(this,"Trueques Beta","Cargando",true,false,null);
+			mAuthTask = new LoginTask();
+			mAuthTask.execute((Void) null);
+        	//startActivity(new Intent(Main.this, Home.class));
         }
     }
 
@@ -135,6 +145,49 @@ public class Main extends Activity {
 	    else 
 	    	Toast.makeText(getBaseContext(), "Presiona de nuevo para salir", Toast.LENGTH_SHORT).show();
 	    back_pressed = System.currentTimeMillis();
+	}
+    
+    public class LoginTask extends AsyncTask<Void, Void, Boolean> {
+		//private String idTrueque;
+    	private Usuario u;
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			u= Factory.getUsuarioCtrl().getUsuario(Main.this, mail);
+			if (u!=null)
+				return true;
+			else
+				return false;
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			mAuthTask = null;
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
+			//showProgress(false);
+
+			if (success) {
+				Intent intent = new Intent(Main.this, Home.class);
+				intent.putExtra("Usuario", u.toJson());
+				//Usuario Ya logueado
+				startActivity(intent);
+			} else {
+				//++++
+				SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
+        		SharedPreferences.Editor editor = prefs.edit();
+        		editor.remove("mail");
+        		editor.commit();
+        		//++++
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			mAuthTask = null;
+			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
+		}
 	}
     
     public void test() {
