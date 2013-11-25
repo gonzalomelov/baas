@@ -324,7 +324,7 @@ public class TruequeCtrl {
 			
 			String json = SDKFactory.getAPIFacade(context).get(entity, query);
 			
-			Log.i("[TruequeCtrl]:", json);
+			//Log.i("[TruequeCtrl]:", json);
 			Gson gson = new Gson();
 			Trueque[] arrayTrueques = gson.fromJson(json, Trueque[].class);
 			
@@ -371,7 +371,7 @@ public class TruequeCtrl {
 			
 			String json = SDKFactory.getAPIFacade(context).get(entity, query);
 			
-			Log.i("[TruequeCtrl]:", json);
+			//Log.i("[TruequeCtrl]:", json);
 			Gson gson = new Gson();
 			Trueque[] arrayTrueques = gson.fromJson(json, Trueque[].class);
 			
@@ -405,7 +405,7 @@ public class TruequeCtrl {
 			
 			String json = SDKFactory.getAPIFacade(context).get(entity, query);
 			
-			Log.i("[TruequeCtrl]:", json);
+			//Log.i("[TruequeCtrl]:", json);
 			Gson gson = new Gson();
 			Trueque[] arrayTrueques = gson.fromJson(json, Trueque[].class);
 			return Arrays.asList(arrayTrueques);
@@ -437,7 +437,7 @@ public class TruequeCtrl {
 			
 			String json = SDKFactory.getAPIFacade(context).get(entity, query);
 			
-			Log.i("[TruequeCtrl]:", json);
+			//Log.i("[TruequeCtrl]:", json);
 			Gson gson = new Gson();
 			Trueque[] arrayTrueques = gson.fromJson(json, Trueque[].class);
 			return Arrays.asList(arrayTrueques);
@@ -465,12 +465,24 @@ public class TruequeCtrl {
 		
 		String idObj = Factory.getObjetoCtrl().crearObjeto(context, mail, nomObj, desc, valor);
 		Objeto obj = Factory.getObjetoCtrl().getObjeto(context, idObj);
-		if (obj==null)
+		if (obj==null){
+			//SDKFactory.getAPIFacade(context).delete(entity, query)
 			return false;
+		}
 		String idOfer = Factory.getOfertaCtrl().crearOferta(context, mail, obj, idTrueque, ubicacion, imagen);
 		Oferta ofer = Factory.getOfertaCtrl().getOferta(context, idOfer);
-		if (ofer==null)
+		if (ofer==null){ //Borro el objeto
+			String entity_aux = "Objeto";
+			String query_aux = "{idObjeto:\""+idObj+"\"}";
+			try {
+				SDKFactory.getAPIFacade(context).delete(entity_aux, query_aux);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+				return false;
+			}
 			return false;
+		}
 
 		t.addOferta(ofer);
 		
@@ -491,15 +503,15 @@ public class TruequeCtrl {
 			
 		}
 		catch (UnsupportedEncodingException e) {
-			Log.i("[updateUsuario]:",e.getMessage());
+			Log.i("[crearOferta]:",e.getMessage());
 			return false;
 		}
 		catch (ClientProtocolException e) {
-			Log.i("[crearTrueque]:",e.getMessage());
+			Log.i("[crearOferta]:",e.getMessage());
 			return false;
 		}
 		catch (IOException e) {
-			Log.i("[crearTrueque]:",e.getMessage());
+			Log.i("[crearOferta]:",e.getMessage());
 			return false;
 		}
 		
