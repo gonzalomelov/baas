@@ -144,7 +144,7 @@ public class TruequeCtrl {
 		//Trueque t= this.trueques.get(idTrueque);
 		if (t.getGanadora()==null && t.isActiva()){
 			Oferta ofer = Factory.getOfertaCtrl().getOferta(context, idOferta);
-			if (!ofer.isRechazada()){
+			if (ofer!=null && !ofer.isRechazada()){
 				
 				try
 				{
