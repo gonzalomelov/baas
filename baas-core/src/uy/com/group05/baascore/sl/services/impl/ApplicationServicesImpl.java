@@ -17,6 +17,8 @@ import javax.jws.WebService;
 
 
 
+
+
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Client;
@@ -75,13 +77,13 @@ public class ApplicationServicesImpl implements ApplicationServices{
 
 
 	@Override
-	public long createApplication(long idUser, String nombreApp, List<String> rolesStr, List<String> entidadesStr)
+	public long createApplication(long idUser, String nombreApp, List<String> rolesStr, List<String> entidadesStr, List<Boolean> entidadesSync)
 			throws 
 				NombreAppAlreadyRegisteredException,
 				UserNotRegisteredException,
 				MongoDBAlreadyExistsException,
 				EntityCollectionAlreadyExistsException, InvalidNameException {
-		return appManagementLocal.createApplication(idUser, nombreApp, rolesStr, entidadesStr);
+		return appManagementLocal.createApplication(idUser, nombreApp, rolesStr, entidadesStr, entidadesSync);
 	}
 	
 	
@@ -105,13 +107,13 @@ public class ApplicationServicesImpl implements ApplicationServices{
 		return appManagementLocal.editRoleApplication(idApp, idUser, nomRole);
 	}
 	
-	public long editEntityApplication(long idApp, long idUser, String nomEntity)
+	public long editEntityApplication(long idApp, long idUser, String nomEntity, boolean sync)
 			throws
 			 	AppNotRegisteredException,
 			 	UserCantAccessAppException,
 			 	EntityAlreadyRegisteredException,
 			 	EntityCollectionAlreadyExistsException, InvalidNameException{
-		return appManagementLocal.editEntityApplication(idApp, idUser, nomEntity);
+		return appManagementLocal.editEntityApplication(idApp, idUser, nomEntity, sync);
 	}
 	
 	public long editApplication(String nombreApp, List<String> rolesStr, List<String> entidadesStr)

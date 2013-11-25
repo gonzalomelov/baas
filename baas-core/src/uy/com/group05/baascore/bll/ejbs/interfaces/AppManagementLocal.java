@@ -32,7 +32,7 @@ public interface AppManagementLocal {
 			throws 
 				UserNotRegisteredException;
 	
-	public long createApplication(long idUser, String nombreApp, List<String> rolesStr, List<String> entidadesStr)
+	public long createApplication(long idUser, String nombreApp, List<String> rolesStr, List<String> entidadesStr, List<Boolean> entidadesSync)
 			throws
 				NombreAppAlreadyRegisteredException,
 				UserNotRegisteredException,
@@ -56,7 +56,7 @@ public interface AppManagementLocal {
 			 	UserCantAccessAppException,
 			 	RoleAlreadyRegisteredException, InvalidNameException;
 
-	public long editEntityApplication(long idApp, long idUser, String nomEntity)
+	public long editEntityApplication(long idApp, long idUser, String nomEntity, boolean sync)
 			throws
 			 	AppNotRegisteredException,
 			 	UserCantAccessAppException,

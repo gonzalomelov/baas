@@ -12,6 +12,8 @@ public class SimpleEntityDTO {
 	
 	private String name;
 	
+	private boolean sync;
+	
 	public long getId() {
 		return id;
 	}
@@ -26,6 +28,14 @@ public class SimpleEntityDTO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isSync() {
+		return sync;
+	}
+
+	public void setSync(boolean sync) {
+		this.sync = sync;
 	}
 	
 	

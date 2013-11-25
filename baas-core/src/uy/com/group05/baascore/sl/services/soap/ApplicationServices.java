@@ -49,7 +49,8 @@ public interface ApplicationServices {
 			@WebParam(name = "idUser") long idUser,
 			@WebParam(name = "nombreApp") String nombreApp,
 			@WebParam(name = "rolStr") List<String> rolesStr,
-			@WebParam(name = "entidadStr") List<String> entidadesStr)
+			@WebParam(name = "entidadStr") List<String> entidadesStr,
+			@WebParam(name = "entidadSync") List<Boolean> entidadesSync)
 			throws
 				NombreAppAlreadyRegisteredException,
 				UserNotRegisteredException,
@@ -87,7 +88,8 @@ public interface ApplicationServices {
 	public long editEntityApplication(
 			@WebParam(name ="idApp") long idApp, 
 			@WebParam(name ="idUser") long idUser, 
-			@WebParam(name ="nomEntity") String nomEntity)
+			@WebParam(name ="nomEntity") String nomEntity,
+			@WebParam(name ="sync") boolean sync)
 			throws
 			 	AppNotRegisteredException,
 			 	UserCantAccessAppException,

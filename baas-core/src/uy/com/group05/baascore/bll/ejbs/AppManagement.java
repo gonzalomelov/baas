@@ -83,7 +83,7 @@ public class AppManagement implements AppManagementLocal{
 		
 	}
 	
-	public long createApplication(long idUser, String nombreApp, List<String> rolesStr, List<String> entidadesStr)
+	public long createApplication(long idUser, String nombreApp, List<String> rolesStr, List<String> entidadesStr, List<Boolean> entidadesSync)
 			throws
 				NombreAppAlreadyRegisteredException,
 				UserNotRegisteredException,
@@ -128,8 +128,9 @@ public class AppManagement implements AppManagementLocal{
 		//Creo las entidades (si hay)
 		if(entidadesStr != null){
 			Iterator<String> iter = entidadesStr.iterator();
+			Iterator<Boolean> iterSync = entidadesSync.iterator();
 			while (iter.hasNext()){
-				Entity e = new Entity(iter.next(), app);
+				Entity e = new Entity(iter.next(), app, iterSync.next());
 				if(!entidades.contains(e) && !e.getName().equals("")){
 					entidades.add(e);
 					entityDao.create(e);
@@ -165,7 +166,7 @@ public class AppManagement implements AppManagementLocal{
 		Application app = appDao.read(idApp);
 		if ( app == null)//No existe la app
 			throw new AppNotRegisteredException("No existe una aplicacion con ese nombre");
-		return app.getEntities().contains(new Entity(nomEntity, app));
+		return app.getEntities().contains(new Entity(nomEntity, app, true));
 	}
 	
 	public boolean existsRoleApplication(long idApp, String nomRole) throws AppNotRegisteredException{
@@ -205,7 +206,7 @@ public class AppManagement implements AppManagementLocal{
 		return retorno.getId();
 	}
 	
-	public long editEntityApplication(long idApp, long idUser, String nomEntity)
+	public long editEntityApplication(long idApp, long idUser, String nomEntity, boolean sync)
 			throws
 			 	AppNotRegisteredException,
 			 	EntityAlreadyRegisteredException,
@@ -223,7 +224,7 @@ public class AppManagement implements AppManagementLocal{
 		//Compruebo
 		//Obtengo Entidades existentes
 		List<Entity> entities = app.getEntities();
-		Entity e = new Entity(nomEntity, app);
+		Entity e = new Entity(nomEntity, app, sync);
 		
 		if (entities.contains(e)){
 			throw new EntityAlreadyRegisteredException("Ya existe una entidad con ese nombre");
@@ -263,7 +264,7 @@ public class AppManagement implements AppManagementLocal{
 		}
 		iter = entidadesStr.iterator();
 		while (iter.hasNext()){
-			Entity e = new Entity(iter.next(), app);
+			Entity e = new Entity(iter.next(), app, true);
 			if (!app.getEntities().contains(e)){
 				//Creo la coleccion para cada entidad dentro de la base MongoDB de la APP
 				noSqlDbDao.createEntityCollection(nombreApp, e.getName()); //Primero porque si falla, no se va a crear la entidad.

@@ -5,6 +5,8 @@ public class EntityDTO {
 	
 	private String name;
 	
+	private boolean sync;
+	
 	private ApplicationDTO application;
 
 	public long getId() {
@@ -21,6 +23,14 @@ public class EntityDTO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isSync() {
+		return sync;
+	}
+
+	public void setSync(boolean sync) {
+		this.sync = sync;
 	}
 
 	public ApplicationDTO getApplication() {
