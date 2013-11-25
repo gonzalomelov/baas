@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
@@ -30,6 +31,8 @@ public class AppViewBean {
 	private Application app;
 
 	private String entityName;
+	
+	private boolean entitySync;
 
 	private String errorEntity;
 
@@ -169,6 +172,14 @@ public class AppViewBean {
 		this.entityName = entityName;
 	}
 
+	public boolean isEntitySync() {
+		return entitySync;
+	}
+
+	public void setEntitySync(boolean entitySync) {
+		this.entitySync = entitySync;
+	}
+
 	public String addEntity() {
 
 		CleanErrorMessages();
@@ -176,6 +187,7 @@ public class AppViewBean {
 		if (ExisteEntityEnLista(entityName, app.getEntidades())) {
 			errorEntity = "Ya existe la entidad:" + entityName;
 			entityName = "";
+			entitySync = false;
 			return null;
 		}
 
@@ -183,22 +195,29 @@ public class AppViewBean {
 		try {
 			long id = appController
 					.addEntity(app.getId(), userSessionManagementBean.getUser()
-							.getUserId(), entityName);
+							.getUserId(), entityName, entitySync);
 
 			Entity e = new Entity();
 			e.setId(id);
 			e.setName(entityName);
-
+			e.setSync(entitySync);
+			
 			app.getEntidades().add(e);
 			entityName = "";
+			entitySync = false;
 		} catch (EntityException e) {
 			errorEntity = e.getMessage();
 			entityName = "";
+			entitySync = false;
 		}
 
 		return null;
 	}
 
+	public void checkBoxListener(AjaxBehaviorEvent event) {
+	    entitySync = !entitySync;
+	}
+	
 	public String addRol() {
 
 		CleanErrorMessages();

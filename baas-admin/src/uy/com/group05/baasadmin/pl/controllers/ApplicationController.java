@@ -15,6 +15,7 @@ import uy.com.group05.baasadmin.pl.models.AppModel;
 import uy.com.group05.baasadmin.pl.models.Application;
 import uy.com.group05.baasadmin.pl.models.Cliente;
 import uy.com.group05.baasadmin.pl.models.Entity;
+import uy.com.group05.baasadmin.pl.models.EntitySync;
 import uy.com.group05.baasadmin.pl.models.Operacion;
 import uy.com.group05.baasadmin.pl.models.PushChannel;
 import uy.com.group05.baasadmin.pl.models.PushChannelEntity;
@@ -106,12 +107,20 @@ public class ApplicationController {
 
 	}
 
-	public void CreateApplication(long UserId, String appName, List<String> roles, List<String> entities) throws ApplicationException{
+	public void CreateApplication(long UserId, String appName, List<String> roles, List<EntitySync> entities) throws ApplicationException{
 		
 		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
 		
+		List<String> entitiesName = new ArrayList<String>();
+		List<Boolean> entitiesSync = new ArrayList<Boolean>();
+		
+		for (EntitySync es : entities) {
+			entitiesName.add(es.getName());
+			entitiesSync.add(es.isSync());
+		}
+		
 		try {
-			port.createApplication(UserId, appName, roles, entities);
+			port.createApplication(UserId, appName, roles, entitiesName, entitiesSync);
 		} catch (InvalidNameException_Exception e) {
 			throw new ApplicationException(e.getMessage());
 		} catch (NombreAppAlreadyRegisteredException_Exception e) {
@@ -153,6 +162,7 @@ public class ApplicationController {
 				Entity e = new Entity();
 				e.setId(entity.getId());
 				e.setName(entity.getName());
+				e.setSync(entity.isSync());
 				entidades.add(e);
 			}
 			
@@ -256,12 +266,12 @@ public class ApplicationController {
 	}
 	
 	
-	public long addEntity(long appId, long userId, String entityName) throws EntityException{
+	public long addEntity(long appId, long userId, String entityName, boolean sync) throws EntityException{
 		
 		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
 		
 		try {
-			return port.editEntityApplication(appId, userId, entityName);
+			return port.editEntityApplication(appId, userId, entityName, sync);
 		} catch (InvalidNameException_Exception e) {
 			throw new EntityException(e.getMessage());
 		} catch (UserCantAccessAppException_Exception e) {

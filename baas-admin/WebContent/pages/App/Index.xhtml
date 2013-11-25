@@ -320,7 +320,10 @@ body {
 
 						</h:column>
 
-
+						<h:column>
+							<f:facet name="header">Sync</f:facet>
+							<h:selectBooleanCheckbox value="#{e.sync}" disabled="true" />
+				   		</h:column>
 
 
 					</h:dataTable>
@@ -331,6 +334,14 @@ body {
 						<td>Entity Name :</td>
 						<td><h:inputText size="10" value="#{appViewBean.entityName}"
 								id="entityName" /></td>
+					</tr>
+					<tr>
+					<td>Sync:</td>
+						<td>
+							<h:selectBooleanCheckbox value="#{appViewBean.entitySync}">
+								<f:ajax listener="#{appViewBean.checkBoxListener}" immediate="true" />
+							</h:selectBooleanCheckbox>
+						</td>
 					</tr>
 				</table>
 

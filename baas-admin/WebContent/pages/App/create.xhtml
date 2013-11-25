@@ -256,20 +256,23 @@ body {
 					<h:column>
 
 						<f:facet name="header">Name</f:facet>
-    			#{o}
- 
-    		</h:column>
+			   			#{o.name}
+			
+			   		</h:column>
 
-
+			   		<h:column>
+						<f:facet name="header">Sync</f:facet>
+						<h:selectBooleanCheckbox value="#{o.sync}" disabled="true" />
+			   		</h:column>
 
 					<h:column>
 
 						<f:facet name="header">Action</f:facet>
 
 						<h:commandLink value="Delete"
-							action="#{createApplicationBean.deleteEntity(o)}">
+							action="#{createApplicationBean.deleteEntity(o.name)}">
 							<f:ajax render="@form"
-								listener="#{createApplicationBean.deleteEntity(o)}" />
+								listener="#{createApplicationBean.deleteEntity(o.name)}" />
 
 						</h:commandLink>
 
@@ -285,7 +288,15 @@ body {
 					<td><h:inputText size="10"
 							value="#{createApplicationBean.entityName}" id="entityName" /></td>
 				</tr>
-			</table>
+				<tr>
+					<td>Sync:</td>
+					<td>
+						<h:selectBooleanCheckbox value="#{createApplicationBean.entitySync}">
+							<f:ajax listener="#{createApplicationBean.checkBoxListener}" immediate="true" />
+						</h:selectBooleanCheckbox>
+					</td>
+				</tr>
+			</table> 
 
 			
 

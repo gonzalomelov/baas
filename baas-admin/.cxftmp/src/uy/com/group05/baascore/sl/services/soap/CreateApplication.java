@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -22,6 +23,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="nombreApp" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="rolStr" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="entidadStr" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="entidadSync" type="{http://www.w3.org/2001/XMLSchema}boolean" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -35,7 +37,8 @@ import javax.xml.bind.annotation.XmlType;
     "idUser",
     "nombreApp",
     "rolStr",
-    "entidadStr"
+    "entidadStr",
+    "entidadSync"
 })
 public class CreateApplication {
 
@@ -43,6 +46,8 @@ public class CreateApplication {
     protected String nombreApp;
     protected List<String> rolStr;
     protected List<String> entidadStr;
+    @XmlElement(type = Boolean.class)
+    protected List<Boolean> entidadSync;
 
     /**
      * Gets the value of the idUser property.
@@ -140,6 +145,35 @@ public class CreateApplication {
             entidadStr = new ArrayList<String>();
         }
         return this.entidadStr;
+    }
+
+    /**
+     * Gets the value of the entidadSync property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the entidadSync property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getEntidadSync().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Boolean }
+     * 
+     * 
+     */
+    public List<Boolean> getEntidadSync() {
+        if (entidadSync == null) {
+            entidadSync = new ArrayList<Boolean>();
+        }
+        return this.entidadSync;
     }
 
 }

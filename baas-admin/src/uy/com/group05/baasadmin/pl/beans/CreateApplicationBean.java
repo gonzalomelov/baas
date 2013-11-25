@@ -7,9 +7,11 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.context.FacesContext;
 
 import uy.com.group05.baasadmin.pl.controllers.ApplicationController;
+import uy.com.group05.baasadmin.pl.models.EntitySync;
 
 
 
@@ -20,6 +22,8 @@ public class CreateApplicationBean {
 	private String roleName;
 	
 	private String entityName;
+	
+	private boolean entitySync;
 	
 	private String appName;	
 	
@@ -60,8 +64,8 @@ public class CreateApplicationBean {
 	private ArrayList<String> rolList = 
 		new ArrayList<String>();
 	
-	private ArrayList<String> entityList = 
-			new ArrayList<String>();
+	private ArrayList<EntitySync> entityList = 
+			new ArrayList<EntitySync>();
 		
  
 	public ArrayList<String> getRolList() {
@@ -70,7 +74,7 @@ public class CreateApplicationBean {
  
 	}
 	
-	public ArrayList<String> getEntityList() {
+	public ArrayList<EntitySync> getEntityList() {
 		 
 		return entityList;
  
@@ -81,7 +85,7 @@ public class CreateApplicationBean {
 		CleanErrorMessages();
 		
 		
-		if(ExisteEnLista(roleName, rolList)){
+		if(ExisteEnListaString(roleName, rolList)){
 			errorRol = "Ya existe el rol:"+ roleName;
 			roleName = "";
 			return null;
@@ -107,12 +111,14 @@ public class CreateApplicationBean {
 		if(ExisteEnLista(entityName, entityList)){
 			errorEntity = "Ya existe la entidad:"+ entityName;
 			entityName = "";
+			entitySync = false;
 			return null;
 		}
 		
 		
-		entityList.add(entityName);
+		entityList.add(new EntitySync(entityName, entitySync));
 		entityName = "";
+		entitySync = false;
 		
 		return null;
 	}
@@ -123,12 +129,24 @@ public class CreateApplicationBean {
 		return null;
 	}
 
+	public void checkBoxListener(AjaxBehaviorEvent event) {
+	    entitySync = !entitySync;
+	}
+	
 	public String getEntityName() {
 		return entityName;
 	}
 
 	public void setEntityName(String entityName) {
 		this.entityName = entityName;
+	}
+
+	public boolean isEntitySync() {
+		return entitySync;
+	}
+
+	public void setEntitySync(boolean entitySync) {
+		this.entitySync = entitySync;
 	}
 
 	public String getRoleName() {
@@ -174,7 +192,7 @@ public class CreateApplicationBean {
 		
 		appName = "";
 		rolList = new ArrayList<String>();
-		entityList = new ArrayList<String>();
+		entityList = new ArrayList<EntitySync>();
 		
 		
 		return "/pages/dashboard/Index.xhtml?faces-redirect=true";
@@ -190,7 +208,20 @@ public class CreateApplicationBean {
 		this.errorRol = errorRol;
 	}
 	
-	private boolean ExisteEnLista(String element, List<String> list){
+	private boolean ExisteEnLista(String element, List<EntitySync> list){
+		
+		boolean retorno = false;
+		
+		for (EntitySync elem : list) {
+			if(elem.getName().equals(element)){
+				return true;
+			}
+		}
+		
+		return retorno;
+	}
+	
+	private boolean ExisteEnListaString(String element, List<String> list){
 		
 		boolean retorno = false;
 		

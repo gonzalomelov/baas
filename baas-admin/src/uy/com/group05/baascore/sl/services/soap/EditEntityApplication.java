@@ -19,6 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="idApp" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="idUser" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="nomEntity" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="sync" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -31,13 +32,15 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "editEntityApplication", propOrder = {
     "idApp",
     "idUser",
-    "nomEntity"
+    "nomEntity",
+    "sync"
 })
 public class EditEntityApplication {
 
     protected long idApp;
     protected long idUser;
     protected String nomEntity;
+    protected boolean sync;
 
     /**
      * Gets the value of the idApp property.
@@ -93,6 +96,22 @@ public class EditEntityApplication {
      */
     public void setNomEntity(String value) {
         this.nomEntity = value;
+    }
+
+    /**
+     * Gets the value of the sync property.
+     * 
+     */
+    public boolean isSync() {
+        return sync;
+    }
+
+    /**
+     * Sets the value of the sync property.
+     * 
+     */
+    public void setSync(boolean value) {
+        this.sync = value;
     }
 
 }

@@ -19,6 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="application" type="{http://soap.services.sl.baascore.group05.com.uy/}applicationDTO" minOccurs="0"/>
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="sync" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -31,13 +32,15 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "entityDTO", propOrder = {
     "application",
     "id",
-    "name"
+    "name",
+    "sync"
 })
 public class EntityDTO {
 
     protected ApplicationDTO application;
     protected long id;
     protected String name;
+    protected boolean sync;
 
     /**
      * Gets the value of the application property.
@@ -101,6 +104,22 @@ public class EntityDTO {
      */
     public void setName(String value) {
         this.name = value;
+    }
+
+    /**
+     * Gets the value of the sync property.
+     * 
+     */
+    public boolean isSync() {
+        return sync;
+    }
+
+    /**
+     * Sets the value of the sync property.
+     * 
+     */
+    public void setSync(boolean value) {
+        this.sync = value;
     }
 
 }
