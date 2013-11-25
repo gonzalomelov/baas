@@ -11,8 +11,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,6 +53,7 @@ public class VerRSS extends Fragment implements AdapterView.OnItemClickListener{
 	private VerRSSListener listener;
 	private int size;
 	private VerRSSTask mAuthTask = null;
+	private ProgressDialog pd;
 			
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,6 +69,7 @@ public class VerRSS extends Fragment implements AdapterView.OnItemClickListener{
         SharedPreferences prefs = this.getActivity().getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
 		if(mAuthTask==null){
+			pd = ProgressDialog.show(VerRSS.this.getActivity(),"Ver RSS","Cargando noticias",true,false,null);
 			mAuthTask = new VerRSSTask();
 			mAuthTask.execute((Void) null);
 		}
@@ -111,38 +115,55 @@ public class VerRSS extends Fragment implements AdapterView.OnItemClickListener{
 		//private int idTrueque;
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			
-			size = 0;
-			List<RSS> ts =null;
-			ts = Factory.getRSSCtrl().getListaRSS(VerRSS.this.getActivity());
-			if(ts!=null){
-				rss=ts.toArray();
-				size=rss.length;
-				return true;
-			}
-			else
+			try{
+				size = 0;
+				List<RSS> ts =null;
+					ts = Factory.getRSSCtrl().getListaRSS(VerRSS.this.getActivity());
+				if(ts!=null){
+					rss=ts.toArray();
+					size=rss.length;
+					return true;
+				}
+				else
+					return false;
+			}catch(Exception e){
+				//Log.e("[EXCEPTION RSS]", e.getMessage());
 				return false;
+			}
 		}
 
 		@Override
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 
 			if (success) {
 				Log.i("[VerRSS]:", "EXITO!");
-				adaptador = new AdaptadorRSS(VerRSS.this, R.layout.list_item_rss, rss);
-				lstRSS.setAdapter(adaptador);
-				lblVerRSS.setText(lblVerRSS.getText().toString() +" ("+ size +")");
-		    	
+				try{
+					adaptador = new AdaptadorRSS(VerRSS.this, R.layout.list_item_rss, rss);
+					lstRSS.setAdapter(adaptador);
+					lblVerRSS.setText(lblVerRSS.getText().toString() +" ("+ size +")");
+				}catch(Exception e){
+//					if(pd!=null & pd.isShowing())
+//						pd.dismiss();
+//					//Log.e("[EXCEPTION RSS]", e.getMessage());
+					
+				}
+				pd.dismiss();
 			} else {
-				Log.i("[VerTrueques]:", "ERROR");
+				Log.i("[VerRSS]:", "ERROR");
+//				if(pd!=null & pd.isShowing())
+//					pd.dismiss();
 			}
 		}
 
 		@Override
 		protected void onCancelled() {
 			mAuthTask = null;
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 			//showProgress(false);
 		}
 	}
@@ -176,8 +197,9 @@ public class VerRSS extends Fragment implements AdapterView.OnItemClickListener{
 	        titulo.setText(((RSS)rss[position]).getTitulo());
 	        //PRECIO
 	        TextView desc = (TextView)item.findViewById(R.id.DescRSS);
-	        desc.setText("$"+((RSS)rss[position]).getMensaje());
+	        desc.setText(Html.fromHtml(((RSS)rss[position]).getMensaje()));
 	        
+	        System.out.println(((RSS)rss[position]).getMensaje());
 	 
 	        return(item);
         }

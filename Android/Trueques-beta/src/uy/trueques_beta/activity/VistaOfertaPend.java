@@ -89,7 +89,9 @@ public class VistaOfertaPend extends Activity {
 					new View.OnClickListener() {
 						@Override
 						public void onClick(View view) {
-							if (Factory.getUsuarioCtrl().getUsuario(VistaOfertaPend.this, mail).isBloqueado()){	
+							SharedPreferences prefs = VistaOfertaPend.this.getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
+							if (prefs.getBoolean("isBloqueado", false)){
+							//if (Factory.getUsuarioCtrl().getUsuario(VistaOfertaPend.this, mail).isBloqueado()){	
 								Toast.makeText(VistaOfertaPend.this, "Usuario bloqueado, no puede realizar la acción", Toast.LENGTH_SHORT).show();
 							}
 							else{
@@ -107,7 +109,9 @@ public class VistaOfertaPend extends Activity {
 					new View.OnClickListener() {
 						@Override
 						public void onClick(View view) {
-							if (Factory.getUsuarioCtrl().getUsuario(VistaOfertaPend.this, mail).isBloqueado()){	
+							SharedPreferences prefs = VistaOfertaPend.this.getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
+							if (prefs.getBoolean("isBloqueado", false)){
+							//if (Factory.getUsuarioCtrl().getUsuario(VistaOfertaPend.this, mail).isBloqueado()){	
 								Toast.makeText(VistaOfertaPend.this, "Usuario bloqueado, no puede realizar la acción", Toast.LENGTH_SHORT).show();
 							}
 							else{
@@ -142,7 +146,9 @@ public class VistaOfertaPend extends Activity {
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			//showProgress(false);
-
+//			if(pd!=null & pd.isShowing())
+//				pd.dismiss();
+//			
 			if (success) {	
 				buttonRechazar.setOnClickListener(
 						new View.OnClickListener() {
@@ -189,6 +195,8 @@ public class VistaOfertaPend extends Activity {
 		protected void onCancelled() {
 			mAuthTask = null;
 			//showProgress(false);
+//			if(pd!=null & pd.isShowing())
+//				pd.dismiss();
 		}
 	}	
 	

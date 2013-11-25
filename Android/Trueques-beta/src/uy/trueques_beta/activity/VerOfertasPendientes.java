@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,6 +41,7 @@ public class VerOfertasPendientes extends Fragment implements AdapterView.OnItem
 	private Object[] ofertas;
 	private VerOfertasPendientesListener listener;
 	int size;
+	private ProgressDialog pd;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class VerOfertasPendientes extends Fragment implements AdapterView.OnItem
 		this.mail = prefs.getString("mail", "");
 		
 		if(mAuthTask==null){
+			pd = ProgressDialog.show(VerOfertasPendientes.this.getActivity(),"Ofertas Pendientes","Cargando Ofertas",true,false,null);
 			mAuthTask = new VerOfertasPendientesTask();
 			mAuthTask.execute((Void) null);
 		}
@@ -147,22 +150,28 @@ public class VerOfertasPendientes extends Fragment implements AdapterView.OnItem
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			
-			size=0;
-			List<Oferta> ofs; 
-			ofs=Factory.getTruequeCtrl().getOfertasPendientes(VerOfertasPendientes.this.getActivity(), mail);
-			if(ofs!=null){
-				ofertas=ofs.toArray();
-				size=ofertas.length;
-				return true;
-			}
-			else
+			try{
+				size=0;
+				List<Oferta> ofs; 
+				ofs=Factory.getTruequeCtrl().getOfertasPendientes(VerOfertasPendientes.this.getActivity(), mail);
+				if(ofs!=null){
+					ofertas=ofs.toArray();
+					size=ofertas.length;
+					return true;
+				}
+				else
+					return false;
+			}catch(Exception e){
 				return false;
+			}
 		}
 
 		@Override
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 
 			if (success) {
 				Log.i("[VerOfertasPendientes]:", "EXITO!");
@@ -186,6 +195,8 @@ public class VerOfertasPendientes extends Fragment implements AdapterView.OnItem
 		@Override
 		protected void onCancelled() {
 			mAuthTask = null;
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 			//showProgress(false);
 		}
 	}

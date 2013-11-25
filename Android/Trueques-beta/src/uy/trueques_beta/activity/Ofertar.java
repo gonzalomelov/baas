@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -52,6 +53,7 @@ public class Ofertar extends Activity {
     private static int TAKE_PICTURE = 1;
     private static int SELECT_PICTURE = 2;
     private ImageView imgOferta;
+    private ProgressDialog pd;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +82,15 @@ public class Ofertar extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						if(t!=null)
-							attemptCrearOferta();
+						SharedPreferences prefs = Ofertar.this.getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
+						if (prefs.getBoolean("isBloqueado", false)){
+						//if (Factory.getUsuarioCtrl().getUsuario(VistaOfertaPend.this, mail).isBloqueado()){	
+							Toast.makeText(Ofertar.this, "Usuario bloqueado, no puede realizar la acción", Toast.LENGTH_SHORT).show();
+						}
+						else{
+							if(t!=null)
+								attemptCrearOferta();
+						}
 					}
 				});
 
@@ -194,6 +203,7 @@ public class Ofertar extends Activity {
 				// perform the user login attempt.
 //				mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 //				showProgress(true);
+				pd = ProgressDialog.show(Ofertar.this,"Nueva oferta","Publicando oferta",true,false,null);
 				mAuthTask = new CrearOfertaTask();
 				mAuthTask.execute((Void) null);
 			}
@@ -212,6 +222,8 @@ public class Ofertar extends Activity {
 			protected void onPostExecute(final Boolean success) {
 				mAuthTask = null;
 				//showProgress(false);
+				if(pd!=null & pd.isShowing())
+					pd.dismiss();
 
 				if (success) {
 					//finish();
@@ -229,6 +241,8 @@ public class Ofertar extends Activity {
 			@Override
 			protected void onCancelled() {
 				mAuthTask = null;
+				if(pd!=null & pd.isShowing())
+					pd.dismiss();
 				//showProgress(false);
 			}
 		}

@@ -10,6 +10,7 @@ import uy.trueques_beta.entities.Trueque;
 import uy.trueques_beta.negocio.Factory;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -34,6 +35,7 @@ public class VerTruequesHechos extends Fragment implements AdapterView.OnItemCli
 	private VerTruequesHechosListener listener;
 	private int size;
 	private VerTruequeTask mAuthTask = null;
+	private ProgressDialog pd;
 			
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class VerTruequesHechos extends Fragment implements AdapterView.OnItemCli
 		this.mail = prefs.getString("mail", "");
 
 		if(mAuthTask==null){
+			pd = ProgressDialog.show(VerTruequesHechos.this.getActivity(),"Trueques Hechos","Cargando Trueques",true,false,null);
 			mAuthTask = new VerTruequeTask();
 			mAuthTask.execute((Void) null);
 		}
@@ -114,7 +117,9 @@ public class VerTruequesHechos extends Fragment implements AdapterView.OnItemCli
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			//showProgress(false);
-
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
+			
 			if (success) {
 				Log.i("[VerTruequesHechos]:", "EXITO!");
 				adaptador = new AdaptadorTrueque(VerTruequesHechos.this, R.layout.list_item_trueques, trueques);
@@ -130,6 +135,9 @@ public class VerTruequesHechos extends Fragment implements AdapterView.OnItemCli
 		protected void onCancelled() {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
+			
 		}
 	}
     

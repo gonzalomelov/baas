@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -60,6 +61,7 @@ public class CrearTrueque extends Fragment{//Activity {
     private static int TAKE_PICTURE = 1;
     private static int SELECT_PICTURE = 2;
     private Bitmap bitmap;
+    private ProgressDialog pd;
 	
 
 	 @Override
@@ -97,10 +99,12 @@ public class CrearTrueque extends Fragment{//Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-//						if (Factory.getUsuarioCtrl().getUsuario(CrearTrueque.this.getActivity(), mail).isBloqueado()){	
-//							Toast.makeText(CrearTrueque.this.getActivity(), "Usuario bloqueado, no puede realizar la acción", Toast.LENGTH_SHORT);
+						SharedPreferences prefs = CrearTrueque.this.getActivity().getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
+						if (prefs.getBoolean("isBloqueado", false)){
+						//if (Factory.getUsuarioCtrl().getUsuario(CrearTrueque.this.getActivity(), mail).isBloqueado()){	
+							Toast.makeText(CrearTrueque.this.getActivity(), "Usuario bloqueado, no puede realizar la acción", Toast.LENGTH_SHORT).show();
 							//finish();
-//						}else
+						}else
 							attemptCrearTrueque();
 					}
 				});
@@ -131,12 +135,12 @@ public class CrearTrueque extends Fragment{//Activity {
 //                    Bitmap bitmap2=Bitmap.createScaledBitmap(bitmap, 120, 120, false);
 //                    Log.i("TAM_IMG", "Height="+bitmap2.getHeight() +"Count="+ bitmap2.getByteCount());
 //                    bitmap=Bitmap.createScaledBitmap(bitmap, 120, 120, true);
-//                    Log.i("TAM_IMG", "Height="+bitmap.getHeight()+" Width="+bitmap.getWidth() +"Count="+ bitmap.getByteCount());
+                    Log.i("TAM_IMG", "Height="+bitmap.getHeight()+" Width="+bitmap.getWidth() +"Count="+ bitmap.getByteCount());
              		int w=bitmap.getWidth();
              		int h=bitmap.getHeight();
              		int height = (180*h)/w;
              		bitmap=Bitmap.createScaledBitmap(bitmap, 180, height, true);
-//             		Log.i("TAM_IMG", "Height="+bitmap.getHeight()+" Width="+bitmap.getWidth() +"Count="+ bitmap.getByteCount());
+             		Log.i("TAM_IMG", "Height="+bitmap.getHeight()+" Width="+bitmap.getWidth() +"Count="+ bitmap.getByteCount());
                     imgTrueque.setImageBitmap(bitmap);
                  } catch (FileNotFoundException e) {
                 	Toast.makeText(this.getActivity(), "Error al cargar la imagen", Toast.LENGTH_SHORT).show();
@@ -251,6 +255,7 @@ public class CrearTrueque extends Fragment{//Activity {
 			// perform the user login attempt.
 //			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 //			showProgress(true);
+			pd = ProgressDialog.show(CrearTrueque.this.getActivity(),"Nuevo Trueque","Publicando trueque",true,false,null);
 			mAuthTask = new CrearTruequeTask();
 			mAuthTask.execute((Void) null);
 		}
@@ -276,6 +281,8 @@ public class CrearTrueque extends Fragment{//Activity {
 		@Override
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 			//showProgress(false);
 
 			if (success) {
@@ -302,6 +309,8 @@ public class CrearTrueque extends Fragment{//Activity {
 		protected void onCancelled() {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 		}
 	}
 	

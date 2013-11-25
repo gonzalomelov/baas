@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +42,7 @@ public class VerTrueques extends Fragment implements AdapterView.OnItemClickList
 	private VerTruequesListener listener;
 	private int size;
 	private VerTruequeTask mAuthTask = null;
+	private ProgressDialog pd;
 			
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class VerTrueques extends Fragment implements AdapterView.OnItemClickList
         SharedPreferences prefs = this.getActivity().getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
 		if(mAuthTask==null){
+			pd = ProgressDialog.show(VerTrueques.this.getActivity(),"Ver Trueques","Cargando Trueques",true,false,null);
 			mAuthTask = new VerTruequeTask();
 			mAuthTask.execute((Void) null);
 		}
@@ -124,6 +127,8 @@ public class VerTrueques extends Fragment implements AdapterView.OnItemClickList
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 
 			if (success) {
 				Log.i("[VerTrueques]:", "EXITO!");
@@ -140,6 +145,8 @@ public class VerTrueques extends Fragment implements AdapterView.OnItemClickList
 		protected void onCancelled() {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 		}
 	}
     

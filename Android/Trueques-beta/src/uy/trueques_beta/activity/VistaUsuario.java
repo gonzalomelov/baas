@@ -11,6 +11,7 @@ import uy.trueques_beta.negocio.Factory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
@@ -31,6 +32,7 @@ public class VistaUsuario extends Activity {
 	private TextView reputacion;
 	private ImageView img;
 	private Button button;
+	private ProgressDialog pd;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,14 @@ public class VistaUsuario extends Activity {
 		Bundle bundle = this.getIntent().getExtras();
 		this.usuario = bundle.getString("mailUsuario");
 		
-		this.u = Factory.getUsuarioCtrl().getUsuario(this, this.usuario); //DEBERIA FALLAR
+		this.u =null;
+		Intent intent = this.getIntent();
+		if(intent.getExtras()!=null){
+			String usuarioJson= intent.getExtras().getString("Usuario");
+			this.u = Usuario.fromJson(usuarioJson);
+		}
+		
+		//this.u = Factory.getUsuarioCtrl().getUsuario(this, this.usuario); //DEBERIA FALLAR
 		if(u==null)
 			finish();
 		
@@ -84,6 +93,10 @@ public class VistaUsuario extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
+						if(u.isBloqueado())
+							pd = ProgressDialog.show(VistaUsuario.this,"Desbloquear","Desbloqueando usuario",true,false,null);
+						else
+							pd = ProgressDialog.show(VistaUsuario.this,"Bloquear","Bloqueano usuario",true,false,null);
 						mAuthTask = new BloquearUsuarioTask();
 						mAuthTask.execute((Void) null);
 					}
@@ -115,6 +128,8 @@ public class VistaUsuario extends Activity {
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 
 			if (success) {
 				
@@ -136,6 +151,8 @@ public class VistaUsuario extends Activity {
 		protected void onCancelled() {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 		}
 	}
 

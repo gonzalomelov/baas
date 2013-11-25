@@ -12,6 +12,7 @@ import uy.trueques_beta.negocio.Factory;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,6 +32,7 @@ public class VerUsuarios extends Activity implements AdapterView.OnItemClickList
 	private ListView lstUsuarios;
 	private TextView lblUsuarios;
 	private Object[] usuarios;
+	private ProgressDialog pd;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class VerUsuarios extends Activity implements AdapterView.OnItemClickList
 		//Voy a VistaUsuario
 		Intent intent = new Intent(VerUsuarios.this, VistaUsuario.class);
         intent.putExtra("mailUsuario", u.getMail());
+        intent.putExtra("Usuario", u.toJson());
 		startActivity(intent);
 		
 	}

@@ -79,6 +79,11 @@ public class Perfil extends Fragment {//Activity {
 			
 			SDKFactory.getGCMService(Perfil.this.getActivity());
 			
+			//+++ BLOQuEADO?
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putBoolean("isBloqueado", u.isBloqueado());
+			editor.commit();
+			//+++
 			//Seteo los datos del usuario
 			lblNombre = (TextView)getView().findViewById(R.id.LblNombre);
 			lblNombre.setText(u.getNombre());
@@ -212,6 +217,13 @@ public class Perfil extends Fragment {//Activity {
 			//showProgress(false);
 
 			if (success) {
+				
+				//+++ BLOQuEADO?
+				SharedPreferences prefs = Perfil.this.getActivity().getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
+				SharedPreferences.Editor editor = prefs.edit();
+				editor.putBoolean("isBloqueado", u.isBloqueado());
+				editor.commit();
+				//+++
 				
 				//Seteo los datos del usuario
 				lblNombre = (TextView)getView().findViewById(R.id.LblNombre);

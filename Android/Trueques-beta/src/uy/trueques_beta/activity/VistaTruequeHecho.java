@@ -10,6 +10,7 @@ import uy.trueques_beta.negocio.Factory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,6 +48,7 @@ public class VistaTruequeHecho extends Activity {
 	private boolean soyTrueque;
  	
 	private TextView puntaje;
+	private ProgressDialog pd, pd2;
 	//private Button button;
 	//private int idTrueque;
 
@@ -70,6 +72,7 @@ public class VistaTruequeHecho extends Activity {
 			nombre.setText("ERROR VUELVA A INTENTAR (json="+truequeJson+")");
 		}else{
 			if(mAuthTask==null){
+				pd = ProgressDialog.show(VistaTruequeHecho.this,"Trueque Hecho","Cargando Trueque",true,false,null);
 				mAuthTask = new VistaTruequeHechoTask();
 				mAuthTask.execute((Void) null);
 			}
@@ -90,6 +93,7 @@ public class VistaTruequeHecho extends Activity {
                 	if (position!=0){
                 		if(mAuthTask2==null){
                 			Integer[] par = {Integer.valueOf(position)};
+            				pd2 = ProgressDialog.show(VistaTruequeHecho.this,"Puntuar","Enviando puntuación",true,false,null);
             				mAuthTask2 = new PuntuarTask();
             				mAuthTask2.execute(par);
             			}
@@ -135,6 +139,8 @@ public class VistaTruequeHecho extends Activity {
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 
 			if (success) {
 	
@@ -242,6 +248,8 @@ public class VistaTruequeHecho extends Activity {
 		protected void onCancelled() {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 		}
 	}	
 
@@ -262,6 +270,8 @@ public class VistaTruequeHecho extends Activity {
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd2!=null & pd2.isShowing())
+				pd2.dismiss();
 		
 			if (success) {
 				t = Factory.getTruequeCtrl().getTrueque(VistaTruequeHecho.this, t.getIdTrueque());
@@ -279,6 +289,8 @@ public class VistaTruequeHecho extends Activity {
 		protected void onCancelled() {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd2!=null & pd2.isShowing())
+				pd2.dismiss();
 			}
 		}	
 		

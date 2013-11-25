@@ -9,6 +9,7 @@ import uy.trueques_beta.negocio.Factory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,6 +36,7 @@ public class Registrar extends Activity {
 	private EditText passView;
 	private EditText rePassView;
 	private CheckBox admin;
+	private ProgressDialog pd;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,7 @@ public class Registrar extends Activity {
 		} else if (!pass.equals(rePass)){
 			rePassView.setError("No coinciden");
 			focusView = rePassView;
+			cancel = true;
 		}
 
 		// Check for a valid email address.
@@ -131,6 +134,7 @@ public class Registrar extends Activity {
 			// perform the user login attempt.
 //			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 //			showProgress(true);
+			pd = ProgressDialog.show(Registrar.this,"Registro","Registrando usuario",true,false,null);
 			mAuthTask = new RegistroTask(this);
 			mAuthTask.execute((Void) null);
 		}
@@ -175,6 +179,8 @@ public class Registrar extends Activity {
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 
 			if (success) {
 				Intent intent;
@@ -193,9 +199,13 @@ public class Registrar extends Activity {
 				editor.commit();
 				startActivity(intent);
 				//+++
+//				if(pd!=null & pd.isShowing())
+//					pd.dismiss();
 				finish();
 				//+++
 			} else {
+//				if(pd!=null & pd.isShowing())
+//					pd.dismiss();
 				nombreView.setError("Error al registrar");
 				nombreView.requestFocus();
 			}
@@ -204,6 +214,8 @@ public class Registrar extends Activity {
 		@Override
 		protected void onCancelled() {
 			mAuthTask = null;
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 			//showProgress(false);
 		}
 	}

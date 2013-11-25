@@ -56,7 +56,7 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 		
 		//+++ DRAWER
 		opcionesMenu = new String[] {"Perfil", "Publicar Trueque", "Ver Trueques", "Ofertas Pendientes", "Trueques Realizados", "Ver RSS","Cerrar Sesión"};
-		imagenesMenu= new int[] {R.drawable.ic_perfil, R.drawable.ic_crear_trueque, R.drawable.ic_ver_trueques,R.drawable.ic_ver_ofertas,R.drawable.ic_trueques_ok, R.drawable.ic_rss, R.drawable.ic_cerrar};
+		imagenesMenu= new int[] {R.drawable.ic_perfil, R.drawable.ic_crear_trueque, R.drawable.ic_ver_trueques,R.drawable.ic_ver_ofertas,R.drawable.ic_trueques_ok, R.drawable.ic_rss3, R.drawable.ic_cerrar};
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
  
@@ -130,6 +130,7 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 	        		SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 	        		SharedPreferences.Editor editor = prefs.edit();
 	        		editor.remove("mail");
+	        		editor.remove("isBloqueado");
 	        		editor.commit();
 	        		// Voy al inicio (Main)
 	        		Intent intent = new Intent(Home.this, Main.class);

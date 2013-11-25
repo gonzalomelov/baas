@@ -14,6 +14,7 @@ import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,6 +44,7 @@ public class VistaTrueque extends Activity {
 	private TextView cantOfer;
 	private Usuario u;
 	private VistaTruequeTask mAuthTask =null;
+	private ProgressDialog pd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class VistaTrueque extends Activity {
 			nombre.setText("ERROR VUELVA A INTENTAR (id="+idTrueque+")");
 		}else{
 			if(mAuthTask==null){
+				pd = ProgressDialog.show(VistaTrueque.this,"Trueque","Cargando Trueque",true,false,null);
 				mAuthTask = new VistaTruequeTask();
 				mAuthTask.execute((Void) null);
 			}
@@ -146,6 +149,8 @@ public class VistaTrueque extends Activity {
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 
 			if (success) {
 				nombre = (TextView)findViewById(R.id.LblNomTrueque);
@@ -213,6 +218,8 @@ public class VistaTrueque extends Activity {
 		protected void onCancelled() {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 		}
 	}	
 	
