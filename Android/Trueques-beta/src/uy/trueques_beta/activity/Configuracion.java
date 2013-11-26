@@ -29,6 +29,7 @@ public class Configuracion extends Activity {
 	private boolean notiOA;
 	private boolean notiOR;
 	private boolean notiTruequesNuevos;
+	private String usuarioLogueado;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +42,11 @@ public class Configuracion extends Activity {
 		this.editor = prefs.edit();
 //		editor.putString("mail", mail);
 //		editor.commit();
-		notiNO = prefs.getBoolean("notifOfertasNuevas", false);
-		notiOA =prefs.getBoolean("notifOfertasAceptadas", false);
-		notiOR =prefs.getBoolean("notifOfertasRechazadas", false);
-		notiTruequesNuevos=prefs.getBoolean("truequesNuevos", false);
+		usuarioLogueado = prefs.getString("mail", "");
+		notiNO = prefs.getBoolean(usuarioLogueado + "_notifOfertasNuevas", false);
+		notiOA =prefs.getBoolean(usuarioLogueado + "_notifOfertasAceptadas", false);
+		notiOR =prefs.getBoolean(usuarioLogueado + "_notifOfertasRechazadas", false);
+		notiTruequesNuevos=prefs.getBoolean(usuarioLogueado + "_truequesNuevos", false);
 		
 		chkOfertasNuevas = (CheckBox) findViewById(R.id.chkNuevasOfertas);
 		chkOfertasAceptadas = (CheckBox) findViewById(R.id.chkOfertasAceptadas);
@@ -68,10 +70,10 @@ public class Configuracion extends Activity {
 		                //is chkIos checked?
 				if (((CheckBox) v).isChecked()) {
 					Toast.makeText(Configuracion.this, "Registrado", Toast.LENGTH_SHORT).show();
-					editor.putBoolean("notifOfertasNuevas", true);
+					editor.putBoolean(usuarioLogueado + "_notifOfertasNuevas", true);
 				}else{
 					Toast.makeText(Configuracion.this, "Eliminado", Toast.LENGTH_SHORT).show();
-					editor.putBoolean("notifOfertasNuevas", false);
+					editor.putBoolean(usuarioLogueado + "_notifOfertasNuevas", false);
 				}
 				editor.commit();
 			  }
@@ -83,10 +85,10 @@ public class Configuracion extends Activity {
 		                //is chkIos checked?
 				if (((CheckBox) v).isChecked()) {
 					Toast.makeText(Configuracion.this, "Registrado", Toast.LENGTH_SHORT).show();
-					editor.putBoolean("notifOfertasAceptadas", true);
+					editor.putBoolean(usuarioLogueado + "_notifOfertasAceptadas", true);
 				}else{
 					Toast.makeText(Configuracion.this, "Eliminado", Toast.LENGTH_SHORT).show();
-					editor.putBoolean("notifOfertasAceptadas", false);
+					editor.putBoolean(usuarioLogueado + "_notifOfertasAceptadas", false);
 				}
 				editor.commit();
 			  }
@@ -98,10 +100,10 @@ public class Configuracion extends Activity {
 		                //is chkIos checked?
 				if (((CheckBox) v).isChecked()) {
 					Toast.makeText(Configuracion.this, "Registrado", Toast.LENGTH_SHORT).show();
-					editor.putBoolean("notifOfertasRechazadas", true);
+					editor.putBoolean(usuarioLogueado + "_notifOfertasRechazadas", true);
 				}else{
 					Toast.makeText(Configuracion.this, "Eliminado", Toast.LENGTH_SHORT).show();
-					editor.putBoolean("notifOfertasRechazadas", false);
+					editor.putBoolean(usuarioLogueado + "_notifOfertasRechazadas", false);
 				}
 				editor.commit();
 			  }
@@ -152,7 +154,7 @@ public class Configuracion extends Activity {
 //						    	act.finish();
 						    	if (ok) {
 						    		Toast.makeText(Configuracion.this, "Registrado", Toast.LENGTH_SHORT).show();
-						    		editor.putBoolean("truequesNuevos", true);
+						    		editor.putBoolean(usuarioLogueado + "_truequesNuevos", true);
 						    		editor.commit();
 						    	}
 						    	else {
@@ -201,7 +203,7 @@ public class Configuracion extends Activity {
 //						    	act.finish();
 						    	if (ok) {
 						    		Toast.makeText(Configuracion.this, "Eliminado", Toast.LENGTH_SHORT).show();
-						    		editor.putBoolean("truequesNuevos", false);
+						    		editor.putBoolean(usuarioLogueado + "_truequesNuevos", false);
 						    	}
 						    	else {
 						    		Toast.makeText(Configuracion.this, "Error de conexión", Toast.LENGTH_SHORT).show();

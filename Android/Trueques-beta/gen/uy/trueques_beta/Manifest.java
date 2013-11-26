@@ -11,7 +11,7 @@ public final class Manifest {
     public static final class permission {
         /**  GCM 
          */
-        public static final String C2D_MESSAGE="uy.com.group05.baassdk.permission.C2D_MESSAGE";
+        public static final String C2D_MESSAGE="uy.trueques_beta.permission.C2D_MESSAGE";
         /**  BaaS SDK 
          */
         public static final String permission="uy.com.group05.baassdk.sync.provider.permission";

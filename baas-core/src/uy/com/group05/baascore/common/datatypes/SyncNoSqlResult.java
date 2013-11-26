@@ -5,6 +5,8 @@ public class SyncNoSqlResult {
 	private String json;
 	
 	private boolean sincronizar;
+	
+	private String accion;
 
 	public String getJson() {
 		return json;
@@ -20,5 +22,13 @@ public class SyncNoSqlResult {
 
 	public void setSincronizar(boolean sincronizar) {
 		this.sincronizar = sincronizar;
+	}
+	
+	public String getAccion() {
+		return this.accion;
+	}
+	
+	public void setAccion(String accion) {
+		this.accion = accion;
 	}
 }

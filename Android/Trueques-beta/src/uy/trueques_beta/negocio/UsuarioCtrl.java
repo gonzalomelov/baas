@@ -23,6 +23,7 @@ import persistence.Query;
 
 
 
+
 import com.google.gson.Gson;
 
 import android.app.Activity;
@@ -32,6 +33,7 @@ import sdk.application.ApplicationInfo;
 import sdk.classes.JSON;
 import sdk.servicios.Clientes;
 import sdk.servicios.Persistencia;
+import uy.com.group05.baassdk.GCMService;
 import uy.com.group05.baassdk.MyApplication;
 import uy.com.group05.baassdk.SDKFactory;
 import uy.com.group05.baassdk.entities.ClientAuthenticationDTO;
@@ -224,6 +226,8 @@ public class UsuarioCtrl {
 				
 				Log.i("[registrarUsuario]:","Usuario= "+json);
 				ok = SDKFactory.getAPIFacade(context).post(entity, json);
+				
+				SDKFactory.getGCMService((Activity) context);
 			
 				//Para actualizar todos los datos
 				MyApplication myApplication = (MyApplication)(context.getApplicationContext());
@@ -309,6 +313,8 @@ public class UsuarioCtrl {
 			
 			MyApplication myApplication = (MyApplication)(context.getApplicationContext());
 			SDKFactory.getAPIFacade(context).updateAll(myApplication.getmTablesDB());
+			
+			SDKFactory.getGCMService((Activity) context);
 			
 			Log.i("LOGIN","-"+auten.isOk());
 			return auten.isOk();

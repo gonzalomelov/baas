@@ -70,7 +70,7 @@ public class PushRestImpl implements PushRest {
 			e.printStackTrace();
 			return false;
 		} catch (PushChanNotRegisteredException e) {
-			e.printStackTrace();
+			System.out.println("Se intentó suscribir a un canal que no existe: " + pushChanName);
 			return false;
 		} catch (ClientNotRegisteredException e) {
 			e.printStackTrace();

@@ -115,7 +115,7 @@ public class APIManagement implements APIManagementLocal {
 		
 		estadisticasDao.create(est);
 		
-		pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, entityId);
+		pushChannelManagementLocal.sendNotificationsOnEntityPost(appId, entityId);
 
 		//startDataSynchronization(app.getId(), entity);
 		
@@ -147,7 +147,7 @@ public class APIManagement implements APIManagementLocal {
 		
 		estadisticasDao.create(est);
 		
-		pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, ent.getId());
+		pushChannelManagementLocal.sendNotificationsOnEntityDelete(appId, ent.getId());
 		
 		//startDataSynchronization(app.getId(), entity);
 		
@@ -179,7 +179,7 @@ public class APIManagement implements APIManagementLocal {
 		
 		estadisticasDao.create(est);
 		
-		pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, ent.getId());
+		pushChannelManagementLocal.sendNotificationsOnEntityPut(appId, ent.getId());
 		
 		//startDataSynchronization(app.getId(), entity);
 		
@@ -212,8 +212,14 @@ public class APIManagement implements APIManagementLocal {
 		if (result.isSincronizar()) {
 			startDataSynchronization(app.getId(), entity);
 			
-			//Si hay que sincronizar es porque se cambiar los datos, por lo tanto hay que avisar si corresponde
-			pushChannelManagementLocal.sendNotificationsOnEntityPostPutDelete(appId, ent.getId());
+			//Si hay que sincronizar es porque se cambiaron los datos, por lo tanto hay que avisar si corresponde
+			String accion = result.getAccion();
+			if (accion.equalsIgnoreCase("post"))
+				pushChannelManagementLocal.sendNotificationsOnEntityPost(appId, ent.getId());
+			if (accion.equalsIgnoreCase("put"))
+				pushChannelManagementLocal.sendNotificationsOnEntityPut(appId, ent.getId());
+			if (accion.equalsIgnoreCase("delete"))
+				pushChannelManagementLocal.sendNotificationsOnEntityDelete(appId, ent.getId());
 		}
 		
 		return result.getJson();

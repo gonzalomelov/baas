@@ -222,6 +222,7 @@ public class TruequeCtrl {
 	}
 	
 	public boolean rechazarOferta(Context context, String idTrueque, String idOferta){
+		this.act = (Activity) context;
 		//if(!this.trueques.containsKey(idTrueque) || !this.trueques.get(idTrueque).existOferta(idOferta))
 		Trueque t = getTrueque(context, idTrueque);
 		if(t==null || !t.existOferta(idOferta))
@@ -494,7 +495,7 @@ public class TruequeCtrl {
 			if (ok) {
 				// Notificacion
 				GCMService gcms = SDKFactory.getGCMService(act);
-				gcms.sendNotificationToClient(t.getUsuario(), "message", "Nueva oferta de " + mail, "dif", "ofertaNueva");
+				gcms.sendNotificationToClient(t.getUsuario(), "message", "Tienes una nueva oferta de " + mail + "!", "dif", "ofertaNueva");
 			}
 			
 		}

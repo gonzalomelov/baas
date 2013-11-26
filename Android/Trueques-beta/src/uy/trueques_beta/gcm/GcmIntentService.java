@@ -46,55 +46,69 @@ public class GcmIntentService extends IntentService {
         String messageType = gcm.getMessageType(intent);
         
         SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
-		this.editor = prefs.edit();
-
-        if (!extras.isEmpty()) {
-            
-            if (GoogleCloudMessaging.
-                    MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                
-            	//Algo?
-            	
-            } else if (GoogleCloudMessaging.
-                    MESSAGE_TYPE_DELETED.equals(messageType)) {
-            	
-            	//Algo?
-            
-            } else if (GoogleCloudMessaging.
-                    MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-                
-            	String type = extras.getString("type");
-            	String diferenciador = extras.getString("dif");
-            	
-            	Log.i("GCM SDK", "Mensaje recibido: " + extras.toString());
-            	
-            	if (type.equals("notification")) {
-            		if (diferenciador == null || ((diferenciador.equals("ofertaNueva") && prefs.getBoolean("notifOfertasNuevas", false))
-            			|| (diferenciador.equals("ofertaAceptada") && prefs.getBoolean("notifOfertasAceptadas", false))
-            			|| (diferenciador.equals("ofertaRechazada") && prefs.getBoolean("notifOfertasRechazada", false)))) {
-            			
-            					Log.i("GCM SDK", "Se muestra la notificación.");
-            					sendNotification(extras.getString("message"));
-            					
-            		}
-            		else
-            			Log.i("GCM SDK", "No se muestra la notificación.");
-            		
-            	} else if (type.equals("sync")){
-            		Account mAccount = new Account(Constants.ACCOUNT, Constants.ACCOUNT_TYPE);
-                	
-                	Bundle bundle = new Bundle();
-                	bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-                	bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-                	
-                	String entity = extras.getString("entity");
-                	Log.e("SYNCHRONIZATIONENTITY", "Entidad: " + entity);
-                	
-                	bundle.putString("entity", extras.getString("entity"));
-            		
-            		ContentResolver.requestSync(mAccount, BaasProviderContract.AUTHORITY, bundle);	
-            	}	
-            }
+        String usuarioLogueado = prefs.getString("mail", "");
+        if (!usuarioLogueado.isEmpty()) {
+			this.editor = prefs.edit();
+	
+	        if (!extras.isEmpty()) {
+	            
+	            if (GoogleCloudMessaging.
+	                    MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
+	                
+	            	//Algo?
+	            	
+	            } else if (GoogleCloudMessaging.
+	                    MESSAGE_TYPE_DELETED.equals(messageType)) {
+	            	
+	            	//Algo?
+	            
+	            } else if (GoogleCloudMessaging.
+	                    MESSAGE_TYPE_MESSAGE.equals(messageType)) {
+	                
+	            	String type = extras.getString("type");
+	            	String diferenciador = extras.getString("dif");
+	            	
+	            	Log.i("GCM SDK", "Mensaje recibido: " + extras.toString());
+	            	
+	            	if (type.equals("notification")) {
+	            		if (diferenciador == null) { // Canal Push            			
+	            			String accion = extras.getString("accion");
+	    					String entidad = extras.getString("entidad");
+	    					
+	    					if (accion.equals("post")) {
+	    						if (entidad.equalsIgnoreCase("Trueque"))
+	    							sendNotification("Existe un nuevo trueque!");
+	    						else
+	    							Log.i("GCM SDK", "No se muestra notificación porque no es un post sobre un Trueque.");
+	    					}
+	            		}
+	            		else if ((diferenciador.equals("ofertaNueva") && prefs.getBoolean(usuarioLogueado + "_notifOfertasNuevas", false))
+	            			|| (diferenciador.equals("ofertaAceptada") && prefs.getBoolean(usuarioLogueado + "_notifOfertasAceptadas", false))
+	            			|| (diferenciador.equals("ofertaRechazada") && prefs.getBoolean(usuarioLogueado + "_notifOfertasRechazada", false))) {
+	            			
+	            					Log.i("GCM SDK", "Se muestra la notificación.");
+	            					sendNotification(extras.getString("message"));
+	            					
+	            		}
+	            		else
+	            			Log.i("GCM SDK", "No se muestra la notificación.");
+	            		
+	            	} else if (type.equals("sync")){
+	            		Account mAccount = new Account(Constants.ACCOUNT, Constants.ACCOUNT_TYPE);
+	                	
+	                	Bundle bundle = new Bundle();
+	                	bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+	                	bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+	                	
+	                	String entity = extras.getString("entity");
+	                	Log.e("SYNCHRONIZATIONENTITY", "Entidad: " + entity);
+	                	
+	                	bundle.putString("entity", extras.getString("entity"));
+	            		
+	            		ContentResolver.requestSync(mAccount, BaasProviderContract.AUTHORITY, bundle);	
+	            	}	
+	            }
+	        }
         }
         // Release the wake lock provided by the WakefulBroadcastReceiver.
         GcmBroadcastReceiver.completeWakefulIntent(intent);

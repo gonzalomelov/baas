@@ -150,6 +150,8 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 		
 		boolean sincronizar = false;
 		
+		String accion = "";
+		
 		DB mongoDb = mongo.getDB(appName);
 		DBCollection dbCollection = mongoDb.getCollection(entity);
 		
@@ -173,6 +175,8 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 				
 				sincronizar = true;
 				
+				accion = "post";
+				
 			} else {
 				//Si el elemento ya se encuentra comparo por fecha de modificación
 				ObjectId remoteObjId = new ObjectId(remoteObj.getString("syncid"));
@@ -192,6 +196,8 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 					System.out.println("&&&&&&&&&&&& Resultado: " + "Borrar");
 					
 					sincronizar = true;
+					
+					accion = "delete";
 					
 				} else {
 					
@@ -242,7 +248,9 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 							
 							System.out.println("&&&&&&&&&&&& Actualizado: " + wr.toString());
 							
-							sincronizar = true;	
+							sincronizar = true;
+							
+							accion = "put";
 						}
 						
 					}	
@@ -255,6 +263,7 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 		SyncNoSqlResult result = new SyncNoSqlResult();
 		result.setJson(JSON.serialize(dbCollection.find()));
 		result.setSincronizar(sincronizar);
+		result.setAccion(accion);
 		
 		return result;
 	}

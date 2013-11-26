@@ -164,11 +164,50 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		return true;
 	}
 	
-	public void sendNotificationsOnEntityPostPutDelete(long appId, long entityId)
+	@Override	
+	public void sendNotificationsOnEntityPost(long appId, long entityId)
 			throws
 				AppNotRegisteredException,
 				EntityNotRegisteredException {
 		
+		System.out.println("Se va a mandar una notificacion push porque se creó una entidad");
+		sendNotificationsOnEntityPostPutDeleteSync(appId, entityId, "post");
+	}
+	
+	@Override	
+	public void sendNotificationsOnEntityPut(long appId, long entityId)
+			throws
+				AppNotRegisteredException,
+				EntityNotRegisteredException {
+		
+		System.out.println("Se va a mandar una notificacion push porque se actualizó una entidad");
+		sendNotificationsOnEntityPostPutDeleteSync(appId, entityId, "put");
+	}
+	
+	@Override	
+	public void sendNotificationsOnEntityDelete(long appId, long entityId)
+			throws
+				AppNotRegisteredException,
+				EntityNotRegisteredException {
+		
+		System.out.println("Se va a mandar una notificacion push porque se eliminó una entidad");
+		sendNotificationsOnEntityPostPutDeleteSync(appId, entityId, "delete");
+	}
+	
+	@Override	
+	public void sendNotificationsOnEntitySync(long appId, long entityId)
+			throws
+				AppNotRegisteredException,
+				EntityNotRegisteredException {
+		
+		System.out.println("Se va a mandar una notificacion push porque se sincronizó una entidad");
+		sendNotificationsOnEntityPostPutDeleteSync(appId, entityId, "sync");
+	}
+	
+	private void sendNotificationsOnEntityPostPutDeleteSync(long appId, long entityId, String accion)
+			throws
+			AppNotRegisteredException,
+			EntityNotRegisteredException {
 		Application app = appDao.readById(appId);
 		if (app == null) {
 			throw new AppNotRegisteredException("No existe la aplicación con id " + appId);
@@ -187,11 +226,12 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		estadisticasDao.create(est);
 		
 		List<PushChannel> canales = getPushChannelsAssociatedWithEntity(appId, entityId);
+		if (canales.size() == 0)
+			System.out.println("No hay canales asociados a la entidad " + entity.getName());
 		
 		for (PushChannel canal : canales) {
 			try {
-				System.out.println("Se va a mandar una notificacion push porque se actualizo la entidad " + entity.getName());
-				boolean ok = sendNotificationToPushChannel(appId, canal.getId(), "message", "Se ha actualizado " + entity.getName());
+				boolean ok = sendNotificationToPushChannel(appId, canal.getId(), accion, entity.getName());
 				if (ok)
 					System.out.println("Se mandó la notificacion push.");
 				else
@@ -351,7 +391,7 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 
 	@Override
 	public boolean sendNotificationToPushChannel(long idApp,
-			long idCanal, String msgKey, String msgValue)
+			long idCanal, String accion, String nomEntidad)
 			throws AppNotRegisteredException, PushChanNotRegisteredException {
 		
 		List<Client> clientes = getClientsFromPushChannel(idApp, idCanal);
@@ -365,7 +405,7 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 			String regId = c.getGcm_regId();
 			
 			Sender sender = new Sender(gcmApiKey);
-			Message message = new Message.Builder().timeToLive(600).addData(msgKey, msgValue).addData("type", "notification").build();
+			Message message = new Message.Builder().timeToLive(600).addData("accion", accion).addData("entidad", nomEntidad).addData("type", "notification").build();
 			
 			try {
 				if (regId != null) {
@@ -398,13 +438,13 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 	
 	@Override
 	public boolean sendNotificationToPushChannel(String appName,
-			String pushChanName, String msgKey, String msgValue)
+			String pushChanName, String accion, String entidad)
 			throws AppNotRegisteredException, PushChanNotRegisteredException {
 		
 		long appId = appMgmt.getApplication(appName).getId();
 		long pushChanId = getPushChannel(appId, pushChanName).getId();
 		
-		return sendNotificationToPushChannel(appId, pushChanId, msgKey, msgValue);
+		return sendNotificationToPushChannel(appId, pushChanId, accion, entidad);
 		
 	}
 	
@@ -417,8 +457,10 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		String regId = cliDest.getGcm_regId();
 		//String regId = "APA91bHDcO84iVqd0AXPlU1QptCM0ioLh9MKexkrfEIpz8khLS584yeXjYSb_RD_ggEEH0b008BZyQmkIu9XWzSnfCgl4hleH1yQ8N1mjbq25xyzemXiMFWDoOF-sWgb0GK1NFDfqWnzCjsomW5t-KTbucKfuh5iItKsA2gzdsQuLVtbesHu5cE";
 		
-		if (regId == null || regId.isEmpty())
+		if (regId == null || regId.isEmpty()) {
+			System.out.println("Se intentó mandar una notificación a " + mailReceiver + " pero no tiene regId asociado.");
 			return false;
+		}
 		
 		PropertyHandler propertyHandler = new PropertyHandler();
 		String gcmApiKey = propertyHandler.getProperty("gcmApiKey");

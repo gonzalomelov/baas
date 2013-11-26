@@ -63,12 +63,36 @@ public class GCMService {
     	if (checkPlayServices()) {
     		//gcm = GoogleCloudMessaging.getInstance(appContext);
             regid = getRegistrationId();
+            SharedPreferences prefs = getGcmPreferences(appContext);
+            String usuarioLogueado = prefs.getString("mail", "");
+            boolean regIdBaas = prefs.getBoolean("gcm_" + usuarioLogueado, false);
             
-            if (!regid.isEmpty()) {
+            if (!regid.isEmpty() && regIdBaas) {
             	registrado = true;
             }
             else {
-            	registerInBackground();
+            	if (regid.isEmpty()) {
+	            	Log.i("GCM SDK", "Se va a registrar con GCM.");
+	            	registerInBackground();
+            	}
+            	else if (!regIdBaas) {
+            		try {
+						if (sendRegistrationIdToBackend()) {
+							SharedPreferences.Editor editor = prefs.edit();
+							editor.putBoolean("gcm_" + usuarioLogueado, true);
+							editor.commit();
+						}
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ClientProtocolException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+            	}
             }            
         } else {
             Log.i(TAG, "No se encontró Google Play Services.");
@@ -163,13 +187,15 @@ public class GCMService {
                     }
                     regid = gcm.register(SENDER_ID);
                     msg = "Dispositivo registrado, registration ID = " + regid;
-                    
-                    registrado = true;
 
                     if (sendRegistrationIdToBackend()) {
                     	// Guardo el regid
                         storeRegistrationId(regid);
+                        registrado = true;
+                        Log.i("GCM SDK", "Se envió el regId al baas.");
                     }
+                    else
+                    	Log.i("GCM SDK", "No se mandó el regId al baas.");
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
                 }
@@ -228,7 +254,7 @@ public class GCMService {
      * @return Application's {@code SharedPreferences}.
      */
     private SharedPreferences getGcmPreferences(Context context) {
-        return context.getSharedPreferences(context.getClass().getSimpleName(),
+        return context.getSharedPreferences("uy.com.group05.baasclient.sdk",
                 Context.MODE_PRIVATE);
     }
     

@@ -44,7 +44,16 @@ public interface PushChannelManagementLocal {
 	public boolean assignEntityToPushChannel (long idApp, long idCanal, long idEntity)
 			throws AppNotRegisteredException, PushChanNotRegisteredException, EntityNotRegisteredException;
 	
-	public void sendNotificationsOnEntityPostPutDelete(long appId, long entityId)
+	public void sendNotificationsOnEntityPost(long appId, long entityId)
+			throws AppNotRegisteredException, EntityNotRegisteredException;
+	
+	public void sendNotificationsOnEntityPut(long appId, long entityId)
+			throws AppNotRegisteredException, EntityNotRegisteredException;
+	
+	public void sendNotificationsOnEntityDelete(long appId, long entityId)
+			throws AppNotRegisteredException, EntityNotRegisteredException;
+	
+	public void sendNotificationsOnEntitySync(long appId, long entityId)
 			throws AppNotRegisteredException, EntityNotRegisteredException;
 	
 	public boolean unassignEntityToPushChannel (long idApp, long idCanal, long idEntity)
@@ -81,7 +90,7 @@ public interface PushChannelManagementLocal {
 			PushChanNotRegisteredException;
 	
 	public boolean sendNotificationToPushChannel(String appName,
-			String pushChanName, String msgKey, String msgValue) throws AppNotRegisteredException,
+			String pushChanName, String accion, String entidad) throws AppNotRegisteredException,
 			PushChanNotRegisteredException;
 	
 	public boolean sendNotificationToClient(String mailReceiver, String msgKey, String msgValue, String difKey, String difValue)
