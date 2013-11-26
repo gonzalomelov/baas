@@ -66,13 +66,12 @@ public class GcmIntentService extends IntentService {
             	String type = extras.getString("type");
             	String diferenciador = extras.getString("dif");
             	
-            	Log.i("GCM SDK", "Mensaje crudo: " + extras.toString());
+            	Log.i("GCM SDK", "Mensaje recibido: " + extras.toString());
             	
             	if (type.equals("notification")) {
-            		if ((diferenciador.equals("ofertaNueva") && prefs.getBoolean("notifOfertasNuevas", false))
+            		if (diferenciador == null || ((diferenciador.equals("ofertaNueva") && prefs.getBoolean("notifOfertasNuevas", false))
             			|| (diferenciador.equals("ofertaAceptada") && prefs.getBoolean("notifOfertasAceptadas", false))
-            			|| (diferenciador.equals("ofertaRechazada") && prefs.getBoolean("notifOfertasRechazada", false))
-            			|| (diferenciador.equals("truequeNuevo") && prefs.getBoolean("truequesNuevos", false))) {
+            			|| (diferenciador.equals("ofertaRechazada") && prefs.getBoolean("notifOfertasRechazada", false)))) {
             			
             					Log.i("GCM SDK", "Se muestra la notificación.");
             					sendNotification(extras.getString("message"));

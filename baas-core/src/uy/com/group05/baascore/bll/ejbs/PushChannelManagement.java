@@ -192,7 +192,9 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 			try {
 				System.out.println("Se va a mandar una notificacion push porque se actualizo la entidad " + entity.getName());
 				boolean ok = sendNotificationToPushChannel(appId, canal.getId(), "message", "Se ha actualizado " + entity.getName());
-				if (!ok)
+				if (ok)
+					System.out.println("Se mandó la notificacion push.");
+				else
 					System.out.println("No se mandó la notificacion push.");
 			} catch (PushChanNotRegisteredException e) {
 				// No debería pasar

@@ -197,8 +197,8 @@ public class TruequeCtrl {
 					SDKFactory.getAPIFacade(context).update("Usuario", query, values);
 					
 					// Notificacion
-					NotifTask mandarNotif = new NotifTask();
-					mandarNotif.execute(uOfertante.getMail(), t.getUsuario() + " aceptó tu oferta!", "dif", "ofertaAceptada");
+					GCMService gcms = SDKFactory.getGCMService(act);
+					gcms.sendNotificationToClient(uOfertante.getMail(), "message", t.getUsuario() + " aceptó tu oferta!", "dif", "ofertaAceptada");
 					
 					//Marco las demas ofertas como rechazadas
 					for(Oferta o: t.getOfertas()){
@@ -252,8 +252,8 @@ public class TruequeCtrl {
 			SDKFactory.getAPIFacade(context).update("Oferta", query, values);
 			
 			// Notificacion
-			NotifTask mandarNotif = new NotifTask();
-			mandarNotif.execute(Factory.getOfertaCtrl().getOferta(context, idOferta).getUsuario(), t.getUsuario() + " rechazó tu oferta.", "dif", "ofertaRechazada");
+			GCMService gcms = SDKFactory.getGCMService(act);
+			gcms.sendNotificationToClient(Factory.getOfertaCtrl().getOferta(context, idOferta).getUsuario(), "message", t.getUsuario() + " rechazó tu oferta.", "dif", "ofertaRechazada");
 			
 			return true;
 		}
@@ -497,8 +497,8 @@ public class TruequeCtrl {
 			boolean ok = SDKFactory.getAPIFacade(context).update("Trueque", query, values);
 			if (ok) {
 				// Notificacion
-				NotifTask mandarNotif = new NotifTask();
-				mandarNotif.execute(t.getUsuario(), "Nueva oferta de " + mail, "dif", "ofertaNueva");
+				GCMService gcms = SDKFactory.getGCMService(act);
+				gcms.sendNotificationToClient(t.getUsuario(), "message", "Nueva oferta de " + mail, "dif", "ofertaNueva");
 			}
 			
 		}
@@ -618,41 +618,5 @@ public class TruequeCtrl {
 		}
 		return false;
 		
-	}
-	
-	private class NotifTask extends AsyncTask<String, Void, Boolean> {
-		
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-		
-		@Override
-		protected Boolean doInBackground(String... params) {
-			GCMService gcms = SDKFactory.getGCMService(act);
-			Log.i("GCM SDK", "Se va a mandar una notificacion personalizada...");
-			try {
-				return gcms.sendNotificationToClient(params[0], "message", params[1], params[2], params[3]);
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-				return false;
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-				return false;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			
-		}
-
-		@Override
-		protected void onCancelled() {
-			
-		}
 	}
 }
