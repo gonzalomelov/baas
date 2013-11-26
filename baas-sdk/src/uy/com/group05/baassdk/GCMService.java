@@ -505,7 +505,9 @@ public class GCMService {
 					new InputStreamReader(httpResponse.getEntity().getContent()));
 			
 			Gson gson = new Gson();
-			return gson.fromJson(br, Boolean.class);
+			boolean res = gson.fromJson(br, Boolean.class);
+			android.util.Log.i("GCM SDK", "Resultado de la suscripción: " + res);
+			return res;
 		}
 		else {
 			return false;

@@ -101,7 +101,7 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 		
 		// Si el cliente ya está suscripto, no hago nada
 		if (pushChannel.hasClient(client))
-			return false;
+			return true;
 		
 		// Si no está suscripto, lo agrego
 		pushChannel.addClient(client);
