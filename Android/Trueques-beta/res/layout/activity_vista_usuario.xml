@@ -31,7 +31,7 @@
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/LblNombre"
-                android:text="Nombre" />
+                android:text="" />
         </TableRow>
 
         <TableRow android:paddingBottom="0dp" >
@@ -40,7 +40,7 @@
                 android:textStyle="bold"  />
             <TextView
                 android:id="@+id/LblMail"
-                android:text="xx@mail.com" />
+                android:text="" />
         </TableRow>
         <TableRow android:paddingBottom="0dp" >
 
@@ -48,7 +48,7 @@
                 android:textStyle="bold"  />
             <TextView
                 android:id="@+id/LblTrueques"
-                android:text="53" />
+                android:text="" />
         </TableRow>
         <TableRow android:paddingBottom="0dp" >
 
@@ -56,7 +56,7 @@
                 android:textStyle="bold"  />
             <TextView
                 android:id="@+id/LblReputacion"
-                android:text="4.2" />
+                android:text="" />
         </TableRow>
 	</TableLayout>
 

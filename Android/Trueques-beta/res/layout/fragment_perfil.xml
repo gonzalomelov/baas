@@ -54,7 +54,7 @@
 
             <TextView
                 android:id="@+id/LblNombre"
-                android:text="Nombre"
+                android:text=""
                 android:textSize="16sp" />
         </TableRow>
 
@@ -66,7 +66,7 @@
 
             <TextView
                 android:id="@+id/LblEmail"
-                android:text="Mail"
+                android:text=""
                 android:textSize="16sp" />
         </TableRow>
         
@@ -87,7 +87,7 @@
 
             <TextView
                 android:id="@+id/LblPublicados"
-                android:text="0"
+                android:text=""
                 android:textSize="16sp" />
         </TableRow>
         <TableRow
@@ -98,7 +98,7 @@
 
             <TextView
                 android:id="@+id/LblAceptados"
-                android:text="0"
+                android:text=""
                 android:textSize="16sp" />
         </TableRow>
         <TableRow
@@ -109,7 +109,7 @@
 
             <TextView
                 android:id="@+id/LblRealizados"
-                android:text="0"
+                android:text=""
                 android:textSize="16sp" />
         </TableRow>
     </TableLayout>
@@ -141,7 +141,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textSize="12sp"
                 android:id="@+id/LblImgText"
-                android:text="Tu promedio es de 0 PTS" />
+                android:text="" />
 		</TableRow>
     </TableLayout>
     

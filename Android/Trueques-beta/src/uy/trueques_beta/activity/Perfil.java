@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -46,6 +47,7 @@ public class Perfil extends Fragment {//Activity {
 	private TextView imgText;
 	private TextView lblBloq;
 	private PerfilListener listener;
+	private ProgressDialog pd;
 	
 	 @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,11 +62,11 @@ public class Perfil extends Fragment {//Activity {
 		this.mail = prefs.getString("mail", "");
 		
 		this.u =null;
-		Intent intent = this.getActivity().getIntent();
-		if(intent.getExtras()!=null){
-			String usuarioJson= intent.getExtras().getString("Usuario");
-			this.u = Usuario.fromJson(usuarioJson);
-		}
+//		Intent intent = this.getActivity().getIntent();
+//		if(intent.getExtras()!=null){
+//			String usuarioJson= intent.getExtras().getString("Usuario");
+//			this.u = Usuario.fromJson(usuarioJson);
+//		}
 //		if(mAuthTask==null){
 //			mAuthTask = new PerfilTask();
 //			mAuthTask.execute((Void) null);
@@ -75,6 +77,7 @@ public class Perfil extends Fragment {//Activity {
 //		mAuthTask = null;
 //		//showProgress(false);
 //
+//		u=null;
 		if (u != null) {
 			
 			SDKFactory.getGCMService(Perfil.this.getActivity());
@@ -128,6 +131,7 @@ public class Perfil extends Fragment {//Activity {
 			}
 		} else {
 			if(mAuthTask==null){
+				pd = ProgressDialog.show(Perfil.this.getActivity(),"Perfil","Cargando Perfil",true,false,null);
 				mAuthTask = new PerfilTask();
 				mAuthTask.execute((Void) null);
 			}
@@ -215,6 +219,8 @@ public class Perfil extends Fragment {//Activity {
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 
 			if (success) {
 				
@@ -278,6 +284,8 @@ public class Perfil extends Fragment {//Activity {
 		protected void onCancelled() {
 			mAuthTask = null;
 			//showProgress(false);
+			if(pd!=null & pd.isShowing())
+				pd.dismiss();
 		}
 	}
 

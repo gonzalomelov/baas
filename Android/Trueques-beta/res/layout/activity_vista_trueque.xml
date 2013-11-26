@@ -53,7 +53,7 @@
                 android:textStyle="bold"/>
             <TextView
                 android:id="@+id/LblDuenio"
-                android:text="Nombre" />
+                android:text="" />
         </TableRow>
 
         <TableRow android:paddingBottom="0dp" >
@@ -62,7 +62,7 @@
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/LblValor"
-                android:text="$0" />
+                android:text="" />
         </TableRow>
         
         <TableRow android:paddingBottom="2dp" >
@@ -71,7 +71,7 @@
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/LblFecha"
-                android:text="2013-12-12" />
+                android:text="" />
         </TableRow>
         
         <TableRow android:paddingBottom="0dp" >
@@ -98,7 +98,7 @@
         	    android:textStyle="bold" />
             <TextView android:id="@+id/LblMinVal"
                 android:textColor="#ff0000"
-                android:text="$10" />
+                android:text="" />
     	</TableRow>
     </TableLayout>
     
@@ -114,7 +114,7 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:layout_gravity="center_horizontal"
-       	android:text="Tienes X ofertas pendientes"
+       	android:text=""
        	android:visibility="gone" />
 
     </LinearLayout>
