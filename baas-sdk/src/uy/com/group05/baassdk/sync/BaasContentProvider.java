@@ -71,9 +71,9 @@ public class BaasContentProvider extends ContentProvider {
 				limit);
 		
 		while (cursor.moveToNext()) {
-			Log.e("TAG", "##### Entity ######");
-			Log.e("TAG", "_id: " + cursor.getString(0));
-			Log.e("TAG", "entity: " + cursor.getString(1));
+			Log.i("BaasContentProvider", "##### Entity ######");
+			Log.i("BaasContentProvider", "_id: " + cursor.getString(0));
+			Log.i("BaasContentProvider", "entity: " + cursor.getString(1));
 		}
 		
 		return cursor;

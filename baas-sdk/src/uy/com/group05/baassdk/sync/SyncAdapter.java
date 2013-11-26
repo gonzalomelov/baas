@@ -58,18 +58,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 			SyncResult syncResult) {
 		
 		try {
-			Log.e("TAG", "EPA");
+			Log.i("SyncAdapter", "EPA");
 			MyApplication myApplication = (MyApplication)(getContext().getApplicationContext());
 			Timestamp updatedAt = myApplication.getUpdatedAt();
 			
 			String entity = extras.getString("entity");
 			
-			Log.e("TAG", entity);
+			Log.i("SyncAdapter", entity);
 			
 			//Obtengo entidades modificados desde base local
 			Cursor cursor = provider.query(Uri.parse("content://uy.com.group05.baassdk.sync.provider" + "/" + entity), null, null, null, null);
 			
-			Log.e("TAG", "query");
+			Log.i("SyncAdapter", "query");
 			
 			List<String> localEntities = new ArrayList<String>();
 			if (cursor != null) {
@@ -80,11 +80,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 					JsonParser jsonParser = new JsonParser();
 					JsonObject jsonObject = (JsonObject) jsonParser.parse(entityValue);
 					
-					Log.e("TAG", "jsonObject");
+					Log.i("SyncAdapter", "jsonObject");
 					
 					if (jsonObject.get("updatedat") != null) {
-						Log.e("SYNCHRONIZATION", "updatedat: " + jsonObject.get("updatedat").getAsString());
-						Log.e("SYNCHRONIZATION", "myApplication.updatedAt: " + updatedAt);	
+						Log.i("SYNCHRONIZATION", "updatedat: " + jsonObject.get("updatedat").getAsString());
+						Log.i("SYNCHRONIZATION", "myApplication.updatedAt: " + updatedAt);	
 					}
 					
 					if (updatedAt == null ||
@@ -92,7 +92,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 						Timestamp.valueOf(jsonObject.get("updatedat").getAsString()).after(updatedAt)) {
 						
 						localEntities.add(jsonObject.toString());
-						Log.e("TAG", "Update: " + jsonObject.toString());
+						Log.i("SyncAdapter", "Update: " + jsonObject.toString());
 					}
 				}
 			}
@@ -119,17 +119,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 				jsonObj.add("syncid", jsonParser.parse(syncId));
 				
 				ContentValues values = new ContentValues();
-				Log.e("TAG", "entity: " + jsonObj.toString());
+				Log.i("SyncAdapter", "entity: " + jsonObj.toString());
 				values.put("entity", jsonObj.toString());
 				
-				Log.e("TAG", "after insert");
+				Log.i("SyncAdapter", "after insert");
 				provider.insert(Uri.parse("content://uy.com.group05.baassdk.sync.provider/" + entity), values);
-				Log.e("TAG", "after insert");
+				Log.i("SyncAdapter", "after insert");
 			}
 			
 			//myApplication.setUpdatedAt(newTimestamp);
 			
-			Log.e("TAG", "newTimestamp: " + newTimestamp.toString());
+			Log.i("SyncAdapter", "newTimestamp: " + newTimestamp.toString());
 			
 			
 		}
