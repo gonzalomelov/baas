@@ -158,7 +158,7 @@ public class Configuracion extends Activity {
 						    		editor.commit();
 						    	}
 						    	else {
-						    		Toast.makeText(Configuracion.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+						    		Toast.makeText(Configuracion.this, "No existe el canal push o no hay conexión.", Toast.LENGTH_SHORT).show();
 						    		check.setChecked(false);
 						    	}
 				            }
@@ -206,7 +206,7 @@ public class Configuracion extends Activity {
 						    		editor.putBoolean(usuarioLogueado + "_truequesNuevos", false);
 						    	}
 						    	else {
-						    		Toast.makeText(Configuracion.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+						    		Toast.makeText(Configuracion.this, "No existe el canal push o no hay conexión.", Toast.LENGTH_SHORT).show();
 						    		check.setChecked(true);
 						    	}
 				            }

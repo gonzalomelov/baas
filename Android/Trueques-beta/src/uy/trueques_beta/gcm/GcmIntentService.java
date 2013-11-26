@@ -71,6 +71,7 @@ public class GcmIntentService extends IntentService {
 	            	Log.i("GCM SDK", "Mensaje recibido: " + extras.toString());
 	            	
 	            	if (type.equals("notification")) {
+	            		Log.i("GCM SDK", "Tipo: notification");
 	            		if (diferenciador == null) { // Canal Push            			
 	            			String accion = extras.getString("accion");
 	    					String entidad = extras.getString("entidad");
