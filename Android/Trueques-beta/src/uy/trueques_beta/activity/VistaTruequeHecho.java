@@ -239,7 +239,7 @@ public class VistaTruequeHecho extends Activity {
 				}
 			}else{
 				Log.i("[VistaTruequeHecho]:", "ERROR");
-				Toast.makeText(VistaTruequeHecho.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
+				Toast.makeText(VistaTruequeHecho.this, "¡No hay conexión a internet!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		
@@ -256,9 +256,10 @@ public class VistaTruequeHecho extends Activity {
 
 	//++++++++++ASYNC 2 +++++++++//
 	public class PuntuarTask extends AsyncTask<Integer, Void, Boolean> {
-		
+		int pts_2;
 		@Override
 		protected Boolean doInBackground(Integer... params) {
+			pts_2= params[0];
 			if(soyTrueque)
         		Factory.getTruequeCtrl().puntuarGanadora(VistaTruequeHecho.this, t.getIdTrueque(), params[0]);
         	else
@@ -274,6 +275,10 @@ public class VistaTruequeHecho extends Activity {
 				pd2.dismiss();
 		
 			if (success) {
+				if(soyTrueque)
+					t.setPuntosGanadora(pts_2);
+				else
+					t.setPuntosTrueque(pts_2);
 				//t = Factory.getTruequeCtrl().getTrueque(VistaTruequeHecho.this, t.getIdTrueque());
 				Intent intent =new Intent(VistaTruequeHecho.this, VistaTruequeHecho.class);
             	intent.putExtra("Trueque", t.toJson());
@@ -281,7 +286,7 @@ public class VistaTruequeHecho extends Activity {
             	VistaTruequeHecho.this.finish();
 			} else {
 				Log.i("[VistaTruequeHecho]:", "Error al puntuar");
-				Toast.makeText(VistaTruequeHecho.this, "Error al puntuar", Toast.LENGTH_SHORT).show();
+				Toast.makeText(VistaTruequeHecho.this, "¡No hay conexión a internet!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		
