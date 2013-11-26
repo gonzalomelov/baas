@@ -274,7 +274,7 @@ public class VistaTruequeHecho extends Activity {
 				pd2.dismiss();
 		
 			if (success) {
-				t = Factory.getTruequeCtrl().getTrueque(VistaTruequeHecho.this, t.getIdTrueque());
+				//t = Factory.getTruequeCtrl().getTrueque(VistaTruequeHecho.this, t.getIdTrueque());
 				Intent intent =new Intent(VistaTruequeHecho.this, VistaTruequeHecho.class);
             	intent.putExtra("Trueque", t.toJson());
             	startActivity(intent);

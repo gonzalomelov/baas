@@ -300,7 +300,7 @@ public class CrearTrueque extends Fragment{//Activity {
 //				//+++
 		    	
 			} else {
-				nombreView.setError("Error al publicar");
+				nombreView.setError("¡No hay conexión a internet!");
 				nombreView.requestFocus();
 			}
 		}

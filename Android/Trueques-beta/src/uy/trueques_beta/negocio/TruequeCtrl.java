@@ -157,21 +157,7 @@ public class TruequeCtrl {
 					t.setGanadora(ofer);
 					t.setActiva(false);
 					t.setFechaFin(new Date());
-					//"MMM dd, yyyy hh: mm: ss aa"
-//					//Date date = new java.util.Date(); 
-//					SimpleDateFormat sdf=new SimpleDateFormat("MMM dd, yyyy hh: mm: ss aa");
-//					//String fecha = sdf.format(date);
-//					
-//					Log.e("FECHASSSSS", t.getFechaFin()+"/"+t.getFechaIni());
-//					Log.e("FECHASSSSS", sdf.format(t.getFechaFin()));
-//					sdf=new SimpleDateFormat("dd/MM/yyyy");
-//					Log.e("FECHASSSSS", sdf.format(t.getFechaFin()));
-//					Log.e("FECHASSSSS", t.getFechaFin().toGMTString());
-//					Log.e("FECHASSSSS", t.getFechaFin().toLocaleString());
-//					Log.e("FECHASSSSS", t.getFechaFin().toString());
-//					
-//					System.out.println(gson.toJson(t.getFechaFin()));
-					
+
 					String query =  "{idTrueque:\""+t.getIdTrueque()+"\"}";
 					String values = "{ganadora:"+t.getGanadora().toJson()+", activa:\""+t.isActiva()+"\", fechaFin: "+gson.toJson(t.getFechaFin()) +"}";
 					
@@ -238,7 +224,7 @@ public class TruequeCtrl {
 	public boolean rechazarOferta(Context context, String idTrueque, String idOferta){
 		//if(!this.trueques.containsKey(idTrueque) || !this.trueques.get(idTrueque).existOferta(idOferta))
 		Trueque t = getTrueque(context, idTrueque);
-		if(t==null || t.existOferta(idOferta))
+		if(t==null || !t.existOferta(idOferta))
 			return false;
 		
 		try{
@@ -250,6 +236,16 @@ public class TruequeCtrl {
 			String values = "{rechazada:true}";
 			
 			SDKFactory.getAPIFacade(context).update("Oferta", query, values);
+			
+			//+++ RECHAZO LA OFERTA DENTRO DEL Trueque
+			query = "{idTrueque:\""+t.getIdTrueque()+"\"}";
+			//t.getOfertas();
+			Gson gson = new Gson();
+			String ofrs= gson.toJson(t.getOfertas());
+			values = "{ofertas:"+ofrs+"}";
+			
+			SDKFactory.getAPIFacade(context).update("Trueque", query, values);
+			//+++
 			
 			// Notificacion
 			GCMService gcms = SDKFactory.getGCMService(act);

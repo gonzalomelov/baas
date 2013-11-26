@@ -135,7 +135,10 @@ public class ClientImpl implements ClientFacade {
 		prefs.edit().putString("accessToken", authenticationDTO.getAccessToken()).commit();
 		prefs.edit().putString("refreshToken", authenticationDTO.getRefreshToken()).commit();
 		
-		Log.i("TAG", authenticationDTO.getAccessToken());
+		if (authenticationDTO==null)
+			Log.i("TAG", "authenticationDTO==NULL");
+		else
+			Log.i("TAG", authenticationDTO.getAccessToken());
 		
 		return authenticationDTO;
 	}
