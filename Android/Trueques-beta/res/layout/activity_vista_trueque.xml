@@ -30,7 +30,7 @@
         android:id="@+id/imagenTrueque"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:src="@drawable/ic_launcher" />
+         />
     
     
     <TableLayout
@@ -106,7 +106,7 @@
         android:id="@+id/BtnOfertar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ofertar"
+        android:text=""
         style="@style/btnStyleBreakerBay"
    	 />
     <TextView android:id="@+id/CantOfertas"

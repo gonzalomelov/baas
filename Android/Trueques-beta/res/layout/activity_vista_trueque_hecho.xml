@@ -27,7 +27,7 @@
    	
    	<TextView
    	    android:id="@+id/LblFecha"
-        android:text="El día 12/10/1990"
+        android:text=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -41,13 +41,11 @@
         android:id="@+id/image1"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/ic_launcher" 
         android:layout_marginRight="40sp"/>
     <ImageView
         android:id="@+id/image2"
         android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/ic_launcher" />
+        android:layout_height="100dp"/>
             
     </TableRow>
 </TableLayout>
@@ -68,7 +66,7 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/LblObjetoTrueque"
-                android:text="Nombre"
+                android:text=""
                 android:textSize="16sp"
                 android:layout_marginLeft="10sp" />
         </TableRow>
@@ -78,7 +76,7 @@
             <TextView android:text="Valorado en:" />
             <TextView
                 android:id="@+id/LblValor"
-                android:text="$0"
+                android:text=""
                 android:layout_marginLeft="10sp" />
         </TableRow>
         
@@ -108,7 +106,7 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/LblObjetoOferta"
-                android:text="Nombre"
+                android:text=""
                 android:textSize="16sp"
                 android:layout_marginLeft="10sp" />
         </TableRow>
@@ -117,7 +115,7 @@
             <TextView android:text="De:" />
             <TextView
                 android:id="@+id/LblDuenioOferta"
-                android:text="dueño (dueño@mail.com)"
+                android:text=""
                 android:layout_marginLeft="10sp" />
         </TableRow>
        
@@ -126,7 +124,7 @@
             <TextView android:text="Valorado en:" />
             <TextView
                 android:id="@+id/LblValorOferta"
-                android:text="$0"
+                android:text=""
                 android:layout_marginLeft="10sp" />
         </TableRow>
         

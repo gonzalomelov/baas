@@ -37,14 +37,13 @@
     	android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
     	android:textColor="#ff0000"
-        android:text="$10" />
+        android:text="" />
    </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:src="@drawable/ic_launcher" />
+        android:layout_height="120dp" />
     
     
     <TableLayout
@@ -68,7 +67,7 @@
                 android:textStyle="bold"/>
             <TextView
                 android:id="@+id/LblDuenio"
-                android:text="Nombre" />
+                android:text="" />
         </TableRow>
         
         <TableRow android:paddingBottom="0dp" >
@@ -77,7 +76,7 @@
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/LblObjeto"
-                android:text="Objeto" />
+                android:text="" />
         </TableRow>
 
         <TableRow android:paddingBottom="4dp" >
@@ -86,7 +85,7 @@
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/LblValor"
-                android:text="$0" />
+                android:text="" />
         </TableRow>
 
         <TableRow android:paddingBottom="0dp" >

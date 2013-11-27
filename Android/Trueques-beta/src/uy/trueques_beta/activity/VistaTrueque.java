@@ -180,6 +180,8 @@ public class VistaTrueque extends Activity {
 					//cantOfer.setVisibility(View.VISIBLE);
 					//cantOfer.setText("Tienes "+t.getOfertasPendientes().size()+" ofertas pendientes");
 					button.setText("Ver ofertas pendientes ("+t.getOfertasPendientes().size()+")");
+				}else{
+					button.setText("Ofertar");
 				}
 		    	
 				button.setOnClickListener(
@@ -210,7 +212,7 @@ public class VistaTrueque extends Activity {
 				
 			} else {
 				Log.i("[VistaTrueque]:", "ERROR");
-				Toast.makeText(VistaTrueque.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
+				Toast.makeText(VistaTrueque.this, "¡No hay conexión a internet!", Toast.LENGTH_SHORT).show();
 			}
 		}
 
