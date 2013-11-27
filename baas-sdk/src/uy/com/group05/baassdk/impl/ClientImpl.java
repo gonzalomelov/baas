@@ -180,7 +180,11 @@ public class ClientImpl implements ClientFacade {
 		android.util.Log.i("GCM SDK", "statusCode: " + statusCode);
 		
 		if (statusCode == HttpStatus.SC_OK) {
-			return true;
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(httpResponse.getEntity().getContent()));
+			
+			Gson gson = new Gson();
+			return gson.fromJson(br, Boolean.class);
 		}
 		else {
 			return false;

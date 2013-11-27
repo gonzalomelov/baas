@@ -129,7 +129,7 @@ public class Configuracion extends Activity {
 						    	
 								try {
 									GCMService gcms = SDKFactory.getGCMService(Configuracion.this);
-									return gcms.subscribeToPushChannel("truequesNuevos2");
+									return gcms.subscribeToPushChannel("truequesNuevos3");
 								} catch (UnsupportedEncodingException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
@@ -178,7 +178,7 @@ public class Configuracion extends Activity {
 						    	
 								try {
 									GCMService gcms = SDKFactory.getGCMService(Configuracion.this);
-									return gcms.unsubscribeFromPushChannel("truequesNuevos2");
+									return gcms.unsubscribeFromPushChannel("truequesNuevos3");
 								} catch (UnsupportedEncodingException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
@@ -204,6 +204,7 @@ public class Configuracion extends Activity {
 						    	if (ok) {
 						    		Toast.makeText(Configuracion.this, "Eliminado", Toast.LENGTH_SHORT).show();
 						    		editor.putBoolean(usuarioLogueado + "_truequesNuevos", false);
+						    		editor.commit();
 						    	}
 						    	else {
 						    		Toast.makeText(Configuracion.this, "No existe el canal push o no hay conexión.", Toast.LENGTH_SHORT).show();
@@ -212,7 +213,6 @@ public class Configuracion extends Activity {
 				            }
 						}.execute(null, null, null);
 					}
-					editor.commit();
 				  }
 				});
 	 }
