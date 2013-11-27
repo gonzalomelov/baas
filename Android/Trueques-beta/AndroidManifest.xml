@@ -42,6 +42,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.Main"
             android:label="@string/app_name" >
             <intent-filter>
@@ -51,15 +52,18 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.Login"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.Registrar"
             android:label="@string/title_activity_registrar" >
         </activity>
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.CrearObjeto"
             android:label="@string/title_activity_crear_objeto" >
         </activity>
@@ -68,63 +72,71 @@
             android:name="uy.trueques_beta.activity.Perfil"
             android:label="@string/title_activity_perfil" >
         </activity>
-
-
-
-
-
         -->
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.CrearTrueque"
             android:label="@string/title_activity_crear_trueque" >
         </activity>
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.VerOfertasPendientes"
             android:label="@string/title_activity_ver_ofertas_pendientes" >
         </activity>
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.VerTrueques"
             android:label="@string/title_activity_ver_trueques" >
         </activity>
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.VistaTrueque"
             android:label="@string/title_activity_vista_trueque" >
         </activity>
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.Ofertar"
             android:label="@string/title_activity_ofertar" >
         </activity>
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.VerOfertasPend"
             android:label="@string/title_activity_ver_ofertas_pend" >
         </activity>
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.VistaOfertaPend"
             android:label="@string/title_activity_vista_oferta_pend" >
         </activity>
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.Home"
             android:label="@string/title_activity_home" >
         </activity>
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.VistaTruequeHecho"
             android:label="@string/title_activity_vista_trueque_hecho" >
         </activity>
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.Configuracion1"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_configuracion"
             android:theme="@style/FullscreenTheme" >
         </activity>
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.Configuracion"
             android:label="@string/title_activity_configuracion" >
         </activity>
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.VerUsuarios"
             android:label="@string/title_activity_ver_usuarios" >
         </activity>
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.VistaUsuario"
             android:label="@string/title_activity_vista_usuario" >
         </activity>
@@ -184,15 +196,27 @@
             android:permission="uy.com.group05.baassdk.sync.provider.permission"
             android:syncable="true" />
 
-        <!-- <meta-data
+         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" /> -->
+            android:value="@integer/google_play_services_version" /> 
 
         <!-- Fin BaaS SDK -->
         <activity
+            android:screenOrientation="locked"
             android:name="uy.trueques_beta.activity.VerRSS"
             android:label="@string/title_activity_ver_rss" >
         </activity>
+        
+        <!-- WIDGET -->
+        <receiver android:name="uy.trueques_beta.widget.WidgetTrueques" android:label="Trueques-Beta">
+        <intent-filter>
+           <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+        </intent-filter>
+        <meta-data
+           android:name="android.appwidget.provider"
+           android:resource="@xml/widget_wprovider" />
+    	</receiver>
+    	
     </application>
 
 </manifest>

@@ -129,7 +129,7 @@ public class Configuracion extends Activity {
 						    	
 								try {
 									GCMService gcms = SDKFactory.getGCMService(Configuracion.this);
-									return gcms.subscribeToPushChannel("truequesNuevos");
+									return gcms.subscribeToPushChannel("truequesNuevos2");
 								} catch (UnsupportedEncodingException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
@@ -178,7 +178,7 @@ public class Configuracion extends Activity {
 						    	
 								try {
 									GCMService gcms = SDKFactory.getGCMService(Configuracion.this);
-									return gcms.unsubscribeFromPushChannel("truequesNuevos");
+									return gcms.unsubscribeFromPushChannel("truequesNuevos2");
 								} catch (UnsupportedEncodingException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();

@@ -198,6 +198,14 @@ public class Perfil extends Fragment {//Activity {
         this.listener=listener;
     }
     
+    @Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		if (mAuthTask!=null){
+			mAuthTask.cancel(true);
+		}
+	}
     
     //############# AsyncTask para traer datos del usuario
     public class PerfilTask extends AsyncTask<Void, Void, Boolean> {
@@ -223,59 +231,62 @@ public class Perfil extends Fragment {//Activity {
 				pd.dismiss();
 
 			if (success) {
-				
-				//+++ BLOQuEADO?
-				SharedPreferences prefs = Perfil.this.getActivity().getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
-				SharedPreferences.Editor editor = prefs.edit();
-				editor.putBoolean("isBloqueado", u.isBloqueado());
-				editor.commit();
-				//+++
-				
-				//Seteo los datos del usuario
-				lblNombre = (TextView)getView().findViewById(R.id.LblNombre);
-				lblNombre.setText(u.getNombre());
-				lblEmail = (TextView)getView().findViewById(R.id.LblEmail);
-				lblEmail.setText(u.getMail());
-				
-				lblRealizados = (TextView)getView().findViewById(R.id.LblRealizados);
-				lblRealizados.setText(String.valueOf(u.getRealizados()));
-				lblAceptados = (TextView)getView().findViewById(R.id.LblAceptados);
-				lblAceptados.setText(String.valueOf(u.getAceptados()));
-				lblPublicados = (TextView)getView().findViewById(R.id.LblPublicados);
-				lblPublicados.setText(String.valueOf(u.getPublicados()));
-				//Puntaje
-				imgText = (TextView)getView().findViewById(R.id.LblImgText);
-				imgText.setText("Tu promedio es "+u.getPuntaje()+"! Pts.");
-				imgPts = (ImageView)getView().findViewById(R.id.imagePuntaje);
-				
-				switch(Math.round(u.getPuntaje())){
-					case 0:
-						imgPts.setImageResource(R.drawable.ic_pts0);
-						break;
-					case 1:
-						imgPts.setImageResource(R.drawable.ic_pts1);
-						break;
-					case 2:
-						imgPts.setImageResource(R.drawable.ic_pts2);
-						break;
-					case 3:
-						imgPts.setImageResource(R.drawable.ic_pts3);
-						break;
-					case 4:
-						imgPts.setImageResource(R.drawable.ic_pts4);
-						break;
-					case 5:
-						imgPts.setImageResource(R.drawable.ic_pts5);
-						break;
-				}
-				
-				if(u.isBloqueado()){
-					lblBloq = (TextView)getView().findViewById(R.id.LblBloqueado);
-					lblBloq.setVisibility(View.VISIBLE);;
+				try{
+					//+++ BLOQuEADO?
+					SharedPreferences prefs = Perfil.this.getActivity().getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
+					SharedPreferences.Editor editor = prefs.edit();
+					editor.putBoolean("isBloqueado", u.isBloqueado());
+					editor.commit();
+					//+++
+					
+					//Seteo los datos del usuario
+					lblNombre = (TextView)getView().findViewById(R.id.LblNombre);
+					lblNombre.setText(u.getNombre());
+					lblEmail = (TextView)getView().findViewById(R.id.LblEmail);
+					lblEmail.setText(u.getMail());
+					
+					lblRealizados = (TextView)getView().findViewById(R.id.LblRealizados);
+					lblRealizados.setText(String.valueOf(u.getRealizados()));
+					lblAceptados = (TextView)getView().findViewById(R.id.LblAceptados);
+					lblAceptados.setText(String.valueOf(u.getAceptados()));
+					lblPublicados = (TextView)getView().findViewById(R.id.LblPublicados);
+					lblPublicados.setText(String.valueOf(u.getPublicados()));
+					//Puntaje
+					imgText = (TextView)getView().findViewById(R.id.LblImgText);
+					imgText.setText("Tu promedio es "+u.getPuntaje()+"! Pts.");
+					imgPts = (ImageView)getView().findViewById(R.id.imagePuntaje);
+					
+					switch(Math.round(u.getPuntaje())){
+						case 0:
+							imgPts.setImageResource(R.drawable.ic_pts0);
+							break;
+						case 1:
+							imgPts.setImageResource(R.drawable.ic_pts1);
+							break;
+						case 2:
+							imgPts.setImageResource(R.drawable.ic_pts2);
+							break;
+						case 3:
+							imgPts.setImageResource(R.drawable.ic_pts3);
+							break;
+						case 4:
+							imgPts.setImageResource(R.drawable.ic_pts4);
+							break;
+						case 5:
+							imgPts.setImageResource(R.drawable.ic_pts5);
+							break;
+					}
+					
+					if(u.isBloqueado()){
+						lblBloq = (TextView)getView().findViewById(R.id.LblBloqueado);
+						lblBloq.setVisibility(View.VISIBLE);;
+					}
+				}catch(Exception e){
+					Log.e("[Perfil]:", "Se dio vuelta");
 				}
 			} else {
 				//finish();
-				Toast.makeText(Perfil.this.getActivity().getBaseContext(), "U = NULL", Toast.LENGTH_SHORT).show();
+				Toast.makeText(Perfil.this.getActivity().getBaseContext(), "¡No hay conexión a internet!", Toast.LENGTH_SHORT).show();
 				Log.i("[Perfil]:", "no se pudo cargar el usuario");
 			}
 		}
@@ -286,6 +297,7 @@ public class Perfil extends Fragment {//Activity {
 			//showProgress(false);
 			if(pd!=null & pd.isShowing())
 				pd.dismiss();
+			//Toast.makeText(Perfil.this.getActivity().getBaseContext(), "CANCELADO", Toast.LENGTH_SHORT).show();
 		}
 	}
 

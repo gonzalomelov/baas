@@ -45,6 +45,7 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 	private ListView drawerList;
 	public int[] imagenesMenu;
 	private ActionBarDrawerToggle conmutador;
+	private ProgressDialog pd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +127,7 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 	            drawerLayout.closeDrawer(drawerList);
 	            }
 	            else{
+	            	//pd = ProgressDialog.show(Home.this,"Cerrar Sesión","Cerrando sesión",true,false,null);
 	            	//BORRO USUARIO
 	        		SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 	        		SharedPreferences.Editor editor = prefs.edit();
@@ -135,6 +137,8 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 	        		// Voy al inicio (Main)
 	        		Intent intent = new Intent(Home.this, Main.class);
 	        		//intent.putExtra("mail", mail);
+//	        		if(pd!=null & pd.isShowing())
+//	    				pd.dismiss();
 	        		startActivity(intent);
 	        		finish();
 	            }
