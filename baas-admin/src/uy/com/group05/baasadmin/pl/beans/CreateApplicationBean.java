@@ -14,7 +14,7 @@ import javax.faces.context.FacesContext;
 
 import uy.com.group05.baasadmin.pl.controllers.ApplicationController;
 import uy.com.group05.baasadmin.pl.models.EntitySync;
-import uy.com.group05.baascore.common.exceptions.InvalidNameException;
+//import uy.com.group05.baascore.common.exceptions.InvalidNameException;
 
 
 

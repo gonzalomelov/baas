@@ -52,7 +52,7 @@ body {
 }
 
 .SubmitApp {
-	left: 72%;
+	left: 62%;
 	position: relative;
 }
 
@@ -159,16 +159,16 @@ body {
 		</div>
 	</h:panelGroup>
 
-
-	<span>Application Name</span>
-	<h:form>
-		<h:inputText size="10" value="#{createApplicationBean.appName}"
-			styleClass="appNamePosta" />
-		<h:commandButton value="Create"
-			action="#{createApplicationBean.Create()}"
-			class="SubmitApp btn btn-large btn-success" />
-	</h:form>
-
+	<div class="createNameContainer" style="margin-left: 2%;">
+		<span>Application Name</span>
+		<h:form>
+			<h:inputText size="10" value="#{createApplicationBean.appName}"
+				styleClass="appNamePosta" />
+			<h:commandButton value="Create"
+				action="#{createApplicationBean.Create()}"
+				class="SubmitApp btn btn-large btn-success" />
+		</h:form>
+	</div>
 	<h:form>
 		<div class="rolesBox">
 
