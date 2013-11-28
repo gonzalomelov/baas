@@ -3,7 +3,6 @@ package uy.com.group05.baascore.common.entities;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,9 +35,9 @@ public class Client {
 
 	private boolean loggedIn;
 	
-	private UUID accessToken;
+	private String accessToken;
 	
-	private UUID refreshToken;
+	private String refreshToken;
 	
 	private String gcm_regId;
 	
@@ -100,19 +99,19 @@ public class Client {
 		this.loggedIn = loggedIn;
 	}
 
-	public UUID getAccessToken() {
+	public String getAccessToken() {
 		return accessToken;
 	}
 
-	public void setAccessToken(UUID accessToken) {
+	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
 
-	public UUID getRefreshToken() {
+	public String getRefreshToken() {
 		return refreshToken;
 	}
 
-	public void setRefreshToken(UUID refreshToken) {
+	public void setRefreshToken(String refreshToken) {
 		this.refreshToken = refreshToken;
 	}
 

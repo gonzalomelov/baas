@@ -1,7 +1,6 @@
 package uy.com.group05.baascore.sl.services.rest;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -21,7 +20,7 @@ public interface PushRest {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean updateRegId(
-			@HeaderParam("accessToken") UUID accessToken,
+			@HeaderParam("accessToken") String accessToken,
 			@FormParam("appName") String appName,
 			@FormParam("regId") String regId);
 	
@@ -30,7 +29,7 @@ public interface PushRest {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean sendNotificationToPushChannel(
-			@HeaderParam("accessToken") UUID accessToken,
+			@HeaderParam("accessToken") String accessToken,
 			@FormParam("appName") String appName,
 			@FormParam("pushChanName") String pushChanName,
 			@FormParam("msgKey") String msgKey,
@@ -41,7 +40,7 @@ public interface PushRest {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean sendNotificationToClient(
-			@HeaderParam("accessToken") UUID accessToken,
+			@HeaderParam("accessToken") String accessToken,
 			@FormParam("appName") String appName,
 			@FormParam("mailReceiver") String mailReceiver,
 			@FormParam("msgKey") String msgKey,
@@ -54,7 +53,7 @@ public interface PushRest {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean subscribeToPushChannel(
-			@HeaderParam("accessToken") UUID accessToken,
+			@HeaderParam("accessToken") String accessToken,
 			@FormParam("appName") String appName,
 			@FormParam("pushChanName") String pushChanName);
 	
@@ -63,7 +62,7 @@ public interface PushRest {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean unsubscribeFromPushChannel(
-			@HeaderParam("accessToken") UUID accessToken,
+			@HeaderParam("accessToken") String accessToken,
 			@FormParam("appName") String appName,
 			@FormParam("pushChanName") String pushChanName);
 	

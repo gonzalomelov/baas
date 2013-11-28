@@ -1,7 +1,5 @@
 package uy.com.group05.baascore.common.entities;
 
-import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,9 +15,9 @@ public class ExternalClient {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	private UUID accessToken;
+	private String accessToken;
 	
-	private UUID refreshToken;
+	private String refreshToken;
 	
 	@ManyToOne
 	private Application application;
@@ -32,19 +30,19 @@ public class ExternalClient {
 		this.id = id;
 	}
 
-	public UUID getAccessToken() {
+	public String getAccessToken() {
 		return accessToken;
 	}
 
-	public void setAccessToken(UUID accessToken) {
+	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
 
-	public UUID getRefreshToken() {
+	public String getRefreshToken() {
 		return refreshToken;
 	}
 
-	public void setRefreshToken(UUID refreshToken) {
+	public void setRefreshToken(String refreshToken) {
 		this.refreshToken = refreshToken;
 	}
 

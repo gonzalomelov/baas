@@ -1,7 +1,6 @@
 package uy.com.group05.baascore.sl.services.impl;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
@@ -32,7 +31,7 @@ public class PushRestImpl implements PushRest {
 	Mapper mapper;
 	
 	@Override
-	public boolean updateRegId(UUID accessToken, String appName, String regId) {
+	public boolean updateRegId(String accessToken, String appName, String regId) {
 		try {
 			long appId = appManagementLocal.getApplication(appName).getId();
 			clientManagementLocal.updateRegIdOfClient(accessToken, appId, regId);
@@ -47,7 +46,7 @@ public class PushRestImpl implements PushRest {
 	}
 	
 	@Override
-	public boolean sendNotificationToPushChannel(UUID accessToken, String appName, String pushChanName, String msgKey, String msgValue) {
+	public boolean sendNotificationToPushChannel(String accessToken, String appName, String pushChanName, String msgKey, String msgValue) {
 		try {
 			return pushChannelManagementLocal.sendNotificationToPushChannel(appName, pushChanName, msgKey, msgValue);
 		} catch (AppNotRegisteredException e) {
@@ -60,7 +59,7 @@ public class PushRestImpl implements PushRest {
 	}
 	
 	@Override
-	public boolean subscribeToPushChannel(UUID accessToken, String appName, String pushChanName) {
+	public boolean subscribeToPushChannel(String accessToken, String appName, String pushChanName) {
 		try {
 			long appId = appManagementLocal.getApplication(appName).getId();
 			long clientId = clientManagementLocal.getClientWithAccessToken(accessToken, appId).getId();
@@ -79,7 +78,7 @@ public class PushRestImpl implements PushRest {
 	}
 	
 	@Override
-	public boolean unsubscribeFromPushChannel(UUID accessToken, String appName, String pushChanName) {
+	public boolean unsubscribeFromPushChannel(String accessToken, String appName, String pushChanName) {
 		try {
 			long appId = appManagementLocal.getApplication(appName).getId();
 			long clientId = clientManagementLocal.getClientWithAccessToken(accessToken, appId).getId();
@@ -111,7 +110,7 @@ public class PushRestImpl implements PushRest {
 	}
 
 	@Override
-	public boolean sendNotificationToClient(UUID accessToken, String appName,
+	public boolean sendNotificationToClient(String accessToken, String appName,
 			String mailReceiver, String msgKey, String msgValue, String difKey, String difValue) {
 		try {
 			long appId = appManagementLocal.getApplication(appName).getId();

@@ -1,7 +1,6 @@
 package uy.com.group05.baascore.common.entities;
 
 import java.util.Date;
-import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

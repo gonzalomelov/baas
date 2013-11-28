@@ -277,7 +277,7 @@ public class GCMService {
 	        task.execute(null,null,null);
 	        boolean res = false;
 	        try {
-	        	res = task.get(1000, TimeUnit.MILLISECONDS);
+	        	res = task.get(10000, TimeUnit.MILLISECONDS);
 	        }
 	        catch (Exception e) {}
 	    	return res;

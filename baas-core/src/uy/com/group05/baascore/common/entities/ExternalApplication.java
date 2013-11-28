@@ -1,7 +1,6 @@
 package uy.com.group05.baascore.common.entities;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +21,7 @@ public class ExternalApplication {
 	
 	private String name;
 
-	private UUID clientId;
+	private String clientId;
 	
 	@JoinTable(name = "APPLICATIONS_EXTERNALAPPLICATIONS")
 	@ManyToMany
@@ -52,11 +51,11 @@ public class ExternalApplication {
 		this.name = name;
 	}
 
-	public UUID getClientId() {
+	public String getClientId() {
 		return clientId;
 	}
 
-	public void setClientId(UUID clientId) {
+	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
 	

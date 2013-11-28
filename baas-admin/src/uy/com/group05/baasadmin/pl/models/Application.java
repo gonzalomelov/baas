@@ -1,7 +1,6 @@
 package uy.com.group05.baasadmin.pl.models;
 
 import java.util.List;
-import java.util.UUID;
 
 public class Application {
 	

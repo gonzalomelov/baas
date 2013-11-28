@@ -50,7 +50,7 @@ public interface ClientManagementLocal {
 	 * @param accessToken Token de acceso
 	 * @return True si para dicho Token el usuario tiene permisos para la operacion sobre la entidad
 	 */
-	public boolean validate(String appName, String operation, String entityName, UUID accessToken);
+	public boolean validate(String appName, String operation, String entityName, String accessToken);
 	
 	/**
 	 * Autenticar y retornar un access token para un cliente de otro BaaS para una aplicación de nuestro BaaS
@@ -83,7 +83,7 @@ public interface ClientManagementLocal {
 	 * @param accessToken Token de acceso
 	 * @return True si para dicho token la aplicación tiene permisos en su rol para clientes externos para realizar la operacion sobre la entidad
 	 */
-	public boolean validateExternal(String appName, String operation, String entityName, UUID accessToken);
+	public boolean validateExternal(String appName, String operation, String entityName, String accessToken);
 	
 	public Client getClient(long idClient);
 	
@@ -95,11 +95,11 @@ public interface ClientManagementLocal {
 	public boolean assignRoleToClients(long idApp, long idUser, long idClient, List<RolesClientDTO> rolesClient) 
 			throws AppNotRegisteredException, UserCantAccessAppException, ClientNotRegisteredException;
 	
-	public void updateRegIdOfClient(UUID accessToken, long appId, String regId)
+	public void updateRegIdOfClient(String accessToken, long appId, String regId)
 			throws	ClientNotRegisteredException,
 					AppNotRegisteredException;
 	
-	public Client getClientWithAccessToken(UUID accessToken, long appId)
+	public Client getClientWithAccessToken(String accessToken, long appId)
 			throws	ClientNotRegisteredException;
 	
 	public boolean existsClient(long clientId);
@@ -107,5 +107,5 @@ public interface ClientManagementLocal {
 	public Client getClientFromEmail(String mail)
 			throws ClientNotRegisteredException;
 	
-	public boolean existsClient(UUID accessToken, long appId);
+	public boolean existsClient(String accessToken, long appId);
 }

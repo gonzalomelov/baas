@@ -158,11 +158,11 @@ public class ClientManagement implements ClientManagementLocal {
 		}
 		
 		//Ok
-		UUID accessToken = UUID.randomUUID();
-		UUID refreshToken = UUID.randomUUID();
+		String accessToken = UUID.randomUUID().toString();
+		String refreshToken = UUID.randomUUID().toString();
 		
-		client.setAccessToken(accessToken);
-		client.setRefreshToken(refreshToken);
+		client.setAccessToken(accessToken.toString());
+		client.setRefreshToken(refreshToken.toString());
 		
 		client = clientDao.update(client);
 		
@@ -174,7 +174,7 @@ public class ClientManagement implements ClientManagementLocal {
 	}
 
 	@Override
-	public boolean validate(String appName, String operation, String entityName, UUID accessToken) {
+	public boolean validate(String appName, String operation, String entityName, String accessToken) {
 		
 		//App validation
 		Application app = appDao.readByName(appName);
@@ -261,8 +261,8 @@ public class ClientManagement implements ClientManagementLocal {
 		}
 		
 		//Ok
-		UUID accessToken = UUID.randomUUID();
-		UUID refreshToken = UUID.randomUUID();
+		String accessToken = UUID.randomUUID().toString();
+		String refreshToken = UUID.randomUUID().toString();
 		
 		ExternalClient externalClient = new ExternalClient();
 		externalClient.setAccessToken(accessToken);
@@ -283,7 +283,7 @@ public class ClientManagement implements ClientManagementLocal {
 	}
 
 	
-	public boolean validateExternal(String appName, String operation, String entityName, UUID accessToken) {
+	public boolean validateExternal(String appName, String operation, String entityName, String accessToken) {
 		
 		//App validation
 		Application app = appDao.readByName(appName);
@@ -353,7 +353,7 @@ public class ClientManagement implements ClientManagementLocal {
 		return true;
 	}
 	
-	public void updateRegIdOfClient(UUID accessToken, long appId, String regId) throws ClientNotRegisteredException, AppNotRegisteredException {
+	public void updateRegIdOfClient(String accessToken, long appId, String regId) throws ClientNotRegisteredException, AppNotRegisteredException {
 		Application app = appDao.read(appId);
 		if (app == null) {
 			throw new AppNotRegisteredException("No existe la aplicación con id " + appId);
@@ -364,7 +364,9 @@ public class ClientManagement implements ClientManagementLocal {
 			throw new ClientNotRegisteredException("No existe el cliente con accessToken " + accessToken);
 		
 		c.setGcm_regId(regId);
+		System.out.println("Access token ANTES: " + accessToken);
 		clientDao.update(c);
+		System.out.println("Access token DESPUES: " + clientDao.readByEmail(c.getEmail()).getAccessToken());
 		System.out.println("El nuevo regId de " + c.getEmail() + " es: " + regId);
 	}
 
@@ -430,7 +432,7 @@ public class ClientManagement implements ClientManagementLocal {
 		return true;
 	}
 	
-	public Client getClientWithAccessToken(UUID accessToken, long appId)
+	public Client getClientWithAccessToken(String accessToken, long appId)
 			throws	ClientNotRegisteredException {
 		
 		Client c = clientDao.readByAccessToken(appId, accessToken);
@@ -462,7 +464,7 @@ public class ClientManagement implements ClientManagementLocal {
 	}
 
 	@Override
-	public boolean existsClient(UUID accessToken, long appId) {
+	public boolean existsClient(String accessToken, long appId) {
 		Client c = clientDao.readByAccessToken(appId, accessToken);
 		if (c == null) {
 			return false;

@@ -1,7 +1,6 @@
 package uy.com.group05.baascore.dal.dao.jpa;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
@@ -13,7 +12,7 @@ import uy.com.group05.baascore.dal.dao.ExternalClientDao;
 public class JpaExternalClientDao extends JpaGenericDao<ExternalClient> implements ExternalClientDao {
 
 	@Override
-	public ExternalClient readByAccessToken(long appId, UUID accessToken) {
+	public ExternalClient readByAccessToken(long appId, String accessToken) {
 		TypedQuery<ExternalClient> query = em.createQuery("SELECT c FROM ExternalClient c WHERE c.application.id = :appId AND c.accessToken = :accessToken", ExternalClient.class);
 		query.setParameter("appId", appId);
 		query.setParameter("accessToken", accessToken);

@@ -10,8 +10,8 @@ public class ClientAuthenticationDTO implements Serializable {
 	private static final long serialVersionUID = -4239100687374087964L;
 	
 	private boolean ok;
-	private UUID accessToken;
-	private UUID refreshToken;
+	private String accessToken;
+	private String refreshToken;
 	
 	public boolean isOk() {
 		return ok;
@@ -19,16 +19,16 @@ public class ClientAuthenticationDTO implements Serializable {
 	public void setOk(boolean ok) {
 		this.ok = ok;
 	}
-	public UUID getAccessToken() {
+	public String getAccessToken() {
 		return accessToken;
 	}
-	public void setAccessToken(UUID accessToken) {
+	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-	public UUID getRefreshToken() {
+	public String getRefreshToken() {
 		return refreshToken;
 	}
-	public void setRefreshToken(UUID refreshToken) {
+	public void setRefreshToken(String refreshToken) {
 		this.refreshToken = refreshToken;
 	}
 	

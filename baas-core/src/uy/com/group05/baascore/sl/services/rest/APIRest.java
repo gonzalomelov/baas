@@ -20,7 +20,7 @@ public interface APIRest {
 	@Path("/entities/{appName}/{entity}")
 	@Produces(MediaType.APPLICATION_JSON)	
 	public String get(
-			//@HeaderParam("accessToken") UUID accessToken,
+			//@HeaderParam("accessToken") String accessToken,
 			@PathParam("appName") String appName,
 			@PathParam("entity") String entity);
 	
@@ -28,7 +28,7 @@ public interface APIRest {
 	@Path("/entities/{appName}/{entity}/{query}")
 	@Produces(MediaType.APPLICATION_JSON)	
 	public String getQuery(
-			//@HeaderParam("accessToken") UUID accessToken,
+			//@HeaderParam("accessToken") String accessToken,
 			@PathParam("appName") String appName,
 			@PathParam("entity") String entity,
 			@PathParam("query") String query);
@@ -38,7 +38,7 @@ public interface APIRest {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)	
 	public boolean post(
-			//@HeaderParam("accessToken") UUID accessToken,
+			//@HeaderParam("accessToken") String accessToken,
 			@PathParam("appName") String appName,
 			@PathParam("entity") String entity,
 			String jsonObj);
@@ -46,7 +46,7 @@ public interface APIRest {
 	@DELETE
 	@Path("/entities/{appName}/{entity}/{query}")
 	public boolean delete(
-			//@HeaderParam("accessToken") UUID accessToken,
+			//@HeaderParam("accessToken") String accessToken,
 			@PathParam("appName") String appName,
 			@PathParam("entity") String entity,
 			@PathParam("query") String query);
@@ -56,7 +56,7 @@ public interface APIRest {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)	
 	public boolean put(
-			//@HeaderParam("accessToken") UUID accessToken,
+			//@HeaderParam("accessToken") String accessToken,
 			@PathParam("appName") String appName,
 			@PathParam("entity") String entity,
 			@PathParam("query") String query,
@@ -67,7 +67,7 @@ public interface APIRest {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)	
 	public String sync(
-			//@HeaderParam("accessToken") UUID accessToken,
+			//@HeaderParam("accessToken") String accessToken,
 			@PathParam("appName") String appName,
 			@PathParam("entity") String entity,
 			String jsonObjs);

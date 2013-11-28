@@ -60,6 +60,7 @@ public class Configuracion extends Activity {
 		chkOfertasRechazadas.setChecked(notiOR);
 		chkTruequesNuevos.setChecked(notiTruequesNuevos);
 		
+		ProgressDialog pd = ProgressDialog.show(Configuracion.this,"Configuración","Espere por favor...",true,false,null);
 		// Inicializo GCM por si no se mandó el regId al baas
 		GCMService gcms = SDKFactory.getGCMService(Configuracion.this, usuarioLogueado);
 		
@@ -75,6 +76,8 @@ public class Configuracion extends Activity {
 		     })
 		     .show();
 		}
+		
+		pd.dismiss();
 		
 		addListenerOnCheck();
 	}
