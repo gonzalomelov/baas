@@ -259,7 +259,7 @@ public class APIManagement implements APIManagementLocal {
 			JSONArray list = new JSONArray();
 			
 			for (Client c : clients) {
-				if (!c.getGcm_regId().isEmpty()) {
+				if (c.getGcm_regId() != null && !c.getGcm_regId().isEmpty()) {
 					list.add(c.getGcm_regId());	
 				}
 			}
