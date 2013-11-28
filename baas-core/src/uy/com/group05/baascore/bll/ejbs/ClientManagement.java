@@ -365,6 +365,7 @@ public class ClientManagement implements ClientManagementLocal {
 		
 		c.setGcm_regId(regId);
 		clientDao.update(c);
+		System.out.println("El nuevo regId de " + c.getEmail() + " es: " + regId);
 	}
 
 	public List<Role> getRolesFromClient(long idApp, long idUser, long idClient) throws ClientNotRegisteredException, UserCantAccessAppException, AppNotRegisteredException{

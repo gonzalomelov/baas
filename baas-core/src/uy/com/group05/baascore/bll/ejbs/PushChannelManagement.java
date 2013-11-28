@@ -233,9 +233,9 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 			try {
 				boolean ok = sendNotificationToPushChannel(appId, canal.getId(), accion, entity.getName());
 				if (ok)
-					System.out.println("Se mandó la notificacion push.");
+					System.out.println("Se mandó la notificacion push al canal " + canal.getName() + " por la entidad " + entity.getName());
 				else
-					System.out.println("No se mandó la notificacion push.");
+					System.out.println("No se mandó la notificacion push al canal " + canal.getName() + " por la entidad " + entity.getName());
 			} catch (PushChanNotRegisteredException e) {
 				// No debería pasar
 				e.printStackTrace();
@@ -406,10 +406,12 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 			
 			Sender sender = new Sender(gcmApiKey);
 			Message message = new Message.Builder().timeToLive(600).addData("accion", accion).addData("entidad", nomEntidad).addData("type", "notification").build();
+			System.out.println("Se va a mandar una notificación a " + c.getEmail());
 			
 			try {
 				if (regId != null) {
 					Result result = sender.send(message, regId, 5);
+					System.out.println("Result del método send de GCM: " + result.getErrorCodeName());
 					if (result.getMessageId() != null) {
 						 String canonicalRegId = result.getCanonicalRegistrationId();
 						 if (canonicalRegId != null) {
@@ -425,6 +427,9 @@ public class PushChannelManagement implements PushChannelManagementLocal{
 							return false;
 						}
 					}	
+				}
+				else {
+					System.out.println("Advertencia: se pretendió mandar una notificación a " + c.getEmail() + " pero no tiene regId asociado!");
 				}
 				
 				return true;

@@ -14,7 +14,7 @@ public class SDKFactory {
 		return new ClientImpl(context);
 	}
 	
-	public static GCMService getGCMService(Activity act) {
-		return new GCMService(act);
+	public static GCMService getGCMService(Activity act, String usuarioLogueado) {
+		return new GCMService(act, usuarioLogueado);
 	}
 }

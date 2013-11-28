@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.http.HttpResponse;
@@ -51,11 +52,10 @@ public class GCMService {
     AtomicInteger msgId = new AtomicInteger();
     Activity activity;
     Context appContext;
-    boolean registrado = false;
 
     String regid;
     
-    public GCMService(Activity act) {
+    public GCMService(Activity act, String usuarioLogueado) {
     	appContext = act.getApplicationContext();
     	activity = act;
     	SENDER_ID = AssetsPropertyReader.getProperties(appContext, "project_id");
@@ -64,39 +64,43 @@ public class GCMService {
     		//gcm = GoogleCloudMessaging.getInstance(appContext);
             regid = getRegistrationId();
             SharedPreferences prefs = getGcmPreferences(appContext);
-            String usuarioLogueado = prefs.getString("mail", "");
             boolean regIdBaas = prefs.getBoolean("gcm_" + usuarioLogueado, false);
             
-            if (!regid.isEmpty() && regIdBaas) {
-            	registrado = true;
-            }
-            else {
-            	if (regid.isEmpty()) {
-	            	Log.i("GCM SDK", "Se va a registrar con GCM.");
-	            	registerInBackground();
-            	}
-            	else if (!regIdBaas) {
-            		try {
-						if (sendRegistrationIdToBackend()) {
-							SharedPreferences.Editor editor = prefs.edit();
-							editor.putBoolean("gcm_" + usuarioLogueado, true);
-							editor.commit();
-						}
-					} catch (UnsupportedEncodingException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ClientProtocolException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+        	if (regid.isEmpty()) {
+            	Log.i("GCM SDK", "Se va a registrar con GCM.");
+            	registerInBackground();
+        	}
+        	else if (!regIdBaas) {
+        		try {
+        			Log.i("GCM SDK", "Se va a mandar el regid al baas.");
+					if (sendRegistrationIdToBackend()) {
+						Log.i("GCM SDK", "Se mandó el regid al baas.");
+						SharedPreferences.Editor editor = prefs.edit();
+						editor.putBoolean("gcm_" + usuarioLogueado, true);
+						editor.commit();
 					}
-            	}
-            }            
+					else
+						Log.i("GCM SDK", "El baas no aceptó el regid o no se pudo mandar el regid al baas.");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClientProtocolException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
         } else {
             Log.i(TAG, "No se encontró Google Play Services.");
     	}
+    }
+    
+    public boolean checkStatus(String usuarioLogueado) {
+    	SharedPreferences prefs = getGcmPreferences(appContext);
+        boolean regIdBaas = prefs.getBoolean("gcm_" + usuarioLogueado, false);
+    	return !this.regid.isEmpty() && regIdBaas;  
     }
 
     /**
@@ -186,16 +190,9 @@ public class GCMService {
                         gcm = GoogleCloudMessaging.getInstance(activity);
                     }
                     regid = gcm.register(SENDER_ID);
-                    msg = "Dispositivo registrado, registration ID = " + regid;
-
-                    if (sendRegistrationIdToBackend()) {
-                    	// Guardo el regid
-                        storeRegistrationId(regid);
-                        registrado = true;
-                        Log.i("GCM SDK", "Se envió el regId al baas.");
-                    }
-                    else
-                    	Log.i("GCM SDK", "No se mandó el regId al baas.");
+                    Log.i("GCM SDK", "Dispositivo registrado, registration ID = " + regid);
+                	// Guardo el regid
+                    storeRegistrationId(regid);
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
                 }
@@ -221,8 +218,6 @@ public class GCMService {
                         gcm = GoogleCloudMessaging.getInstance(activity);
                     }
                     gcm.unregister();
-                    
-                    registrado = false;
 
                     removeRegistrationIdFromBackend();
 
@@ -269,7 +264,22 @@ public class GCMService {
     	ConnectivityManager connMgr = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
     	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 	    if (networkInfo != null && networkInfo.isConnected()) {
-	    	boolean res = SDKFactory.getClientFacade(appContext).updateRegIdOfClient(appContext, regid);
+	    	AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
+	            @Override
+	            protected Boolean doInBackground(Void... params) {
+	                try {
+	                	return SDKFactory.getClientFacade(appContext).updateRegIdOfClient(appContext, regid);
+	                } catch (IOException ex) {
+	                    return false;
+	                }
+	            }
+	        };
+	        task.execute(null,null,null);
+	        boolean res = false;
+	        try {
+	        	res = task.get(1000, TimeUnit.MILLISECONDS);
+	        }
+	        catch (Exception e) {}
 	    	return res;
 	    }
 	    else {

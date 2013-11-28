@@ -80,7 +80,7 @@ public class Perfil extends Fragment {//Activity {
 //		u=null;
 		if (u != null) {
 			
-			SDKFactory.getGCMService(Perfil.this.getActivity());
+			SDKFactory.getGCMService(Perfil.this.getActivity(), this.mail);
 			
 			//+++ BLOQuEADO?
 			SharedPreferences.Editor editor = prefs.edit();

@@ -46,12 +46,12 @@ public class VerUsuarios extends Activity implements AdapterView.OnItemClickList
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ver_usuarios);
 		
-		//Inicializo GCM
-		SDKFactory.getGCMService(this);
-		
 		//Obtengo datos del usuario
         SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
 		this.mail = prefs.getString("mail", "");
+		
+		//Inicializo GCM
+		SDKFactory.getGCMService(this, this.mail);
 		
 		if(mAuthTask==null){
 			pd = ProgressDialog.show(this,"Ver Usuarios","Cargando Usuarios",true,false,null);

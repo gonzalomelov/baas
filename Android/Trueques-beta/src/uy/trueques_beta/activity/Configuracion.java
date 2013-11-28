@@ -12,8 +12,10 @@ import uy.trueques_beta.R.layout;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.View;
@@ -57,6 +59,22 @@ public class Configuracion extends Activity {
 		chkOfertasAceptadas.setChecked(notiOA);
 		chkOfertasRechazadas.setChecked(notiOR);
 		chkTruequesNuevos.setChecked(notiTruequesNuevos);
+		
+		// Inicializo GCM por si no se mandó el regId al baas
+		GCMService gcms = SDKFactory.getGCMService(Configuracion.this, usuarioLogueado);
+		
+		if (!gcms.checkStatus(usuarioLogueado)) {
+			final Activity act = Configuracion.this;
+			new AlertDialog.Builder(this)
+		    .setTitle("Notificaciones")
+		    .setMessage("No está listo para recibir notificaciones. Intente nuevamente más tarde.")
+		    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int which) { 
+		            act.finish();
+		        }
+		     })
+		     .show();
+		}
 		
 		addListenerOnCheck();
 	}
@@ -128,8 +146,8 @@ public class Configuracion extends Activity {
 						    protected Boolean doInBackground(Void... params) {
 						    	
 								try {
-									GCMService gcms = SDKFactory.getGCMService(Configuracion.this);
-									return gcms.subscribeToPushChannel("truequesNuevos3");
+									GCMService gcms = SDKFactory.getGCMService(Configuracion.this, usuarioLogueado);
+									return gcms.subscribeToPushChannel("truequesNuevos");
 								} catch (UnsupportedEncodingException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
@@ -177,8 +195,8 @@ public class Configuracion extends Activity {
 						    protected Boolean doInBackground(Void... params) {
 						    	
 								try {
-									GCMService gcms = SDKFactory.getGCMService(Configuracion.this);
-									return gcms.unsubscribeFromPushChannel("truequesNuevos3");
+									GCMService gcms = SDKFactory.getGCMService(Configuracion.this, usuarioLogueado);
+									return gcms.unsubscribeFromPushChannel("truequesNuevos");
 								} catch (UnsupportedEncodingException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();

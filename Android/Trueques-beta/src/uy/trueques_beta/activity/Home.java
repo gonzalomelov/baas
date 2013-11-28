@@ -53,7 +53,8 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 		setContentView(R.layout.activity_home);
 		
 		//Inicializo GCM
-		SDKFactory.getGCMService(this);
+		SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
+		SDKFactory.getGCMService(this, prefs.getString("mail", ""));
 		
 		//+++ DRAWER
 		opcionesMenu = new String[] {"Perfil", "Publicar Trueque", "Ver Trueques", "Ofertas Pendientes", "Trueques Realizados", "Ver RSS","Cerrar Sesión"};
@@ -113,18 +114,18 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 	            }
 	            
 	            if(!cerrar){
-	            FragmentManager fragmentManager = getFragmentManager();
-	 
-	            fragmentManager.beginTransaction()
-	                .replace(R.id.content_frame, fragment)
-	                .commit();
-	 
-	            drawerList.setItemChecked(position, true);
-	 
-	            tituloSeccion = opcionesMenu[position];
-	            getActionBar().setTitle(tituloSeccion);
-	 
-	            drawerLayout.closeDrawer(drawerList);
+		            FragmentManager fragmentManager = getFragmentManager();
+		 
+		            fragmentManager.beginTransaction()
+		                .replace(R.id.content_frame, fragment)
+		                .commit();
+		 
+		            drawerList.setItemChecked(position, true);
+		 
+		            tituloSeccion = opcionesMenu[position];
+		            getActionBar().setTitle(tituloSeccion);
+		 
+		            drawerLayout.closeDrawer(drawerList);
 	            }
 	            else{
 	            	//pd = ProgressDialog.show(Home.this,"Cerrar Sesión","Cerrando sesión",true,false,null);
@@ -164,7 +165,7 @@ public class Home extends Activity implements VerTruequesListener, CrearTruequeL
 	        getActionBar().setTitle(opcionesMenu[3]);
 		}
 		
-        SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
+        //SharedPreferences prefs = getSharedPreferences("TruequesData",Context.MODE_PRIVATE);
         if(prefs.getBoolean("PrimeraVez", true)){
 	        //Inicio con Drawer abierto
 			drawerLayout.openDrawer(drawerList);

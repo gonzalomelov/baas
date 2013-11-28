@@ -24,10 +24,12 @@ import persistence.Query;
 
 
 
+
 import com.google.gson.Gson;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import sdk.application.ApplicationInfo;
 import sdk.classes.JSON;
@@ -227,7 +229,8 @@ public class UsuarioCtrl {
 				Log.i("[registrarUsuario]:","Usuario= "+json);
 				ok = SDKFactory.getAPIFacade(context).post(entity, json);
 				
-				SDKFactory.getGCMService((Activity) context);
+				// Inicializo GCM con usuario vacío
+				SDKFactory.getGCMService((Activity) context, "");
 			
 				//Para actualizar todos los datos
 				MyApplication myApplication = (MyApplication)(context.getApplicationContext());
@@ -314,9 +317,11 @@ public class UsuarioCtrl {
 			MyApplication myApplication = (MyApplication)(context.getApplicationContext());
 			SDKFactory.getAPIFacade(context).updateAll(myApplication.getmTablesDB());
 			
-			SDKFactory.getGCMService((Activity) context);
-			
 			Log.i("LOGIN","-"+auten.isOk());
+			if (auten.isOk()) {
+				SharedPreferences prefs = context.getSharedPreferences("TruequesData", Context.MODE_PRIVATE);
+				SDKFactory.getGCMService((Activity) context, prefs.getString("mail", ""));
+			}
 			return auten.isOk();
 		}
 		catch (UnsupportedEncodingException e) {

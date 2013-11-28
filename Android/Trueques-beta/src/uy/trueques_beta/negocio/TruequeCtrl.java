@@ -18,6 +18,7 @@ import com.google.gson.GsonBuilder;
 import uy.com.group05.baassdk.*;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -183,7 +184,8 @@ public class TruequeCtrl {
 					SDKFactory.getAPIFacade(context).update("Usuario", query, values);
 					
 					// Notificacion
-					GCMService gcms = SDKFactory.getGCMService(act);
+					SharedPreferences prefs = context.getSharedPreferences("TruequesData", Context.MODE_PRIVATE);
+					GCMService gcms = SDKFactory.getGCMService(act, prefs.getString("mail", ""));
 					gcms.sendNotificationToClient(uOfertante.getMail(), "message", t.getUsuario() + " aceptó tu oferta!", "dif", "ofertaAceptada");
 					
 					//Marco las demas ofertas como rechazadas
@@ -249,7 +251,8 @@ public class TruequeCtrl {
 			//+++
 			
 			// Notificacion
-			GCMService gcms = SDKFactory.getGCMService(act);
+			SharedPreferences prefs = context.getSharedPreferences("TruequesData", Context.MODE_PRIVATE);
+			GCMService gcms = SDKFactory.getGCMService(act, prefs.getString("mail", ""));
 			gcms.sendNotificationToClient(Factory.getOfertaCtrl().getOferta(context, idOferta).getUsuario(), "message", t.getUsuario() + " rechazó tu oferta.", "dif", "ofertaRechazada");
 			
 			return true;
@@ -494,7 +497,8 @@ public class TruequeCtrl {
 			boolean ok = SDKFactory.getAPIFacade(context).update("Trueque", query, values);
 			if (ok) {
 				// Notificacion
-				GCMService gcms = SDKFactory.getGCMService(act);
+				SharedPreferences prefs = context.getSharedPreferences("TruequesData", Context.MODE_PRIVATE);
+				GCMService gcms = SDKFactory.getGCMService(act, prefs.getString("mail", ""));
 				gcms.sendNotificationToClient(t.getUsuario(), "message", "Tienes una nueva oferta de " + mail + "!", "dif", "ofertaNueva");
 			}
 			
