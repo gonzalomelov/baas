@@ -37,11 +37,14 @@ import uy.com.group05.baascore.sl.services.soap.InvalidNameException_Exception;
 import uy.com.group05.baascore.sl.services.soap.MongoDBAlreadyExistsException_Exception;
 import uy.com.group05.baascore.sl.services.soap.NombreAppAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.PermissionDTO;
+import uy.com.group05.baascore.sl.services.soap.PermissionEntityDTO;
 import uy.com.group05.baascore.sl.services.soap.PermissionRoleDTO;
 import uy.com.group05.baascore.sl.services.soap.PushChanAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.PushChanNotRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.RoleAlreadyRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.RoleDTO;
+import uy.com.group05.baascore.sl.services.soap.RoleNotFoundException_Exception;
+import uy.com.group05.baascore.sl.services.soap.RoleNotRegisteredException_Exception;
 import uy.com.group05.baascore.sl.services.soap.SimpleApplicationDTO;
 import uy.com.group05.baascore.sl.services.soap.SimpleEntityDTO;
 import uy.com.group05.baascore.sl.services.soap.SimplePushChannelDTO;
@@ -225,6 +228,29 @@ public class ApplicationController {
 		}
 	}
 	
+	public List<Entity> getEntities(long appId){
+		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
+		
+		try {
+			List<EntityDTO> entitiesDto = port.getEntitiesApplication(appId);
+			List<Entity> roles = new ArrayList<Entity>();
+			
+			for (EntityDTO entityDto : entitiesDto) {
+				Entity r = new Entity();
+				r.setId(entityDto.getId());
+				r.setName(entityDto.getName());
+				
+				roles.add(r);
+			}
+			
+			return roles;
+			
+		} catch (AppNotRegisteredException_Exception e) {
+			return null;
+		}
+		
+	}
+	
 	public List<Operacion> getOperaciones(long appId){
 		
 		List<Operacion> opreaciones = new ArrayList<Operacion>();
@@ -348,6 +374,35 @@ public class ApplicationController {
 		}
 	}
 	
+	public List<RolEntityPermission> getPermissionsByRol(long appId, long rolId) {
+		
+		uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
+		
+		try {
+			List<PermissionDTO> permissionsDTO = port.getPermissionsForRol(appId, rolId); 
+			List<RolEntityPermission> roleEntityPermissions = new ArrayList<RolEntityPermission>();
+			
+			for (PermissionDTO permissionDTO : permissionsDTO) {
+				RolEntityPermission roleEntityPermission = new RolEntityPermission();
+				roleEntityPermission.setEntityId(permissionDTO.getEntity().getId());
+				roleEntityPermission.setPermission(true);
+				roleEntityPermission.setPermissionId(permissionDTO.getId());
+				roleEntityPermission.setRolId(permissionDTO.getRole().getId());
+				roleEntityPermission.setOperationId(permissionDTO.getOperation().getId());
+				roleEntityPermissions.add(roleEntityPermission);
+			}
+			
+			return roleEntityPermissions;	
+		}
+		catch (AppNotRegisteredException_Exception e) {
+			return null;
+		}
+		
+		catch (RoleNotFoundException_Exception e) {
+			return null;
+		}
+	}
+	
 	public void saveEntityPermissions(long userId, long appId, long entityId, List<PermissionRoleDTO> permisos ) throws EntityPermissionException{
 		
 		uy.com.group05.baascore.sl.services.soap.PermissionServices port = permissionService.getPermissionServicesPort();		
@@ -362,6 +417,24 @@ public class ApplicationController {
 			throw new EntityPermissionException(e.getMessage());
 		}
 		catch (AppNotRegisteredException_Exception e) {
+			throw new EntityPermissionException(e.getMessage());
+		}
+	}
+	
+public void saveRolPermissions(long userId, long appId, long rolId, List<PermissionEntityDTO> permisos ) throws EntityPermissionException{
+		
+		uy.com.group05.baascore.sl.services.soap.PermissionServices port = permissionService.getPermissionServicesPort();		
+		
+		try {
+			port.assingPermissionRole(userId, appId, rolId, permisos) ;
+		}		
+		catch (UserCantAccessAppException_Exception e) {
+			throw new EntityPermissionException(e.getMessage());
+		}
+		catch (AppNotRegisteredException_Exception e) {
+			throw new EntityPermissionException(e.getMessage());
+		} catch (RoleNotRegisteredException_Exception e) {
+			// TODO Auto-generated catch block
 			throw new EntityPermissionException(e.getMessage());
 		}
 	}
@@ -451,5 +524,30 @@ public class ApplicationController {
 		
 		
 	}
+	
+	public String GetEntityName(long appId, long entityId){
+		
+		try{
+			uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
+			return port.getEntityName(appId, entityId);
+		}
+		catch(Exception e){
+			return "";
+		}
+		
+	}
+	
+	public String GetRolName(long appId, long rolId){
+		
+		try{
+			uy.com.group05.baascore.sl.services.soap.ApplicationServices port = service.getApplicationServicesPort();
+			return port.getRoleName(appId, rolId);
+		}
+		catch(Exception e){
+			return "";
+		}
+		
+	}
 }
+
 

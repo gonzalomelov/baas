@@ -16,15 +16,15 @@ import uy.com.group05.baasadmin.pl.models.Entity;
 import uy.com.group05.baasadmin.pl.models.Operacion;
 import uy.com.group05.baasadmin.pl.models.Rol;
 import uy.com.group05.baasadmin.pl.models.RolEntityPermission;
-import uy.com.group05.baascore.sl.services.soap.PermissionRoleDTO;
+import uy.com.group05.baascore.sl.services.soap.PermissionEntityDTO;
 
-@ManagedBean(name="entityBean")
+@ManagedBean(name="rolBean")
 @ViewScoped
-public class EntityBean {
+public class RolBean {
 
-	private Entity entity;
+	private Rol rol;
 
-	private List<Rol> roleList;
+	private List<Entity> entityList;
 
 	private List<Operacion> operationList;
 	
@@ -32,6 +32,71 @@ public class EntityBean {
 
 	private RolEntityPermission[][] datos;
 	
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+
+	public List<Entity> getEntityList() {
+		return entityList;
+	}
+
+	public void setEntityList(List<Entity> entityList) {
+		this.entityList = entityList;
+	}
+
+	public List<Operacion> getOperationList() {
+		return operationList;
+	}
+
+	public void setOperationList(List<Operacion> operationList) {
+		this.operationList = operationList;
+	}
+
+	public List<RolEntityPermission> getPermissionList() {
+		return permissionList;
+	}
+
+	public void setPermissionList(List<RolEntityPermission> permissionList) {
+		this.permissionList = permissionList;
+	}
+
+	public RolEntityPermission[][] getDatos() {
+		return datos;
+	}
+
+	public void setDatos(RolEntityPermission[][] datos) {
+		this.datos = datos;
+	}
+
+	public Boolean[][] getDatosVista() {
+		return datosVista;
+	}
+
+	public void setDatosVista(Boolean[][] datosVista) {
+		this.datosVista = datosVista;
+	}
+
+	public long getAppId() {
+		return appId;
+	}
+
+	public void setAppId(long appId) {
+		this.appId = appId;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
+
 	private Boolean[][] datosVista;
 	
 	private long appId;	
@@ -58,57 +123,42 @@ public class EntityBean {
 		this.userSessionManagementBean = userSessionManagementBean;
 	}
 
-	public List<Rol> getRoleList() {
-		return roleList;
-	}
+	
 
-	public void setRoleList(List<Rol> roleList) {
-		this.roleList = roleList;
-	}
-
-	public List<Operacion> getOperationList() {
-		return operationList;
-	}
-
-	public void setOperationList(List<Operacion> operationList) {
-		this.operationList = operationList;
-	}
-
-	public EntityBean() {
+	public RolBean() {
 
 		Map<String, String> parameterMap = (Map<String, String>) FacesContext
 				.getCurrentInstance().getExternalContext()
 				.getRequestParameterMap();
 		String paramAppId = parameterMap.get("appId");
 
-		String paramEntityId = parameterMap.get("entityId");
-		if (paramAppId != null && paramEntityId != null) {
+		String paramRolId = parameterMap.get("rolId");
+		if (paramAppId != null && paramRolId != null) {
 			appId = Long.parseLong(paramAppId);
-			long entityId = Long.parseLong(paramEntityId);
+			long rolId = Long.parseLong(paramRolId);
 
 			ApplicationController appController = new ApplicationController();
 
-			roleList = appController.getRoles(appId);
+			entityList = appController.getEntities(appId);
 			operationList = appController.getOperaciones(appId);
-			entity = new Entity();
-			entity.setName(appController.GetEntityName(appId, entityId));
-			entity.setId(entityId);
-			permissionList = appController.getPermissions(appId, entityId);
+			rol = new Rol(appController.GetRolName(appId, rolId), rolId);
+		
+			permissionList = appController.getPermissionsByRol(appId, rolId);
 			
-			datos = new RolEntityPermission[roleList.size()][operationList.size()];
-			datosVista = new Boolean[roleList.size()][operationList.size()];
-			for (int i = 0; i < roleList.size(); i++) {
+			datos = new RolEntityPermission[entityList.size()][operationList.size()];
+			datosVista = new Boolean[entityList.size()][operationList.size()];
+			for (int i = 0; i < entityList.size(); i++) {
 				for (int j = 0; j < operationList.size(); j++) {
 					RolEntityPermission perm = new RolEntityPermission();
-					perm.setEntityId(entityId);
-					perm.setRolId(roleList.get(i).getId());
+					perm.setEntityId(entityList.get(i).getId());
+					perm.setRolId(rolId);
 					perm.setOperationId(operationList.get(j).getId());
 					perm.setPermission(false);
 					datosVista[i][j] = false;
 					
 					for (RolEntityPermission roleEntityPermission : permissionList) {
-						if (roleEntityPermission.getEntityId() == entityId &&
-							roleEntityPermission.getRolId() == roleList.get(i).getId() &&
+						if (roleEntityPermission.getEntityId() == entityList.get(i).getId()  &&
+							roleEntityPermission.getRolId() == rolId &&
 							roleEntityPermission.getOperationId() == operationList.get(j).getId()) {
 							
 							perm.setPermissionId(roleEntityPermission.getPermissionId());
@@ -123,7 +173,7 @@ public class EntityBean {
 				}
 			}
 
-			printArray();
+//			printArray();
 		}
 
 	}
@@ -139,7 +189,7 @@ public class EntityBean {
 			
 			cloneArray();
 		
-			printArray();
+//			printArray();
 		}
 		catch(Exception e){
 			
@@ -157,22 +207,23 @@ public class EntityBean {
 			
 			
 			
-			List<PermissionRoleDTO> permisos = new ArrayList<PermissionRoleDTO>();
+			List<PermissionEntityDTO> permisos = new ArrayList<PermissionEntityDTO>();
 			
-			for (int i = 0; i < roleList.size(); i++) {				
+			for (int i = 0; i < entityList.size(); i++) {				
 				for (int j = 0; j < operationList.size(); j++) {
-					PermissionRoleDTO p = new PermissionRoleDTO();
+					PermissionEntityDTO p = new PermissionEntityDTO();
 					p.setHas(datos[i][j].isPermission());
 					p.setIdOperation(datos[i][j].getOperationId());
-					p.setIdRole(datos[i][j].getRolId());
+					p.setIdEntity(datos[i][j].getEntityId());
 					permisos.add(p);
 				}
 				
 			}
 			
 			
-			appController.saveEntityPermissions(getUserSessionManagementBean().getUser().getUserId(), appId, 
-					entity.getId(), permisos );
+			appController.saveRolPermissions(getUserSessionManagementBean().getUser().getUserId(), appId, 
+					rol.getId(), permisos );
+			
 			
 		
 			return "/pages/App/Index.xhtml?faces-redirect=true&id=" + appId;
@@ -187,60 +238,38 @@ public class EntityBean {
 
 	public String changePermission() {
 		System.out.println("imprimiendo post toda pagina");
-		printArray();
+//		printArray();
 
 		return null;
 	}
 
-	public RolEntityPermission[][] getDatos() {
-		return datos;
-	}
+//	
+//	private void printArray() {
+//
+//		for (int i = 0; i < roleList.size(); i++) {
+//
+//			System.out.print("datos Fila" + i + "[");
+//			for (int j = 0; j < operationList.size(); j++) {
+//				System.out.print(datos[i][j].isPermission() + ",");
+//			}
+//			System.out.println("]");
+//		}
+//		
+//		for (int i = 0; i < roleList.size(); i++) {
+//
+//			System.out.print("datosVista Fila" + i + "[");
+//			for (int j = 0; j < operationList.size(); j++) {
+//				System.out.print(datosVista[i][j]+ ",");
+//			}
+//			System.out.println("]");
+//		}
+//
+//	}
 
-	public void setDatos(RolEntityPermission[][] datos) {
-		this.datos = datos;
-	}
-
-	public Entity getEntity() {
-		return entity;
-	}
-
-	public void setEntity(Entity entity) {
-		this.entity = entity;
-	}
-
-	private void printArray() {
-
-		for (int i = 0; i < roleList.size(); i++) {
-
-			System.out.print("datos Fila" + i + "[");
-			for (int j = 0; j < operationList.size(); j++) {
-				System.out.print(datos[i][j].isPermission() + ",");
-			}
-			System.out.println("]");
-		}
-		
-		for (int i = 0; i < roleList.size(); i++) {
-
-			System.out.print("datosVista Fila" + i + "[");
-			for (int j = 0; j < operationList.size(); j++) {
-				System.out.print(datosVista[i][j]+ ",");
-			}
-			System.out.println("]");
-		}
-
-	}
-
-	public Boolean[][] getDatosVista() {
-		return datosVista;
-	}
-
-	public void setDatosVista(Boolean[][] datosVista) {
-		this.datosVista = datosVista;
-	}
 	
 	private void cloneArray(){
 		
-		for (int i = 0; i < roleList.size(); i++) {
+		for (int i = 0; i < entityList.size(); i++) {
 			for (int j = 0; j < operationList.size(); j++) {
 				datosVista[i][j] = datos[i][j].isPermission();
 			}
@@ -248,11 +277,5 @@ public class EntityBean {
 		
 	}
 
-	public String getError() {
-		return error;
-	}
-
-	public void setError(String error) {
-		this.error = error;
-	}
+	
 }

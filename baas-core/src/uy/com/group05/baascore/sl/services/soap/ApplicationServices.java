@@ -12,6 +12,9 @@ import javax.jws.WebService;
 
 
 
+
+import javax.management.relation.RoleNotFoundException;
+
 import uy.com.group05.baascore.common.exceptions.InvalidNameException;
 import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.exceptions.AppNotRegisteredException;
@@ -155,6 +158,12 @@ public interface ApplicationServices {
 			@WebParam(name = "appId") long appId,
 			@WebParam(name = "entityId") long entityId)
 			throws AppNotRegisteredException, EntityCollectionNotRegisteredException;
+	
+	@WebMethod
+	public List<PermissionDTO> getPermissionsForRol(
+			@WebParam(name = "appId") long appId,
+			@WebParam(name = "rolId") long rolId)
+			throws AppNotRegisteredException, RoleNotFoundException;
 
 	@WebMethod
 	public List<EntityDTO> getEntitiesApplication(
@@ -176,10 +185,18 @@ public interface ApplicationServices {
 			@WebParam(name = "idApp") long idApp)
 			throws AppNotRegisteredException;
 	
+	@WebMethod
 	public ChartDto getChartsValues(
 			@WebParam(name = "idApp") long idApp,
 			@WebParam(name = "tipoChart") TipoChart tipoChart)
 					throws AppNotRegisteredException;
+	
+	@WebMethod
+	public String GetEntityName(long appId, long entityId)
+			throws AppNotRegisteredException, EntityCollectionNotRegisteredException;
+	
+	@WebMethod
+	public String GetRoleName(long appId, long rolId) throws AppNotRegisteredException, RoleNotFoundException;
 	
 //	@WebMethod
 //	public 

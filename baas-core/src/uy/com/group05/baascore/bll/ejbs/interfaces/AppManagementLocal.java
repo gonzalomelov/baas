@@ -3,6 +3,7 @@ package uy.com.group05.baascore.bll.ejbs.interfaces;
 import java.util.List;
 
 import javax.ejb.Local;
+import javax.management.relation.RoleNotFoundException;
 
 import uy.com.group05.baascore.common.exceptions.RoleAlreadyRegisteredException;
 import uy.com.group05.baascore.common.entities.Application;
@@ -113,5 +114,12 @@ public interface AppManagementLocal {
 	public Application getApplication(String appName) throws AppNotRegisteredException;
 	
 	public ChartDto getChartsValues(long idApp, TipoChart tipoChart) throws AppNotRegisteredException;
+	
+	public String GetEntityName(long appId, long entityId) throws AppNotRegisteredException, EntityCollectionNotRegisteredException;
+	
+	public String GetRolName(long appId, long rolId) throws AppNotRegisteredException,  RoleNotFoundException;
+	
+	public List<Permission> getPermissionsForRol(long appId, long rolId)
+			throws AppNotRegisteredException, RoleNotFoundException;
 	
 }

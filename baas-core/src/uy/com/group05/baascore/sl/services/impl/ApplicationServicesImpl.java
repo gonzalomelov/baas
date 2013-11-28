@@ -19,6 +19,8 @@ import javax.jws.WebService;
 
 
 
+import javax.management.relation.RoleNotFoundException;
+
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
 import uy.com.group05.baascore.common.entities.Client;
@@ -176,6 +178,18 @@ public class ApplicationServicesImpl implements ApplicationServices{
 		return response;
 	}
 	
+	public List<PermissionDTO> getPermissionsForRol(long appId, long rolId)
+			throws
+				AppNotRegisteredException,
+				RoleNotFoundException {
+		
+		List<Permission> permissions = appManagementLocal.getPermissionsForRol(appId, rolId);
+
+		List<PermissionDTO> response = mapper.getMapper().mapAsList(permissions, PermissionDTO.class);
+		
+		return response;
+	}
+	
 	public ApplicationDTO getApplication(long idApp) throws AppNotRegisteredException {
 		Application app = appManagementLocal.getApplication(idApp);
 		
@@ -232,5 +246,15 @@ public class ApplicationServicesImpl implements ApplicationServices{
 			throws AppNotRegisteredException {
 		
 		return appManagementLocal.getChartsValues(idApp, tipoChart);
+	}
+	
+	@Override
+	public String GetEntityName(long appId, long entityId) throws AppNotRegisteredException, EntityCollectionNotRegisteredException {
+		return appManagementLocal.GetEntityName(appId, entityId);
+	}
+	
+	@Override
+	public String GetRoleName(long appId, long rolId) throws AppNotRegisteredException, RoleNotFoundException {
+		return appManagementLocal.GetRolName(appId, rolId);
 	}
 }

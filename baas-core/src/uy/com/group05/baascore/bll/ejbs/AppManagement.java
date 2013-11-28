@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.management.relation.RoleNotFoundException;
 
 import uy.com.group05.baascore.bll.ejbs.interfaces.AppManagementLocal;
 import uy.com.group05.baascore.common.entities.Application;
@@ -462,6 +463,23 @@ public class AppManagement implements AppManagementLocal{
 		return permissionDao.readAllFromEntity(appId, entityId);
 	}
 	
+	@Override
+	public List<Permission> getPermissionsForRol(long appId, long rolId)
+			throws AppNotRegisteredException, RoleNotFoundException {
+		
+		Application app = appDao.read(appId);
+		if (app == null)
+			throw new AppNotRegisteredException("No existe la aplicación con id " + appId);
+		
+		Entity entity = entityDao.read(rolId);
+		
+		if (entity == null) {
+			throw new RoleNotFoundException("No existe la entidad");
+		}
+		
+		return permissionDao.readAllFromRol(appId, rolId);
+	}
+	
 	public Application getApplication(long appId) throws AppNotRegisteredException {
 		Application app = appDao.readById(appId);
 		
@@ -633,7 +651,43 @@ for(int i = 0; i < 10; i++){
 		return respuesta;
 	}
 
+	
+	public String GetEntityName(long appId, long entityId) throws AppNotRegisteredException, EntityCollectionNotRegisteredException{
+		
+		Application app = appDao.read(appId);
+		if (app == null)
+			throw new AppNotRegisteredException("No existe la aplicación con id " + appId);
+		
+		Entity entity = entityDao.read(entityId);
+		
+		if (entity == null) {
+			throw new EntityCollectionNotRegisteredException("No existe la entidad");
+		}
+		
+		
+		return entity.getName();
+		
+		
+	}
 
+	
+	public String GetRolName(long appId, long rolId) throws AppNotRegisteredException,  RoleNotFoundException{
+		
+		Application app = appDao.read(appId);
+		if (app == null)
+			throw new AppNotRegisteredException("No existe la aplicación con id " + appId);
+		
+		Role rol = roleDao.read(rolId);
+		
+		if (rol == null) {
+			throw new RoleNotFoundException("No existe el rol");
+		}
+		
+		
+		return rol.getName();
+		
+		
+	}
 	
 //	private int generarValoresRandomicos(int min, int max){
 //		Random rand = new Random();

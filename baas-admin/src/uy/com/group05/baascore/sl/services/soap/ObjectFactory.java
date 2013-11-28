@@ -25,35 +25,41 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _RemovePushChannelFromApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "removePushChannelFromApplication");
-    private final static QName _AddPushChannelToApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "addPushChannelToApplicationResponse");
     private final static QName _EditEntityApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "editEntityApplicationResponse");
+    private final static QName _AddPushChannelToApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "addPushChannelToApplicationResponse");
     private final static QName _EditEntityApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "editEntityApplication");
     private final static QName _UnassignUserFromApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "unassignUserFromApplication");
     private final static QName _GetClientsApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getClientsApplication");
     private final static QName _ExistsApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsApplicationResponse");
+    private final static QName _GetPermissionsForRol_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getPermissionsForRol");
     private final static QName _EntityCollectionNotRegisteredException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "EntityCollectionNotRegisteredException");
     private final static QName _GetChartsValuesResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getChartsValuesResponse");
     private final static QName _GetEntitiesApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getEntitiesApplicationResponse");
+    private final static QName _RoleNotFoundException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "RoleNotFoundException");
     private final static QName _GetRolesApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getRolesApplicationResponse");
     private final static QName _EditApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "editApplication");
     private final static QName _EditRoleApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "editRoleApplication");
     private final static QName _GetPushChannelsApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getPushChannelsApplicationResponse");
     private final static QName _PushChanAlreadyRegisteredException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "PushChanAlreadyRegisteredException");
+    private final static QName _GetPermissionsForRolResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getPermissionsForRolResponse");
     private final static QName _GetEntitiesApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getEntitiesApplication");
     private final static QName _GetChartsValues_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getChartsValues");
+    private final static QName _GetEntityNameResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "GetEntityNameResponse");
     private final static QName _GetRolesApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getRolesApplication");
+    private final static QName _GetRoleNameResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "GetRoleNameResponse");
+    private final static QName _GetRoleName_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "GetRoleName");
     private final static QName _UserNotRegisteredException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "UserNotRegisteredException");
     private final static QName _InvalidNameException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "InvalidNameException");
-    private final static QName _MongoDBAlreadyExistsException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "MongoDBAlreadyExistsException");
     private final static QName _ExistsRoleApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsRoleApplicationResponse");
+    private final static QName _MongoDBAlreadyExistsException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "MongoDBAlreadyExistsException");
     private final static QName _AssignUserToApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "assignUserToApplication");
     private final static QName _ExistsPushChannelApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsPushChannelApplicationResponse");
     private final static QName _AddPushChannelToApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "addPushChannelToApplication");
     private final static QName _AssignUserToApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "assignUserToApplicationResponse");
     private final static QName _ListApplications_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "listApplications");
     private final static QName _ExistsEntityApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsEntityApplication");
-    private final static QName _GetApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getApplication");
     private final static QName _EntityCollectionAlreadyExistsException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "EntityCollectionAlreadyExistsException");
+    private final static QName _GetApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "getApplication");
     private final static QName _ExistsEntityApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsEntityApplicationResponse");
     private final static QName _ApplicationDTO_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "applicationDTO");
     private final static QName _ListApplicationsResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "listApplicationsResponse");
@@ -63,6 +69,7 @@ public class ObjectFactory {
     private final static QName _EditApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "editApplicationResponse");
     private final static QName _UserCantAccessAppException_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "UserCantAccessAppException");
     private final static QName _UserDTO_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "userDTO");
+    private final static QName _GetEntityName_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "GetEntityName");
     private final static QName _ExistsPushChannelApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "existsPushChannelApplication");
     private final static QName _EditRoleApplicationResponse_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "editRoleApplicationResponse");
     private final static QName _CreateApplication_QNAME = new QName("http://soap.services.sl.baascore.group05.com.uy/", "createApplication");
@@ -135,19 +142,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetApplication }
-     * 
-     */
-    public GetApplication createGetApplication() {
-        return new GetApplication();
-    }
-
-    /**
      * Create an instance of {@link EntityCollectionAlreadyExistsException }
      * 
      */
     public EntityCollectionAlreadyExistsException createEntityCollectionAlreadyExistsException() {
         return new EntityCollectionAlreadyExistsException();
+    }
+
+    /**
+     * Create an instance of {@link GetApplication }
+     * 
+     */
+    public GetApplication createGetApplication() {
+        return new GetApplication();
     }
 
     /**
@@ -228,6 +235,14 @@ public class ObjectFactory {
      */
     public ExistsPushChannelApplication createExistsPushChannelApplication() {
         return new ExistsPushChannelApplication();
+    }
+
+    /**
+     * Create an instance of {@link GetEntityName }
+     * 
+     */
+    public GetEntityName createGetEntityName() {
+        return new GetEntityName();
     }
 
     /**
@@ -351,19 +366,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AddPushChannelToApplicationResponse }
-     * 
-     */
-    public AddPushChannelToApplicationResponse createAddPushChannelToApplicationResponse() {
-        return new AddPushChannelToApplicationResponse();
-    }
-
-    /**
      * Create an instance of {@link EditEntityApplicationResponse }
      * 
      */
     public EditEntityApplicationResponse createEditEntityApplicationResponse() {
         return new EditEntityApplicationResponse();
+    }
+
+    /**
+     * Create an instance of {@link AddPushChannelToApplicationResponse }
+     * 
+     */
+    public AddPushChannelToApplicationResponse createAddPushChannelToApplicationResponse() {
+        return new AddPushChannelToApplicationResponse();
     }
 
     /**
@@ -399,6 +414,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetPermissionsForRol }
+     * 
+     */
+    public GetPermissionsForRol createGetPermissionsForRol() {
+        return new GetPermissionsForRol();
+    }
+
+    /**
      * Create an instance of {@link EntityCollectionNotRegisteredException }
      * 
      */
@@ -420,6 +443,14 @@ public class ObjectFactory {
      */
     public GetEntitiesApplicationResponse createGetEntitiesApplicationResponse() {
         return new GetEntitiesApplicationResponse();
+    }
+
+    /**
+     * Create an instance of {@link RoleNotFoundException }
+     * 
+     */
+    public RoleNotFoundException createRoleNotFoundException() {
+        return new RoleNotFoundException();
     }
 
     /**
@@ -447,6 +478,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link PushChanAlreadyRegisteredException }
+     * 
+     */
+    public PushChanAlreadyRegisteredException createPushChanAlreadyRegisteredException() {
+        return new PushChanAlreadyRegisteredException();
+    }
+
+    /**
      * Create an instance of {@link GetPushChannelsApplicationResponse }
      * 
      */
@@ -455,11 +494,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link PushChanAlreadyRegisteredException }
+     * Create an instance of {@link GetPermissionsForRolResponse }
      * 
      */
-    public PushChanAlreadyRegisteredException createPushChanAlreadyRegisteredException() {
-        return new PushChanAlreadyRegisteredException();
+    public GetPermissionsForRolResponse createGetPermissionsForRolResponse() {
+        return new GetPermissionsForRolResponse();
     }
 
     /**
@@ -479,11 +518,35 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetEntityNameResponse }
+     * 
+     */
+    public GetEntityNameResponse createGetEntityNameResponse() {
+        return new GetEntityNameResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetRoleNameResponse }
+     * 
+     */
+    public GetRoleNameResponse createGetRoleNameResponse() {
+        return new GetRoleNameResponse();
+    }
+
+    /**
      * Create an instance of {@link GetRolesApplication }
      * 
      */
     public GetRolesApplication createGetRolesApplication() {
         return new GetRolesApplication();
+    }
+
+    /**
+     * Create an instance of {@link GetRoleName }
+     * 
+     */
+    public GetRoleName createGetRoleName() {
+        return new GetRoleName();
     }
 
     /**
@@ -503,19 +566,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ExistsRoleApplicationResponse }
-     * 
-     */
-    public ExistsRoleApplicationResponse createExistsRoleApplicationResponse() {
-        return new ExistsRoleApplicationResponse();
-    }
-
-    /**
      * Create an instance of {@link MongoDBAlreadyExistsException }
      * 
      */
     public MongoDBAlreadyExistsException createMongoDBAlreadyExistsException() {
         return new MongoDBAlreadyExistsException();
+    }
+
+    /**
+     * Create an instance of {@link ExistsRoleApplicationResponse }
+     * 
+     */
+    public ExistsRoleApplicationResponse createExistsRoleApplicationResponse() {
+        return new ExistsRoleApplicationResponse();
     }
 
     /**
@@ -600,21 +663,21 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link AddPushChannelToApplicationResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "addPushChannelToApplicationResponse")
-    public JAXBElement<AddPushChannelToApplicationResponse> createAddPushChannelToApplicationResponse(AddPushChannelToApplicationResponse value) {
-        return new JAXBElement<AddPushChannelToApplicationResponse>(_AddPushChannelToApplicationResponse_QNAME, AddPushChannelToApplicationResponse.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link EditEntityApplicationResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "editEntityApplicationResponse")
     public JAXBElement<EditEntityApplicationResponse> createEditEntityApplicationResponse(EditEntityApplicationResponse value) {
         return new JAXBElement<EditEntityApplicationResponse>(_EditEntityApplicationResponse_QNAME, EditEntityApplicationResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AddPushChannelToApplicationResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "addPushChannelToApplicationResponse")
+    public JAXBElement<AddPushChannelToApplicationResponse> createAddPushChannelToApplicationResponse(AddPushChannelToApplicationResponse value) {
+        return new JAXBElement<AddPushChannelToApplicationResponse>(_AddPushChannelToApplicationResponse_QNAME, AddPushChannelToApplicationResponse.class, null, value);
     }
 
     /**
@@ -654,6 +717,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetPermissionsForRol }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "getPermissionsForRol")
+    public JAXBElement<GetPermissionsForRol> createGetPermissionsForRol(GetPermissionsForRol value) {
+        return new JAXBElement<GetPermissionsForRol>(_GetPermissionsForRol_QNAME, GetPermissionsForRol.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link EntityCollectionNotRegisteredException }{@code >}}
      * 
      */
@@ -678,6 +750,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "getEntitiesApplicationResponse")
     public JAXBElement<GetEntitiesApplicationResponse> createGetEntitiesApplicationResponse(GetEntitiesApplicationResponse value) {
         return new JAXBElement<GetEntitiesApplicationResponse>(_GetEntitiesApplicationResponse_QNAME, GetEntitiesApplicationResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link RoleNotFoundException }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "RoleNotFoundException")
+    public JAXBElement<RoleNotFoundException> createRoleNotFoundException(RoleNotFoundException value) {
+        return new JAXBElement<RoleNotFoundException>(_RoleNotFoundException_QNAME, RoleNotFoundException.class, null, value);
     }
 
     /**
@@ -726,6 +807,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetPermissionsForRolResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "getPermissionsForRolResponse")
+    public JAXBElement<GetPermissionsForRolResponse> createGetPermissionsForRolResponse(GetPermissionsForRolResponse value) {
+        return new JAXBElement<GetPermissionsForRolResponse>(_GetPermissionsForRolResponse_QNAME, GetPermissionsForRolResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetEntitiesApplication }{@code >}}
      * 
      */
@@ -744,12 +834,39 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetEntityNameResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "GetEntityNameResponse")
+    public JAXBElement<GetEntityNameResponse> createGetEntityNameResponse(GetEntityNameResponse value) {
+        return new JAXBElement<GetEntityNameResponse>(_GetEntityNameResponse_QNAME, GetEntityNameResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetRolesApplication }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "getRolesApplication")
     public JAXBElement<GetRolesApplication> createGetRolesApplication(GetRolesApplication value) {
         return new JAXBElement<GetRolesApplication>(_GetRolesApplication_QNAME, GetRolesApplication.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetRoleNameResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "GetRoleNameResponse")
+    public JAXBElement<GetRoleNameResponse> createGetRoleNameResponse(GetRoleNameResponse value) {
+        return new JAXBElement<GetRoleNameResponse>(_GetRoleNameResponse_QNAME, GetRoleNameResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetRoleName }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "GetRoleName")
+    public JAXBElement<GetRoleName> createGetRoleName(GetRoleName value) {
+        return new JAXBElement<GetRoleName>(_GetRoleName_QNAME, GetRoleName.class, null, value);
     }
 
     /**
@@ -771,21 +888,21 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link MongoDBAlreadyExistsException }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "MongoDBAlreadyExistsException")
-    public JAXBElement<MongoDBAlreadyExistsException> createMongoDBAlreadyExistsException(MongoDBAlreadyExistsException value) {
-        return new JAXBElement<MongoDBAlreadyExistsException>(_MongoDBAlreadyExistsException_QNAME, MongoDBAlreadyExistsException.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ExistsRoleApplicationResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "existsRoleApplicationResponse")
     public JAXBElement<ExistsRoleApplicationResponse> createExistsRoleApplicationResponse(ExistsRoleApplicationResponse value) {
         return new JAXBElement<ExistsRoleApplicationResponse>(_ExistsRoleApplicationResponse_QNAME, ExistsRoleApplicationResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link MongoDBAlreadyExistsException }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "MongoDBAlreadyExistsException")
+    public JAXBElement<MongoDBAlreadyExistsException> createMongoDBAlreadyExistsException(MongoDBAlreadyExistsException value) {
+        return new JAXBElement<MongoDBAlreadyExistsException>(_MongoDBAlreadyExistsException_QNAME, MongoDBAlreadyExistsException.class, null, value);
     }
 
     /**
@@ -843,21 +960,21 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetApplication }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "getApplication")
-    public JAXBElement<GetApplication> createGetApplication(GetApplication value) {
-        return new JAXBElement<GetApplication>(_GetApplication_QNAME, GetApplication.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link EntityCollectionAlreadyExistsException }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "EntityCollectionAlreadyExistsException")
     public JAXBElement<EntityCollectionAlreadyExistsException> createEntityCollectionAlreadyExistsException(EntityCollectionAlreadyExistsException value) {
         return new JAXBElement<EntityCollectionAlreadyExistsException>(_EntityCollectionAlreadyExistsException_QNAME, EntityCollectionAlreadyExistsException.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetApplication }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "getApplication")
+    public JAXBElement<GetApplication> createGetApplication(GetApplication value) {
+        return new JAXBElement<GetApplication>(_GetApplication_QNAME, GetApplication.class, null, value);
     }
 
     /**
@@ -939,6 +1056,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "userDTO")
     public JAXBElement<UserDTO> createUserDTO(UserDTO value) {
         return new JAXBElement<UserDTO>(_UserDTO_QNAME, UserDTO.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetEntityName }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.services.sl.baascore.group05.com.uy/", name = "GetEntityName")
+    public JAXBElement<GetEntityName> createGetEntityName(GetEntityName value) {
+        return new JAXBElement<GetEntityName>(_GetEntityName_QNAME, GetEntityName.class, null, value);
     }
 
     /**
