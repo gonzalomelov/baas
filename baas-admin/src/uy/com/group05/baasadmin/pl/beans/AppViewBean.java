@@ -3,6 +3,8 @@ package uy.com.group05.baasadmin.pl.beans;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -190,6 +192,12 @@ public class AppViewBean {
 			entitySync = false;
 			return null;
 		}
+		if(!validarNombre(entityName)){
+			errorEntity= "El nombre debe tener entre 5 y 30 caracteres alfanumericos.";
+			entityName = "";
+			entitySync = false;
+			return null;
+		}
 
 		ApplicationController appController = new ApplicationController();
 		try {
@@ -227,6 +235,11 @@ public class AppViewBean {
 			rolName = "";
 			return null;
 		}
+		if(!validarNombre(rolName)){
+			errorRol= "El nombre debe tener entre 5 y 30 caracteres alfanumericos.";
+			rolName = "";
+			return null;
+		}
 
 		if (ExisteRolEnLista(rolName, app.getRoles())) {
 			errorRol = "Ya existe el rol:" + rolName;
@@ -261,7 +274,12 @@ public class AppViewBean {
 		CleanErrorMessages();
 
 		if (pushChannelName == null || pushChannelName.equals("")) {
-			errorRol = "El nombre no puede ser vacio";
+			pushChannelsError = "El nombre no puede ser vacio";
+			pushChannelName = "";
+			return null;
+		}
+		if(!validarNombre(pushChannelName)){
+			pushChannelsError= "El nombre debe tener entre 5 y 30 caracteres alfanumericos.";
 			pushChannelName = "";
 			return null;
 		}
@@ -471,4 +489,15 @@ public class AppViewBean {
 		this.mensajesPushEnviados = mensajesPushEnviados;
 	}
 
+	//++++++++++++++
+	public boolean validarNombre(String nom){
+		Pattern pat = Pattern.compile("[a-zA-Z0-9]{3,30}");
+	     Matcher mat = pat.matcher(nom);
+	     if (mat.matches()) {
+	         return true;//System.out.println("SI");
+	     } else {
+	         return false;//System.out.println("NO");
+	     }
+	}
+	
 }

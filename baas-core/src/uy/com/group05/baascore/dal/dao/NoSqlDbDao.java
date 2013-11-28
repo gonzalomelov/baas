@@ -33,5 +33,6 @@ public interface NoSqlDbDao {
 	
 	SyncNoSqlResult sync(String appName, String entity, String jsonObjs)
 			throws AppNotRegisteredException, EntityNotRegisteredException;
-	
+
+	boolean existNoSqlDb(String dbName);
 }

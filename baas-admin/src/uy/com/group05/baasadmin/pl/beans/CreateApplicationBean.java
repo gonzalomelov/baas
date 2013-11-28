@@ -2,6 +2,8 @@ package uy.com.group05.baasadmin.pl.beans;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -12,6 +14,7 @@ import javax.faces.context.FacesContext;
 
 import uy.com.group05.baasadmin.pl.controllers.ApplicationController;
 import uy.com.group05.baasadmin.pl.models.EntitySync;
+import uy.com.group05.baascore.common.exceptions.InvalidNameException;
 
 
 
@@ -84,9 +87,13 @@ public class CreateApplicationBean {
  
 		CleanErrorMessages();
 		
-		
 		if(ExisteEnListaString(roleName, rolList)){
 			errorRol = "Ya existe el rol:"+ roleName;
+			roleName = "";
+			return null;
+		}
+		if(!validarNombre(roleName)){
+			errorRol= "El nombre debe tener entre 5 y 30 caracteres alfanumericos.";
 			roleName = "";
 			return null;
 		}
@@ -110,6 +117,12 @@ public class CreateApplicationBean {
 		
 		if(ExisteEnLista(entityName, entityList)){
 			errorEntity = "Ya existe la entidad:"+ entityName;
+			entityName = "";
+			entitySync = false;
+			return null;
+		}
+		if(!validarNombre(entityName)){
+			errorEntity= "El nombre debe tener entre 5 y 30 caracteres alfanumericos.";
 			entityName = "";
 			entitySync = false;
 			return null;
@@ -166,6 +179,11 @@ public class CreateApplicationBean {
 	}
 
 	public String Create(){
+		
+		if(!validarNombre(appName)){
+			error= "El nombre de la aplicación debe tener entre 5 y 30 caracteres alfanumericos.";
+			return "";
+		}
 		
 		CleanErrorMessages();
 		
@@ -255,5 +273,16 @@ public class CreateApplicationBean {
 
 	public void setError(String error) {
 		this.error = error;
+	}
+	
+	//++++++
+	public boolean validarNombre(String nom){
+		Pattern pat = Pattern.compile("[a-zA-Z0-9]{3,30}");
+	     Matcher mat = pat.matcher(nom);
+	     if (mat.matches()) {
+	         return true;//System.out.println("SI");
+	     } else {
+	         return false;//System.out.println("NO");
+	     }
 	}
 }

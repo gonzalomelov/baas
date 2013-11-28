@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -84,12 +86,26 @@ public class AppManagement implements AppManagementLocal{
 		
 	}
 	
+	public boolean validarNombre(String nom){
+		Pattern pat = Pattern.compile("[a-zA-Z0-9]{3,30}");
+	     Matcher mat = pat.matcher(nom);
+	     if (mat.matches()) {
+	         return true;//System.out.println("SI");
+	     } else {
+	         return false;//System.out.println("NO");
+	     }
+	}
+	
 	public long createApplication(long idUser, String nombreApp, List<String> rolesStr, List<String> entidadesStr, List<Boolean> entidadesSync)
 			throws
 				NombreAppAlreadyRegisteredException,
 				UserNotRegisteredException,
 				MongoDBAlreadyExistsException,
 				EntityCollectionAlreadyExistsException, InvalidNameException {
+		//Validar nombre
+		if(!validarNombre(nombreApp)){
+			throw new InvalidNameException("El nombre debe tener entre 5 y 30 caracteres alfanumericos.");
+		}
 		//Obtengo el usuario
 		User user = userDao.read(idUser);
 		//Hago los controles
@@ -97,7 +113,7 @@ public class AppManagement implements AppManagementLocal{
 			throw new UserNotRegisteredException("No existe el usuario con id:"+idUser);
 		if (nombreApp.equals(""))//No existe la app
 			throw new InvalidNameException("Debe ingresar un nombre para la aplicacion");
-		if (appDao.readByName(nombreApp) != null)//No existe la app
+		if (appDao.readByName(nombreApp) != null || noSqlDbDao.existNoSqlDb(nombreApp))//No existe la app
 			throw new NombreAppAlreadyRegisteredException("Ya existe una aplicacion con ese nombre");
 
 		//Creo la App
@@ -120,7 +136,7 @@ public class AppManagement implements AppManagementLocal{
 			Iterator<String> iter = rolesStr.iterator();
 			while (iter.hasNext()){
 					Role r = new Role(iter.next(), app);
-					if (!roles.contains(r) && !r.getName().equals("")){
+					if (!roles.contains(r) && !r.getName().equals("") && validarNombre(r.getName())){
 						roles.add(r);
 						roleDao.create(r);
 					}
@@ -132,7 +148,7 @@ public class AppManagement implements AppManagementLocal{
 			Iterator<Boolean> iterSync = entidadesSync.iterator();
 			while (iter.hasNext()){
 				Entity e = new Entity(iter.next(), app, iterSync.next());
-				if(!entidades.contains(e) && !e.getName().equals("")){
+				if(!entidades.contains(e) && !e.getName().equals("") && validarNombre(e.getName())){
 					entidades.add(e);
 					entityDao.create(e);
 				}
@@ -197,6 +213,10 @@ public class AppManagement implements AppManagementLocal{
 			throw new RoleAlreadyRegisteredException("Ya existe un rol con ese nombre");
 		if (nomRole.equals(""))//No existe la app
 			throw new InvalidNameException("Debe ingresar un nombre para el Rol");
+		//Validar nombre
+		if(validarNombre(nomRole)){
+			throw new InvalidNameException("El nombre debe tener entre 5 y 30 caracteres alfanumericos.");
+		}
 		
 		roles.add(r);
 		Role retorno = roleDao.create(r);

@@ -268,4 +268,13 @@ public class MongoDbEntityNoSqlDao implements NoSqlDbDao {
 		return result;
 	}
 	
+	
+	//++++++
+	
+	public boolean existNoSqlDb(String dbName) {
+		
+		List<String> databaseNames = mongo.getDatabaseNames();
+		
+		return databaseNames.contains(dbName);
+	}
 }
