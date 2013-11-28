@@ -236,7 +236,7 @@ public class AppViewBean {
 			return null;
 		}
 		if(!validarNombre(rolName)){
-			errorRol= "El nombre debe tener entre 5 y 30 caracteres alfanumericos.";
+			errorRol= "El nombre de rol debe tener entre 5 y 30 caracteres alfanumericos.";
 			rolName = "";
 			return null;
 		}
@@ -491,7 +491,7 @@ public class AppViewBean {
 
 	//++++++++++++++
 	public boolean validarNombre(String nom){
-		Pattern pat = Pattern.compile("[a-zA-Z0-9]{3,30}");
+		Pattern pat = Pattern.compile("[a-zA-Z0-9_]{3,30}");
 	     Matcher mat = pat.matcher(nom);
 	     if (mat.matches()) {
 	         return true;//System.out.println("SI");

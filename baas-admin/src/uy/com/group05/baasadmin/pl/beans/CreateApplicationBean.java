@@ -277,7 +277,7 @@ public class CreateApplicationBean {
 	
 	//++++++
 	public boolean validarNombre(String nom){
-		Pattern pat = Pattern.compile("[a-zA-Z0-9]{3,30}");
+		Pattern pat = Pattern.compile("[a-zA-Z0-9_]{3,30}");
 	     Matcher mat = pat.matcher(nom);
 	     if (mat.matches()) {
 	         return true;//System.out.println("SI");
