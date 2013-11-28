@@ -43,7 +43,9 @@ public class FiltroLogueado implements Filter {
 		
 		String loginURL = contextPath + "/pages/users/login.xhtml"; 
 		
-		String register = contextPath + "/pages/users/register.xhtml"; 
+		String register = contextPath + "/pages/users/register.xhtml";
+		
+		String downlaod = contextPath + "/download.xhtml"; 
 		
 		userSessionManagementBean = getUserSessionManagementBean(request);
 		
@@ -56,6 +58,7 @@ public class FiltroLogueado implements Filter {
 		if (req.getRequestURI().equals(contextPath+"/") ||
 			req.getRequestURI().equals(home) ||
 			req.getRequestURI().equals(loginURL) ||
+			req.getRequestURI().equals(downlaod) ||
 			req.getRequestURI().equals(register))
 		{
 			paginaPublica = true;

@@ -29,7 +29,13 @@
 
 <link href='http://fonts.googleapis.com/css?family=Exo:400,800' rel='stylesheet' type='text/css' />	
 
+<style>
 
+	.download{
+		margin-top: 25%;
+	}
+
+</style>
 </h:head> 
 <body data-spy="scroll">
 
@@ -51,10 +57,9 @@
 		
 			<div class="nav-collapse collapse">
 				<ul id="nav-list" class="nav pull-right">
-					<li><a href="#home">Home</a></li>
-					<li><a href="#about">About</a></li>					
-					<li><a href="#contact">Contact</a></li>
-					<li class="notNavegate"><h:link value="Download" outcome="/download" /></li>
+					
+					<li class="notNavegate"><h:link value="Home" outcome="/index" /></li>
+					<li><a href="#downlaod">Download</a></li>					
 					<li class="notNavegate"><h:link value="Register" outcome="/pages/users/register" /></li>
 					<li class="notNavegate"><h:link value="Login" outcome="/pages/users/login" /></li>	
 				</ul>
@@ -75,14 +80,15 @@
   
 		<!-- PHONES IMAGE FOR DESKTOP MEDIA QUERY -->
 		<div class="span5 visible-desktop">
-			<img src="img/phones.png" />
+			<a href="./baas-sdk.zip"> <img alt="download" class="download"
+					src="./img/download.png" /></a>
 		</div>
 	
 		<!-- APP DETAILS -->
 		<div class="span7">
 	
 			<!-- ICON -->
-			<a href="#"> <img alt="Baas" class="imageLogo2"
+			<a href="#"> <img alt="Baas" class="donwload"
 					src="./img/logobaas2.PNG" /></a>
 			
 			<!-- VERSION -->
@@ -123,80 +129,6 @@
 	
 	
 	
-	<!-- ABOUT & UPDATES -->
-	<div class="row-fluid" id="about">
-	
-		<div class="span6">
-			<h2 class="page-title" id="scroll_up">
-				About
-				<a href="#home" class="arrow-top">
-				<img src="img/arrow-top.png"/>
-				</a>
-			</h2>
-			
-			<p>UBaaS is a Backend as a Service provider that makes it easy for developers to setup, use and operate a cloud backend for their mobile apps. They don't have to worry about connecting to various cloud services, setting up servers for their backend, or maintaining and scaling them.</p>
-			<p>With UBaaS, developers simply code their app using Android’s SDK or REST API. They then connect the app to UBaaS's backend features using these services, and the app is ready to launch. We'll worry about auto-scaling and maintaining your backend. You focus solely on your app.</p> 
-			<!--<p><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">FlexApp</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.trippoinc.com" property="cc:attributionName" rel="cc:attributionURL">Trippo</a> is licensed under <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.<br />Built on <a xmlns:dct="http://purl.org/dc/terms/" href="http://twitter.github.com/bootstrap/" rel="dct:source">Bootstrap</a>.</p>-->
-			
-		</div>
-	
-	</div>
-	
-	
-	
-	<!-- CONTACT -->
-	<div class="row-fluid" id="contact">
-	
-		<h2 class="page-title" id="scroll_up">
-				Contact
-				<a href="#home" class="arrow-top">
-				<img src="img/arrow-top.png"/>
-				</a>
-			</h2>
-		
-		<!-- CONTACT INFO -->
-		<div class="span4" id="contact-info">
-			<h3>Contact Us</h3>
-			<p>You may contact us about general business inquiries, services costs or to report bugs in the backend!</p>
-			<p><a href="mailto:contact@ubaas.com.uy">contact@ubaas.com.uy</a></p>
-		</div>
-		
-		<!-- CONTACT FORM -->
-		<div class="span7" id="contact-form">
-			<form class="form-horizontal">
-				<fieldset>
-					<div class="control-group">
-						<label class="control-label" for="name">Name</label>
-						<div class="controls">
-							<input class="input-xlarge" type="text" id="name" placeholder="John Doe" />
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="email">Email</label>
-						<div class="controls">
-							<input class="input-xlarge" type="text" id="email" placeholder="john@gmail.com" />
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="subject">Subject</label>
-						<div class="controls">
-							<input class="input-xlarge" type="text" id="subject" placeholder="General Inquiry" />
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="message">Message</label>
-						<div class="controls">
-							<textarea class="input-xlarge" rows="3" id="message" placeholder="Your message..."></textarea>
-						</div>
-					</div>
-					<div class="form-actions">
-						<button type="submit" class="btn btn-primary">SEND</button>
-					</div>
-				</fieldset>
-			</form>
-		</div>
-		
-	</div>
 	
 </div>
 
