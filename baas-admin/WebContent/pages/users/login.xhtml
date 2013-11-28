@@ -49,6 +49,9 @@
 	<link href='../../css/uploadify.css' rel='stylesheet'/>
 	
 	
+	<script type="text/javascript" src="../../js/jquery-1.7.2.min.js" />
+	<script type="text/javascript" src="../../js/Placeholder.js" />
+	
 
 </h:head> 
 <body> 
@@ -59,7 +62,7 @@
 	
 			
 			
-			<a href="../dashboard/Index.xhtml"> <img alt="Baas" class="imageLogo"
+			<a href="../../"> <img alt="Baas" class="imageLogo"
 					src="../../img/logobaas2.PNG" /></a>
 	
 			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -107,13 +110,13 @@
 					 		
 							 <div class="input-prepend" title="Email" data-rel="tooltip">
 								<span class="add-on"><i class="icon-user"></i></span>
-								<h:inputText class="input-large span10" value="#{userLoginBean.user.email}" id="email"  />
+								<h:inputText class="input-large span10 emailPlaceHolder" value="#{userLoginBean.user.email}" id="email"  />
 							</div>
 							<div class="clearfix"></div>
 
 							<div class="input-prepend" title="Password" data-rel="tooltip">
 								<span class="add-on"><i class="icon-lock"></i></span>
-								<h:inputSecret value="#{userLoginBean.user.password}" id="password" class="input-large span10"/>
+								<h:inputSecret value="#{userLoginBean.user.password}" id="password" class="input-large span10 passwordPlaceHolder"/>
 								
 							</div>
 							<div class="clearfix"></div>

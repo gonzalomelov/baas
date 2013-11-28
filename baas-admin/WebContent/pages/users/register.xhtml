@@ -48,7 +48,8 @@
 	<link href='../../css/opa-icons.css' rel='stylesheet'/>
 	<link href='../../css/uploadify.css' rel='stylesheet'/>
 	
-	
+	<script type="text/javascript" src="../../js/jquery-1.7.2.min.js" />
+	<script type="text/javascript" src="../../js/Placeholder.js" />
 
 </h:head> 
 <body> 
@@ -57,7 +58,7 @@
 	<div class="navbar-inner">
 		<div class="container">
 	
-			<a href="../dashboard/Index.xhtml"> <img alt="Baas" class="imageLogo"
+			<a href="../../"> <img alt="Baas" class="imageLogo"
 					src="../../img/logobaas2.PNG" /></a>
 	
 			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -104,32 +105,32 @@
 				 
 					 		 <div class="input-prepend" title="Nombre" data-rel="tooltip">
 								<span class="add-on"><i class="icon-user"></i></span>
-								<h:inputText class="input-large span10" value="#{userRegistrationBean.user.name}" id="name"  />
+								<h:inputText class="input-large span10 namePlaceHolder" value="#{userRegistrationBean.user.name}" id="name"  />
 							</div>
 							<div class="clearfix"></div>
 							
 							<div class="input-prepend" title="Appellido" data-rel="tooltip">
 								<span class="add-on"><i class="icon-user"></i></span>
-								<h:inputText class="input-large span10" value="#{userRegistrationBean.user.lastname}" id="lastname"  />
+								<h:inputText class="input-large span10 lastNamePlaceHolder" value="#{userRegistrationBean.user.lastname}" id="lastname"  />
 							</div>
 							<div class="clearfix"></div>
 							
 							 <div class="input-prepend" title="Email" data-rel="tooltip">
 								<span class="add-on"><i class="icon-user"></i></span>
-								<h:inputText class="input-large span10" value="#{userRegistrationBean.user.email}" id="email"  />
+								<h:inputText class="input-large span10 emailPlaceHolder" value="#{userRegistrationBean.user.email}" id="email"  />
 							</div>
 							<div class="clearfix"></div>
 
 							<div class="input-prepend" title="Password" data-rel="tooltip">
 								<span class="add-on"><i class="icon-lock"></i></span>
-								<h:inputSecret value="#{userRegistrationBean.user.password}" id="password" class="input-large span10"/>
+								<h:inputSecret value="#{userRegistrationBean.user.password}" id="password" class="input-large span10 passwordPlaceHolder"/>
 								
 							</div>
 							<div class="clearfix"></div>
 							
 							<div class="input-prepend" title="Repeat password" data-rel="tooltip">
 								<span class="add-on"><i class="icon-lock"></i></span>
-								<h:inputSecret value="#{userRegistrationBean.user.repeatedPassword}" id="reppassword" class="input-large span10"/>
+								<h:inputSecret value="#{userRegistrationBean.user.repeatedPassword}" id="reppassword" class="input-large span10 repasswordPlaceHolder"/>
 								
 							</div>
 							<div class="clearfix"></div>
