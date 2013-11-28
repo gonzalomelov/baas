@@ -499,3 +499,8 @@ box-shadow: 0 0 10px #BDBDBD;
 .box-content.buttons{
 min-height:297px;
 }
+
+.imageLogo{
+	  	float: left;
+    	width: 13%;
+}

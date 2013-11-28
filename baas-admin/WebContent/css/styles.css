@@ -198,3 +198,8 @@ h2 {
 #credits {
 	float:right;
 	}
+	
+.imageLogo{
+	  	float: left;
+    	width: 13%;
+}
