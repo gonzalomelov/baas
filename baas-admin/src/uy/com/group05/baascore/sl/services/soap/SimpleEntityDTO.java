@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="sync" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -29,12 +30,14 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "simpleEntityDTO", propOrder = {
     "id",
-    "name"
+    "name",
+    "sync"
 })
 public class SimpleEntityDTO {
 
     protected long id;
     protected String name;
+    protected boolean sync;
 
     /**
      * Gets the value of the id property.
@@ -74,6 +77,22 @@ public class SimpleEntityDTO {
      */
     public void setName(String value) {
         this.name = value;
+    }
+
+    /**
+     * Gets the value of the sync property.
+     * 
+     */
+    public boolean isSync() {
+        return sync;
+    }
+
+    /**
+     * Sets the value of the sync property.
+     * 
+     */
+    public void setSync(boolean value) {
+        this.sync = value;
     }
 
 }
