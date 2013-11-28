@@ -87,7 +87,7 @@ public class AppManagement implements AppManagementLocal{
 	}
 	
 	public boolean validarNombre(String nom){
-		Pattern pat = Pattern.compile("[a-zA-Z0-9]{3,30}");
+		Pattern pat = Pattern.compile("[a-zA-Z0-9_]{3,30}");
 	     Matcher mat = pat.matcher(nom);
 	     if (mat.matches()) {
 	         return true;//System.out.println("SI");
@@ -214,7 +214,7 @@ public class AppManagement implements AppManagementLocal{
 		if (nomRole.equals(""))//No existe la app
 			throw new InvalidNameException("Debe ingresar un nombre para el Rol");
 		//Validar nombre
-		if(validarNombre(nomRole)){
+		if(!validarNombre(nomRole)){
 			throw new InvalidNameException("El nombre debe tener entre 5 y 30 caracteres alfanumericos.");
 		}
 		
