@@ -95,6 +95,10 @@ public class ClientManagement implements ClientManagementLocal {
 			return registration;
 		}
 		
+		if (client.getEmail().equals("") || client.getPassword().equals("")){
+			return registration;
+		}
+		
 		if (!app.getApiClientId().equals(apiClientId)) {
 			return registration;
 		}

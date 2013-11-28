@@ -26,7 +26,9 @@ public class UserManagement implements UserManagementLocal {
 	public User registerUser(User user)
 		throws
 			EmailAlreadyRegisteredException {
-		
+		if (user.getName().equals("") || user.getEmail().equals("") || user.getPassword().equals("")){
+			throw new EmailAlreadyRegisteredException("You must complete email, name and password");
+		}
 		if (userDao.readByEmail(user.getEmail()) != null) {
 			throw new EmailAlreadyRegisteredException("Email already registered");
 		}

@@ -58,17 +58,17 @@ public class Main extends Activity {
 		MyApplication myApplication = (MyApplication)(context.getApplicationContext());
 		
 		List<String> syncEntities = new ArrayList<String>();
-		syncEntities.add("Admin");
-		syncEntities.add("Objeto");
-		syncEntities.add("Trueque");
-		syncEntities.add("Usuario");
+//		syncEntities.add("Admin");
+//		syncEntities.add("Objeto");
+//		syncEntities.add("Trueque");
+//		syncEntities.add("Usuario");
 //		syncEntities.add("Oferta");
 		
 		List<String> commonEntities = new ArrayList<String>();
-//		commonEntities.add("Admin");
-//		commonEntities.add("Objeto");
-//		commonEntities.add("Trueque");
-//		commonEntities.add("Usuario");
+		commonEntities.add("Admin");
+		commonEntities.add("Objeto");
+		commonEntities.add("Trueque");
+		commonEntities.add("Usuario");
 		commonEntities.add("Oferta");
 		
 		myApplication.init(this, syncEntities, commonEntities); 
@@ -123,10 +123,10 @@ public class Main extends Activity {
     }
     
     //+++++
-    public void loginExterno(View view){
-    	Intent intent = new Intent(this, LoginExterno.class);
-    	startActivity(intent);
-    }
+//    public void loginExterno(View view){
+//    	Intent intent = new Intent(this, LoginExterno.class);
+//    	startActivity(intent);
+//    }
     //+++++
     
     public void registrar(View view){
